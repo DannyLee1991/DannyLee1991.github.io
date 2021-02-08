@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【Android文档翻译】构建仪表化单元测试 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="仪表化单元测试是在物理设备和模拟器上运行的测试，它们可以利用Android框架API和support API，例如Android Testing Support Library。如果你的测试需要访问仪表信息(例如目标APP的Context信息)或者如果他们需要真正实现一个Android框架组件(例如一个Parcelable或者SharedPreferences对象)，你应该创建仪表化单元测试。 使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android文档翻译】构建仪表化单元测试">
+<meta property="og:url" content="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="仪表化单元测试是在物理设备和模拟器上运行的测试，它们可以利用Android框架API和support API，例如Android Testing Support Library。如果你的测试需要访问仪表信息(例如目标APP的Context信息)或者如果他们需要真正实现一个Android框架组件(例如一个Parcelable或者SharedPreferences对象)，你应该创建仪表化单元测试。 使">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_01_11/002.png">
+<meta property="og:image" content="http://example.com/img/17_01_11/003.png">
+<meta property="article:published_time" content="2017-01-11T23:07:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_01_11/002.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【Android文档翻译】构建仪表化单元测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2017-01-11T23:07:58.000Z" itemprop="datePublished">2017-01-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【Android文档翻译】构建仪表化单元测试
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>仪表化单元测试是在物理设备和模拟器上运行的测试，它们可以利用Android框架API和support API，例如Android Testing Support Library。如果你的测试需要访问仪表信息(例如目标APP的Context信息)或者如果他们需要真正实现一个Android框架组件(例如一个Parcelable或者SharedPreferences对象)，你应该创建仪表化单元测试。</p>
+<p>使用仪表化单元测试还有助于减少编写和维护模拟代码所需的工作量。如果你想，你任然可以自由使用模拟框架，模拟任何依赖关系。</p>
+<h2 id="设置您的测试环境"><a href="#设置您的测试环境" class="headerlink" title="设置您的测试环境"></a>设置您的测试环境</h2><p>在你的Android Studio项目中，你必须将用于测试的源文件存储在<code>module-name/src/androidTest/java/</code>中。在创建新项目，并包含检测测试示例时，此目录已存在。</p>
+<p>在你开始之前，你应该<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#setup">下载Android测试支持库设置</a>，它提供的API允许您为您的应用程序快速构建和运行测试代码。这个测试库包含一个JUnit4测试运行器(<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#AndroidJUnitRunner">AndroidJUnitRunner</a>)以及针对UI功能性测试的API(<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#Espresso">Espresso</a>和<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#UIAutomator">UI Automator</a>)。</p>
+<p>您还需要为项目配置Android测试依赖关系，以使用测试支持库提供的测试运行器和规则API。为了简化测试开发，您还应该包含<a target="_blank" rel="noopener" href="https://github.com/hamcrest">Hamcrest库</a>，它允许您使用Hamcrest匹配器API创建更灵活的断言。</p>
+<p>在应用程序的顶级<code>build.gradle</code>文件中，您需要将这些库指定为依赖关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    androidTestCompile &#39;com.android.support:support-annotations:24.0.0&#39;</span><br><span class="line">    androidTestCompile &#39;com.android.support.test:runner:0.5&#39;</span><br><span class="line">    androidTestCompile &#39;com.android.support.test:rules:0.5&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- Hamcrest library</span><br><span class="line">    androidTestCompile &#39;org.hamcrest:hamcrest-library:1.3&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- UI testing with Espresso</span><br><span class="line">    androidTestCompile &#39;com.android.support.test.espresso:espresso-core:2.2.2&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- UI testing with UI Automator</span><br><span class="line">    androidTestCompile &#39;com.android.support.test.uiautomator:uiautomator-v18:2.1.2&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>警告：</strong>如果您的构建配置包括<code>support-annotations</code>库的编译依赖项<strong>和</strong><code>espresso-core</code>库的<code>androidTestCompile</code>依赖项，那么您的构建可能会由于依赖冲突而失败。为了解决这个问题，请更新<code>espresso-core</code>的依赖关系，如下所示：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">androidTestCompile(&#39;com.android.support.test.espresso:espresso-core:2.2.2&#39;, &#123;</span><br><span class="line">    exclude group: &#39;com.android.support&#39;, module: &#39;support-annotations&#39;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>要使用JUnit4测试类，请确保在项目中将<code>AndroidJUnitRunner</code>指定为默认测试工具运行器，方法是在应用程序的模块级<code>build.gradle</code>文件中包含以下设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建测试单元测试类"><a href="#创建测试单元测试类" class="headerlink" title="创建测试单元测试类"></a>创建测试单元测试类</h2><p>您的检测单元测试类应写为JUnit4测试类。要了解有关创建JUnit 4测试类和使用JUnit 4断言和注释的更多信息，请参阅创<a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/unit-testing/local-unit-tests.html#build">建本地单元测试类</a>。</p>
+<p>要创建一个检测的JUnit4测试类，请在测试类定义的开头添加<code>@RunWith(AndroidJUnit4.class)</code>注解。您还需要指定Android测试支持库中提供的<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/runner/AndroidJUnitRunner.html">AndroidJUnitRunner</a>类作为默认测试运行器。此步骤在“<a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/">测试入门</a>”中有更详细的描述。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/start/index.html#run-instrumented-tests">以下示例显示如何编写检测单元测试</a>，以测试Parcelable接口是否已正确实现LogHistory类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import android.os.Parcel;</span><br><span class="line">import android.support.test.runner.AndroidJUnit4;</span><br><span class="line">import android.util.Pair;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import java.util.List;</span><br><span class="line">import static org.hamcrest.Matchers.is;</span><br><span class="line">import static org.junit.Assert.assertThat;</span><br><span class="line"></span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">@SmallTest</span><br><span class="line">public class LogHistoryAndroidUnitTest &#123;</span><br><span class="line"></span><br><span class="line">    public static final String TEST_STRING &#x3D; &quot;This is a string&quot;;</span><br><span class="line">    public static final long TEST_LONG &#x3D; 12345678L;</span><br><span class="line">    private LogHistory mLogHistory;</span><br><span class="line"></span><br><span class="line">    @Before</span><br><span class="line">    public void createLogHistory() &#123;</span><br><span class="line">        mLogHistory &#x3D; new LogHistory();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void logHistory_ParcelableWriteRead() &#123;</span><br><span class="line">        &#x2F;&#x2F; Set up the Parcelable object to send and receive.</span><br><span class="line">        mLogHistory.addEntry(TEST_STRING, TEST_LONG);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Write the data.</span><br><span class="line">        Parcel parcel &#x3D; Parcel.obtain();</span><br><span class="line">        mLogHistory.writeToParcel(parcel, mLogHistory.describeContents());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; After you&#39;re done with writing, you need to reset the parcel for reading.</span><br><span class="line">        parcel.setDataPosition(0);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Read the data.</span><br><span class="line">        LogHistory createdFromParcel &#x3D; LogHistory.CREATOR.createFromParcel(parcel);</span><br><span class="line">        List&lt;Pair&lt;String, Long&gt;&gt; createdFromParcelData &#x3D; createdFromParcel.getData();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Verify that the received data is correct.</span><br><span class="line">        assertThat(createdFromParcelData.size(), is(1));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).first, is(TEST_STRING));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).second, is(TEST_LONG));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建一个测试套件"><a href="#创建一个测试套件" class="headerlink" title="创建一个测试套件"></a>创建一个测试套件</h3><p>要组织仪器化单元测试的执行，可以在测试套件类中对一组测试类进行分组，并一起运行这些测试。测试套件可以嵌套;您的测试套件可以将其他测试套件分组并将所有组件测试类一起运行。</p>
+<p>测试套件包含在测试包中，类似于主应用程序包。按照惯例，测试套件包名称通常以<code>.suite</code>后缀结尾（例如，<code>com.example.android.testing.mysample.suite</code>）。</p>
+<p>要为单元测试创​​建测试套件，请导入JUnit RunWith和Suite类。在您的测试套件中，添加<code>@RunWith(Suite.class)</code>和<code>@Suite.SuitClasses()</code>注解，列出单个测试类或测试套件作为参数。</p>
+<p>以下示例显示如何实现名为UnitTestSuite的测试套件，它将<code>CalculatorInstrumentationTest</code>和<code>CalculatorAddParameterizedTest</code>测试类组合并运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import com.example.android.testing.mysample.CalculatorAddParameterizedTest;</span><br><span class="line">import com.example.android.testing.mysample.CalculatorInstrumentationTest;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import org.junit.runners.Suite;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Runs all unit tests.</span><br><span class="line">@RunWith(Suite.class)</span><br><span class="line">@Suite.SuiteClasses(&#123;CalculatorInstrumentationTest.class,</span><br><span class="line">        CalculatorAddParameterizedTest.class&#125;)</span><br><span class="line">public class UnitTestSuite &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="运行仪表单元测试"><a href="#运行仪表单元测试" class="headerlink" title="运行仪表单元测试"></a>运行仪表单元测试</h2><p>要运行仪表化测试，请按照下列步骤操作：</p>
+<ul>
+<li>1.通过单击工具栏中的同步项目，确保您的项目与Gradle同步。</li>
+<li>2.使用以下方法之一运行测试：<ul>
+<li>要运行单个测试，请打开<strong>Project</strong>窗口，然后右键单击一个测试，然后单击<strong>Run</strong>。</li>
+<li>要测试类中的所有方法，请右键单击测试文件中的类或方法，然后单击<strong>Run</strong>。</li>
+<li>要在目录中运行所有测试，请右键单击目录并选择<strong>Run tests</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/building/plugin-for-gradle.html">Gradle的Android插件</a>编译位于默认目录(<code>src/androidTest/java/</code>)中的测试代码，构建测试APK和生产APK，在连接的设备或模拟器上安装这两个APK，并运行测试。然后，Android Studio将在“运行”窗口中显示已检测的测试执行的结果。</p>
+<blockquote>
+<p><strong>注意：</strong>在运行或调试测试测试时，Android Studio不会注入“<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/run/index.html#instant-run">Instant Run</a>”所需的其他方法，并关闭此功能。</p>
+</blockquote>
+<h3 id="使用Firebase-Test-Lab运行测试"><a href="#使用Firebase-Test-Lab运行测试" class="headerlink" title="使用Firebase Test Lab运行测试"></a>使用Firebase Test Lab运行测试</h3><p>使用<a target="_blank" rel="noopener" href="https://firebase.google.cn/docs/test-lab/">Firebase Test Lab</a>，您可以在许多流行的Android设备和设备配置(区域设置，方向，屏幕大小和平台版本)上同时测试您的应用程序。这些测试在远程Google数据中心的物理和虚拟设备上运行。您可以直接从Android Studio或从命令行将应用程序部署到测试实验室。测试结果提供测试日志，并包括任何应用程序故障的详细信息。</p>
+<p>在开始使用Firebase Test Lab之前，您需要执行以下操作，除非您已经拥有Google帐户和Firebase项目：</p>
+<ul>
+<li>1.如果您还没有Google帐户，请<a target="_blank" rel="noopener" href="https://accounts.google.com/">创建一个Google帐户</a>。</li>
+<li>2.在<a target="_blank" rel="noopener" href="https://console.firebase.google.com/">Firebase控制台</a>中，单击<strong>Create New Project</strong>。 <ul>
+<li>使用测试实验室在Spark计划的免费每日配额内测试您的应用程序是免费的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="配置测试矩阵并运行测试"><a href="#配置测试矩阵并运行测试" class="headerlink" title="配置测试矩阵并运行测试"></a>配置测试矩阵并运行测试</h4><p>Android Studio提供了集成工具，允许您配置如何将测试部署到Firebase测试实验室。使用Blaze计划计费创建Firebase项目后，您可以创建测试配置并运行测试：</p>
+<ul>
+<li>1.在主菜单下点击<strong>Run &gt; Edit Configurations</strong> 。</li>
+<li>2.点击<strong>Add New Configuration + **然后选择</strong>Android Tests**。</li>
+<li>3.在Android测试配置对话框中：<ul>
+<li>a.输入或选择测试的详细信息，例如测试名称，模块类型，测试类型和测试类别。</li>
+<li>b.从“部署目标选项”下的“目标”下拉菜单中，选择“<strong>Firebase Test Lab Device Matrix</strong>”。</li>
+<li>c.如果您尚未登录，请点击连接到Google云端平台，并允许Android Studio访问您的帐户。</li>
+<li>d.在Cloud Project旁边，单击设置按钮并从列表中选择您的Firebase项目。</li>
+</ul>
+</li>
+<li>4.创建和配置测试矩阵。<ul>
+<li>a.在<em>Matrix Configuration</em>下拉列表旁边，单击<strong>Open Dialog</strong>。</li>
+<li>b.点击**Add New Configuration (+)**。</li>
+<li>c.在<strong>Name</strong>字段中，输入新配置的名称。</li>
+<li>d.选择您要测试应用的设备，Android版本，地区和屏幕方向。 Firebase测试实验室将在生成测试结果时根据您的选择的每个组合来测试您的应用程序。</li>
+<li>e.单击<strong>OK</strong>保存配置</li>
+</ul>
+</li>
+<li>5.单击<em>Run/Debug Configurations</em>对话框中的<strong>OK</strong>退出。</li>
+<li>6.通过单击<strong>Run</strong>运行测试。</li>
+</ul>
+<p><img src="/img/17_01_11/002.png"></p>
+<p>**图1.**为Firebase Test Lab创建测试配置。</p>
+<h4 id="分析测试结果"><a href="#分析测试结果" class="headerlink" title="分析测试结果"></a>分析测试结果</h4><p>当Firebase Test Lab完成运行测试时，运行窗口将打开以显示结果，如图2所示。您可能需要单击<strong>Show Passd</strong>以查看所有已执行的测试。</p>
+<p><img src="/img/17_01_11/003.png"></p>
+<p>**图2.**使用Firebase Test Lab查看仪表化测试的结果。</p>
+<p>您还可以通过在<em>Run</em>窗口中的测试执行日志开头显示的链接来分析Web上的测试。</p>
+<p>要了解有关解释Web结果的详细信息，请参阅<a target="_blank" rel="noopener" href="https://firebase.google.cn/docs/test-lab/analyzing-results">分析Android结果的Firebase测试实验室</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" data-id="ckkwc435t002tpas96xidc3w5" data-title="【Android文档翻译】构建仪表化单元测试" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【Android文档翻译】自动化UI测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【Android文档翻译】构建本地单元测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

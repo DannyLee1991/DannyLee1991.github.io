@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第一周 (4)一元线性回归 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="线性回归预测一个输入值的一个真值输出。我们讨论了线性回归在住房价格预测中的应用，提出了成本函数的概念，并介绍了学习的梯度下降法。  模型与成本函数(Model and Cost Function)模型表示视频地址 我们的第一个学习算法是线性回归算法，在这段视频中，你会看到这个算法的概况。更重要的是你将会了解监督学习过程完整的流程，让我们通过一个例子来开始。 这个例子是预测住房价格的，我们要使用一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第一周 (4)一元线性回归">
+<meta property="og:url" content="http://example.com/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="线性回归预测一个输入值的一个真值输出。我们讨论了线性回归在住房价格预测中的应用，提出了成本函数的概念，并介绍了学习的梯度下降法。  模型与成本函数(Model and Cost Function)模型表示视频地址 我们的第一个学习算法是线性回归算法，在这段视频中，你会看到这个算法的概况。更重要的是你将会了解监督学习过程完整的流程，让我们通过一个例子来开始。 这个例子是预测住房价格的，我们要使用一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_07_22/001.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/002.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/003.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/004.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/005.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/006.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/007.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/008.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/009.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/010.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/011.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/012.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/013.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/014.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/015.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/016.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/017.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/018.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/019.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/013.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/020.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/021.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/022.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/023.gif">
+<meta property="og:image" content="http://example.com/img/16_07_22/024.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/025.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/026.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/027.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/028.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/029.png">
+<meta property="og:image" content="http://example.com/img/16_07_22/030.png">
+<meta property="article:published_time" content="2016-07-22T12:07:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_07_22/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第一周 (4)一元线性回归" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" class="article-date">
+  <time class="dt-published" datetime="2016-07-22T12:07:00.000Z" itemprop="datePublished">2016-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第一周 (4)一元线性回归
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>线性回归预测一个输入值的一个真值输出。我们讨论了线性回归在住房价格预测中的应用，提出了成本函数的概念，并介绍了学习的梯度下降法。</p>
+</blockquote>
+<h2 id="模型与成本函数-Model-and-Cost-Function"><a href="#模型与成本函数-Model-and-Cost-Function" class="headerlink" title="模型与成本函数(Model and Cost Function)"></a>模型与成本函数(Model and Cost Function)</h2><h3 id="模型表示"><a href="#模型表示" class="headerlink" title="模型表示"></a>模型表示</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/db3jS/model-representation">视频地址</a></p>
+<p>我们的第一个学习算法是<strong>线性回归算法</strong>，在这段视频中，你会看到这个算法的概况。更重要的是你将会了解监督学习过程完整的流程，让我们通过一个例子来开始。</p>
+<p>这个例子是预测住房价格的，我们要使用一个数据集，数据集包含俄勒冈州波特兰市的住房价格。</p>
+<p><img src="/img/16_07_22/001.png"></p>
+<p>在这里我要根据不同房屋尺寸所售出的价格 画出我的数据集，比方说，我们来看这个数据集，你有一个朋友正想出售自己的房子。如果你朋友的房子是1250平方尺大小，你要告诉他们这房子能卖多少钱，那么你可以做的一件事就是，构建一个模型，也许是条直线，从这个数据模型上来看。也许你可以告诉你的朋友，他能以大约220000(美元)左右的价格卖掉这个房子。</p>
+<p><img src="/img/16_07_22/002.png"></p>
+<p>那么这就是监督学习算法的一个例子，<strong>它被称作监督学习是因为对于每个数据来说，我们给出了“正确的答案”</strong>，即告诉我们根据我们的数据来说，房子实际的价格是多少，而且更具体来说，这是一个<strong>回归问题</strong>。回归一词指的是我们根据之前的数据预测出一个准确的输出值。对于这个例子就是价格。</p>
+<p>同时，还有另一种最常见的监督学习方式，叫做<strong>分类问题</strong>。当我们想要预测离散的输出值，例如，如果我们正在寻找癌症肿瘤并想要确定肿瘤是良性的还是恶性的，这就是0/1离散输出的问题。</p>
+<p>更进一步来说，在监督学习中我们有一个数据集，这个数据集被称训练集，因此对于房价的例子，我们有一个训练集，包含不同的房屋价格。我们的任务就是从这个数据中学习预测房屋价格。</p>
+<p><img src="/img/16_07_22/003.png"></p>
+<p>现在我们给出这门课中经常使用的一些符号定义，我们要定义颇多符号，不过没关系，现在你记不住所有的符号也没关系，随着课程的进展，你会发现记住这些符号会很有用。我将在整个课程中<strong>用小写的m来表示训练样本的数目</strong>。</p>
+<p><img src="/img/16_07_22/004.png"></p>
+<p>因此 在这个数据集中，如果表中有47行，那么我们就有47组训练样本，$m$就等于47。让我用小写字母$x$来表示输入变量，往往也被称为<strong>特征量</strong>，这就是用$x$表示输入的特征，并且我们将用$y$来表示输出变量或者目标变量，也就是我的预测结果。那么这就是第二列，在这里我要使用$(x,y)$来表示一个训练样本，所以在这个表格中的单独的一行对应于一个训​​练样本，为了表示某个训练样本，我将使用$x^{(i)}$与$y^{(i)}$来表示。并且用这个表示第$i$个训练样本，所以这个上标$i$不是求幂运算，这个$(x^{(i)},y^{(i)})$括号里的上标$i$只是一个索引，表示我的训练集里的第i行。这里不是x的i和y的i次方，仅仅是指$(x^{(i)},y^{(i)})$是在此表中的第$i$行。</p>
+<p>举个例子$x^{(1)}$指的是第一个训练集里值为2104的输入值，这个就是第一行里的$x$，$x^{(2)}$ 等于1416吧?这是第二个$x$，$y^{(1)}$等于460，这是我第一个训练集样本的$y$值，这就是$^{(1)}$所代表的含义。</p>
+<p><img src="/img/16_07_22/005.png"></p>
+<p>像之前一样，我会问你一个问题，需要几秒的时间检查一下你的理解程度，在这个视频片段中，有时会有视频选择题弹出,当它弹出的时候,请使用鼠标来选择你认为正确的答案。这就是一个监督学习算法的工作方式。我们可以看到这里有我们的训练集里房屋价格，我们把它喂给我们的学习算法，这就是学习算法的工作了。然后输出一个函数，按照惯例，通常表示为小写h，**$h$代表hypothesis(假设)**，$h$表示一个函数，输入是房屋尺寸大小。就像你朋友想出售的房屋。因此 h 根据输入的$x$值来得出$y$值，$y$值对应房子的价格，因此，$h$是一个从$x$到$y$的函数映射。</p>
+<p><img src="/img/16_07_22/006.png"></p>
+<p>人们经常问我为什么这个函数被称作假设(hypothesis)，你们中有些人可能知道hypothesis的意思，从字典或者其它什么方式可以查到。其实在机器学习中这是一个在早期被用于机器学习的名称，它有点绕口。对这类函数来说，这可能不是一个很恰当的名字，对表示从房屋的大小到价格的函数映射，我认为这个词“hypothesis”可能不是最好的名称，但是这是人们在机器学习中使用的标准术语。所以不用太纠结人们为什么这么叫它。</p>
+<p>当设计学习算法的时候，我们接下来需要去思考的是怎样得到这个假设$h$，对于这一点在接下来的几个视频中我将选择最初的使用规则，$h$代表hypothesis。我们将会这么写：</p>
+<p>$$<br>h_{θ}(x) = θ_0 + θ_1 * x<br>$$</p>
+<p>为了方便有时非书面形式也可以这么写：$h_{θ}(x)$，我就写成$h(x)$，这是缩写方式。但一般来说我会保留这个下标$θ$。所以这就是数据集和函数的作用：用来预测。有时候我们会有更复杂的函数，也许是非线性函数，但是由于线性方程是简单的形式，我们将先从线性方程的例子入手。当然最终我们将会建立更复杂的模型，以及更复杂的学习算法。好吧，让我们也给这模型起一个名字，这个模型被称为线性回归**(linear regression)<strong>模型。另外，这实际上是关于单个变量的线性回归，这个变量就是x。根据x来预测所有的价格函数，同时 对于这种模型有另外一个名称，称作</strong>单变量线性回归**，单变量是对一个变量的一种特别的表述方式，总而言之这就是线性回归，在接下来的视频中我们将开始讨论如何去实现这种模型。</p>
+<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/rkTp3/cost-function">视频地址</a></p>
+<p>在这段视频中我们将定义<strong>代价函数</strong>的概念，这有助于我们弄清楚如何把最有可能的直线与我们的数据相拟合。在线性回归中我们有一个像这样的训练集，记住，$M$代表了训练样本的数量。所以，比如$M = 47$。而我们的假设函数，也就是用来进行预测的函数，是这样的线性函数形式。</p>
+<p><img src="/img/16_07_22/007.png"></p>
+<p>接下来我们会引入一些术语，这些$θ_{0}$和$θ_{1}$，这些$θ_{i}$我把它们称为<strong>模型参数</strong>。在这个视频中，我们要做的就是谈谈如何选择这两个参数值$θ_{0}$和$θ_{1}$。选择不同的参数$θ_{0}$和$θ_{1}$，我们会得到不同的假设，不同的假设函数，我知道你们中的有些人可能已经知道我在这张幻灯片上要讲的，但我们还是用这几个例子来复习回顾一下。如果$θ_{0}=1.5$，$θ_{1}=0$ 那么假设函数会看起来是这样:</p>
+<p><img src="/img/16_07_22/008.png"></p>
+<p>因为你的假设函数是$h(x) = 1.5 + 0 * x$是这样一个常数函数 <code>恒等于1.5</code>。 </p>
+<p>如果$θ_{0} = 0$并且$θ_{1} = 0.5$， 那么假设会看起来像这样:</p>
+<p><img src="/img/16_07_22/009.png"></p>
+<p>它会通过点$(2,1)$。这样你又得到了$h(x)$或者$h_{θ}(x)$。但是有时我们为了简洁会省略$θ$。因此$h(x)$将等于$0.5$倍的$x$。就像这样。</p>
+<p>最后，如果$θ_{0} = 1$并且$θ_{1} = 0.5$。我们最后得到的假设会看起来像这样:</p>
+<p><img src="/img/16_07_22/010.png"></p>
+<p>让我们来看看它应该通过点$(2,2)$，这是我的新的$h(x)$或者写作$h_{θ}(x)$。你还记得之前我们提到过$h_{θ}(x)$的。但作为简写，我们通常只把它写作$h(x)$。</p>
+<p>在线性回归中，我们有一个训练集，可能就像我在这里绘制的。我们要做的就是得出$θ_{0}$、$θ_{1}$这两个参数的值，来让假设函数表示的直线尽量地与这些数据点很好的拟合。也许就像这里的这条线一样：</p>
+<p><img src="/img/16_07_22/011.png"></p>
+<p>那么我们如何得出$θ_{0}$、$θ_{1}$的值来使它很好地拟合数据的呢？我们的想法是我们要选择能使$h(x)$，也就是输入$x$时我们预测的值，最接近该样本对应的$y$值的参数$θ_{0}$、$θ_{1}$。所以，在我们的训练集中我们会得到一定数量的样本。我们知道$x$表示卖出哪所房子,并且知道这所房子的实际价格。所以我们要尽量选择合适的参数值，使得在训练集中给出的$x$值，我们能合理准确地预测$y$的值。</p>
+<blockquote>
+<p>Idea: Choose $θ_{0}$、$θ_{1}$ so that $h_{θ}(x)$ is close to $y$ for our training examples $(x,y)$.</p>
+</blockquote>
+<p>让我们给出标准的定义:在线性回归中我们要解决的是一个最小化问题。所以我要写出关于$θ_{0}$、$θ_{1}$的最小化，而且我希望这个式子极其小，我想要$h(x)$和$y$之间的差异要小。我要做的事情是尽量减少假设的输出与房子真实价格之间的差的平方。</p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>(h_{θ}(x) - y)^{2}<br>$$</p>
+<p>接下来我会详细的阐述。</p>
+<p>别忘了，我用符号$(x^{(i)},y^{(i)})$代表第i个样本，所以我想要做的是对所有训练样本进行一个求和，对$i = 1$到$i = m$的样本将对假设进行预测得到的结果，此时的$x^{i}$输入是第$i$号房子的面积。将第$i$号对应的预测结果减去第$i$号房子的实际价格，所得的差的平方相加得到总和而我希望尽量减小这个值，也就是预测值和实际值的差的平方误差和，或者说预测价格和实际卖出价格的差的平方。</p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p>我说了这里的$m$指的是训练集的样本容量。而为了让表达式的数学意义变得容易理解一点，我们实际上考虑的是这个数的$1/m$。因此我们要尝试尽量减少我们的平均误差，也就是尽量减少其$1/2m$。通常是这个数的一半。</p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p>前面的这些只是为了使数学更直白一点，因此对这个求和值的二分之一求最小值应该得出相同的$θ_{0}$值和相同的$θ_{1}$值来，在这里</p>
+<p>$$h_{θ}(x^{(i)})=θ_{0} + θ_{1} * x^{(i)}$$</p>
+<p>而这个表达式</p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>$$</p>
+<p>意味着我们要找到$θ_{0}$和$θ_{1}$的值来使这个表达式的值最小。这个表达式因$θ_{0}$和$θ_{1}$的变化而变化。</p>
+<p>因此，简单地说，我们正在把这个问题变成：找到能使我的训练集中预测值和真实值的差的平方的和的$1/2m$最小的$θ_{0}$和$θ_{1}$的值。因此，这将是我的线性回归的整体目标函数。为了使它更明确一点，我们要改写这个函数。</p>
+<p>按照惯例我要定义一个代价函数：</p>
+<p>$$<br>J(θ_{0},θ_{1}) =<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p>正如屏幕中所示，这里的这个公式我们想要做的就是关于$θ_{0}$和$θ_{1}$对函数$J(θ_{0}$,$θ_{1})$求最小值。这就是我的代价函数。代价函数也被称作<strong>平方误差函数</strong>，有时也被称为<strong>平方误差代价函数</strong>。事实上我们之所以要求出误差的平方和，是因为误差平方代价函数对于大多数问题，特别是回归问题，都是一个合理的选择。还有其他的代价函数也能很好地发挥作用，但是平方误差代价函数可能是解决回归问题最常用的手段了。</p>
+<p>在后续课程中，我们还会谈论其他的代价函数。但我们刚刚讲的选择是对于大多数线性回归问题非常合理的。好吧，所以这是代价函数，到目前为止我们已经介绍了代价函数的数学定义，也许这个函数$J(θ_{0}$,$θ_{1})$有点抽象，可能你仍然不知道它的内涵，在接下来的几个视频里我们要更进一步解释代价函数$J$的工作原理，并尝试更直观地解释它在计算什么，以及我们使用它的目的。</p>
+<h3 id="代价函数-实例1"><a href="#代价函数-实例1" class="headerlink" title="代价函数 实例1"></a>代价函数 实例1</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/N09c6/cost-function-intuition-i">视频地址</a></p>
+<p>在上一个视频中我们给了代价函数一个数学上的定义，在这个视频里 让我们通过一些例子来获取一些直观的感受，看看代价函数到底是在干什么。</p>
+<p>回顾一下，这是我们上次所讲过的内容：我们想找一条直线来拟合我们的数据，所以我们用θ0，θ1等参数得到了这个假设，而且通过选择不同的参数，我们会得到不同的直线拟合。然后我们还有一个代价函数，这就是我们的优化目标。</p>
+<p><strong>假设(Hypothesis):</strong></p>
+<p>$$<br>h_{θ}(x) = θ_0 + θ_1 * x<br>$$</p>
+<p><strong>参数(Parameters):</strong></p>
+<p>$$<br>θ_0 , θ_1<br>$$</p>
+<p><strong>代价函数(Cost Function):</strong></p>
+<p>$$<br>J(θ_{0},θ_{1}) =<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p><strong>目标(Goal):</strong></p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>J(θ_{0},θ_{1})<br>$$</p>
+<p>在这个视频里，为了更好地将代价函数可视化，我将使用一个简化表示方法来表示假设函数、参数、代价函数以及目标：</p>
+<p><strong>简化的假设函数(Hypothesis):</strong></p>
+<p>$$<br>h_{θ}(x) = θ_1 * x<br>$$</p>
+<p><strong>简化的参数(Parameters):</strong></p>
+<p>$$<br>θ_1<br>$$</p>
+<p><strong>简化的代价函数(Cost Function):</strong></p>
+<p>$$<br>J(θ_{1}) =<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p><strong>简化的目标(Goal):</strong></p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{1}}<br>J(θ_{1})<br>$$</p>
+<p>我们可以将这个假设函数看成是把$θ_{0}$设为0，所以我只有一个参数，也就是$θ_{1}$。代价函数看起来与之前的很像，唯一的区别是现在$h(x) = θ_{1} * x$，只有一个参数$θ_{1}$，所以我的优化目标是将$J(θ_{1})$最小化。用图形来表示就是，如果$θ_{0}$等于零，也就意味这我们选择的假设函数会经过原点，也就是经过坐标$(0,0)$。通过利用简化的假设得到的代价函数 我们可以试着更好地理解代价函数这个概念。</p>
+<p>我们要理解的是这两个重要的函数：第一个是假设函数，第二个是代价函数。</p>
+<table>
+<thead>
+<tr>
+<th align="center">$h_{θ}(x)$ :假设函数</th>
+<th align="center">$J(θ_{1})$ :代价函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">(for fixed $θ_{1}$,this is a function of x)</td>
+<td align="center">(function of the parameter $θ_{1}$)</td>
+</tr>
+<tr>
+<td align="center"><img src="/img/16_07_22/012.png"></td>
+<td align="center"><img src="/img/16_07_22/013.png"></td>
+</tr>
+</tbody></table>
+<p>注意这个假设函数$h_{θ}(x)$对于一个固定的$θ_{1}$是一个关于$x$的函数。所以这个假设函数就是一个关于$x$这个房子大小的函数。与此不同的是，代价函数$J$是一个关于参数$θ_{1}$的函数，而$θ_{1}$控制着这条直线的斜率。通过上图我们可以很好的理解，比如说这里是我的训练样本，它包含了三个点$(1,1)$，$(2,2)$和$(3,3)$。现在我们选择一个值$θ_{1}$，所以当$θ_{1} = 1$，如果这是我选择的$θ_{1}$，那么我的假设函数看起来就会像是这条直线。我将要指出的是，X轴是表示房子大小的量。现在暂时把$θ_{1}$定为1，我想要做的就是算出在$θ_{1} = 1$的时候$J(θ_{1})$等于多少。所以我们按照这个思路来计算代价函数的大小，和之前一样，代价函数定义如下:</p>
+<p>$$<br>\begin{align*}<br>J(θ_{1}) &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(θ_1x^{(i)} - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>(0^2 + 0^2 + 0^2)\\<br> &amp;= 0<br>\end{align*}<br>$$</p>
+<p>对这个误差平方项进行求和，这就等于这样一个形式，简化以后就等于三个0的平方和，当然还是0。现在，在代价函数里，我们发现所有这些值都等于0。因为对于我所选定的这三个训练样本$(1,1)$，$(2,2)$和$(3,3)$，如果$θ_{1} = 1$，那么$h_{θ}(x^{(i)})$就会正好等于$y^{(i)}$。所以$h(x) - y$所有的这些值都会等于零。这也就是为什么$J(1) = 0$。所以我们现在知道了$J(1) = 0$，如下图，要注意的是，因为我的代价函数是关于参数$θ_{1}$的函数，当我描绘我的代价函数时，$X$轴就是$θ_{1}$。</p>
+<p><img src="/img/16_07_22/014.png"></p>
+<p>现在我有$J(1) = 0$，让我们继续把函数画出来，结果我们会得到这样一个点。</p>
+<p>现在我们来看其它一些样本$θ_{1}$可以被设定为某个范围内各种可能的取值，所以$θ_{1}$可以取负数、0或者正数。所以如果$θ_{1} = 0.5$会发生什么呢？继续把它画出来:</p>
+<p><img src="/img/16_07_22/015.png"></p>
+<p>这条线的斜率等于0.5，现在让我们计算$J(0.5)$。</p>
+<p>$$<br>\begin{align*}<br>J(θ_{1}) &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(θ_1x^{(i)} - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>((0.5 - 1)^2 + (1 - 2)^2 + (1.5 - 3)^2)\\<br> &amp;\approx 0.58<br>\end{align*}<br>$$</p>
+<p>让我们把点画出来：</p>
+<p><img src="/img/16_07_22/016.png"></p>
+<p>让我们试试$θ_{1}$等于0，$J(0)$会等于多少呢？如果$θ_{1} = 0$，那么$h(x)$就会等于一条水平的线。如下图：</p>
+<p><img src="/img/16_07_22/017.png"></p>
+<p>计算$J(0)$：</p>
+<p>$$<br>\begin{align*}<br>J(θ_{1}) &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(θ_1x^{(i)} - y^{(i)})^{2}\\<br> &amp;=<br>\frac{1}{2m}<br>((0 - 1)^2 + (0 - 2)^2 + (0 - 3)^2)\\<br> &amp;\approx 2.33<br>\end{align*}<br>$$</p>
+<p>所以让我们接着把这个点也画出来，所以这个点最后是2.3：</p>
+<p><img src="/img/16_07_22/018.png"></p>
+<p>当然我们可以接着设定$θ_{1}$等于别的值进行计算，你也可以把$θ_{1}$设定成一个负数，所以如果$θ_{1}$是负数，那么h(x)将会等于，打个比方说－0.5乘以x然后$θ_{1}$就是-0.5，那么这将会对应着一个斜率为-0.5的假设函数，而且你可以 继续计算这些误差。结果你会发现对于0.5结果会是非常大的误差，最后会得到一个较大的数值，类似于5.25，等等。对于不同的$θ_{1}$，你可以计算出这些对应的值，结果你会发现，你算出来的这些值，你得到一条这样的曲线，通过计算这些值，你可以慢慢地得到这条线，这就是$J(θ)$的样子了。</p>
+<p><img src="/img/16_07_22/019.png"></p>
+<p>我们来回顾一下，任何一个$θ_{1}$的取值对应着一个不同的假设函数，或者说对应着左边一条不同的拟合直线。对于任意的$θ_{1}$你可以算出一个不同的$J(θ1)$的取值。举个例子，你知道的$θ_{1} = 1$时对应着穿过这些数据的那条直线，当$θ_{1} = 0.5$，对应着上面斜率为0.5的那条直线，然后$θ_{1} = 0$，对应着过原点的水平的线。所以对于任意一个$θ_{1}$的取值，我们会得到一个不同的$J(θ_{1})$，而且我们可以利用这些来描出上边的这条曲线。</p>
+<p><img src="/img/16_07_22/013.png"></p>
+<p>现在你还记得学习算法的优化目标，是我们想找到一个$θ_{1}$的值来将$J(θ_{1})$最小化，这是我们线性回归的目标函数。嗯，看这条曲线，让$J(θ_{1})$最小化的值 是$θ_{1} = 1$，然后你看，这个确实就对应着最佳的通过了数据点的拟合直线，这条直线就是由$θ_{1} = 1$的设定而得到的，然后，对于这个特定的训练样本，我们最后能够完美地拟合。这就是为什么最小化$J(θ_{1})$对应着寻找一个最佳拟合直线的目标。总结一下，在这个视频里我们看到了一些图形来理解代价函数，要做到这个，我们简化了算法，让这个函数只有一个参数$θ_{1}$，也就是说我们把$θ_{0}$设定为0，在下一个视频里我们将回到原来的问题的公式，然后看一些带有$θ_{0}$和$θ_{1}$的图形，也就是说不把$θ_{0}$设置为0了，希望这会让你更好地理解在原来的线性回归公式里代价函数$J$的意义。</p>
+<h3 id="代价函数-实例2"><a href="#代价函数-实例2" class="headerlink" title="代价函数 实例2"></a>代价函数 实例2</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/nwpe2/cost-function-intuition-ii">视频地址</a></p>
+<p>这节课中，我们将更深入地学习代价函数的作用。这段视频的内容假设你已经认识轮廓图，如果你对轮廓图不太熟悉的话，这段视频中的某些内容你可能会听不懂。但不要紧，如果你跳过这段视频的话，也没什么关系。不听这节课对后续课程理解影响不大。</p>
+<p>和之前一样，这是我们的几个重要公式：</p>
+<p><strong>假设(Hypothesis):</strong></p>
+<p>$$<br>h_{θ}(x) = θ_0 + θ_1 * x<br>$$</p>
+<p><strong>参数(Parameters):</strong></p>
+<p>$$<br>θ_0 , θ_1<br>$$</p>
+<p><strong>代价函数(Cost Function):</strong></p>
+<p>$$<br>J(θ_{0},θ_{1}) =<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}<br>$$</p>
+<p><strong>目标(Goal):</strong></p>
+<p>$$<br>\mathop{minimze}\limits_{θ_{0}θ_{1}}<br>J(θ_{0},θ_{1})<br>$$</p>
+<p>跟前一节视频不同的是 我还是把$θ$写成$θ_{0}$、$θ_{1}$的形式，便于这里我们要对代价函数进行的可视化。和上次一样，首先来理解假设$h$和代价函数$J$。</p>
+<p>这是房价数据组成的训练集数据:</p>
+<p><img src="/img/16_07_22/020.png"></p>
+<p>让我们来构建某种假设：如果我假设$θ_{0} = 50$，$θ_{1} = 0.06$的话，那么我将得到这样一个假设函数：</p>
+<p><img src="/img/16_07_22/021.png"></p>
+<p>那么现在的代价函数图像要怎么画呢？上一节我们只有一个$θ$，我们画出来的图形是一个倒过来的抛物线图，可是现在我们有了两个变量：$θ_{0}$和$θ_{1}$，我们的代价函数图就成了一个三维曲面图，水平方向的两个轴分别表示$θ_{0}$和$θ_{1}$，我们要在下面画出代价函数的图像：</p>
+<p><img src="/img/16_07_22/022.png"></p>
+<p>随着你改变$θ_{0}$和$θ_{1}$的大小，你会得到不同的代价函数 $J(θ_{0}$,$θ_{1})$对于某个特定的点$(θ_{0}$,$θ_{1})$这个曲面的高度，也就是竖直方向的高度，就表示代价函数$J(θ_{0}$,$θ_{1})$的值。</p>
+<p>不难发现这是一个弓形曲面。我们来看看三维图，旋转一下这个图你就更能理解这个弓形曲面所表示的代价函数了：</p>
+<p><img src="/img/16_07_22/023.gif"></p>
+<p>在这段视频的后半部分，为了描述方便，我将不再像这样给你用三维曲面图的方式解释代价函数$J$，而是用**轮廓图(contour plot)**来表示，下边就是一个轮廓图</p>
+<p><img src="/img/16_07_22/024.png"></p>
+<p>两个轴分别表示$θ_{0}$和$θ_{1}$，而这些一圈一圈的椭圆形，每一个圈就表示$J(θ_{0}$,$θ_{1})$相同的所有点的集合。如果你之前没怎么接触轮廓图的话，你就这么想：一个弓形的函数从屏幕里冒出来，因此最小值也就是这个弓形的最低点就是这个点，也就是这一系列同心椭圆的中心点。因此轮廓图是一种很方便的方法 能够直观地观察代价函数$J$。</p>
+<p>接下来让我们看几个例子：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$h_{θ}(x)$ :假设函数</th>
+<th align="center">$J(θ_{1})$ :代价函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
+<td align="center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
+</tr>
+<tr>
+<td align="center"><img src="/img/16_07_22/025.png"></td>
+<td align="center"><img src="/img/16_07_22/026.png"></td>
+</tr>
+</tbody></table>
+<p>在代价函数的图上这一点表示$θ_{0} = 800$，$θ_{1} = -0.15$，坐标为$(800,-0.15)$。而这个点也对应于左边这样一条线，$θ_{0} = 800$也就是跟纵轴相交于大约800，斜率大概是-0.15。当然，这条线并不能很好地拟合数据。并且你也发现了，这个代价值，距离最小值点还很远。也就是说这个代价值还是算比较大的，因此不能很好拟合数据。</p>
+<p>让我们再来看另一个假设：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$h_{θ}(x)$ :假设函数</th>
+<th align="center">$J(θ_{1})$ :代价函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
+<td align="center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
+</tr>
+<tr>
+<td align="center"><img src="/img/16_07_22/027.png"></td>
+<td align="center"><img src="/img/16_07_22/028.png"></td>
+</tr>
+</tbody></table>
+<p>你不难发现，这依然不是一个好的拟合，但比刚才稍微好一点。这里$θ_{0} = 360$，$θ_{1} = 0$。因此这组$θ$值对应的假设是:$h(x) = 360 + 0 × x$，这个假设同样也有某个代价值，而这个代价值就对应于这个代价函数在这一点的高度。</p>
+<p>让我们再来看另一个例子：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$h_{θ}(x)$ :假设函数</th>
+<th align="center">$J(θ_{1})$ :代价函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
+<td align="center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
+</tr>
+<tr>
+<td align="center"><img src="/img/16_07_22/029.png"></td>
+<td align="center"><img src="/img/16_07_22/030.png"></td>
+</tr>
+</tbody></table>
+<p>这个点其实不是最小值，但已经非常靠近最小值点了。这个点对数据的拟合就很不错。这个点虽然不在最小值点，但非常接近了。因此误差平方和，或者说训练样本和假设的距离的平方和，非常接近于最小值。尽管它还不是最小值。</p>
+<p>通过这些图形我希望你能更好地理解这些代价函数$J$所表达的值，它们是什么样的，它们对应的假设是什么样的，以及什么样的假设对应的点更接近于代价函数$J$的最小值。当然我们真正需要的是一种有效的算法，能够自动地找出这些使代价函数$J$取最小值的参数$θ_{0}$和$θ_{1}$来。我想我们也不希望编个程序，把这些点画出来，然后人工的方法来读出这些点的数值。这很明显不是一个好办法。事实上我们后面就会学到，我们会遇到更复杂、更高维度、更多参数的情况，这在我们在后面的视频中很快就会遇到。而这些情况是很难画出图的，因此更无法将其可视化。因此我们真正需要的是编写程序来找出这些最小化代价函数的$θ_{0}$和$θ_{1}$的值。在下一节视频中 我们将介绍一种算法<strong>能够自动地找出能使代价函数$J$最小化的参数$θ_{0}$和$θ_{1}$的值</strong>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" data-id="ckkwc437q007epas90ni1fh2d" data-title="斯坦福机器学习课程 第一周 (4)一元线性回归" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/22/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          gradle学习笔记-使用gradle图形界面
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(3)%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第一周 (3)无监督学习</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

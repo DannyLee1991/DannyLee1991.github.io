@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>人工智能五子棋实现原理 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="这两天Alpha go 和李世石的围棋大战被炒的沸沸扬扬，今天李世石终于为人类扳回了挽回脸面的一局，不管是不是Alpha go故意放水，也不管是不是李世石找到了Alpha go的bug，总之这次围棋大战，是深度学习领域的一个影响深远的重大事件，更多的行业将开始更深入的关注人工智能深度学习领域了。个人认为，人工智能领域必定会成为即移动互联网之后的又一个更大的趋势。 好了，废话不多说，今天主要是展示一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人工智能五子棋实现原理">
+<meta property="og:url" content="http://example.com/2016/03/13/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%BA%94%E5%AD%90%E6%A3%8B%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这两天Alpha go 和李世石的围棋大战被炒的沸沸扬扬，今天李世石终于为人类扳回了挽回脸面的一局，不管是不是Alpha go故意放水，也不管是不是李世石找到了Alpha go的bug，总之这次围棋大战，是深度学习领域的一个影响深远的重大事件，更多的行业将开始更深入的关注人工智能深度学习领域了。个人认为，人工智能领域必定会成为即移动互联网之后的又一个更大的趋势。 好了，废话不多说，今天主要是展示一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/ai_01_01.png">
+<meta property="og:image" content="http://example.com/img/ai_01_02.png">
+<meta property="og:image" content="http://example.com/img/ai_01_04.png">
+<meta property="og:image" content="http://example.com/img/ai_01_03.png">
+<meta property="article:published_time" content="2016-03-13T20:30:55.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="人工智能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/ai_01_01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-人工智能五子棋实现原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/03/13/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%BA%94%E5%AD%90%E6%A3%8B%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2016-03-13T20:30:55.000Z" itemprop="datePublished">2016-03-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      人工智能五子棋实现原理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这两天Alpha go 和李世石的围棋大战被炒的沸沸扬扬，今天李世石终于为人类扳回了挽回脸面的一局，不管是不是Alpha go故意放水，也不管是不是李世石找到了Alpha go的bug，总之这次围棋大战，是深度学习领域的一个影响深远的重大事件，更多的行业将开始更深入的关注人工智能深度学习领域了。个人认为，人工智能领域必定会成为即移动互联网之后的又一个更大的趋势。</p>
+<p>好了，废话不多说，今天主要是展示一个这两天实现的一个五子棋AI，实现方式很简陋，完全不能和阿法狗相提并论，和大家分享的同时也当作自己练手，写的不好请多多包含。</p>
+<p>项目地址见文章末尾。</p>
+<hr>
+<p>关于棋盘棋子的实现逻辑我就不多说了，大家可以看源码，并不复杂，说说AI部分的实现吧：</p>
+<p>我的实现思路是：</p>
+<p>当玩家走下一步棋的时候，AI要考虑两个因素：</p>
+<p>1.走对自己获得胜利最有利的点（说白了就是最接近5子连线的点）</p>
+<p>2.堵对对方获得胜利最有利的点（说白了就是堵对方的棋子）</p>
+<p>做到这两步就能实现一个初级阶段的人工智能了。</p>
+<p>那么接下来就讲讲<strong>关于计算获得胜利最有利的点</strong>是如何计算出来的：</p>
+<p>其实原理也比较简单：</p>
+<p>在棋盘上计算每个空白位置的点的4个方向（横向，纵向，左上角到右下角方向，右上角到左下角方向）每个有可能获胜的方向所连成的以当前棋子为出发点的长度为获胜棋子数量的（五子棋为5）中途没有被敌方棋子阻挡的所覆盖的己方棋子数。（是不是很绕，反正如果是我看到会被绕晕，没看懂不要紧，下面有栗子，对是栗子）得出每个方向上最大棋子数之后，然后取出每个棋子四个值里最大的值作为获胜权重（win_weight）。</p>
+<p>以下图为例：</p>
+<p><img src="/img/ai_01_01.png"></p>
+<p>这是一个6x6的棋盘，现在我们来计算一下白子获胜的权重：</p>
+<p><img src="/img/ai_01_02.png"></p>
+<p>那么权重是如何计算的呢？举个栗子来说明吧：</p>
+<p><img src="/img/ai_01_04.png"></p>
+<p>首先定义这个棋盘坐标系x方向是向右的，y方向是向下的，左上角的位置是(0,0)，(x,y)可以定义一个棋子的坐标。定义xy方向为左上角到右下角方向，yx方向为右上角到左下角方向。</p>
+<p>（0，0）点的权重计算：首先判断这一点没有连成5子的可能性，权重为0。</p>
+<p>（0，2）点的权重计算：首先判断这一点没有连成5子的可能性，权重为0。</p>
+<p>（0，3）点的权重计算：首先判断这一点有连成5子的可能性，接下来x轴方向上经过当前位置可连成五子的棋子有0个，y轴方向上经过当前位置可连成五子的棋子有1个，xy方向不存在连成5子的可能性，yx方向上不存在连成5子的可能性，四个方向中，取最大值，结果为1，那么当前点的获胜权重为1。</p>
+<p>以此类推，可以得出所有空白点的白字获胜权重。</p>
+<p>那么我们下一步让AI直接走获胜权重最大的点是不是就可以了呢？</p>
+<p>非也非也。我们不能只考虑自己获胜，也要考虑防止对手获胜。那么如何防止对手获胜呢？我的方式就是走对手获胜权重最高的位置就可以了，就素堵住对方的棋子（传说中的走别人的路，让别人无路可走）。</p>
+<p>同样的方式，我们可以求得黑子的获胜权重(win_weight)分布：</p>
+<p><img src="/img/ai_01_03.png"></p>
+<p>可以看出在(0,0),(0,2),(0,4),(0,5)这几个点是黑子获胜概率最大的点。白子走在这些点就可以堵住黑棋。</p>
+<p>好的我们得到了白子赢得胜利最有利的点，以及白子阻止黑子获得胜利最有利的点，那么问题来了：我们到底该如何选择具体走哪个点呢？</p>
+<p>有个比较粗劣的实现方式，就是将这两个权重相加，相当于将这两个条件同等来对待，认为对白子获得胜利的影响重要性是相同的，然后取加起来权重最高的点。</p>
+<p>但实际情况是这两个条件对获得胜利的影响是不等价的，我们要想办法来得到描述这两者之间关系的公式。这里的实现方式有：</p>
+<ul>
+<li>1.通过试探法（就是瞎猜）尝试去将这两个参数相乘，取得的结果作为最终权重，来进行取值。</li>
+</ul>
+<p>或者 白子的获胜权重 + R * 黑子的获胜权重， R是一个系数，我们需要通过不断的调整来接近最好的结果。</p>
+<p>通过不断的尝试，来将最接近答案的公式猜出来。</p>
+<ul>
+<li>2.通过条件分情况来判断</li>
+</ul>
+<p>比如下过五子棋的人都知道一个常识：当对手有三子相连，是一个很危险的情况，如果自己目前没有三子相连，那么你应该去堵住对方的连在一起的三子。那么就可以判断，当对手的win_weight &gt;= 3 的时候，加入对手权重的判断，其余情况不考虑对手获胜权重。</p>
+<ul>
+<li>3.通过机器学习来让机器理解人类走棋的逻辑</li>
+</ul>
+<p>构建机器学习算法，通过大量的训练数据来训练机器，从而让机器通过历史数据来算出下一步该怎么走</p>
+<p>我认为第三种方式是最理想的实现，因为前面两种无法覆盖到所有的情况。不过目前我只是做了第一种的简单的实现，接下来会考虑逐渐完善机器学习算法。</p>
+<p>好了，这就是我实现五子棋AI的一个大致思路，有很多人问我什么是机器学习，我觉得在这里可以用一个简单的比喻告诉大家：</p>
+<p>人生会经历很多事情，当你年幼无知的时候，可能会由于涉世未深而犯很多次错误，当你渐渐长大了，成熟了，经历的事情多了起来，尤其是当你犯错的时候，有人对你指出这样做是错的，你犯错误的次数就会慢慢减少，这个过程就像是一个机器学习的过程。</p>
+<p>机器积累训练数据之前，很容易出错，经过大量的训练数据训练之后，就会做的越来越好，这就是机器学习。</p>
+<p>好了，今天就写到这里，文笔不好，请多多见谅。</p>
+<p>欢迎交流，互相学习，互相进步，转载请表明出处。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/DannyLee1991/AI_wuziqi">https://github.com/DannyLee1991/AI_wuziqi</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/03/13/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%BA%94%E5%AD%90%E6%A3%8B%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" data-id="ckkwc437a0060pas93qc11b03" data-title="人工智能五子棋实现原理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/14/volatile%E5%85%B3%E9%94%AE%E5%AD%97/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          volatile关键字
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/06/R%E8%AF%AD%E8%A8%80%EF%BC%8802%EF%BC%89%E7%BB%98%E5%9B%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">R语言（02）绘图</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第九周 (3)多元高斯分布（选学） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="多元高斯分布视频地址  接下来我将介绍**多元高斯分布 (multivariate Gaussian distribution)**。它是我们目前所学的异常检测算法的延伸，它有一些优势也有一些劣势，它能捕捉到一些之前的算法检测不出来的异常。  异常检测算法无法解决的问题还是现以一个例子来解释： 假设在数据中心监控机器的例子中，我们有如下的内存和CPU使用数据：  其中对于这两个维度的数据，都服从正">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）">
+<meta property="og:url" content="http://example.com/2017/05/26/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(3)%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88%E9%80%89%E5%AD%A6%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="多元高斯分布视频地址  接下来我将介绍**多元高斯分布 (multivariate Gaussian distribution)**。它是我们目前所学的异常检测算法的延伸，它有一些优势也有一些劣势，它能捕捉到一些之前的算法检测不出来的异常。  异常检测算法无法解决的问题还是现以一个例子来解释： 假设在数据中心监控机器的例子中，我们有如下的内存和CPU使用数据：  其中对于这两个维度的数据，都服从正">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_05_26/001.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/002.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/003.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/004.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/005.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/006.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/007.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/009.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/011.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/008.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/010.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/012.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/007.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/013.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/015.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/008.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/014.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/016.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/007.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/017.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/019.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/008.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/018.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/020.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/007.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/021.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/023.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/008.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/022.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/024.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/007.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/025.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/027.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/008.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/026.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/028.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/029.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/030.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/031.png">
+<meta property="og:image" content="http://example.com/img/17_05_26/032.png">
+<meta property="article:published_time" content="2017-05-26T21:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_05_26/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/05/26/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(3)%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88%E9%80%89%E5%AD%A6%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2017-05-26T21:00:00.000Z" itemprop="datePublished">2017-05-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="多元高斯分布"><a href="#多元高斯分布" class="headerlink" title="多元高斯分布"></a>多元高斯分布</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/Cf8DF/multivariate-gaussian-distribution">视频地址</a></p>
+<blockquote>
+<p>接下来我将介绍**多元高斯分布 (multivariate Gaussian distribution)**。它是我们目前所学的异常检测算法的延伸，它有一些优势也有一些劣势，它能捕捉到一些之前的算法检测不出来的异常。</p>
+</blockquote>
+<h3 id="异常检测算法无法解决的问题"><a href="#异常检测算法无法解决的问题" class="headerlink" title="异常检测算法无法解决的问题"></a>异常检测算法无法解决的问题</h3><p>还是现以一个例子来解释：</p>
+<p>假设在数据中心监控机器的例子中，我们有如下的内存和CPU使用数据：</p>
+<p><img src="/img/17_05_26/001.png"></p>
+<p>其中对于这两个维度的数据，都服从正态分布：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$x_1$</th>
+<th align="center">$x_2$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/002.png"></td>
+<td align="center"><img src="/img/17_05_26/003.png"></td>
+</tr>
+</tbody></table>
+<p>如果现在在我们的测试集中，有一个异常数据点出现在下图的位置中：</p>
+<p><img src="/img/17_05_26/004.png"></p>
+<p>那么在这种情况下我们会发现，这一点对应的两个维度下的概率其实都不低，从$p(x)$的结果上，我们无法准确预测这个样本是否属于异常。</p>
+<p>产生这个问题的实际原因其实是这样的，从$x_1$和$x_2$这两个维度来看，我们的正常数据及时大多数集中分布在这样一个范围内：</p>
+<p><img src="/img/17_05_26/005.png"></p>
+<p>但我们使用之前的异常检测算法，其实是以中心区域向外以正圆的形式扩散的。也就是说距离中心区域距离相等的点，对应的$p(x)$都是一样的，所以我们可能无法检测到这一个异常样本，因为它也处在一个$p(x)$比较大的范围内：</p>
+<p><img src="/img/17_05_26/006.png"></p>
+<p>所以，为了解决异常检测算法的这一问题，接下来我解释改良版的异常检测算法，要用到叫做<strong>多元高斯分布（多元正态分布）</strong>的东西。</p>
+<h3 id="通过多元高斯分布改良异常检测算法"><a href="#通过多元高斯分布改良异常检测算法" class="headerlink" title="通过多元高斯分布改良异常检测算法"></a>通过多元高斯分布改良异常检测算法</h3><p>在多元高斯分布中，对于n维特征$x \in R^n$，不要把模型$p(x_1)$,$p(x_2)$,…,$p(x_n)$分开，而要建立$p(x)$整体的模型。</p>
+<p>多元高斯分布的参数包括向量$µ$和一个$n×n$的矩阵$Σ$。</p>
+<p>$$<br>µ \in R^n  \\<br>Σ \in R^{n×n}<br>$$</p>
+<p>$Σ$被称为<strong>协方差矩阵</strong>，它类似于我们之前学习PCA的时候所见到的协方差矩阵。</p>
+<p>带入之后计算$p(x)$：</p>
+<p>$$<br>p(x;µ,Σ)=<br>\frac{1}{(2π)^{\frac{n}{2}}|Σ|^{\frac{1}{2}}}<br>exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))<br>$$</p>
+<blockquote>
+<p>这个公式不用背，用的时候再去查。</p>
+</blockquote>
+<p>注意，公式中的$|Σ|$这一项，代表矩阵$Σ$的<strong>行列式</strong>。在Octave中可以用下面的代码来计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">det(Sigma)</span><br></pre></td></tr></table></figure>
+<p>其实这个公式是什么样并不重要，更重要的是$p(x)$到底是什么样。</p>
+<h3 id="多元高斯分布的样子"><a href="#多元高斯分布的样子" class="headerlink" title="多元高斯分布的样子"></a>多元高斯分布的样子</h3><p>我们来对比一下不同的$µ$和不同的$Σ$组合后，对应的$p(x)$的形状。</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}0.6&amp;0\\0&amp;0.6\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}2&amp;0\\0&amp;2\end{matrix}\right]\end{equation}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/007.png"></td>
+<td align="center"><img src="/img/17_05_26/009.png"></td>
+<td align="center"><img src="/img/17_05_26/011.png"></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_05_26/008.png"></td>
+<td align="center"><img src="/img/17_05_26/010.png"></td>
+<td align="center"><img src="/img/17_05_26/012.png"></td>
+</tr>
+</tbody></table>
+<p>表格从上到下依次是三种情况对应的参数、三维图像以及俯视图。</p>
+<p>$µ$作为均值，象征着中心区域对应的坐标点。$Σ$是协方差矩阵，它衡量的是特征$x_1$和$x_2$的方差。</p>
+<p>从图中可以看出来，当缩小协方差$Σ$时，中心区域的凸起就会变得更细长；当扩大协方差$Σ$时，中心区域的凸起就会变得更扁平。因为概率分布的积分必须等于1，所以如果你缩小方差，就会变得细长，反之就会变得扁平。</p>
+<p>接下来我们尝试对协方差中使用不同的数值，来观测$p(x)$形状的变化：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}0.6&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}2&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/007.png"></td>
+<td align="center"><img src="/img/17_05_26/013.png"></td>
+<td align="center"><img src="/img/17_05_26/015.png"></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_05_26/008.png"></td>
+<td align="center"><img src="/img/17_05_26/014.png"></td>
+<td align="center"><img src="/img/17_05_26/016.png"></td>
+</tr>
+</tbody></table>
+<p>在协方差$Σ$中，左上角元素对应的是$x_1$特征，右下角元素对应的是$x_2$特征。</p>
+<p>在第二组图中，我们可以看到，当我们缩小$x_1$到原先的0.6倍而$x_2$保持原先的大小时，由于相当于是对特征$x_1$的方差进行了缩小，所以图像在$x_1$的方向上，会显得更细长。</p>
+<p>在第三组图中，我们可以看到，当我们放大$x_1$到原先的2倍而$x_2$保持原先的大小时，由于相当于是对特征$x_1$的方差进行了放大，所以图像在$x_1$的方向上，会显得更扁平。</p>
+<p>对于多元高斯分布来说，一个很棒的事情就是我们可以用它来<strong>对数据的相关性建模</strong>。也就是说，我们可以用它来给$x_1$和$x_2$高度相关的情况建立模型。具体来说，我们可以通过改变协方差$Σ$非对角线上的元素来得到不同的高斯分布：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0.5\\0.5&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0.8\\0.8&amp;1\end{matrix}\right]\end{equation}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/007.png"></td>
+<td align="center"><img src="/img/17_05_26/017.png"></td>
+<td align="center"><img src="/img/17_05_26/019.png"></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_05_26/008.png"></td>
+<td align="center"><img src="/img/17_05_26/018.png"></td>
+<td align="center"><img src="/img/17_05_26/020.png"></td>
+</tr>
+</tbody></table>
+<p>可以看出来，当我改变了非对角线上元素的值时，$p(x)$的图像也变得倾斜了；当我增大了这些元素时，这个倾斜的分布图像变得更细长了。</p>
+<p>上面是我们把这些非对角线上元素设置为正数时的样子，那么如果我们把它们设置为负数时，会是什么样呢？</p>
+<p>它们的倾斜方向会发生改变：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;-0.5\\-0.5&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;-0.8\\-0.8&amp;1\end{matrix}\right]\end{equation}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/007.png"></td>
+<td align="center"><img src="/img/17_05_26/021.png"></td>
+<td align="center"><img src="/img/17_05_26/023.png"></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_05_26/008.png"></td>
+<td align="center"><img src="/img/17_05_26/022.png"></td>
+<td align="center"><img src="/img/17_05_26/024.png"></td>
+</tr>
+</tbody></table>
+<p>如果我们改变$µ$，会对图像$p(x)$产生什么影响呢？</p>
+<p>它们会发生平移：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}0\\0.5\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+<th align="center">$\begin{equation}µ=\left[\begin{matrix}1.5\\-0.5\end{matrix}\right]Σ=\left[\begin{matrix}1&amp;0\\0&amp;1\end{matrix}\right]\end{equation}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_05_26/007.png"></td>
+<td align="center"><img src="/img/17_05_26/025.png"></td>
+<td align="center"><img src="/img/17_05_26/027.png"></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_05_26/008.png"></td>
+<td align="center"><img src="/img/17_05_26/026.png"></td>
+<td align="center"><img src="/img/17_05_26/028.png"></td>
+</tr>
+</tbody></table>
+<p>$µ$有两个元素，第一个元素对应的是图像在$x_1$方向上的位移，第二个元素对应的是图像在$x_2$方向上的位移。当为正数时，是沿着增大的方向平移，反之是沿着缩小的方向平移。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不同的图片，能够帮助你了解<strong>多元高斯分布</strong>所能描述的概率分布是什么样。它最重要的优势就是能够描述当两个特征变量之间可能存在正相关或者是负相关关系的情况。</p>
+<h2 id="通过多元高斯分布来处理异常检测问题"><a href="#通过多元高斯分布来处理异常检测问题" class="headerlink" title="通过多元高斯分布来处理异常检测问题"></a>通过多元高斯分布来处理异常检测问题</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/DnNr9/anomaly-detection-using-the-multivariate-gaussian-distribution">视频地址</a></p>
+<blockquote>
+<p>在上一节中，我们谈到了多元高斯分布，而且也看到了一些例子通过改变参数$µ$和$Σ$来给不同的概率分布建模。</p>
+<p>在这节中，我们使用它们来开发另一种异常检测算法。</p>
+</blockquote>
+<h3 id="知识回顾"><a href="#知识回顾" class="headerlink" title="知识回顾"></a>知识回顾</h3><p>再回顾一下<strong>多元高斯分布（或者叫多元正态分布）</strong>：</p>
+<p>有两个参数：$µ$和$Σ$。</p>
+<p>$µ$是一个n维向量，协方差矩阵$Σ$是一个$n×n$的矩阵。</p>
+<p>其对应的概率分布公式如下：</p>
+<p>$$<br>p(x;µ,Σ)=<br>\frac{1}{(2π)^{\frac{n}{2}}|Σ|^{\frac{1}{2}}}<br>exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))<br>$$</p>
+<p>随着你改变$µ$和$Σ$，你可以得到一系列不同的概率分布：</p>
+<p><img src="/img/17_05_26/029.png"></p>
+<h4 id="参数拟合"><a href="#参数拟合" class="headerlink" title="参数拟合"></a>参数拟合</h4><p>接下来让我们谈一下<strong>参数拟合问题（参数估计问题）</strong>。</p>
+<p>如果我有一组符合高斯分布的样本：</p>
+<p>$$<br>｛x^{(1)},x^{(2)},…,x^{(m)}｝<br>$$</p>
+<p>我们可以通过公式来得到参数$µ$和$Σ$：</p>
+<p>$$<br>µ=\frac{1}{m}\sum^m_{i=1}x^{(i)}<br>$$</p>
+<p>$$<br>Σ=\frac{1}{m}\sum^m_{i=1}(x^{(i)}-µ)(x^{(i)}-µ)^T<br>$$</p>
+<h4 id="具体应用步骤"><a href="#具体应用步骤" class="headerlink" title="具体应用步骤"></a>具体应用步骤</h4><p>有了这两个参数值，我们就可以把他们应用到具体的异常检测算法中了。具体步骤是这样的：</p>
+<p>假设我们有如下的训练样本：</p>
+<p><img src="/img/17_05_26/030.png"></p>
+<ul>
+<li>首先，用我们的训练集来拟合模型$p(x)$，得到参数$µ$和$Σ$：</li>
+</ul>
+<p>$$<br>µ=\frac{1}{m}\sum^m_{i=1}x^{(i)}<br>$$</p>
+<p>$$<br>Σ=\frac{1}{m}\sum^m_{i=1}(x^{(i)}-µ)(x^{(i)}-µ)^T<br>$$</p>
+<ul>
+<li>然后，当你得到一个新的测试样本时，我们用下面的公式来计算其$p(x)$：</li>
+</ul>
+<p>$$<br>p(x;µ,Σ)=<br>\frac{1}{(2π)^{\frac{n}{2}}|Σ|^{\frac{1}{2}}}<br>exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))<br>$$</p>
+<ul>
+<li>最后，如果$p(x)&lt;ε$时，就把它标记为是一个异常样本，反之，如果$p(x)&gt;=ε$则不标记为异常样本。</li>
+</ul>
+<p>所以，如果使用多元高斯分布来解决异常检测问题，你可能会得到这样一个高斯分布的概率模型：</p>
+<p><img src="/img/17_05_26/031.png"></p>
+<p>所以，他可以正常的识别出之前用普通的异常检测算法无法正确检测的那个异常样本。</p>
+<h3 id="多元高斯模型和原始模型的关系"><a href="#多元高斯模型和原始模型的关系" class="headerlink" title="多元高斯模型和原始模型的关系"></a>多元高斯模型和原始模型的关系</h3><p>最后说一下<strong>多元高斯分布模型</strong>和原来的模型它们之间的关系。</p>
+<p>原先的模型是这样的：</p>
+<p>$$<br>p(x)=p(x_1;µ_1,σ_1^2)×p(x_2;µ_2,σ_2^2)×…×p(x_n;µ_n,σ_n^2)<br>$$</p>
+<p>事实上，你可以证明我们原先的这种模型，是多元高斯模型的一种。它其实是一种等高线都沿着坐标轴方向的多元高斯分布，但这里我不给出证明过程：</p>
+<p><img src="/img/17_05_26/032.png"></p>
+<p>所以这三个图像，全都是你可以用原来的模型来拟合的高斯分布的例子。</p>
+<p>其实这个模型对应于一种多元高斯分布的特例，具体来说这个特例被定义为约束$p(x)$的分布(也就是多元高斯分布$p(x)$)，使得它的概率密度函数的等高线是沿着轴向的。也就是要求<strong>协方差矩阵$Σ$的非对角线元素都为0</strong>。</p>
+<p>所以你可以得到多元高斯分布$p(x)$看起来是上图中这三种样式的。你会发现，在这3个例子中，它们的轴都是沿着$x_1$，$x_2$的轴的。</p>
+<p>因此，在<strong>协方差矩阵$Σ$的非对角线元素都为0</strong>的情况下，这两者是相同的：</p>
+<p>$$<br>p(x)=p(x_1;µ_1,σ_1^2)×p(x_2;µ_2,σ_2^2)×…×p(x_n;µ_n,σ_n^2)<br>$$</p>
+<p>$$<br>p(x;µ,Σ)=<br>\frac{1}{(2π)^{\frac{n}{2}}|Σ|^{\frac{1}{2}}}<br>exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))<br>$$</p>
+<h3 id="何时使用多元高斯模型？何时使用原始模型？"><a href="#何时使用多元高斯模型？何时使用原始模型？" class="headerlink" title="何时使用多元高斯模型？何时使用原始模型？"></a>何时使用多元高斯模型？何时使用原始模型？</h3><p>既然我们知道了原始的模型是多元高斯模型的一个特例，那么应该在什么时候用哪个模型呢？</p>
+<p>事实情况是，原始模型比较常用，而多元高斯模型比较少用。</p>
+<p>假设在你的样本中，$x_1$和$x_2$是线性相关的特征组合，下面是这两种算法在处理不正常的特征组合时的具体方式对比：</p>
+<table>
+<thead>
+<tr>
+<th align="center">原始模型</th>
+<th align="center">多元高斯模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">捕捉到这两个特征，建立一个新的特征$x_3$(比如$x_3=\frac{x_1}{x_2}$)，去尝试手工组合并改变这个新的特征变量，从而使得算法能很好的工作。</td>
+<td align="center">自动捕捉不同特征变量之间的相关性。</td>
+</tr>
+<tr>
+<td align="center">运算量小(更适用于特征变量个数$n$很大的情况)</td>
+<td align="center">计算更复杂（Σ是$n×n$的矩阵，这里会涉及两个$n×n$的矩阵相乘的逻辑，计算量很大）</td>
+</tr>
+<tr>
+<td align="center">即使训练样本数$m$很小的情况下，也能工作的很好</td>
+<td align="center">必须满足$m&gt;n$，或者$Σ$不可逆（奇异矩阵）。这种情况下，还可以帮助你省去为了捕捉特征值组合而手动建立额外特征变量所花费的时间。</td>
+</tr>
+</tbody></table>
+<h4 id="一种异常情况的应对"><a href="#一种异常情况的应对" class="headerlink" title="一种异常情况的应对"></a>一种异常情况的应对</h4><p>当你在拟合多元高斯模型时，如果你发现协方差矩阵$Σ$是<strong>奇异的（不可逆的）</strong>，一般只有两种情况：</p>
+<ul>
+<li>第一种是它没有满足$m&gt;n$的条件</li>
+<li>第二种情况是，你有冗余特征变量 <ul>
+<li>冗余特征变量的意思是出现了以下两种情况的任意一种：<ul>
+<li>出现了两个完全一样的特征变量（你可能不小心把同一个特征变量复制了两份）</li>
+<li>如果你有$x_3=x_4+x_5$，这里$x_3$其实并没有包含额外的信息，相对于$x_4$和$x_5$来说，它就是冗余特征变量。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>这是你调试算法时的一个小知识，可能很少会遇到，但是一旦你发现$Σ$不可逆，那么首先需要从这两个方面来考虑解决方案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/05/26/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(3)%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88%E9%80%89%E5%AD%A6%EF%BC%89/" data-id="ckkwc4386008qpas953bo2pqe" data-title="斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/28/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(4)%E9%A2%84%E6%B5%8B%E7%94%B5%E5%BD%B1%E8%AF%84%E5%88%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          斯坦福机器学习课程 第九周 (4)预测电影评分
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第九周 (2)构建一个异常检测系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

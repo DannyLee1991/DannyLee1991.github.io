@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/13/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-线性代数03-矩阵法求解方程组" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/" class="article-date">
+  <time class="dt-published" datetime="2015-11-29T22:01:55.000Z" itemprop="datePublished">2015-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/">线性代数03-矩阵法求解方程组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>矩阵是一种思考问题的方式，我们可以用它来解决我们遇到的一些问题：</p>
+<h2 id="求解二元一次方程组"><a href="#求解二元一次方程组" class="headerlink" title="求解二元一次方程组"></a>求解二元一次方程组</h2><p>$$<br>3x + 2y = 7<br>$$</p>
+<p>$$<br>-6x + 6y = 6<br>$$</p>
+<p>通过矩阵来求解，可以转换成如下格式：</p>
+<p>$$<br> \begin{bmatrix}<br>   3 &amp; 2 \<br>   -6 &amp; 6<br>  \end{bmatrix}<br>  <br>  \begin{bmatrix}<br>   x \<br>   y<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   7 \<br>   6<br>  \end{bmatrix}<br>$$</p>
+<p>相当于：</p>
+<p>$$<br>A \cdot x=B<br>$$</p>
+<p>为了求解出未知数x，我们需要在等式两边乘以矩阵A的逆矩阵：</p>
+<p>$$<br>A^{-1} \cdot A \cdot x=A^{-1} \cdot B<br>$$</p>
+<p>$$<br>I \cdot x=A^{-1} \cdot B<br>$$</p>
+<p>$$<br>x=A^{-1} \cdot B<br>$$</p>
+<p>解得：</p>
+<p>$$<br> A^{-1}=<br> \dfrac{1}{30}<br> \begin{bmatrix}<br>   6 &amp; -2 \<br>   -6 &amp; 3<br>  \end{bmatrix}<br>$$</p>
+<p>$$<br>\begin{bmatrix}<br>   x \<br>   y<br>  \end{bmatrix}<br>  =<br>  \dfrac{1}{30}<br>  \begin{bmatrix}<br>   6 &amp; -2 \<br>   -6 &amp; 3<br>  \end{bmatrix}<br>  \begin{bmatrix}<br>   7 \<br>   6<br>  \end{bmatrix}<br>  =<br>  \begin{bmatrix}<br>   1 \<br>   2<br>  \end{bmatrix}<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/" data-id="ckkwc439g00bupas96fo4fnrq" data-title="线性代数03-矩阵法求解方程组" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线性代数02-矩阵的逆" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/" class="article-date">
+  <time class="dt-published" datetime="2015-11-29T19:01:55.000Z" itemprop="datePublished">2015-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">线性代数02-矩阵的逆</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="单位向量"><a href="#单位向量" class="headerlink" title="单位向量"></a>单位向量</h2><p>如果有一个矩阵I,对于以下两种情况都成立：</p>
+<p>$$<br>I \cdot A = A<br>$$</p>
+<p>$$<br>A \cdot I = A<br>$$</p>
+<p>那么I被称为单位矩阵。</p>
+<p>单位矩阵是行列数相同，第i行i列为1，其他为0的矩阵。</p>
+<p>例如：</p>
+<p>$$<br> \begin{bmatrix}<br>   1 &amp; 0 &amp; 0 \<br>   0 &amp; 1 &amp; 0 \<br>   0 &amp; 0 &amp; 1<br>  \end{bmatrix}<br> $$</p>
+<h2 id="矩阵的逆"><a href="#矩阵的逆" class="headerlink" title="矩阵的逆"></a>矩阵的逆</h2><p>如果矩阵I是单位矩阵</p>
+<p>$$<br>A \cdot A^{-1} = I<br>$$</p>
+<p>$$<br>A^{-1} \cdot A = I<br>$$</p>
+<p>那么$$A^{-1}$$就是矩阵A的逆矩阵。</p>
+<h2 id="对2x2的矩阵求逆"><a href="#对2x2的矩阵求逆" class="headerlink" title="对2x2的矩阵求逆"></a>对2x2的矩阵求逆</h2><p>$$<br>A<br>{=}<br>\begin{bmatrix}<br>   a &amp; b \<br>   c &amp; d<br>  \end{bmatrix}<br>$$</p>
+<p>$$<br>A^{-1}<br>{=}<br>\dfrac{1}{ad-bc}\begin{bmatrix}<br>   d &amp; -b \<br>   -c &amp; a<br>  \end{bmatrix}<br>$$</p>
+<h2 id="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"><a href="#通过高思消元法（增广矩阵）求任意矩阵的逆矩阵" class="headerlink" title="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"></a>通过高思消元法（增广矩阵）求任意矩阵的逆矩阵</h2><p>对增广矩阵进行一系列<strong>初等行变换</strong> 使得左边的矩阵变成右边的单位矩阵</p>
+<p>所谓初等行变换 就是某一行与其他任意行进行加减或者成倍的加减 或者替换 操作</p>
+<p>举例：</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0\<br>      1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1<br>    \end{array}<br>\right]\tag{0}<br>$$</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1<br>    \end{array}<br>\right]\tag{1}<br>$$</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0<br>    \end{array}<br>\right]\tag{2}<br>$$</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 &amp; -2<br>    \end{array}<br>\right]\tag{3}<br>$$</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 0 &amp; -1 &amp; -1 &amp; 2\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 &amp; -2<br>    \end{array}<br>\right]\tag{3}<br>$$</p>
+<p>经过一系列初等变化，左侧矩阵变为了单位矩阵，右侧矩阵变为了原左侧矩阵的逆矩阵。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/" data-id="ckkwc439e00bqpas98lnvats9" data-title="线性代数02-矩阵的逆" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线性代数01-矩阵乘法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2015-11-29T18:01:55.000Z" itemprop="datePublished">2015-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">线性代数01-矩阵乘法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="矩阵的乘法："><a href="#矩阵的乘法：" class="headerlink" title="矩阵的乘法："></a>矩阵的乘法：</h2><p>矩阵A与矩阵B相乘，运算方式是矩阵A的行的每一项 去乘B矩阵的每一列 并且加起来 构成相乘之后的矩阵</p>
+<p>$$<br> \begin{bmatrix}<br>   a &amp; b \<br>   c &amp; d<br>  \end{bmatrix}<br>  {*}<br>  \begin{bmatrix}<br>   e &amp; f \<br>   g &amp; h<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   (ae + bg) &amp; (af + bh) \<br>   (ce + dg) &amp; (cf + dh)<br>  \end{bmatrix}<br>$$</p>
+<h2 id="关于交换律："><a href="#关于交换律：" class="headerlink" title="关于交换律："></a>关于交换律：</h2><p>矩阵乘法是不满足交换律的：</p>
+<p>$$<br>AB != BA<br>$$</p>
+<h2 id="行列不相同的矩阵相乘："><a href="#行列不相同的矩阵相乘：" class="headerlink" title="行列不相同的矩阵相乘："></a>行列不相同的矩阵相乘：</h2><p>一个3x2的矩阵与一个2x3的矩阵相乘，得到的是一个2x2的矩阵：</p>
+<p>$$<br> \begin{bmatrix}<br>   3 &amp; 1 &amp; 2 \<br>   -2 &amp; 0 &amp; 5<br>  \end{bmatrix}<br>  {+}<br>  \begin{bmatrix}<br>   1 &amp; 3 \<br>   0 &amp; 5 \<br>   2 &amp; 5<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   (3\cdot(-1) + 1\cdot0 + 2\cdot2) &amp; (3\cdot3 + 1\cdot5 + 2\cdot5) \<br>   ((-2)\cdot1 + 0\cdot0 + 5\cdot2) &amp; ((-2)\cdot3 + 0\cdot5 + 5\cdot5)<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   1 &amp; 24 \<br>   8 &amp; 19<br>  \end{bmatrix}<br>$$</p>
+<p>只有<strong>第一个矩阵到列数和第二个矩阵的行数相同</strong>，才能做矩阵乘法运算：</p>
+<p>A[m:n] 和 B[n:p] 向量是可以相乘的，结果是C[m:p] </p>
+<p>A[m:n] 和 B[p:q] 向量是不可以做乘法运算的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" data-id="ckkwc439d00bmpas98kw31xqz" data-title="线性代数01-矩阵乘法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-自定义注解优化Android图片内存回收" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/" class="article-date">
+  <time class="dt-published" datetime="2015-11-26T13:50:55.000Z" itemprop="datePublished">2015-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/">自定义注解优化Android图片内存回收</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>java提供了垃圾回收机制，我们不用像C++一样手动去处理垃圾内存。虽然省事，但是为了对垃圾回收器友好，我们应该引导gc，告诉它什么东西是垃圾内存。简单来说，就是不再使用的对象要置空，该回收的资源要回收。</p>
+<p>android下老生常谈的异常OOM,主要产生的原因就是加载了过多的资源到内存，导致内存溢出。而在android界面中，图片一直是吃内存的大户。一个1024x800的png图片，打开ARGB通道，占用的内存总量如下：</p>
+<blockquote>
+<p>   1024 x 800 x 8 x 4 / 8 = 3276800byte = 3200kb = 3.125mb</p>
+</blockquote>
+<blockquote>
+<p>   (内存=图片长度<em>图片宽度</em>单位像素占用的字节数)</p>
+</blockquote>
+<p>而系统分配给每个应用的内存总量是一定的，通常情况下不会超过128mb,因机型而异。除非将largeHeap选项开启，会获得大幅度的内存上限提升。但不是系统有多少内存就可以申请多少，而是由dalvik.vm.heapsize限制。Android官方给的建议是，作为程序员的我们应该努力减少内存的使用，想回收和复用的方法，而不是想方设法增大内存。当内存很大的时候，每次gc的时间也会长一些，性能会下降呦。</p>
+<p>那么我们就来通过对view图片内存的释放来优化内存。</p>
+<p>根据android的View类的源码，可以看出，当setBackgroundResource(0)时，之前的drawable对象会被移除：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Set the background to a given resource. The resource should refer to</span></span><br><span class="line"><span class="comment">    * a Drawable object or 0 to remove the background.</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> resid The identifier of the resource.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@attr</span> ref android.R.styleable#View_background</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@RemotableViewMethod</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBackgroundResource</span><span class="params">(<span class="keyword">int</span> resid)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (resid != <span class="number">0</span> &amp;&amp; resid == mBackgroundResource) &#123;</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       Drawable d = <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">if</span> (resid != <span class="number">0</span>) &#123;</span><br><span class="line">           d = mContext.getDrawable(resid);</span><br><span class="line">       &#125;</span><br><span class="line">       setBackground(d);</span><br><span class="line"></span><br><span class="line">       mBackgroundResource = resid;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>所以，我们在Activity的onDestory()方法中，调用view的setBackgroundResource(0)的方法，内存就可以在第一时间被gc回收了。</p>
+<p>具体效果可以参考这片文章：</p>
+<p><a target="_blank" rel="noopener" href="http://dannylee1991.github.io/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">Android图片内存优化</a></p>
+<p>为了方便实用，我封装了一个工具:<a target="_blank" rel="noopener" href="https://github.com/DannyLee1991/AnnoRecycleImage">AnnoRecycleImage</a>，具体用法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes</span>	<span class="comment">//对需要回收资源的控件添加注解</span></span><br><span class="line">    <span class="keyword">private</span> View root;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes(isCustom = true)</span>	<span class="comment">//自定义控件 isCustom = true</span></span><br><span class="line">    <span class="keyword">private</span> CustomView cv;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes</span></span><br><span class="line">    <span class="keyword">private</span> ImageView iv;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_test);</span><br><span class="line">        root = findViewById(R.id.root);</span><br><span class="line">        cv = (CustomView) findViewById(R.id.cv);</span><br><span class="line">        iv = (ImageView) findViewById(R.id.iv);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        <span class="comment">//在onDestroy中 调用回收方法 处理标注有注解的对象</span></span><br><span class="line">        RecycleUtils.doRecycle(TestActivity.<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/" data-id="ckkwc439m00cdpas90ocyb6v7" data-title="自定义注解优化Android图片内存回收" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-android图片内存优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2015-11-19T13:50:55.000Z" itemprop="datePublished">2015-11-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">Android图片内存优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先，关于android的内存管理机制，建议阅读这篇文章：</p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/killmyday/archive/2013/06/12/3132518.html">android垃圾回收算法</a></p>
+<p>如果在布局文件中，设置了背景图，要在界面onDestroy()的时候，将图片回收。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;recycle backgroundBitmap </span><br><span class="line">View v &#x3D; findViewById(id);</span><br><span class="line">BitmapDrawable bd &#x3D; (BitmapDrawable) v.getBackground();</span><br><span class="line">if (bd !&#x3D; null)&#123;</span><br><span class="line">    bd.getBitmap().recycle();</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 将资源id清空</span><br><span class="line">v.setBackgroundResource(0);</span><br></pre></td></tr></table></figure>
+<p>对布局文件的背景图建议在界面销毁的时候调用上面的代码来将图片的引用置空。</p>
+<p>虽然这样不能及时释放内存，但java虚拟机在执行gc的时候，会优先释放这些多余的内存空间。</p>
+<p>以下是对上述代码添加前后的效果对比：</p>
+<p>添加优化代码前，完全回收一张图片的内存，需要连续两次gc：<br><img src="/img/android_neicunyouhua2.gif" alt="未添加优化代码"></p>
+<p>添加优化之后，完全回收一张图片的内存，只需要调用一次gc：<br><img src="/img/android_neicunyouhua1.gif" alt="添加优化代码"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" data-id="ckkwc435b001dpas996xv2uqk" data-title="Android图片内存优化" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tensorFlow运行android demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/" class="article-date">
+  <time class="dt-published" datetime="2015-11-17T09:59:55.000Z" itemprop="datePublished">2015-11-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/">tensorFlow运行android demo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本月初，google开源了第二代深度机器学习系统tensorFlow。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow">https://github.com/tensorflow/tensorflow</a></p>
+<p>代码中提供了一个android的example，下面我们就来一步步把它运行起来。</p>
+<hr>
+<p>在代码的这层目录下，我们能看到android的example：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorflow&#x2F;tensorflow&#x2F;examples&#x2F;android&#x2F; </span><br></pre></td></tr></table></figure>
+<p>目测是ADT结构的，README中也明确指出了运行demo需要的一些环境：</p>
+<blockquote>
+<h2 id="To-build-install-run"><a href="#To-build-install-run" class="headerlink" title="To build/install/run"></a>To build/install/run</h2><p>As a prerequisite, Bazel, the Android NDK, and the Android SDK must all be installed on your system. The Android build tools may be obtained from: <a target="_blank" rel="noopener" href="https://developer.android.com/tools/revisions/build-tools.html">https://developer.android.com/tools/revisions/build-tools.html</a></p>
+</blockquote>
+<p>我们需要这三个东东：Bazel、Android NDK、Android SDK</p>
+<p>其中NDK和SDK的安装就不废话了，网上有一大堆的安装教程，接下来介绍一些Bazel的安装.</p>
+<p>那么什么是Bazel呢？具体可以参考这篇博文<a target="_blank" rel="noopener" href="http://www.cnblogs.com/Jack47/p/bazel-faq.html">Google软件构建工具Bazel FAQ</a></p>
+<p>Bazel是一个软件构建工具，tensorFlow就是基于这个构建工具进行编译的。而且如果想要运行Bazel，必须要有java1.8以及支持c++11的编译器才可以。接下来介绍如何安装Bazel：</p>
+<p><strong>下载代码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;bazel&#x2F;</span><br></pre></td></tr></table></figure>
+<p><strong>编译</strong></p>
+<p>直接执行 ./compile.sh 脚本来编译Bazel</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;compile.sh</span><br></pre></td></tr></table></figure>
+<p>如果安装过程中，出现问题，可以参考<a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/rMbMRbU">这篇文章</a>(适用于mac和linux)</p>
+<p>安装成功后，将bazel配置到环境变量中，然后按照README继续走：</p>
+<p>执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bazel build &#x2F;&#x2F;tensorflow&#x2F;examples&#x2F;android:tensorflow_demo -c opt --copt&#x3D;-mfpu&#x3D;neon</span><br></pre></td></tr></table></figure>
+<p>不出意外的话，会出现错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;The external label &#39;&#x2F;&#x2F;external:android&#x2F;sdk&#39; is not bound to anything&quot; will be reported.</span><br></pre></td></tr></table></figure>
+<p>因为在tensorflow根目录下，有一个WORKSPACE的文件，我们要更改这个文件中的sdk和ndk的路径。并且将注释打开，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">android_sdk_repository(</span><br><span class="line">    name &#x3D; &quot;androidsdk&quot;,</span><br><span class="line">    api_level &#x3D; 22,</span><br><span class="line">    build_tools_version &#x3D; &quot;23.0.2&quot;,</span><br><span class="line">    # Replace with path to Android SDK on your system</span><br><span class="line">    path &#x3D; &quot;&#x2F;Users&#x2F;lijianan&#x2F;Documents&#x2F;Android&#x2F;sdk&quot;,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">android_ndk_repository(</span><br><span class="line">    name&#x3D;&quot;androidndk&quot;,</span><br><span class="line">    path&#x3D;&quot;&#x2F;Users&#x2F;lijianan&#x2F;Documents&#x2F;Android&#x2F;ndk&#x2F;android-ndk-r10d&quot;,</span><br><span class="line">    api_level&#x3D;21)</span><br></pre></td></tr></table></figure>
+<p>继续重新执行构建命令，中间可能会出现api或者build_tools的版本不存在，那么建议去下载相应版本的api和build_tools。</p>
+<p>继续执行，应该就会成功了。</p>
+<p>生成的apk文件会放在这里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel-bin&#x2F;tensorflow&#x2F;examples&#x2F;android&#x2F;tensorflow_demo_incremental</span><br></pre></td></tr></table></figure>
+<p>安装到一个5.0以上的android机器里就可以成功运行了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ adb install -r -g bazel-bin&#x2F;tensorflow&#x2F;examples&#x2F;android&#x2F;tensorflow_demo_incremental.apk</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/" data-id="ckkwc435m002apas97cr8ec7j" data-title="tensorFlow运行android demo" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-闭开原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-10-04T10:46:55.000Z" itemprop="datePublished">2015-10-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/">设计模式六大原则之 闭开原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>Software entities like classes,modules and functions should be open for extension but closed for modifications.(一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。)</p>
+</blockquote>
+<p>开闭原则是java世界的最基础的设计原则，它指导我们如何建立一个稳定的、灵活的系统。</p>
+<h2 id="定义实质"><a href="#定义实质" class="headerlink" title="定义实质"></a>定义实质</h2><p>开闭原则定义已经非常明确的告诉我们，软件实体应该<strong>对扩展开放，对修改关闭</strong>。其含义是说一个软件实体应该通过扩展来实现变化，而不是通过修改已有的代码来实现变化。</p>
+<p>软件实体通常包括以下几个部分：</p>
+<p>1.项目或软件产品中按照一定的逻辑规则划分的模块。</p>
+<p>2.抽象和类。</p>
+<p>3.方法。</p>
+<h2 id="如何使用开闭原则"><a href="#如何使用开闭原则" class="headerlink" title="如何使用开闭原则"></a>如何使用开闭原则</h2><p>开闭原则是一个非常虚的原则，前面五个原则是对开闭原则的具体解释，但是开闭原则并不局限于这么多，它“虚”得没有边界，就像“好好学习，天天向上”的口号一样，告诉我们要好好学习，但是学什么，怎么学并没有告诉我们，需要去体会和掌握。那么我们如何使用开闭原则呢？</p>
+<h3 id="1-抽象约束"><a href="#1-抽象约束" class="headerlink" title="1.抽象约束"></a>1.抽象约束</h3><p>抽象是<strong>对一组事物的通用描述，没有具体的实现，</strong>也就表示它可以有非常多的可能性，可以跟随需求变化而变化。因此，通过接口或抽象类可以约束一组可能变化的行为，并且能够实现对扩展开放，其包含三层含义：</p>
+<ul>
+<li>1.通过接口或抽象类约束扩展，对扩展进行边界限定，不允许出现在接口或抽象类中不存在的public方法</li>
+<li>2.参数类型、引用对象尽量使用接口或者抽象类，而不是实现类</li>
+<li>3.抽象层尽量保持稳定，一旦确定即不允许修改。</li>
+</ul>
+<h3 id="2-元数据（metadata）控制模块行为"><a href="#2-元数据（metadata）控制模块行为" class="headerlink" title="2.元数据（metadata）控制模块行为"></a>2.元数据（metadata）控制模块行为</h3><p>什么是<strong>元数据</strong>？用来描述环境和数据的数据，通俗地说就是配置参数，参数可以从文件中获得，也可以从数据库中获得。</p>
+<h3 id="3-封装变化"><a href="#3-封装变化" class="headerlink" title="3.封装变化"></a>3.封装变化</h3><p>对变化的封装包含两层含义：1.将相同的变化封装到一个接口或抽象类中；2.将不同的变化封装到不同的接口或抽象类中，不应该有两个不同的变化出现在同一个接口或抽象类中。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" data-id="ckkwc439t00cxpas962fj6pjq" data-title="设计模式六大原则之 闭开原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-迪米特法则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-09-18T14:06:55.000Z" itemprop="datePublished">2015-09-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/">设计模式六大原则之 迪米特法则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>迪米特原则（<strong>Law of Demeter, LoD</strong>）也称为最少知识原则(<strong>Least Knowledge Principle, LKP</strong>)，虽然名字不同，但描述的是同一个规则：一个对象应该对其他对象有做少的了解。</p>
+<p>通俗的讲，一个类应该对自己需要耦合或调用的类知道的最少，你（被耦合或调用的类）的内部是如何复杂都和我没关系，那是你的事情，我就知道你提供的这么多public方法，我就调用这么多，其他的我一概不关心。</p>
+<h2 id="进一步解释"><a href="#进一步解释" class="headerlink" title="进一步解释"></a>进一步解释</h2><h3 id="1-只和朋友交流"><a href="#1-只和朋友交流" class="headerlink" title="1.只和朋友交流"></a>1.只和朋友交流</h3><p>迪米特法则还有一个英文释义是：Only talk to your immediate friends(只与直接的朋友通信。)每个对象都必然会与其他对象有耦合关系，两个对象之间的耦合就成为朋友关系，这种关系的类型有很多，例如组合、聚合、依赖等。</p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>老师命令班长清点一下班级里所有女生的数量</p>
+<p>代码实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//老师类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span> </span>&#123;</span><br><span class="line">	<span class="comment">//老师对学生发布命令，清一下女生</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commond</span><span class="params">(GroupLeader groupLeader)</span></span>&#123;</span><br><span class="line">		List listGirls = <span class="keyword">new</span> ArrayList();</span><br><span class="line">		<span class="comment">//初始化女生</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">			listGirls.add(<span class="keyword">new</span> Girl());</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//告诉体育委员开始执行清查任务</span></span><br><span class="line">		groupLeader.countGirls(listGirls);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//班长类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GroupLeader</span></span>&#123;</span><br><span class="line">	<span class="comment">//清查女生数量</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countGirls</span><span class="params">(List&lt;Girl&gt; listGirls)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;女生数量是：&quot;</span>+ listGirls.size());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//女生类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Girl</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//场景类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		Teacher teacher = <span class="keyword">new</span> Teacher();</span><br><span class="line">		<span class="comment">//老师发布命令</span></span><br><span class="line">		teacher.commond(<span class="keyword">new</span> GroupLeader());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">女生数量是：20</span><br></pre></td></tr></table></figure>
+<p>仔细思考，这个程序是有问题的，老师的朋友类是班长，班长的朋友类是女生类，女生不属于老师类的朋友类，因为朋友类的定义是：<strong>出现在成员变量、方法的输入输出参数中的类称为成员朋友类，而出现在方法体内的类不属于朋友类。</strong>而迪米特法则告诉我们，一个类只和朋友类交流，但是刚才的commond方法和Girl类有了交流，这样破坏了Teacher类的健壮性。</p>
+<p>修改后的程序，把Girl类从Teacher类中进行抽取,修改如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commond</span><span class="params">(GroupLeader groupLeader)</span></span>&#123;</span><br><span class="line">		groupLeader.countGirls();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GroupLeader</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> List&lt;Girl&gt; listGirls;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">GroupLeader</span><span class="params">(List&lt;Girl&gt; _listGirls)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.listGirls = _listGirls;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countGirls</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">&quot;女生数量是：&quot;</span>+<span class="keyword">this</span>.listGirls.size());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		List&lt;Girl&gt; listGirls = <span class="keyword">new</span> ArrayList&lt;Girl&gt;();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">			listGirls.add(<span class="keyword">new</span> Girl());</span><br><span class="line">		&#125;</span><br><span class="line">		Teacher teacher = <span class="keyword">new</span> Teacher();</span><br><span class="line">		teacher.commond(<span class="keyword">new</span> GroupLeader(listGirls));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-朋友间也是有距离的"><a href="#2-朋友间也是有距离的" class="headerlink" title="2.朋友间也是有距离的"></a>2.朋友间也是有距离的</h3><p>迪米特法则定义即使是朋友，也不能无话不说，无所不知。</p>
+<p>一个类公开的public属性或方法越多，修改时涉及的面也就越大，变更引起的风险扩散。因此，为了保持朋友类间的距离，在设计时需要反复衡量：是否还可以再减少public方法和属性，是否可以修改为private／protected等访问权限，是否可以加上final关键字等。</p>
+<p>迪米特法则要求类“羞涩”一点，尽量不要对外公布太多的public方法和非静态的public变量，尽量内敛，多使用private、protected等访问权限。</p>
+<h4 id="举例-1"><a href="#举例-1" class="headerlink" title="举例"></a>举例</h4><p>场景：模拟软件安装的过程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向导类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wizard</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Random rand = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">	<span class="comment">//第一步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">first</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第一个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第二步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">second</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第二个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第三步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">third</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第三个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//软件安装类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstallSoftware</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">(Wizard wizard)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> first = wizard.first();</span><br><span class="line">		<span class="keyword">if</span>(first&gt;<span class="number">50</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> second = wizard.second();</span><br><span class="line">			<span class="keyword">if</span>(second&gt;<span class="number">50</span>)&#123;</span><br><span class="line">				<span class="keyword">int</span> third = wizard.third();</span><br><span class="line">				<span class="keyword">if</span>(third&gt;<span class="number">50</span>)&#123;</span><br><span class="line">					wizard.first();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//场景类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		InstallSoftware invoker = <span class="keyword">new</span> InstallSoftware();</span><br><span class="line">		invoker.installWizard(<span class="keyword">new</span> Wizard());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序虽然简单，但仔细思考一下，<strong>Wizard类将太多的方法暴露给了InstallSoftware类，两者之间的朋友关系太过亲密了，耦合关系变得异常牢固，如果业务有变更，更改Wizard的同时，必须考虑InstallSoftware是否也需要做修改</strong>，从而扩大了变更的风险。因此我们需要进行重构。重构之后的代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向导类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wizard</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Random rand = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">	<span class="comment">//第一步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">first</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第一个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第二步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">second</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第二个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第三步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">third</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第三个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//软件安装过程</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> first = <span class="keyword">this</span>.first();</span><br><span class="line">		<span class="keyword">if</span>(first&gt;<span class="number">50</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> second = wizard.second();</span><br><span class="line">			<span class="keyword">if</span>(second&gt;<span class="number">50</span>)&#123;</span><br><span class="line">				<span class="keyword">int</span> third = wizard.third();</span><br><span class="line">				<span class="keyword">if</span>(third&gt;<span class="number">50</span>)&#123;</span><br><span class="line">					wizard.first();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将三个步骤的访问权限修改为private，同时把installWizard方法从InstallSoftware中移动到Wizard中。Wizard只对外暴露一个installWizard方法，这体现了类的高内聚特性。</p>
+<p>修改后的InstallSoftware类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//软件安装类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstallSoftware</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">(Wizard wizard)</span></span>&#123;</span><br><span class="line">		wizard.installWizard();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-如何衡量一个方法是否应该出现在当前类中？"><a href="#3-如何衡量一个方法是否应该出现在当前类中？" class="headerlink" title="3.如何衡量一个方法是否应该出现在当前类中？"></a>3.如何衡量一个方法是否应该出现在当前类中？</h3><p>在实际应用中经常会出现这样一个方法：放在本类中也可以，放在其他类中也没有错，那怎么去衡量呢？你可以坚持这样一个原则：</p>
+<blockquote>
+<p>如果一个方法放在本类中，既不增加类间关系，也对本类不产生负面影响，那就放置在本类中。</p>
+</blockquote>
+<h2 id="一个原则"><a href="#一个原则" class="headerlink" title="一个原则"></a>一个原则</h2><p>如果一个项目中，我和我需要调用的类之间超过了两次，就要考虑重构了。</p>
+<p>迪米特法则要求类间解耦，但解耦是有限度的，在实际项目中需要适度的考虑这个原则，别为了套用原则而做项目。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" data-id="ckkwc439o00cipas99v1pfgvb" data-title="设计模式六大原则之 迪米特法则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-接口隔离原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-09-17T09:53:55.000Z" itemprop="datePublished">2015-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/">设计模式六大原则之 接口隔离原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>接口隔离原则其定义有两种：</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>Clients should not be forced to depend upon interfaces that they don’t use.<br>(客户端不应该依赖它不需要的接口。)</p>
+<p>The dependency of one class to another one should depend on the smallest possible interface.<br>(类间的依赖关系应该建立在最小的接口上。)</p>
+</blockquote>
+<p>定义可以通俗的被翻译为：</p>
+<blockquote>
+<p>建立单一接口，不要建立臃肿庞大的接口。<br>或者：<br>接口尽量细化，同时接口中的方法尽量少。</p>
+</blockquote>
+<h2 id="与单一职责原则的不同"><a href="#与单一职责原则的不同" class="headerlink" title="与单一职责原则的不同"></a>与单一职责原则的不同</h2><p>定义听起来和单一职责原则所做的事情是一样的，都是<strong>给接口瘦身</strong>,减少接口中过多的方法。但实质上，与单一职责还是不一样的。两者的审视角度不一样。</p>
+<p>单一职责强调的是类和接口职责要单一，强调的是<strong>职责</strong>,而某些情况下，相同职责下的方法可能很多，例如一个接口的职责包含了10个方法，这十个方法提供给多个模块使用，不同模块下根据各自的权限来访问，这在单一职责的角度来看是允许的，但按照接口隔离的角度来看，可能就不合理了，因为它要求“尽量使用多个专门的接口”。专门的接口指的是什么？就是指提供给每个模块的单一接口，提供给几个模块就应该有几个接口，而不是建立一个庞大的臃肿的接口，容纳所有的客户端访问。</p>
+<h2 id="对接口规范的约束"><a href="#对接口规范的约束" class="headerlink" title="对接口规范的约束"></a>对接口规范的约束</h2><p>1.接口要尽量小</p>
+<pre><code>但前提要求是要满足单一职责原则
+</code></pre>
+<p>2.接口要高内聚</p>
+<p>3.定制服务</p>
+<pre><code>例如一个图书管理系统的查询接口
+
+IBookSearcher
++ void searchByAuthor()
++ void searchByTitle()
++ void searchByPublisher()
++ void searchByCatagory()
++ void complexSearch(Map map)
+
+按照模块进行接口拆分后，分成了两个接口
+
+ISimpleBookSearcher
++ void searchByAuthor()
++ void searchByTitle()
++ void searchByPublisher()
++ void searchByCatagory()
+
+IComplexBookSearcher
++ void complexSearch(Map map)
+</code></pre>
+<p>4.接口设计是有限度的</p>
+<pre><code>接口的设计颗粒度越小，系统越灵活，但是，灵活的同时带来了结构的复杂化，开发难度增加，可维护性降低，
+所以接口设计一定要注意适度，这个“度”通常是根据经验和常识来判断，没有一个固化或可测量的标准。
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/" data-id="ckkwc437l006vpas9cs494q1y" data-title="设计模式六大原则之 接口隔离原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-依赖倒置原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-09-16T22:01:55.000Z" itemprop="datePublished">2015-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/">设计模式六大原则之 依赖倒置原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>依赖倒置原则（<strong>Dependence Inversion Principle,DIP</strong>） 它的原始定义是这样的：</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>High level modules should not depend upon low level modules.Both should depend upon abstractions.Abstractions should not depend upon details.Details should depend upon abstractions.</p>
+</blockquote>
+<p>翻译过来，包括三层含义</p>
+<blockquote>
+<p>1.高层模块不应该依赖低层模块，两者都应该依赖其抽象；</p>
+<p>2.抽象不应该依赖细节；</p>
+<p>3.细节应该依赖抽象。</p>
+</blockquote>
+<p>在Java语言中的表现就是：</p>
+<blockquote>
+<p>1.模块间的依赖通过抽象发生，实现类之间不发生直接的依赖关系，其依赖关系是通过接口或抽象类产生的；</p>
+<p>接口或抽象类不依赖于实现类；</p>
+<p>实现类依赖接口或抽象类。</p>
+</blockquote>
+<p>更加精简的定义就是：</p>
+<blockquote>
+<p>面向接口编程 – OOD(Object-Oriented Design, 面向对象设计)的精髓之一.</p>
+</blockquote>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p>中国象棋 </p>
+<p>每个棋子都拥有<strong>“移动（move）”</strong>的动作，但每个棋子的这个方法又有不同，比如<strong>“马走日，象走田”</strong>就是体现了移动的不同。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IChess</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPlayer</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(IChess chess)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Ma</span> <span class="keyword">implements</span> <span class="title">IChess</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;马走日&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Xiang</span> <span class="keyword">implements</span> <span class="title">IChess</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;象走田&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedPlayer</span> <span class="keyword">implements</span> <span class="title">IPlayer</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(IChess chess)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;红方移动&quot;</span>);</span><br><span class="line">		chess.move();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlackPlayer</span> <span class="keyword">implements</span> <span class="title">IPlayer</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(IChess chess)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;黑方移动&quot;</span>);</span><br><span class="line">		chess.move();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Clint</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">		IChess ma = <span class="keyword">new</span> Ma();</span><br><span class="line">		IChess xiang = <span class="keyword">new</span> Xiang();</span><br><span class="line">		</span><br><span class="line">		IPlayer redPlayer = <span class="keyword">new</span> RedPlayer();</span><br><span class="line">		IPlayer blackPlayer = <span class="keyword">new</span> BlackPlayer();</span><br><span class="line">		</span><br><span class="line">		redPlayer.handle(ma);</span><br><span class="line">		blackPlayer.handle(xiang);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">运行结果:</span><br><span class="line"></span><br><span class="line">红方移动</span><br><span class="line">马走日</span><br><span class="line">黑方移动</span><br><span class="line">象走田</span><br></pre></td></tr></table></figure>
+<h2 id="究竟何为依赖倒置"><a href="#究竟何为依赖倒置" class="headerlink" title="究竟何为依赖倒置"></a>究竟何为依赖倒置</h2><p>首先看依赖二字，依赖体现共通的逻辑，对接口方法的实现就是体现了子类依赖其接口或抽象类。</p>
+<p>那么何为“倒置”呢？“倒置”是相对“正置”而言的，人类正常的思维方式都是正置的，怎么理解呢？就是我们接触到的都是具体实现类，比如马走日，就是指我们接触到的是马所行走的方式，而倒置就是指我们根据系统设计的角度，来找出事物间的抽象模型，抽取出抽象间的依赖，来代替传统思维中对事物间依赖关系的描述。比如“司机开车”就是抽象的依赖关系，其具体的实现包括“卡车司机开卡车”，“公交车司机开小轿车”等。</p>
+<h2 id="依赖倒置原则的三个实现："><a href="#依赖倒置原则的三个实现：" class="headerlink" title="依赖倒置原则的三个实现："></a>依赖倒置原则的三个实现：</h2><p>1.构造函数传递依赖对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IDriver</span> </span>&#123;</span><br><span class="line">	<span class="comment">//司机的驾驶方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> <span class="keyword">implements</span> <span class="title">IDriver</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> ICar car</span><br><span class="line">	<span class="comment">//构造函数注入</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Driver</span><span class="params">(ICar _car)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.car = _car;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//司机的驾驶方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.car.run();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.Setter方法传递依赖对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IDriver</span></span>&#123;</span><br><span class="line">	<span class="comment">//车辆型号</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCar</span><span class="params">(ICar car)</span></span>;</span><br><span class="line">	<span class="comment">//司机的驾驶方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Driver</span> <span class="keyword">implements</span> <span class="title">IDriver</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> ICar car;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCar</span><span class="params">(ICar car)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.car = car;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//司机的驾驶方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.car.run();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.接口声明依赖对象</p>
+<p>上面对依赖倒置的举例就是接口声明的方式，该方法也叫做<strong>接口注入</strong></p>
+<h2 id="建议遵循的规则"><a href="#建议遵循的规则" class="headerlink" title="建议遵循的规则"></a>建议遵循的规则</h2><p>1.每个类尽量都有接口或抽象类，或者抽象类和接口两者都具备</p>
+<p>2.变量的表面类型尽量是接口或者是抽象类</p>
+<p>3.任何类都不应该从具体类派生</p>
+<p>4.尽量不要复写基类的方法</p>
+<p>5.结合里氏替换原则使用</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/" data-id="ckkwc437b0063pas91pz74lvj" data-title="设计模式六大原则之 依赖倒置原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第七周 (2)核函数 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="核函数 I视频地址 在本节，我将对支持向量机算法做一些改变，以构造复杂的非线性分类器。我们用**”kernels(核函数)”**来达到此目的。 我们来看看核函数是什么，以及如何使用。 如果你有一个像这个样的训练集：  然后你希望拟合一个非线性的判别边界来区别正负样本，那么你的判别边界可能是这样的：  当我们这么做的时候，其实这个决策边界是由类似于下面这种多项式构成的：  如果$\theta_0 +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第七周 (2)核函数">
+<meta property="og:url" content="http://example.com/2017/02/09/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(2)%E6%A0%B8%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="核函数 I视频地址 在本节，我将对支持向量机算法做一些改变，以构造复杂的非线性分类器。我们用**”kernels(核函数)”**来达到此目的。 我们来看看核函数是什么，以及如何使用。 如果你有一个像这个样的训练集：  然后你希望拟合一个非线性的判别边界来区别正负样本，那么你的判别边界可能是这样的：  当我们这么做的时候，其实这个决策边界是由类似于下面这种多项式构成的：  如果$\theta_0 +">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_02_09/001.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/002.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/003.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/004.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/005.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/004.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/006.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/008.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/005.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/007.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/009.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/010.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/011.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/012.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/013.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/014.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/015.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/016.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/017.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/018.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/019.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/020.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/021.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/022.png">
+<meta property="og:image" content="http://example.com/img/17_02_09/023.png">
+<meta property="article:published_time" content="2017-02-09T21:07:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_02_09/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第七周 (2)核函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/02/09/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(2)%E6%A0%B8%E5%87%BD%E6%95%B0/" class="article-date">
+  <time class="dt-published" datetime="2017-02-09T21:07:58.000Z" itemprop="datePublished">2017-02-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第七周 (2)核函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="核函数-I"><a href="#核函数-I" class="headerlink" title="核函数 I"></a>核函数 I</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/YOMHn/kernels-i">视频地址</a></p>
+<p>在本节，我将对支持向量机算法做一些改变，以构造复杂的非线性分类器。我们用**”kernels(核函数)”**来达到此目的。</p>
+<p>我们来看看<strong>核函数</strong>是什么，以及如何使用。</p>
+<p>如果你有一个像这个样的训练集：</p>
+<p><img src="/img/17_02_09/001.png"></p>
+<p>然后你希望拟合一个非线性的判别边界来区别正负样本，那么你的判别边界可能是这样的：</p>
+<p><img src="/img/17_02_09/002.png"></p>
+<p>当我们这么做的时候，其实这个决策边界是由类似于下面这种多项式构成的：</p>
+<ul>
+<li><p>如果$<br>\theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_1x_2+\theta_4x_1^2 + \theta_5x_2^2 + … \ge 0<br>$，则预测$h_{\theta}(x)=1$；</p>
+</li>
+<li><p>如果$<br>\theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_1x_2+\theta_4x_1^2 + \theta_5x_2^2 + … \lt 0<br>$，则预测$h_{\theta}(x)=0$；</p>
+</li>
+</ul>
+<p>如果我们把假设函数改写成下面这种形式：</p>
+<p>$$<br>\theta_0+\theta_1f_1+\theta_2f_2+\theta_3f_3+\theta_4f_4+\theta_5f_5+…<br>$$</p>
+<p>因此有：</p>
+<p>$$<br>f_1=x_1<br>$$</p>
+<p>$$<br>f_2=x_2<br>$$</p>
+<p>$$<br>f_3=x_1x_2<br>$$</p>
+<p>$$<br>f_4=x_1^2<br>$$</p>
+<p>$$<br>f_5=x_2^2<br>$$</p>
+<p>$$<br>…<br>$$</p>
+<p>以此类推，可以依次加入这些高阶项，但我们其实并不知道这些高阶项是不是我们真正需要的。我们之前谈到计算机视觉的时候，提到过在这里的输入是一个有很多像素的图像，我们看到如果用高阶项作为特征变量，运算量将是非常大的，因为有太多的高阶项需要被计算。</p>
+<p>因此，我们是否有不同的选择，或者是更好的选择来构造特征变量，以用来嵌入到假设函数中呢？</p>
+<h3 id="用核函数构造新特征"><a href="#用核函数构造新特征" class="headerlink" title="用核函数构造新特征"></a>用核函数构造新特征</h3><p>事实上，这里有一个可以构造新特征$f_1$、$f_2$、$f_3$的方法。</p>
+<p>首先我们定义三个特征变量(但是对于实际问题而言，我们可以定义非常多的特征变量）：</p>
+<img src="/img/17_02_09/003.png" width = "300" height = "200" align=center />
+
+<p>将这三个点标记为$l^{(1)}$、$l^{(2)}$、$l^{(3)}$，接下来我要做的是定义新的特征变量：</p>
+<p>$$<br>f_1=similarity(x,l^{(1)})<br>$$</p>
+<p>这里$similarite(x,l^{(1)})$是一种相似度的度量，度量样本$x$与第一个标记$l^{(1)}$的相似度。</p>
+<p>这个度量相似度的公司是这样的：</p>
+<p>$$<br>\begin{align*}<br>f_1&amp;=similarity(x,l^{(1)})<br>\\<br>&amp;=exp(-\frac{||x-l^{(1)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<blockquote>
+<p>$exp$是自然常数$e$为底的指数函数。</p>
+</blockquote>
+<p>不知道你之前是否看了上一个选修课程的视频，$||w||$是表示向量$w$的长度。因此这里的$||x-l^{(1)}||$的意思就是就是向量的欧式距离。</p>
+<p>因此，我们可以依次写出$f_1$、$f_2$、$f_3$:</p>
+<p>$$<br>\begin{align*}<br>f_1&amp;=similarity(x,l^{(1)})<br>=exp(-\frac{||x-l^{(1)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>$$<br>\begin{align*}<br>f_2&amp;=similarity(x,l^{(2)})<br>=exp(-\frac{||x-l^{(2)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>$$<br>\begin{align*}<br>f_3&amp;=similarity(x,l^{(3)})<br>=exp(-\frac{||x-l^{(3)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>这里的$similarite(x,l)$函数，就被称为<strong>核函数(Kernels)**。在这里，我们的例子中所说的</strong>核函数<strong>，实际上是</strong>高斯核函数<strong>，在后面我们还会见到不同的</strong>核函数**。</p>
+<p>核函数我们通常不写作$similarity(x,l^{(i)})$，而是写作：</p>
+<p>$$<br>k(x,l^{(i)})<br>$$</p>
+<h3 id="核函数可以做什么？"><a href="#核函数可以做什么？" class="headerlink" title="核函数可以做什么？"></a>核函数可以做什么？</h3><p>我们来看看核函数到底可以做什么？</p>
+<p>首先让我们来看看第一个标记：</p>
+<p>$$<br>\begin{align*}<br>f_1&amp;=similarity(x,l^{(1)})<br>=exp(-\frac{||x-l^{(1)}||^2}{2σ^2})<br>=exp(-\frac{\sum_{j=1}^{n}(x_j-l_j^{(1)})^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>$l^{(1)}$是我之前在图中选取的几个点之中的一个，上面是$x$和$l^{(1)}$之间的核函数。</p>
+<p>其中$||x-l^{(1)}||^2$这一项可以表示成各个$x$向量到$l$向量的距离求和的形式：$\sum_{j=1}^{n}(x_j-l_j^{(1)})^2$。（这里我们依然忽略了截距的影响，即令$x_0=1$）。</p>
+<p>假设，如果$x\approx l^{(1)}$，即$x$与其中一个标记点非常接近，那么这个欧氏距离$||x-l^{(1)}||$就会接近0，因此：</p>
+<p>$$<br>f_1<br>\approx<br>exp(-\frac{0^2}{2σ^2})<br>\approx1<br>$$</p>
+<p>相反的，如果$x$离$l^{(1)}$很远，那么会有：</p>
+<p>$$<br>f_1<br>\approx<br>exp(-\frac{(large\ number)^2}{2σ^2})<br>\approx0<br>$$</p>
+<p><strong>这些特征变量的作用是度量$x$到标记$l^{(1)}$的相似度的，并且如果$x$离$l$非常接近，那么特征变量$f$就接近1；如果$x$离标记$l^{(1)}$非常远，那么特征变量$f$就接近于0。</strong></p>
+<p>之前我绘制的三个标记点$l^{(1)}$、$l^{(2)}$、$l^{(3)}$每一个标记点会定义一个新的特征变量：</p>
+<p>$$<br>\begin{align*}<br>f_1&amp;=k(x,l^{(1)})<br>=exp(-\frac{||x-l^{(1)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>$$<br>\begin{align*}<br>f_2&amp;=k(x,l^{(2)})<br>=exp(-\frac{||x-l^{(2)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>$$<br>\begin{align*}<br>f_3&amp;=k(x,l^{(3)})<br>=exp(-\frac{||x-l^{(3)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p><strong>也就是说，给出一个训练样本$x$，我们就能基于我们之前给出的标记点$l^{(1)}$、$l^{(2)}$、$l^{(3)}$来计算出三个新的特征变量$f_1$、$f_2$、$f_3$。</strong></p>
+<h3 id="深入理解核函数"><a href="#深入理解核函数" class="headerlink" title="深入理解核函数"></a>深入理解核函数</h3><p>接下来让我们通过画一些图来更好地理解<strong>核函数</strong>是什么样的。</p>
+<h4 id="x-对-f-的值的影响"><a href="#x-对-f-的值的影响" class="headerlink" title="$x$对$f$的值的影响"></a>$x$对$f$的值的影响</h4><p>看下面这个例子，假设我们有两个特征$x_1$和$x_2$，假设我们第一个标记点是$l^{(1)}$：</p>
+<p>$$<br>l^{(1)}=<br>\begin{bmatrix}<br>   3 \<br>    5<br> \end{bmatrix}<br>$$</p>
+<p>假设:</p>
+<p>$$<br>σ^2=1<br>$$</p>
+<p>如果我画出:</p>
+<p>$$<br>\begin{align*}<br>f_1&amp;=k(x,l^{(1)})<br>=exp(-\frac{||x-l^{(1)}||^2}{2σ^2})<br>\end{align*}<br>$$</p>
+<p>结果就是这样的：</p>
+<table>
+<thead>
+<tr>
+<th align="center">3D曲面图</th>
+<th align="center">等高线图</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_02_09/004.png" width = "300" height = "200" align=center /></td>
+<td align="center"><img src="/img/17_02_09/005.png" width = "300" height = "200" align=center /></td>
+</tr>
+</tbody></table>
+<p>其中左侧的图纵轴是$f_1$，水平方向的两个轴分别是$x_1$和$x_2$。右侧的图是左侧图的等高线图。</p>
+<p>你会发现，当$x=(3,5)$的时候，$f_1=1$，因为它在最大值的位置上。所以如果$x$往旁边移动，离这个点越远，那么从图中可以看到$f_1$的值就越接近0。</p>
+<h4 id="σ-2-对-f-的值的影响"><a href="#σ-2-对-f-的值的影响" class="headerlink" title="$σ^2$对$f$的值的影响"></a>$σ^2$对$f$的值的影响</h4><p>在这里，要提到的另一点就是$σ^2$对结果的影响。$σ^2$是<strong>高斯核函数</strong>的参数，改变它会得到略微不同的结果。</p>
+<p>可以对比$σ^2=1$、$σ^2=0.5$、$σ^2=3$的情况：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$σ^2=1$</th>
+<th align="center">$σ^2=0.5$</th>
+<th align="center">$σ^2=3$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="/img/17_02_09/004.png" width = "300" height = "200" align=center /></td>
+<td align="center"><img src="/img/17_02_09/006.png" width = "300" height = "200" align=center /></td>
+<td align="center"><img src="/img/17_02_09/008.png" width = "300" height = "200" align=center /></td>
+</tr>
+<tr>
+<td align="center"><img src="/img/17_02_09/005.png" width = "300" height = "200" align=center /></td>
+<td align="center"><img src="/img/17_02_09/007.png" width = "300" height = "200" align=center /></td>
+<td align="center"><img src="/img/17_02_09/009.png" width = "300" height = "200" align=center /></td>
+</tr>
+</tbody></table>
+<p>你会发现，函数的形状还是相似的，只是$σ^2=0.5$相较于$σ^2=1$凸起的宽度变窄了，等值线图也收缩了一些；$σ^2=3$相较于$σ^2=1$凸起的宽度变宽了，等值线也扩张了一些。</p>
+<p>所以，如果我们将$σ^2$设为0.5时，特征变量$f_1$下降到0的速度也会相应变快；如果我们将$σ^2$设为3时，特征变量$f_1$下降到0的速度也会相应变慢。</p>
+<h3 id="获取预测函数"><a href="#获取预测函数" class="headerlink" title="获取预测函数"></a>获取预测函数</h3><p>讲完了特征变量的定义，我们来看看我们能得到什么样的预测函数。</p>
+<p>给定一个训练样本$x$，我们要计算出三个特征变量$f_1$ $f_2$ $f_3$</p>
+<p><img src="/img/17_02_09/010.png"></p>
+<p>并且如果$\theta_0 + \theta_1f_1 + \theta_2f_2 +  \theta_3f_3 \ge 0$，则预测函数的预测值为1，即$y=1$。</p>
+<p>对于这个特定的例子而言，假设我们已经找到了一个学习算法，并且假设我已经得到了这些参数的值，比如如果：</p>
+<p>$$<br>\theta_0=-0.5 \\<br>\theta_1=1 \\<br>\theta_2=1 \\<br>\theta_3=0<br>$$</p>
+<p>如果我们现在有一个训练样本$x$：</p>
+<p><img src="/img/17_02_09/011.png"></p>
+<p>我想知道预测函数会给出什么结果。</p>
+<p>看看这个公式：</p>
+<p>$$\theta_0 + \theta_1f_1 + \theta_2f_2 +  \theta_3f_3 \ge 0$$</p>
+<p>因为我的训练样本$x$接近于$l^{(1)}$，那么$f_1$就接近于1：</p>
+<p>$$<br>f_1\approx1<br>$$</p>
+<p>又因为训练样本$x$离$l^{(2)}$ $l^{(3)}$都很远，所以$f_2$就接近于0，$f_3$也接近于0：</p>
+<p>$$<br>f_2\approx0 \\<br>f_3\approx0<br>$$</p>
+<p>所以带入上面的公式可以得到：</p>
+<p>$$<br>\begin{align*}<br>\theta_0 + \theta_1f_1 + \theta_2f_2 +  \theta_3f_3<br>&amp;=\theta_0 + \theta_1·1 + \theta_2·0 +  \theta_3·0<br>\\<br>&amp;=-0.5+1<br>\\<br>&amp;=0.5\\<br>\ge0<br>\end{align*}<br>$$</p>
+<p>因此对于这一点，我们预测的结果是$y=1$。</p>
+<hr>
+<p>现在我们选择另一个不同的点，假设我选择了另一个点：</p>
+<p><img src="/img/17_02_09/012.png"></p>
+<p>如果将这个训练样本$x$带入之前相同的计算，你发现$f_1$ $f_2$ $f_3$都接近于0。</p>
+<p>因此，我们得到$\theta_0 + \theta_1f_1 + \theta_2f_2 +  \theta_3f_3=-0.5$，因为$θ_0=-0.5$，并且$f_1$ $f_2$ $f_3$都为0，因此最后结果是-0.5，小于0。因此这个点，我们预测的y值是0。</p>
+<hr>
+<p>类似的，如果你自己来对大量的点进行这样相应的处理，你应该可以确定如果你有一个非常接近于$l^{(2)}$的训练样本，那么通过这个点预测的y值也是1。</p>
+<p>实际上，你最后得到的结果是：<strong>对于接近$l^{(1)}$和$l^{(2)}$的点，我们的预测值是1，对于远离$l^{(1)}$和$l^{(2)}$的点，我们最后预测的结果是等于0的</strong>。</p>
+<p>我们最后会得到这个预测函数的判别边界看起来是类似这样的结果：</p>
+<img src="/img/17_02_09/013.png" width = "300" height = "200" align=center />
+
+<p>在这个红色的判别边界里面，预测的y值等于1；在这外面预测的y值等于0。</p>
+<p>因此这就是一个我们如何通过标记点，以及核函数，来训练出非常复杂的非线性判别边界的方法。</p>
+<p>这就是核函数这部分的概念，以及我们如何在支持向量机中使用它们。我们通过标记点和相似性函数来定义新的特征变量从而训练复杂的非线性分类器。</p>
+<p>目前还有一些问题我们并没有做出回答，其中一个是<strong>我们如何得到这些标记点</strong>；另一个是<strong>其他的相似度方程（核函数）是什么样的</strong>，如果有其他的话，我们能够用其他的相似度方程来代替我们所讲的这个高斯核函数吗？在下一个视频中我们会回答这些问题，然后把所有东西都整合到一起来看看支持向量机如何通过核函数的定义 有效地学习复杂非线性函数。</p>
+<h2 id="核函数-II"><a href="#核函数-II" class="headerlink" title="核函数 II"></a>核函数 II</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/hxdcH/kernels-ii">视频地址</a></p>
+<blockquote>
+<p>在上一节视频里，我们讨论了<strong>核函数</strong>这个想法以及怎样利用它去实现支持向量机的一些新特性。在这一节视频中我将补充一些缺失的细节，并简单的介绍一下怎么在实际中使用应用这些想法。例如，<strong>怎么处理支持向量机中的偏差方差折中</strong>。</p>
+</blockquote>
+<h3 id="如何选取标记点-landmark"><a href="#如何选取标记点-landmark" class="headerlink" title="如何选取标记点(landmark)"></a>如何选取标记点(landmark)</h3><p>在上一节课中，我谈到过选择标记点，例如$l^{(1)}$ $l^{(2)}$ $l^{(3)}$ 这些点使我们能够定义<strong>相似度函数</strong>，也称之为<strong>核函数</strong>。在这个例子里，我们的相似度函数为<strong>高斯核函数</strong>。</p>
+<p><img src="/img/17_02_09/014.png"></p>
+<p>但是，我们从哪里得到这些标记点呢？我们从哪里得到$l^{(1)}$ $l^{(2)}$ $l^{(3)}$？ 而且在一些复杂的学习问题中，也许我们需要更多的标记点，而不是我们手选的这三个。</p>
+<p>因此，在实际应用时，怎么选取标记点，是机器学习中必须解决的问题。</p>
+<p>这是我们的数据集：</p>
+<p><img src="/img/17_02_09/015.png"></p>
+<p>有一些正样本和一些负样本。我们的想法是：我们直接将训练样本作为标记点。</p>
+<p><img src="/img/17_02_09/016.png"></p>
+<p>如果我们有一个训练样本$x^{(1)}$，那么我将把第一个标记点就放在和第一个训练样本点完全重合的地方：</p>
+<p><img src="/img/17_02_09/017.png"></p>
+<p>同样，第二个标记点也是使用同样的方式来标注：</p>
+<p><img src="/img/17_02_09/018.png"></p>
+<p>在右边的这幅图上，我们使用红点和蓝点来阐述这幅图以及这些点的颜色，可能并不显眼，但是利用这个方法最终能得到m个标记点：</p>
+<p>$$<br>l^{(1)} ，l^{(2)}，…，l^{(m)}<br>$$</p>
+<p>即每一个标记点的位置，都与每一个样本点的位置精确对应。</p>
+<p>这说明，特征函数基本上是在描述<strong>每一个样本距离样本集中其他样本的距离</strong>。</p>
+<p>我们具体的列出这个过程的大纲：</p>
+<p>给定m个训练样本：</p>
+<p>$$<br>(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),…,(x^{(m)},y^{(m)}),<br>$$</p>
+<p>我将选取与m个训练样本精确一致的位置作为我的标记点：</p>
+<p>$$<br>l^{(1)}=x^{(1)},l^{(2)}=x^{(2)},…,l^{(m)}=x^{(m)}.<br>$$</p>
+<p>当输入样本$x$（样本$x$可以属于训练集，也可以属于交叉验证集，也可以属于测试集），我们可以计算这些特征，即：</p>
+<p>$$<br>f_1=similarity(x,l^{(1)}) \\<br>f_2=similarity(x,l^{(2)}) \\<br>…<br>$$</p>
+<blockquote>
+<p>这里的$l^{(1)}=x^{(1)}$，$l^{(2)}=x^{(2)}$…。</p>
+</blockquote>
+<p>最终我们能得到一个特征向量，我们将特征向量记为$f$：</p>
+<p>$$<br>f=<br>\left[<br>\begin{matrix}<br> f_1  \<br> f_2  \<br> …    \<br> f_m<br>\end{matrix}<br>\right]<br>$$</p>
+<p>此外，按照惯例，如果我们需要的话，可以添加额外的特征$f_0$，$f_0$的值始终为1：</p>
+<p>$$<br>f=<br>\left[<br>\begin{matrix}<br> f_0  \<br> f_1  \<br> f_2  \<br> …    \<br> f_m<br>\end{matrix}<br>\right]<br>$$</p>
+<p>它与我们之前讨论过的截距$x^0$的作用相似。</p>
+<hr>
+<p>举个例子，假设我们有训练样本$(x^{(i)},y^{(i)})$，这个样本对应的特征向量可以这样计算：</p>
+<p>给定$x^{(i)}$，我们可以通过相似度函数<br>$$<br>f_1^{(i)}=similarity(x^{(i)},l^{(1)}) \<br>f_2^{(i)}=similarity(x^{(i)},l^{(2)}) \<br>… \<br>f_m^{(i)}=similarity(x^{(i)},l^{(m)}) \<br>$$</p>
+<p>在这一列中的某个位置，即第$i$个元素，有一个特征：</p>
+<p>$$<br>f_i^{(i)}=similarity(x^{(i)},l^{(i)})<br>$$</p>
+<blockquote>
+<p>这里的$l^{(i)}$就等于$x^{(i)}$。</p>
+</blockquote>
+<p>所以$f_i^{(i)}$衡量的是$x^{(i)}$与其自身的相似度，如果你使用高斯核函数的话，这一项为：</p>
+<p>$$<br>f_i^{(i)}=similarity(x^{(i)},l^{(i)})=exp(-\frac{0}{2σ^2})=1<br>$$</p>
+<p>所以，对于这个样本来说，其中的某一个特征等于1。接下来，类似于我们之前的过程，我将这m个特征合并为一个特征向量。于是，相比之前用$x^{(i)}$来描述样本，$x^{(i)}$为n维或者n+1维空间。我们现在可以使用这个特征向量$f^{(i)}$来描述我的特征向量：</p>
+<p>$$<br>f^{(i)}=<br>\left[<br>\begin{matrix}<br> f_0^{(i)}  \<br> f_1^{(i)}  \<br> f_2^{(i)}  \<br> …    \<br> f_m^{(i)}<br>\end{matrix}<br>\right]<br>$$</p>
+<p>其中 $f_0^{(i)}=1$。</p>
+<p>那么这个向量就是我们用于描述训练样本的特征向量。</p>
+<p>当给定核函数和相似度函数后，我们按照这个方法来使用<strong>支持向量机</strong>。</p>
+<hr>
+<p>如果你已经得到参数$\theta$并且想对样本x做出预测，我们先要计算特征向量$f$，$f$是$m+1$维的特征向量（这里有m是因为我们有m个训练样本，因此就有m个标记点）。</p>
+<p>我们在$\theta^Tf\ge0$时，预测$y=1$</p>
+<blockquote>
+<p>这里$\theta^Tf=\theta_0f_0 + \theta_1f_1 + … + \theta_mf_m$</p>
+</blockquote>
+<p>以上就是<strong>当已知参数$\theta$时，怎么做出预测的过程</strong>。</p>
+<p>那么，怎样得到参数$\theta$呢？</p>
+<p>你在使用SVM学习算法的时候，具体来说就是要求解这个最小化问题：</p>
+<p>$$<br>\mathop{min}\limits_{θ}<br>C<br>\sum_{i=1}^{m}[<br>y^{(i)}<br>cost_{1}(\theta^{T}f^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}f^{(i)})<br>]+<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
+<p>你需要求出能使这个式子取最小值的参数$\theta$。注意，这里我们把之前的$x^{(i)}$换成了$f^{(i)}$。</p>
+<p>通过解决这个最小化问题，我们就能得到支持向量机的参数。</p>
+<p>最后一个对于这个优化问题的细节是：我们有$n=m$个特征。有效的特征数量应该等于$f$的维数，所以$n$其实就等于$m$。</p>
+<p><img src="/img/17_02_09/019.png"></p>
+<p>以上就是支持向量机的学习算法。</p>
+<p>我在这里还要讲到一个数学细节，在支持向量机实现的过程中，最后一项与上面式子中的最后一项$\frac{1}{2}\sum_{j=1}^{n}\theta_{j}^2$有细微差别。其实在实现支持向量机时，你并不需要知道这个细节，事实上这个式子已经给你提供了全部需要的原理。但是在支持向量机实现的过程中，这一项$\sum_{j=1}^{n}\theta_{j}^2$可以被重写为$\theta^T\theta$(如果我们忽略$\theta_0$的话)，即：</p>
+<p>$$<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>=<br>\theta^T\theta<br>$$</p>
+<p>其中：</p>
+<p>$$<br>\theta=<br>\left[<br>\begin{matrix}<br> \theta_1  \<br> \theta_2  \<br> …    \<br> \theta_m  \<br>\end{matrix}<br>\right] \ \ (ignore \ \theta_0)<br>$$</p>
+<p>大多数支持向量机在实现的时候其实是替换掉$\theta^T\theta$的，用$\theta^TM\theta$来代替，其中$M$是某矩阵，具体是什么矩阵取决于你采用的核函数。这其实是另一种略有区别的距离度量方法。我们用这种略有变化的度量距离的形式来取代对$||\theta||^2$（即$\theta^T\theta$，或者$\sum_{j=1}^{n}\theta_{j}^2$）进行最小化的形式，这是参数向量$\theta$的<strong>变尺度形式</strong>，这种变化和核函数相关。这个数学细节使得支持向量机能够更有效率的运行。</p>
+<p>支持向量机做这种修改的理由是：这么做可以适应超大的训练集。</p>
+<p>例如：当你的训练集有10000个样本时</p>
+<p>$$<br>M=10000<br>$$</p>
+<p>根据我们之前定义标记点的方法，我们最终有10000个标记点，$\theta$也随之是10000维的向量。或许这时这么做还可行，但是，当$m$变得非常非常大时，那么求解这么多参数时，此时利用支持向量机软件包来解决这里的最小化问题时，求解这些参数的成本会非常高。</p>
+<p>这些都是数学细节，事实上你没有必要了解这些，这里$\theta^TM\theta$实际上细微的修改了最后一项，使得最终的优化目标与直接最小化$||\theta||^2$略有区别。</p>
+<p>如果你愿意的话，你可以直接认为这个具体的实现细节尽管略微的改变了优化目标，但是它主要是为了计算效率，所以你不必要对此有太多担心。</p>
+<p>顺便说一下，你可能会想，为什么我们不将核函数这个想法应用到其他算法，比如逻辑回归上。事实证明，如果你愿意的话，确实可以将核函数这个想法用于定义特征向量，将标记点之类的技术用于逻辑回归算法。但是用于支持向量机的计算技巧不能较好的推广到其他算法，诸如逻辑回归上。所以，将核函数用于逻辑回归上时，会变得非常的慢。相比之下，这些计算技巧，比如这一步：$\theta^TM\theta$，这些细节的修改，以及支持向量机软件的实现细节，使得支持向量机可以和核函数相得益彰，而逻辑回归和核函数则会运行的十分缓慢，更何况它们还不能使用那些高级优化技巧，因为这些技巧是人们专门为使用核函数的支持向量机开发的。但是这些问题只有在你亲自实现最小化函数时才会遇到。</p>
+<p>我将在下一节视频中进一步讨论这些问题，但是你并不需要知道怎么去写一个软件，来最小化代价函数。你能找到很好的成熟的软件来做这些，就像我一直不建议自己写矩阵求逆函数，或者平方根函数的道理一样。这些软件包已经包含了那些数值优化技巧，所以你不必担心这些东西。</p>
+<hr>
+<h3 id="SVM参数："><a href="#SVM参数：" class="headerlink" title="SVM参数："></a>SVM参数：</h3><h4 id="C-frac-1-lambda"><a href="#C-frac-1-lambda" class="headerlink" title="$C(=\frac{1}{\lambda})$"></a>$C(=\frac{1}{\lambda})$</h4><p>但是另外一个值得说明的问题是，在你使用支持向量机时，怎么选择支持向量机中的参数？在本节视频的末尾，我想稍微说明一下，在使用支持向量机时的“偏差-方差折中”其中一个要选择的事情是，目标函数中的参数$C$。回忆一下，$C$的作用与$\frac{1}{\lambda}$相似。</p>
+<p><img src="/img/17_02_09/020.png"></p>
+<p>$\lambda$是逻辑回归算法中的正则化参数，所以$C$对应着我们之前在逻辑回归问题中的$\lambda$，这意味着:</p>
+<ul>
+<li>较小的$\lambda$对应较大的$C$，这就意味着有可能得到一个低偏差但高方差的模型。</li>
+<li>较大的$\lambda$对应较小的$C$，这就意味着有可能得到一个高偏差但低方差的模型。</li>
+</ul>
+<p>所以使用较大的$C$值模型，为高方差，更倾向于过拟合；而使用较小的$C$值的模型，为高偏差，更倾向于欠拟合。</p>
+<h4 id="σ-2"><a href="#σ-2" class="headerlink" title="$σ^2$"></a>$σ^2$</h4><p>另一个要处理的参数是<strong>高斯核函数</strong>中的$σ^2$。</p>
+<p>当高斯核函数中的$σ^2$偏大时，那么对应的相似度函数为：</p>
+<p>$$<br>exp(-\frac{||x-l^{(i)}||^2}{2σ^2})<br>$$</p>
+<p>在下面这个例子中，如果我们只有一个特征$x_1$，有一个标记点$l$：</p>
+<p><img src="/img/17_02_09/021.png"></p>
+<p><strong>如果$σ^2$越大</strong>，那么高斯核函数倾向于变得<strong>越平滑</strong>，由于函数平滑且变化的比较平缓，这会给你的模型带来<strong>较高的偏差和较低的方差</strong>，由于高斯核函数变得平缓，就更倾向于得到一个随着输入$x$变化得缓慢的模型：</p>
+<p><img src="/img/17_02_09/022.png"></p>
+<p>反之<strong>如果$σ^2$越小</strong>，那么高斯核函数会变化的<strong>很剧烈</strong>，在这种情况下，最终得到的模型会是<strong>低偏差和高方差</strong>：</p>
+<p><img src="/img/17_02_09/023.png"></p>
+<hr>
+<p>这就是利用核函数的支持向量机算法。</p>
+<p>希望这些关于方差和偏差的讨论能给你一些对于算法结果预期的直观印象。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/02/09/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(2)%E6%A0%B8%E5%87%BD%E6%95%B0/" data-id="ckkwc437v007upas912xb96ry" data-title="斯坦福机器学习课程 第七周 (2)核函数" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/20/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【Tensorflow r1.0 文档翻译】入门教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第七周 (1)大间距分类</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

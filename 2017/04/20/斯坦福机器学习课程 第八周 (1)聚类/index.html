@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第八周 (1)聚类 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="无监督学习介绍视频地址  接下来，我将介绍聚类这一概念。保证精彩！因为这是我们第一个无监督学习算法。我们要从未标记的数据中进行学习, 而不是从已标记的数据。   什么是无监督学习算法呢？ 之前，在本课程的开始阶段，我曾简短介绍过无监督学习算法。现在，我想将无监督学习算法与监督学习算法做个对照。 无监督学习算法与监督学习算法对比下面是一个监督学习的例子：  $$训练集：｛(x^{(1)},y^{(1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第八周 (1)聚类">
+<meta property="og:url" content="http://example.com/2017/04/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(1)%E8%81%9A%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="无监督学习介绍视频地址  接下来，我将介绍聚类这一概念。保证精彩！因为这是我们第一个无监督学习算法。我们要从未标记的数据中进行学习, 而不是从已标记的数据。   什么是无监督学习算法呢？ 之前，在本课程的开始阶段，我曾简短介绍过无监督学习算法。现在，我想将无监督学习算法与监督学习算法做个对照。 无监督学习算法与监督学习算法对比下面是一个监督学习的例子：  $$训练集：｛(x^{(1)},y^{(1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_04_20/001.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/002.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/003.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/004.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/005.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/006.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/007.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/008.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/009.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/010.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/011.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/012.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/013.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/014.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/015.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/016.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/017.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/018.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/019.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/020.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/021.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/022.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/023.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/024.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/025.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/026.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/027.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/028.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/029.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/030.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/031.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/032.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/033.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/034.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/035.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/036.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/037.png">
+<meta property="og:image" content="http://example.com/img/17_04_20/038.png">
+<meta property="article:published_time" content="2017-04-20T22:32:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_04_20/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第八周 (1)聚类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/04/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(1)%E8%81%9A%E7%B1%BB/" class="article-date">
+  <time class="dt-published" datetime="2017-04-20T22:32:58.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第八周 (1)聚类
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="无监督学习介绍"><a href="#无监督学习介绍" class="headerlink" title="无监督学习介绍"></a>无监督学习介绍</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/czmip/unsupervised-learning-introduction">视频地址</a></p>
+<blockquote>
+<p>接下来，我将介绍<strong>聚类</strong>这一概念。保证精彩！因为这是我们第一个<strong>无监督学习算法</strong>。我们要从未标记的数据中进行学习, 而不是从已标记的数据。 </p>
+</blockquote>
+<p>什么是无监督学习算法呢？</p>
+<p>之前，在本课程的开始阶段，我曾简短介绍过无监督学习算法。现在，我想将<strong>无监督学习算法</strong>与<strong>监督学习算法</strong>做个对照。</p>
+<h3 id="无监督学习算法与监督学习算法对比"><a href="#无监督学习算法与监督学习算法对比" class="headerlink" title="无监督学习算法与监督学习算法对比"></a>无监督学习算法与监督学习算法对比</h3><p>下面是一个监督学习的例子：</p>
+<p><img src="/img/17_04_20/001.png"></p>
+<p>$$<br>训练集：｛(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),(x^{(3)},y^{(3)}),…,(x^{(m)},y^{(m)})｝<br>$$</p>
+<p>这是一组附有标记的训练数据集，我们想要找出一个决策边界，来将两者分开：</p>
+<p><img src="/img/17_04_20/002.png"></p>
+<p>在这种监督式学习中，我们针对一组标记的训练数据提出一个适当的假设。</p>
+<hr>
+<p>相比之下，在无监督学习案例中，我们面对的是一组<strong>无标记</strong>的训练数据，数据之间不具任何关联的标记。</p>
+<p>所以我们得到的数据看起来是下面这样的：</p>
+<p><img src="/img/17_04_20/003.png"></p>
+<p>$$<br>训练集：｛x^{(1)},x^{(2)},x^{(3)},…,x^{(m)}｝<br>$$</p>
+<p>所以，在无监督学习中，我们将这种未标记的训练数据送入特定的算法，然后我们要求算法替我们分析出数据的结构。</p>
+<p>就此数据而言，其中一种可能的结构是所有的数据大致地划分成两个类（或组），这种划分的算法称为**聚类算法()**：</p>
+<p><img src="/img/17_04_20/004.png"></p>
+<p>除此之外，无监督学习还包含其他各式各样的算法，用以寻找其他类型的结构。我们下面将会一一介绍。目前，我们先介绍聚类。</p>
+<h3 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h3><p>稍早前，我已经提到几个应用实例：</p>
+<p><img src="/img/17_04_20/005.png"></p>
+<ul>
+<li>图1是细分市场，将所有用户划分至不同的细分市场组，以便于营销或服务。</li>
+<li>图2是社交分析体系，比如在社交网络中观察一群人，看他们和谁有电子邮件来往，或者查找一群相互有联系的人。</li>
+<li>图3是用聚类来组织运算集群或组织数据中心，因为，如果你知道在集群中，哪些计算机的数据中心倾向于一起工作，你可以用它重新组织你的资源，网络的布局，以及数据中心和通信。</li>
+<li>图4是使用聚类算法来试图理解星系的形成，和其中的天文细节。</li>
+</ul>
+<p>总之，聚类是我们学到的第一个无监督学习算法。在接下来的内容中，我将谈论聚类的具体实现方式。</p>
+<h2 id="K-Means-算法"><a href="#K-Means-算法" class="headerlink" title="K-Means 算法"></a>K-Means 算法</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/93VPG/k-means-algorithm">视频地址</a></p>
+<blockquote>
+<p>在聚类问题中，我们有未加标签的数据。我们希望有一个算法能够自动的把这些数据分成<strong>有紧密关系的子集</strong>，或是<strong>簇</strong>。<strong>K均值 (K-means)算法</strong>是现在最为广泛使用的聚类方法。那么在这个视频中，我将会告诉你，什么是K均值算法以及它是怎么运作的。</p>
+</blockquote>
+<p>K均值算法最好用图来表达。如图所示：</p>
+<p><img src="/img/17_04_20/006.png"></p>
+<p>现在有一些<strong>没加标签</strong>的数据，而我想将这些数据分成两个<strong>簇</strong>。</p>
+<p>现在我执行K均值算法 方法是这样的 </p>
+<p>首先我随机选择两个点，这两个点叫做**聚类中心 (cluster centroids) **:</p>
+<p><img src="/img/17_04_20/007.png"></p>
+<p>为什么要两个点呢？因为我希望聚出两个类。</p>
+<p>K均值是一个迭代方法，它要做两件事情：</p>
+<ul>
+<li>第一是<strong>簇分配</strong>。</li>
+<li>第二个是<strong>移动聚类中心</strong>。</li>
+</ul>
+<p>接下来介绍这两个步骤具体是在做什么。</p>
+<h3 id="K-Means-第一步：簇分配"><a href="#K-Means-第一步：簇分配" class="headerlink" title="K-Means 第一步：簇分配"></a>K-Means 第一步：簇分配</h3><p>在K均值算法的每次循环中，第一步是要进行<strong>簇分配</strong>。这就是说，我要遍历所有的样本（就是图上所有的绿色的点），然后依据每一个点是更接近红色的这个中心、还是蓝色的这个中心，来将每个数据点分配到两个不同的聚类中心中。</p>
+<p>具体来讲，就是对数据集中的所有点，依据他们更接近红色这个中心、还是蓝色这个中心，进行染色。染色之后的结果如图所示：</p>
+<p><img src="/img/17_04_20/008.png"></p>
+<p>以上就是簇分配的步骤。</p>
+<h3 id="K-Means-第二步：移动聚类中心"><a href="#K-Means-第二步：移动聚类中心" class="headerlink" title="K-Means 第二步：移动聚类中心"></a>K-Means 第二步：移动聚类中心</h3><p>K均值的另一部分，是要<strong>移动聚类中心</strong>。</p>
+<p>具体的操作方法是这样的：我们将两个聚类中心（也就是红色的叉和蓝色的叉）移动到和它一样颜色的那堆点的均值处。</p>
+<p>那么我们要做的是找出所有红色的点，计算出它们的均值位置，然后我们就把红色点的聚类中心移动到这里。对蓝色的点也同样计算平均位置，然后移动蓝色聚类中心到该平均位置处。</p>
+<p><img src="/img/17_04_20/009.png"></p>
+<h3 id="K-Means-第三步：重复执行上面两步"><a href="#K-Means-第三步：重复执行上面两步" class="headerlink" title="K-Means 第三步：重复执行上面两步"></a>K-Means 第三步：重复执行上面两步</h3><p>然后我们就会进入下一个<strong>簇分配</strong>。我们重新检查所有没有标签的样本，依据它离红色中心还是蓝色中心更近一些，重新将它染成红色或是蓝色。</p>
+<p><img src="/img/17_04_20/010.png"></p>
+<p>然后我们再次<strong>移动聚类中心</strong>。计算蓝色点的均值，以及红色点的均值，然后移动两个聚类中心：</p>
+<p><img src="/img/17_04_20/011.png"></p>
+<p>然后再做一遍<strong>簇分配</strong>和<strong>移动聚类中心</strong>操作：</p>
+<p><img src="/img/17_04_20/012.png"></p>
+<p>实际上，如果你从这一步开始，一直迭代下去，聚类中心是不会变的；并且 那些点的颜色也不会变。在这时，我们就能说<strong>K均值方法已经收敛了</strong>。</p>
+<h3 id="K-Means的规范化描述"><a href="#K-Means的规范化描述" class="headerlink" title="K-Means的规范化描述"></a>K-Means的规范化描述</h3><p>我们来用更加规范的格式描述K均值算法。</p>
+<p>K均值算法接受两个输入：</p>
+<ul>
+<li>第一个是参数$K$，表示你想从数据中聚类出的簇的个数。</li>
+</ul>
+<blockquote>
+<p>稍后会讲到选择$K$的方法</p>
+</blockquote>
+<ul>
+<li>第二个输入参数是训练集$｛x^{(1)},x^{(2)},…,x^{(m)}｝$</li>
+</ul>
+<blockquote>
+<p>因为这是非监督学习，我们的数据集中不需要$y$，同时在非监督学习的 K均值算法里，我们约定$x^{(i)}$是一个$n$维向量，这就是“训练样本是$n$维而不是$n+1$维”的原因（按照惯例，排除$x_0=1$这一项）。</p>
+</blockquote>
+<p><strong>K均值算法：</strong></p>
+<p><img src="/img/17_04_20/013.png"></p>
+<ul>
+<li><p>第一步：随机初始化$K$个<strong>聚类中心</strong>，记作$μ_1$,$μ_2$一直到$μ_K$。 </p>
+</li>
+<li><p>第二步：</p>
+<ul>
+<li>K均值内部循环执行以下步骤：<ul>
+<li><p>簇分配</p>
+<p> 首先对于每个训练样本，我们用变量$c^{(i)}$表示$K$个聚类中心中最接近$x^{(i)}$的那个中心的下标（具体的类别），这就是簇分配。</p>
+<blockquote>
+<p>大写的$K$表示所有聚类中心的个数，小写的$k$则表示某个聚类中心的下标。</p>
+</blockquote>
+<p>  我们希望的是：<strong>在所有K个中心中，找到一个$k$使得$x_i$到$μ_k$的距离是$x^{(i)}$到所有的聚类中心的距离中最小的那个</strong>，这就是计算$c_i$的方法。</p>
+<p>  这里还有另外的表示$c_i$的方法：我用<strong>范数</strong>的形式$||x^{(i)}-μ_k||$来表示，这是第$i$个训练样本到聚类中心$μ_k$的距离。</p>
+<p>  接下来我要做的是找出$k$的值，让这个式子$||x^{(i)}-μ_k||$最小，然后将 $c^{(i)}$ 赋值为$k$。</p>
+<p>  出于惯例，人们更喜欢用距离的平方$||x^{(i)}-μ_k||^2$来表示$x^{(i)}$距聚类中心$μ_k$的距离。所以我们可以认为 $c^{(i)}$ 的类别是属于距样本$x^{(i)}$的距离的平方最小的那个聚类中心的。 当然使距离的平方最小或是距离最小，都能让我们得到相同的$c^{(i)}$，但是我们通常还是使用距离的平方，因为这是约定俗成的。</p>
+</li>
+<li><p>移动聚类中心</p>
+<p>  对于每个聚类中心：$k$从1循环到$K$，将$μ_k$赋值为这个簇的均值。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>举个栗子：</strong></p>
+<p>某一个聚类中心，比如说是$μ_2$被分配了一些训练样本：1,5,6,10 这个表明$c^{(1)}=2$，$c^{(5)}=2$，$c^{(6)}=2$，$c^{(10)}=2$。如果我们从<strong>簇分配</strong>那一步得到了这些结果，这表明，样本1,5,6,10被分配给了聚类中心2；然后在移动聚类中心这一步中，我们计算出这四个的平均值，即计算$x_{(1)}+x_{(5)}+x_{(6)}+x_{(10)}$，然后计算它们的平均值。这时$μ_2$就是一个$n$维的向量，因为$x^{(1)}$，$x^{(5)}$，$x^{(6)}$，$x^{(10)}$ 都是$n$维的向量。这样聚类中心$μ_2$的移动就结束了。</p>
+<h3 id="异常情况"><a href="#异常情况" class="headerlink" title="异常情况"></a>异常情况</h3><p>现在，我要问的问题是：</p>
+<p>既然我们要让$μ_k$移动到分配给它的那些点的均值处，那么如果存在一个没有点分配给它的聚类中心，那怎么办? </p>
+<p>通常在这种情况下，我们就直接移除那个聚类中心。如果这么做了，最终将会得到$K-1$个簇，而不是$K$个簇。</p>
+<p>但如果你就是需要$K$个簇，尽管存在没有点分配给它的聚类中心，你所要做的是，重新随机找一个聚类中心。（但是直接移除那个中心，是更为常见的方法。不过在实际过程中，这个问题不会经常出现。）</p>
+<hr>
+<p>在这个视频结束之前，我还想告诉你<strong>K均值算法</strong>的另外一个常见应用：**应对没有很好分开的簇(non-separated clusters)**。</p>
+<p>到目前为止，我们的K均值算法都是基于一些像图中所示的数据：</p>
+<p><img src="/img/17_04_20/014.png"></p>
+<p>有很好的隔离开来的三个簇，但是事实情况是，K均值经常会用于一些这样的数据：</p>
+<p><img src="/img/17_04_20/015.png"></p>
+<p>看起来并没有很好的分开几个簇。</p>
+<p>这是一个关于T恤的大小的应用的例子。假设你是T恤制造商，你找到了一些人，想把T恤卖给他们，然后你搜集了一些这些人的身高和体重的数据。我猜，身高体重更重要一些。然后你可能收集到了上图中一些关于人们身高和体重的样本，然后你想确定一下T恤的大小。</p>
+<p>假设我们要设计三种不同大小的t恤：小号、中号、和大号，那么小号应该是多大的?中号呢?大号呢?</p>
+<p>使用K均值算法进行聚类，是一种解决这个问题的方法。就像我展示的那样，而且K均值可能将这些数据聚成三个簇：</p>
+<p><img src="/img/17_04_20/016.png"></p>
+<p>所以说，尽管这些数据原本看起来并没有三个分开的簇，但是从某种程度上讲，K均值仍然能将数据分成几个类。你能做的就是看这第一群人，然后查看他们的身高和体重，试着去设计对这群人来说比较合身的小号衣服；以及设计一个中号的衣服；设计一个大号的衣服。</p>
+<p>这就是一种<strong>市场细分</strong>的例子。当你用K均值方法将你的市场分为三个不同的部分，你就能够区别对待你三类不同的顾客群体，从而更好的适应他们不同的需求。就像大、中、小，三种不同大小的衣服那样。</p>
+<p><img src="/img/17_04_20/017.png"></p>
+<p>这就是K均值算法，而且你现在应该已经知道如果去实现，K均值算法并且利用它解决一些问题。在下面的视频中，我想把K均值算法 研究的更深入一些，然后讨论一下如何能让K均值表现得更好一些的问题。</p>
+<h2 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/G6QWt/optimization-objective">视频地址</a></p>
+<p>在大多数我们已经学到的<strong>监督学习</strong>算法中(例如线性回归，逻辑回归，以及更多的算法）都有一个优化目标函数，即需要通过算法进行最小化的代价函数。</p>
+<p>事实上，<strong>K均值</strong>也有这样一个<strong>优化目标函数</strong>（或者说是代价函数）。</p>
+<p>了解和使用这个<strong>K均值</strong>的优化目标函数有两方面的目的：</p>
+<ul>
+<li>首先这将能帮助我们调试学习算法，确保K均值算法是在正确运行中。</li>
+<li>第二个也是最重要的一个目的是，<strong>K均值</strong>优化目标函数将帮助我们找到更好的簇，并且避免局部最优解。（后面会讲到）</li>
+</ul>
+<hr>
+<p>另外顺便提一下，当K均值正在运行时，我们将对两组变量进行跟踪：</p>
+<p>首先是$c^{(i)}$:</p>
+<p>$$<br>c^{(i)}=表示 K 个聚类中心中最接近x^{(i)}的那个中心的索引（即当前样本x^{(i)}所归为的那个簇的索引）<br>$$</p>
+<p>其次是$μ_k$:</p>
+<p>$$<br>μ_k=表示 第k个簇的聚类中心 （μ_k\in R^n）<br>$$</p>
+<p>顺便再提一句，K均值中我们用大写$K$来表示<strong>簇的总数</strong>，用小写$k$来表示<strong>聚类中心的序号</strong>。因此，小写$k$的范围如下：</p>
+<p>$$<br>k\in｛1,2,…,K｝<br>$$</p>
+<p>除此以外，还有另一个符号，我们用$μ_c^{(i)}$：</p>
+<p>$$<br>μ_c^{(i)}=表示x^{(i)}所属的那个簇的聚类中心<br>$$</p>
+<p>举个例子来解释：</p>
+<p>假如说$x^{(i)}$被划为了第5个簇，这就是说$x^{(i)}$被分配到了第5个簇，也就是$c^{(i)}=5$。因此$μ_c^{(i)}=μ_5$。所以这里的 $μ_c^{(i)}$就是第5个簇的聚类中心。</p>
+<p>而也正是我的样本$x^{(i)}$所属的第5个簇有了这样的符号表示，现在我们就能写出K均值聚类算法的优化目标了。</p>
+<h3 id="K均值的代价函数"><a href="#K均值的代价函数" class="headerlink" title="K均值的代价函数"></a>K均值的代价函数</h3><p>以下便是K均值算法需要最小化的<strong>代价函数</strong>：</p>
+<p>$$<br>J(c^{(1)},…,c^{(m)},μ_1,…,μ_K)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-μ_c^{(i)}||^2<br>$$</p>
+<p>代价函数$J$的参数$c^{(1)},…,c^{(m)}$以及$μ_1,…,μ_K$，随着算法的执行过程，这些参数将不断变化。</p>
+<p>函数的右边给出了优化目标，即每个样本$x^{(i)}$到它所属的聚类中心距离的平方值。$x^{(i)}$就是训练样本的位置，$μ_c^{(i)}$是$x^{(i)}$样本所属的聚类中心的位置。</p>
+<p>例如:</p>
+<p><img src="/img/17_04_20/018.png"></p>
+<p>如图，图中$x^{(i)}$样本被划分到了$μ_5$这个聚类中心，那么$||x^{(i)}-μ_c^{(i)}||^2$这个距离的平方，也就是在求样本点$x^{(i)}$到$μ_5$之间的距离的平方。</p>
+<hr>
+<p>K均值的目标就是要最小化代价函数：</p>
+<p>$$<br>\min\limits_{c^{(1)},…,c^{(m)},\\μ_1,…,μ_K}<br>J(c^{(1)},…,c^{(m)},μ_1,…,μ_K)<br>$$</p>
+<p>在K均值算法中，有时候也叫做**失真代价函数(distortion cost function)**。</p>
+<hr>
+<p>现在，我们已经理解了K均值算法的原理就是最小化代价函数$J$的过程。我们也可以用这个原理，来试着调试我们的学习算法，保证我们对K均值算法的实现过程是正确的。</p>
+<p>在下一节视频中，我们将一起看看如何帮助K均值找到更好的簇，同时避免局部最优解。</p>
+<h2 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/drcBh/random-initialization">视频地址</a></p>
+<blockquote>
+<p>在本节课中，我们讨论一下如何初始化K均值聚类方法。</p>
+<p>更重要的是，这将引导我们讨论<strong>如何避开局部最优来构建K均值聚类方法</strong>。</p>
+</blockquote>
+<p>对于我们之前讨论过的K均值聚类算法：</p>
+<p><img src="/img/17_04_20/019.png"></p>
+<p>其中我们之前没有讨论得太多的是这一步：</p>
+<p><img src="/img/17_04_20/020.png"></p>
+<p>即随机初始化聚类中心$μ_1,μ_2,…,μ_{K} \in R^n$。</p>
+<p>如何初始化聚类中心这一步，有几种不同的方法可以用来随机初始化聚类中心。但是，事实证明，有一种可能是效果最好的方法。接下来我就将这个方法介绍给你。</p>
+<hr>
+<p>这里展示了我通常是如何初始化我的聚类中心的。</p>
+<ul>
+<li><p>1.确保$K&lt;m$</p>
+<ul>
+<li>当运行K均值方法时，你需要有一个聚类中心数值$K$，$K$值要比训练样本的数量$m$小，即$K&lt;m$。</li>
+</ul>
+</li>
+<li><p>2.随机初始化</p>
+<ul>
+<li>随机挑选$K$个训练样本，然后我要做的是设定$μ_1,…,μ_k$让它们等于这$K$个样本。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>下面用一个具体例子来说明：</p>
+<p>我们假设$K=2$，那么我们就需要找到两个聚类中心。为了初始化聚类中心，我要做的是随机挑选几个样本。比如说，我挑选了下面这两个点作为聚类中心：</p>
+<p><img src="/img/17_04_20/021.png"></p>
+<p>此时的这个例子看起来划分的相当不错，但是有时候我可能不会那么幸运。也许我最后会挑选到下面这样的两个点作为聚类中心：</p>
+<p><img src="/img/17_04_20/022.png"></p>
+<p>通过对上面两种初始化情况的对比，你可能会猜到K均值算法在它们两种情况下，会得到不同的结果。这取决于聚类簇的随机初始化方法。K均值方法最后可能得到不同的结果，尤其是如果K均值方法落在局部最优的时候。</p>
+<p>如果给你一些这样的数据：</p>
+<p><img src="/img/17_04_20/023.png"></p>
+<p>这看起来好像有3个聚类：</p>
+<p><img src="/img/17_04_20/024.png"></p>
+<p>那么，如果你运行K均值方法，如果它最后得到一个局部最优，这可能是真正的全局最优，你可能会得到这样的聚类结果：</p>
+<p><img src="/img/17_04_20/025.png"></p>
+<p>但是如果你运气特别不好，随机初始化K均值方法也可能会卡在不同的局部最优上面：</p>
+<p><img src="/img/17_04_20/026.png"></p>
+<p>对于左边的这种情况，相当于将左下方和上方的样本分为了一类，将右下方的样本分了两类：</p>
+<p><img src="/img/17_04_20/027.png"></p>
+<p>对于右边的这种情况，相当于将下面的样本整体的分为了一类，将上方的样本分为了两类。</p>
+<p>因此，如果你担心K均值方法会遇到上面这种局部最优的问题，并且你想提高K均值方法找到最有可能的聚类的几率的话，我们能做的就是尝试多次随机的初始化，而不是仅仅初始化一次K均值方法就希望它会得到很好的结果。</p>
+<p>我们能做的是：<strong>初始化K均值很多次，并运行K均值方法很多次，通过多次尝试来保证我们最终能得到一个足够好的结果。一个尽可能局部或全局最优的结果。</strong></p>
+<p>这才是正确的随机初始化聚类中心的方法。</p>
+<h3 id="具体介绍"><a href="#具体介绍" class="headerlink" title="具体介绍"></a>具体介绍</h3><p>具体来说，假如我决定运行K均值方法一百次，那么我就需要执行这个循环100次。这是一个相当典型的次数数字，有时会是从50到1000之间的数字。</p>
+<p>假设说有决定运行K均值方法100次，那么这就意味着我们要随机初始化K均值方法100次。对于这100次随机初始化的每一次，我们都需要运行K均值方法。我们会得到一系列聚类结果和一系列聚类中心之后，我们可以计算<strong>失真函数</strong>$J$。用我们得到的这些聚类结果和聚类中心来计算这样一个结果函数。</p>
+<p>完成整个100次迭代之后，你会得到这100种聚类数据的这些方法。最后你要做的是，在所有这100种用于聚类的方法中，选取能够给我们代价最小的一个，给我们最低畸变值的一个。</p>
+<p>事实证明，如果你运行K均值方法时，所用的聚类数相当小。比如聚类数是从2到10之间的任何数的话，做多次的随机初始化，通常能够保证你能有一个较好的局部最优解，保证你能找到更好的聚类数据。但是如果K非常大的话，比如K比10大很多，就不太可能会有太大的影响。事实上，这种情况下有可能你的第一次随机初始化就会给你相当好的结果。</p>
+<p>做多次随机初始化可能会给你稍微好一点的结果，但是不会好太多。但是在这样一个聚类数相对较小的体系里，特别是如果你有2个或者3个或者4个聚类的话，随机初始化会有较大的影响。可以保证你在最小化失真函数的时候，得到一个很小的值。并且能得到一个很好的聚类结果。</p>
+<p>这就是K均值的随机初始化的方法。</p>
+<h2 id="选择簇的数量"><a href="#选择簇的数量" class="headerlink" title="选择簇的数量"></a>选择簇的数量</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/Ks0E9/choosing-the-number-of-clusters">视频地址</a></p>
+<blockquote>
+<p>在本节中，我想讨论一下K-均值聚类的最后一个细节，就是确定聚类的数目，即如何去选择$K$的值。</p>
+<p>说实话，这个问题没有一个非常标准的解答。目前用来决定聚类数目的最常用的方法，仍然是通过看可视化的图，或者看聚类算法的输出结果，或者其他一些东西来手动地决定聚类的数目。</p>
+<p>但是，我确实经常被别人问到这样的问题：“你是如何来选择聚类的数目的？” 我只能告诉你一些人们现在对这个问题的思考，人们现在对这个问题的最为常见的做法，实际上仍是手动选择聚类的数目。</p>
+</blockquote>
+<hr>
+<p>选择聚类的数目可能不总是那么容易，大部分情况下，对于数据集中有多少个聚类中心通常是模棱两可的。</p>
+<p>看到这样一个数据集：</p>
+<p><img src="/img/17_04_20/028.png"></p>
+<p>有些人可能会看到四个聚类，那么这就意味着需要使用$K=4$：</p>
+<p><img src="/img/17_04_20/029.png"></p>
+<p>或者有些人可能会看到两个聚类，这就意味着$K=2$：</p>
+<p><img src="/img/17_04_20/030.png"></p>
+<p>可能其他人会看到3个聚类。</p>
+<p>在我看来它的真实的类别数实际上确实是模棱两可的，所以我并不认为这里有一个正确答案。这就是无监督学习的一部分。没有给我们标签，所以不会总有一个清晰的答案。这就是为什么，做一个能够自动选择聚类数目的算法，是非常困难的原因之一。</p>
+<h3 id="肘部法则-Elbow-Method"><a href="#肘部法则-Elbow-Method" class="headerlink" title="肘部法则 (Elbow Method)"></a>肘部法则 (Elbow Method)</h3><p>当人们讨论选择聚类数目的方法时，可能会提及一个叫做**肘部法则 (Elbow Method)**的方法。现在我来介绍一下它，之后会提及到它的一些优点和缺点。</p>
+<h4 id="肘部法则引入"><a href="#肘部法则引入" class="headerlink" title="肘部法则引入"></a>肘部法则引入</h4><p>那么对于肘部法则，我们所需要做的是改变K的值（也就是聚类类别的总数）。</p>
+<p>我们用K值为1来运行K-均值聚类算法。这就意味着所有的数据都会分到一个类里。然后计算代价函数（或者说计算畸变）$J$，并将其画在这儿：</p>
+<p><img src="/img/17_04_20/031.png"></p>
+<p>然后我们选用两个聚类来运行K-均值聚类算法。可能用了多个随机的初始中心，也可能没用。那么有两个聚类的话，我们很可能得到一个较小的畸变值，把它画在这儿：</p>
+<p><img src="/img/17_04_20/032.png"></p>
+<p>然后用三个聚类来运行K-均值聚类。你很有可能得到更小的畸变值，把它画在这儿：</p>
+<p><img src="/img/17_04_20/033.png"></p>
+<p>之后再让聚类数目等于4、5来运行K-均值聚类，最后我们就能得到一条曲线，它展示了随着聚类数量的增多，畸变值是如何下降的。我们可能会得到一条这样的曲线：</p>
+<p><img src="/img/17_04_20/034.png"></p>
+<p>看到这条曲线，肘部法则会说：“我们来看这个图，这里看起来像是一个很清楚的肘点”。</p>
+<p><img src="/img/17_04_20/035.png"></p>
+<p>这就类比于人的手臂。这就是肘部法则。</p>
+<p>在这里，你会发现这样一种模式：K从1变化到2、再从2到3时，畸变值迅速下降；然后在3的时候，到达一个肘点。此后畸变值就下降得非常慢。这样看起来，也许使用3个类是聚类数目的正确选择。这是因为那个点是曲线的肘点。就是说畸变值快速地下降，直到$K=3$这个点，在这之后就下降得非常慢，那么我们就选$K=3$。</p>
+<h4 id="肘部法则局限性"><a href="#肘部法则局限性" class="headerlink" title="肘部法则局限性"></a>肘部法则局限性</h4><p>当你应用肘部法则的时候，如果你得到了一个像上面这样的图，那么这非常好，这是一种用来选择聚类个数的合理方法。而事实证明肘部法则并不那么常用，其中一个原因是如果你把这种方法用到一个聚类问题上，事实上你最后得到的曲线通常看起来是更加模棱两可的，就像这样：</p>
+<p><img src="/img/17_04_20/036.png"></p>
+<p>如果你看到这条曲线，也许没有一个清晰的肘点，而畸变值像是连续下降的，也许3是一个好选择，也许4是一个好选择，也许5也不差。如果实际情况中，你遇到的肘点的位置并不明确，这使得用这个方法来选择聚类数目变得较为困难。</p>
+<h4 id="肘部法则小结"><a href="#肘部法则小结" class="headerlink" title="肘部法则小结"></a>肘部法则小结</h4><p>简单小结一下肘部法则：它是一个值得尝试的方法，但是我不会期待它在任何问题上都有很高的表现。</p>
+<h3 id="通过下游来决定聚类数量"><a href="#通过下游来决定聚类数量" class="headerlink" title="通过下游来决定聚类数量"></a>通过下游来决定聚类数量</h3><p>最后，有另外一种方法来考虑如何选择K的值。</p>
+<p>通常人们使用K-均值聚类算法是为了某些后面的用途，或者说某种下游的目的。而要求得一些聚类也许你会用K-均值聚类算法来做市场分割。例如我们之前谈论的T恤尺寸的例子，也许你会用K-均值聚类来让电脑的聚类变得更好，或者可能为了某些别的目的学习聚类，等等。如果那个后续下游的目的（比如市场分割）能给你一个评估标准，那么通常来说决定聚类数量的 更好的办法是，看不同的聚类数量能为后续下游的目的提供多好的结果。</p>
+<p>我们来看一个具体的例子：</p>
+<p>我们再看一下T恤尺寸这个例子。我想要决定“我是需要3种T恤尺寸么吗？”</p>
+<p>所以我选择$K=3$。我可能有小号、中号、大号三类T恤，或者我可以选择$K=5$，那么我可能有特小号、小号、中号、大号和特大号尺寸的T恤。所以，你可能有3种、4种或者5种T恤尺寸。</p>
+<p>因此如果我用$K=3$来运行K-均值聚类，我得到的结果可能是这样的：</p>
+<p><img src="/img/17_04_20/037.png"></p>
+<p>然而，果我用$K=5$来运行K-均值聚类的话，我得到的结果可能是这样的：</p>
+<p><img src="/img/17_04_20/038.png"></p>
+<p>这个例子给了我们对于选择聚类数目问题的另一种方法。</p>
+<p>具体来说，你要做的是从T恤生意的角度来思考这个事情，然后问“如果我有5个分段 ，那么我的T恤有多适合我的顾客？那么我的T恤有多适合我的顾客？我可以卖出多少T恤？我的顾客将会有多高兴呢？”</p>
+<p>从T恤生意的角度去考虑，其中真正有意义的是：我是需要更多的T恤尺寸 来更好地满足我的顾客？还是说我需要更少的T恤尺寸，我制造的T恤尺码就更少，我就可以将它们更便宜地卖给顾客？因此T恤的销售业务的观点 可能会提供给你一个决定采用3个类还是5个类的方法。</p>
+<h3 id="簇数量选择-总结"><a href="#簇数量选择-总结" class="headerlink" title="簇数量选择 总结"></a>簇数量选择 总结</h3><p>总结一下：大部分时候聚类数目仍然是通过手动人工输入或我们的洞察力来决定，一种可以尝试的方法是使用肘部法则，使用肘部法则但是我不会总是 期望它能表现得好。选择聚类数目的更好方法是去问一下你运行K-均值聚类是为了什么目的？然后想一想聚类的数目是多少才适合你运行K-均值聚类的后续目的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/04/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(1)%E8%81%9A%E7%B1%BB/" data-id="ckkwc438l009rpas92fxpgaz4" data-title="斯坦福机器学习课程 第八周 (1)聚类" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/26/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91TextRank-%E5%AF%B9%E6%96%87%E6%9C%AC%E6%8E%92%E5%BA%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【翻译】TextRank:对文本排序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/11/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(3)%E4%BD%BF%E7%94%A8SVM/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第七周 (3)使用SVM</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

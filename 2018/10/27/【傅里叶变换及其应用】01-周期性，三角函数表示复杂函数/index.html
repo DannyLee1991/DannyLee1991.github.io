@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="课程视频地址 本质上，傅里叶级数可以看做是用数学的手段研究周期性现象的一门学科。 我们在初中高中学过cos和sin这些三角函数，我们是否可以使用这些三角函数来建模非常广泛的周期性现象呢？这正是这节课需要解决的问题。 如何使用简单的sin(t)，cos(t)来建模复杂的周期性现象？首先，我们这里说的复杂的周期性现象会普遍到什么程度呢？我们希望把这些方法应用在普遍的条件下，但是并不是所有的现象都是周期">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数">
+<meta property="og:url" content="http://example.com/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="课程视频地址 本质上，傅里叶级数可以看做是用数学的手段研究周期性现象的一门学科。 我们在初中高中学过cos和sin这些三角函数，我们是否可以使用这些三角函数来建模非常广泛的周期性现象呢？这正是这节课需要解决的问题。 如何使用简单的sin(t)，cos(t)来建模复杂的周期性现象？首先，我们这里说的复杂的周期性现象会普遍到什么程度呢？我们希望把这些方法应用在普遍的条件下，但是并不是所有的现象都是周期">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/18_10_27/002.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/007.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/008.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/009.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/010.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/011.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/012.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/013.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/014.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/015.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/016.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/017.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/018.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/019.png">
+<meta property="og:image" content="http://example.com/img/18_10_27/020.png">
+<meta property="article:published_time" content="2018-10-27T17:03:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="斯坦福大学公开课">
+<meta property="article:tag" content="傅里叶变换">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/18_10_27/002.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/" class="article-date">
+  <time class="dt-published" datetime="2018-10-27T17:03:58.000Z" itemprop="datePublished">2018-10-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a>►<a class="article-category-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://open.163.com/movie/2008/2/C/G/M7Q4BLENR_M7QBP61CG.html">课程视频地址</a></p>
+<p>本质上，傅里叶级数可以看做是<strong>用数学的手段研究周期性现象</strong>的一门学科。</p>
+<p>我们在初中高中学过cos和sin这些三角函数，我们是否可以使用这些三角函数来建模非常广泛的周期性现象呢？这正是这节课需要解决的问题。</p>
+<h3 id="如何使用简单的sin-t-，cos-t-来建模复杂的周期性现象？"><a href="#如何使用简单的sin-t-，cos-t-来建模复杂的周期性现象？" class="headerlink" title="如何使用简单的sin(t)，cos(t)来建模复杂的周期性现象？"></a>如何使用简单的sin(t)，cos(t)来建模复杂的周期性现象？</h3><p>首先，我们这里说的<strong>复杂的周期性现象</strong>会普遍到什么程度呢？我们希望把这些方法应用在普遍的条件下，但是并不是所有的现象都是周期性的（其实甚至在一些周期性的现象中，这个假定也未必行得通）。所以，<strong>并不是所有的现象都试用这个方法</strong>。</p>
+<p>其实现实生活中的现象，最终都会结束，我们只观察某一个特定时间段的现象。而数学函数，比如正余弦函数，都是无始无终的。那么如何用它们来描述那些会结束的现象呢？</p>
+<p>在面对实际的现象时，比如下面这种现象：</p>
+<img src=/img/18_10_27/001.png width="500" hegiht="313" align=center />
+
+<p>只存在于一个有限的时间段内，画出一个这样的信号。这并不是一个周期现象，但如果我们重复绘制这个图像，就可以强制使其成为周期性的函数了。</p>
+<p><img src="/img/18_10_27/002.png"></p>
+<p>或许我们只是对其中的一部分感兴趣，但对于数学分析，如果使其具有周期性，就对所有的都适用了。这个过程叫做<strong>信号的周期化（periodization of a signal）</strong>。它可以用于研究非周期性信号。</p>
+<h4 id="信号周期化"><a href="#信号周期化" class="headerlink" title="信号周期化"></a>信号周期化</h4><p>我们通常把周期函数的周期设定为1，这样更加方便。因此函数$f(t)$需要满足：</p>
+<ul>
+<li>对任何$t$均有$f(t+1)=f(t)$，</li>
+</ul>
+<p>因此我们的信号模型可以表示为：</p>
+<p>$$sin(2πt) \tag{1-1} $$    </p>
+<p>以及</p>
+<p>$$cos(2πt) \tag{1-2}$$</p>
+<p><strong><em>如果我们知道一个周期为1的周期性函数在任意一个单位为1的时间间隔内的形式，那么我们就可以知道整个函数了。</em></strong></p>
+<h4 id="生成复杂的周期函数"><a href="#生成复杂的周期函数" class="headerlink" title="生成复杂的周期函数"></a>生成复杂的周期函数</h4><p>那么我们如何用简单的sin和cos函数来表示各种复杂的周期现象呢？</p>
+<p>事实上，我们可以通过对$sin(2πt)$和$cos(2πt)$进行变换和相加的方式来得到相当普遍的周期为1的周期函数。</p>
+<h5 id="对正余弦函数进行变换"><a href="#对正余弦函数进行变换" class="headerlink" title="对正余弦函数进行变换"></a>对正余弦函数进行变换</h5><p>下图是$sin(2πt)$的函数图像，其周期为1，频率为1：</p>
+<img src=/img/18_10_27/003.png width="500" hegiht="313" align=center />
+
+<p>经过变换之后，$sin(4πt)$的函数图像如下，其周期为$1/2$，频率为2：</p>
+<img src=/img/18_10_27/004.png width="500" hegiht="313" align=center />
+
+<blockquote>
+<p>其实你也可以说他的周期是1。因为一秒之内它经历了两个完整的周期，你可以把这两个完整的周期看做一个周期，图形在整个坐标轴上一直在重复这个原始信号。</p>
+</blockquote>
+<p>再次变换之后，$sin(6πt)$的函数图像如下，其周期为$1/3$，频率为3：</p>
+<img src=/img/18_10_27/005.png width="500" hegiht="313" align=center />
+
+<blockquote>
+<p>同样，也可以把它看做周期是1。</p>
+</blockquote>
+<h5 id="对正余弦函数进行合并"><a href="#对正余弦函数进行合并" class="headerlink" title="对正余弦函数进行合并"></a>对正余弦函数进行合并</h5><p>现在把上面的三个函数合并：</p>
+<p>$$<br>y=sin(2πt) + sin(4πt) + sin(6πt)<br>$$</p>
+<p>其效果如下：</p>
+<img src=/img/18_10_27/006.png width="300" hegiht="313" align=center />
+
+<p>组合之后的函数周期为1，它由3个不同频率的周期函数组成，频率分布为1，2，3。但把它们组合起来之后，却只有一个周期：周期为1。</p>
+<p>我们不仅可以改变频率，也可以单独改变幅度，并且可以改变其中每一个的相位。</p>
+<h4 id="表示一个复杂的周期函数的几种方式"><a href="#表示一个复杂的周期函数的几种方式" class="headerlink" title="表示一个复杂的周期函数的几种方式"></a>表示一个复杂的周期函数的几种方式</h4><h5 id="最基本的形式"><a href="#最基本的形式" class="headerlink" title="最基本的形式"></a>最基本的形式</h5><p>一个复杂的周期为1的信号，可以通过变换一系列的正余弦函数的<strong>频率</strong>、<strong>幅度</strong>和<strong>相位</strong>，然后将它们<strong>加起来</strong>，来得到。</p>
+<p>$$<br>y=\sum_{k=1}^N A_ksin(2πkt+φ_k) \tag{1-3}<br>$$</p>
+<p>这是表示一个复杂周期的<strong>最一般</strong>的形式。</p>
+<h5 id="利用和角公式来表示"><a href="#利用和角公式来表示" class="headerlink" title="利用和角公式来表示"></a>利用和角公式来表示</h5><p>正余弦和角公式：</p>
+<p>$$<br>sin(2πkt+φ_k)=sin(2πkt) + cosφ_k + cos(2πkt) + sinφ_k<br>\tag{1-4}<br>$$ </p>
+<p>因此我们可以将上面的公式$(1-3)$展开成以下形式：</p>
+<p>$$<br>\begin{align*}<br>y&amp;=\sum_{k=1}^N A_k(sin(2πkt) + cosφ_k + cos(2πkt) + sinφ_k)\\<br>&amp;=\sum_k^N  (a_kcos(2πkt)+b_ksin(2πkt))<br>\tag{1-5}<br>\end{align*}<br>$$</p>
+<p>这里的$a_k$和$b_k$是由A计算出的。</p>
+<h5 id="加一个常数项的形式（直流分量形式）"><a href="#加一个常数项的形式（直流分量形式）" class="headerlink" title="加一个常数项的形式（直流分量形式）"></a>加一个常数项的形式（直流分量形式）</h5><p>$$<br>y = \frac{a_0}{2} + \sum_{k=1}^N  (a_kcos(2πkt)+b_ksin(2πkt))<br>\tag{1-6}<br>$$</p>
+<p>这里的$\frac{a_0}{2}$是一个常数项，电器工程师常称之为<strong>直流分量(dc component)**。因为电器工程师在研究交流电或直流电的过程中，发现有一部分是不随着周期发生改变的，这一部分称之为</strong>直流分量**。</p>
+<h5 id="复指数的表示形式"><a href="#复指数的表示形式" class="headerlink" title="复指数的表示形式"></a>复指数的表示形式</h5><p>上面几种都是比较常用的一些用于表示一个复杂信号的表示形式。但是迄今为止，最方便使用的还是用<strong>复指数</strong>的形式来表示：</p>
+<p>$$<br>e^{2πkt}=cos(2πkt) + i*sin(2πkt)<br>\tag{1-7}<br>$$</p>
+<p>在这里$i$的值为：</p>
+<p>$$<br>i=\sqrt{-1}<br>\tag{1-8}<br>$$</p>
+<p>根据著名的<strong>欧拉公式</strong>，我们可以用复指数的形式来表示正余弦函数，其中$cos$是实部，$sin$是虚部：</p>
+<p>$$<br>cos(2πkt)=\frac{e^{2πikt}+e^{-2πikt}}{2}<br>\\<br>sin(2πkt)=\frac{e^{2πikt}-e^{-2πikt}}{2i}<br>\tag{1-9}<br>$$</p>
+<p>你也可以将上面公式$(1-5)$的三角函数表示的和式的形式写成这种形式：</p>
+<p>$$<br>\sum_{k=-n}^n C_ke^{2πikt}<br>\tag{1-10}<br>$$</p>
+<p>在这里$C_k$是复数。</p>
+<blockquote>
+<p><strong>共轭</strong></p>
+<p>对于复数$a + bi$来说，其共轭为$a - bi$。<br>复数$C_k$的共轭表示为$\bar{C_k}$</p>
+<p>另外，如果一个复数等于其自身的共轭意味着什么呢？$C_0=\bar{C_0}$</p>
+<p>这意味着这个数本身是实数。</p>
+</blockquote>
+<p>如果你试着把余弦表示的方式全部转成了复指数的形式，你会发现$C_k$不仅仅是复数，它同时还满足<strong>对称性</strong>。并且由于它的对称性，所以$\sum_{k=-n}^n C_k $的总和为实数。</p>
+<p>即：$ C_{-k} $等于$C_k$的共轭：</p>
+<p>$$<br>C_-k=\bar{C_k}<br>\tag{1-11}<br>$$</p>
+<p>这是一条重要的性质。</p>
+<p>反过来，如果和式的系数满足对称性，那么总和就应该是实数。这是因为可以把所有项分成正项和负项两组，并且由于$(1-11)$的对称关系，复数和复数的共轭的和结果是实数，可以得出这个结论。</p>
+<h4 id="我们生成的复杂的周期函数，其普遍性有多强？"><a href="#我们生成的复杂的周期函数，其普遍性有多强？" class="headerlink" title="我们生成的复杂的周期函数，其普遍性有多强？"></a>我们生成的复杂的周期函数，其普遍性有多强？</h4><p>$f(t)$是周期为1的周期函数，我们可以把$f(t)$写成$(1-10)$那种形式吗？</p>
+<p>$$<br>f(t)=\sum_{k=-n}^n C_ke^{2πikt}<br>\tag{1-12}<br>$$</p>
+<p>换句话说，一个周期为1的复杂的周期函数，我们能用正余弦函数通过叠加变化以及组合来生成出来吗？</p>
+<h5 id="假设我们能做到"><a href="#假设我们能做到" class="headerlink" title="假设我们能做到"></a>假设我们能做到</h5><p>假设我们可以做到用$(1-12)$来表示所有复杂的周期为1的周期函数，那么对于未知系数$C_k$我们如何求得呢？</p>
+<p>以下是求$C_k$的过程：</p>
+<p>$$<br>\begin{align*}<br>f(t)&amp;=\sum_{k=-n}^n C_ke^{2πikt}\\<br>&amp;=…+C_km^{2πikt}+…<br>\end{align*}<br>$$</p>
+<p><img src="/img/18_10_27/007.png"></p>
+<p>两边同时乘以$e^{-2\pi imt}$：</p>
+<p><img src="/img/18_10_27/008.png"></p>
+<p><img src="/img/18_10_27/009.png"></p>
+<p>然后对两边同时求积分，积分区间是0到1，因为我们的频率是1：</p>
+<p><img src="/img/18_10_27/010.png"></p>
+<p>由于：</p>
+<p><img src="/img/18_10_27/011.png"></p>
+<p>所以：</p>
+<p><img src="/img/18_10_27/012.png"></p>
+<p><img src="/img/18_10_27/013.png"></p>
+<p>其中：</p>
+<p><img src="/img/18_10_27/014.png"></p>
+<p><img src="/img/18_10_27/015.png"></p>
+<p><img src="/img/18_10_27/016.png"></p>
+<p><img src="/img/18_10_27/017.png"></p>
+<p>这里的:</p>
+<p><img src="/img/18_10_27/018.png"></p>
+<p>是一个整数，就像$sin(2π)$乘以一个整数，这个整数是1，所以这里的结果是0。</p>
+<p><img src="/img/18_10_27/019.png"></p>
+<p>所以我们的$C_m$可以得到下面的结果：</p>
+<p><img src="/img/18_10_27/020.png"></p>
+<p>期初我们设定$f(t)$是已知的，所以我们就可以求得$C_m$了。</p>
+<hr>
+<p>**结论:**给定周期为1的周期函数$f(t)$，如果能把$f(t)$写成和式的形式：$f(t)=\sum_{k=-n}^nC_ke^{2\pi ikt}$，那么溪水会按照这个公式给出，其中$C_k=\int_0^{1}e^{-2\pi ikt}f(t)dt$。</p>
+<p>下节课我们将介绍，我们得到的这些参数，将带来什么意义。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/" data-id="ckkwc436w0057pas91sgv0a5q" data-title="【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【傅里叶变换及其应用讲义】第一章 傅里叶级数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NumPy入门教程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

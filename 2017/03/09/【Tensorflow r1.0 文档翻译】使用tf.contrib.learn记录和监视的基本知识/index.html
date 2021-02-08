@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在训练模型时，实时跟踪和评估进度通常很有价值。在本教程中，您将学习如何使用TensorFlow的日志记录功能和Monitor API来审计用于分类鸢尾花的神经网络分类器的正在进行中的训练。本教程基于在tf.contrib.learn快速入门中开发的代码，所以如果你还没有完成该教程，你可能想先探索它， 特别是如果你正在寻找一个tf.contrib.learn基础介绍&#x2F;复习文章时。 创建在本教程中，你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识">
+<meta property="og:url" content="http://example.com/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在训练模型时，实时跟踪和评估进度通常很有价值。在本教程中，您将学习如何使用TensorFlow的日志记录功能和Monitor API来审计用于分类鸢尾花的神经网络分类器的正在进行中的训练。本教程基于在tf.contrib.learn快速入门中开发的代码，所以如果你还没有完成该教程，你可能想先探索它， 特别是如果你正在寻找一个tf.contrib.learn基础介绍&#x2F;复习文章时。 创建在本教程中，你">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_03_07/031.png">
+<meta property="article:published_time" content="2017-03-09T00:07:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="Tensorflow">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_03_07/031.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2017-03-09T00:07:58.000Z" itemprop="datePublished">2017-03-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>►<a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在训练模型时，实时跟踪和评估进度通常很有价值。在本教程中，您将学习如何使用TensorFlow的日志记录功能和<code>Monitor</code> API来审计用于分类鸢尾花的神经网络分类器的正在进行中的训练。本教程基于在<a href="/2017/03/05/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E3%80%90tf.contrib.learn%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E3%80%91/">tf.contrib.learn快速入门</a>中开发的代码，所以如果你还没有完成该教程，你可能想先探索它， 特别是如果你正在寻找一个tf.contrib.learn基础介绍/复习文章时。</p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>在本教程中，你将在从<a href="/2017/03/05/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E3%80%90tf.contrib.learn%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E3%80%91/">tf.contrib.learn快速入门</a>中的下面的代码来进行构建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">from __future__ import absolute_import</span><br><span class="line">from __future__ import division</span><br><span class="line">from __future__ import print_function</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line"># Data sets</span><br><span class="line">IRIS_TRAINING &#x3D; os.path.join(os.path.dirname(__file__), &quot;iris_training.csv&quot;)</span><br><span class="line">IRIS_TEST &#x3D; os.path.join(os.path.dirname(__file__), &quot;iris_test.csv&quot;)</span><br><span class="line"></span><br><span class="line">def main(unused_argv):</span><br><span class="line">    # Load datasets.</span><br><span class="line">    training_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">        filename&#x3D;IRIS_TRAINING, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line">    test_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">        filename&#x3D;IRIS_TEST, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line"></span><br><span class="line">    # Specify that all features have real-value data</span><br><span class="line">    feature_columns &#x3D; [tf.contrib.layers.real_valued_column(&quot;&quot;, dimension&#x3D;4)]</span><br><span class="line"></span><br><span class="line">    # Build 3 layer DNN with 10, 20, 10 units respectively.</span><br><span class="line">    classifier &#x3D; tf.contrib.learn.DNNClassifier(feature_columns&#x3D;feature_columns,</span><br><span class="line">                                                hidden_units&#x3D;[10, 20, 10],</span><br><span class="line">                                                n_classes&#x3D;3,</span><br><span class="line">                                                model_dir&#x3D;&quot;&#x2F;tmp&#x2F;iris_model&quot;)</span><br><span class="line"></span><br><span class="line">    # Fit model.</span><br><span class="line">    classifier.fit(x&#x3D;training_set.data,</span><br><span class="line">                   y&#x3D;training_set.target,</span><br><span class="line">                   steps&#x3D;2000)</span><br><span class="line"></span><br><span class="line">    # Evaluate accuracy.</span><br><span class="line">    accuracy_score &#x3D; classifier.evaluate(x&#x3D;test_set.data,</span><br><span class="line">                                         y&#x3D;test_set.target)[&quot;accuracy&quot;]</span><br><span class="line">    print(&#39;Accuracy: &#123;0:f&#125;&#39;.format(accuracy_score))</span><br><span class="line"></span><br><span class="line">    # Classify two new flower samples.</span><br><span class="line">    new_samples &#x3D; np.array(</span><br><span class="line">        [[6.4, 3.2, 4.5, 1.5], [5.8, 3.1, 5.0, 1.7]], dtype&#x3D;float)</span><br><span class="line">    y &#x3D; list(classifier.predict(new_samples, as_iterable&#x3D;True))</span><br><span class="line">    print(&#39;Predictions: &#123;&#125;&#39;.format(str(y)))</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">  tf.app.run()</span><br></pre></td></tr></table></figure>
+<p>将上述代码复制到一个文件中，并将相应的<a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/iris_training.csv">训练</a>和<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/test">tf.test</a>数据集下载到同一目录。</p>
+<p>在以下部分中，您将逐步更新上述代码以添加日志记录和监视功能。包含所有更新的最终代码可在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/examples/tutorials/monitors/iris_monitors.py">此处</a>下载。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><a href="/2017/03/05/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E3%80%90tf.contrib.learn%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E3%80%91/">tf.contrib.learn快速入门</a>教程中通过如何实现一个神经网络分类器实现了将鸢尾花的样本分为三种类型之一。</p>
+<p>但是，当运行本教程的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/monitors#setup">代码</a>时，输​​出并不包含日志记录跟踪模型训练如何进行 - 仅包含打印语句的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Accuracy: 0.933333</span><br><span class="line">Predictions: [1 2]</span><br></pre></td></tr></table></figure>
+<p>没有任何日志记录，模型训练感觉就像一个黑盒子;你不能看到发生了什么，因此TensorFlow通过逐步的梯度下降，了解模型是否适当的收敛、或者确定是否可以提前停止训练是有必要的。</p>
+<p>解决这个问题的一种方法是将模型训练分成具有较少步骤的多个<code>fit</code>(拟合)调用，以便逐步评估准确性。然而，这不是推荐的做法，因为它大大减慢了模型的训练过程。幸运的是，tf.contrib.learn提供了另一个解决方案：一个<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/learn/monitors">Monitor API</a>，旨在帮助您在训练正在进行时记录指标并评估模型。在以下部分中，您将学习如何在TensorFlow中启用日志记录，设置ValidationMonitor进行流评估，以及使用TensorBoard可视化您的度量。</p>
+<h2 id="启用TensorFlow的日志记录"><a href="#启用TensorFlow的日志记录" class="headerlink" title="启用TensorFlow的日志记录"></a>启用TensorFlow的日志记录</h2><p>TensorFlow对日志消息使用五个不同的级别。按照严重性递增的顺序，它们是<code>DEBUG</code>，<code>INFO</code>，<code>WARN</code>，<code>ERROR</code>和<code>FATAL</code>。当您在配置任何这些级别的日志记录时，TensorFlow将输出与该级别以及所有严重性级别高于该级别的相对应的所有日志消息。例如，如果您设置为<code>ERROR</code>的日志级别，您将获得包含<code>ERROR</code>和<code>FATAL</code>消息的日志输出，如果设置为<code>DEBUG</code>级别，则将获取所有五个级别的日志消息。</p>
+<p>默认情况下，TensorFlow的日志级别为<code>WARN</code>，但是在跟踪模型训练时，您需要将级别调整为<code>INFO</code>，这将在适配操作正在进行时提供其他反馈。</p>
+<p>将以下行添加到代码的开头（在<code>import</code>之后）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.logging.set_verbosity(tf.logging.INFO)</span><br></pre></td></tr></table></figure>
+<p>现在当你运行代码，你会看到额外的日志输出，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:loss &#x3D; 1.18812, step &#x3D; 1</span><br><span class="line">INFO:tensorflow:loss &#x3D; 0.210323, step &#x3D; 101</span><br><span class="line">INFO:tensorflow:loss &#x3D; 0.109025, step &#x3D; 201</span><br></pre></td></tr></table></figure>
+<p>使用<code>INFO</code>级别日志记录，tf.contrib.learn每100步后自动向标准错误（stderr）输出<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Loss_function">训练损失指标</a>。</p>
+<h2 id="为流式处理评估配置验证监视器"><a href="#为流式处理评估配置验证监视器" class="headerlink" title="为流式处理评估配置验证监视器"></a>为流式处理评估配置验证监视器</h2><p>记录训练损失有助于了解您的模型是否收敛，但如果您想进一步了解训练期间发生的情况怎么办？tf.contrib.learn提供了几个高级监视器，您可以附加到您的合适的操作中，以进一步在模型训练期间跟踪指标和/或调试较低级别的TensorFlow操作，包括：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Monitor</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>CaptureVariable</code></td>
+<td align="left">在训练的每n个步骤中将指定变量的值保存到集合中</td>
+</tr>
+<tr>
+<td align="left"><code>PrintTensor</code></td>
+<td align="left">在训练的每n个步骤记录指定的tensor的值</td>
+</tr>
+<tr>
+<td align="left"><code>SummarySaver</code></td>
+<td align="left">在每n个训练步骤使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/summary/FileWriter"><code>tf.summary.FileWriter</code></a>保存给定tensor的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/Summary"><code>tf.Summary</code></a><a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers/">protocol buffers</a></td>
+</tr>
+<tr>
+<td align="left"><code>ValidationMonitor</code></td>
+<td align="left">在训练的每n个步骤记录指定的一组评估度量，并且如果需要，可以在某些条件下实现提前停止训练</td>
+</tr>
+</tbody></table>
+<h3 id="评估每N个步骤"><a href="#评估每N个步骤" class="headerlink" title="评估每N个步骤"></a>评估每N个步骤</h3><p>对于鸢尾花神经网络分类器，在记录训练损失时，您可能还需要同时评估测试数据，以了解模型的泛化程度。您可以通过使用测试数据（<code>test_set.data</code>和<code>test_set.target</code>）配置一个<code>ValidationMonitor</code>并设置使用<code>every_n_steps</code>进行求值的频率来实现此目的。<code>every_n_steps</code>的默认值为<code>100</code>;这里，设置<code>every_n_steps</code>为<code>50</code>，以评估后每50步的模型训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">validation_monitor &#x3D; tf.contrib.learn.monitors.ValidationMonitor(</span><br><span class="line">    test_set.data,</span><br><span class="line">    test_set.target,</span><br><span class="line">    every_n_steps&#x3D;50)</span><br></pre></td></tr></table></figure>
+<p>将此代码放置在实例化<code>classifier</code>的行之前。</p>
+<p><code>ValidationMonitor</code>依赖于保存的检查点来执行评估操作，因此您需要通过修改分类器的实例化，来添加包含<code>save_checkpoints_secs</code>的来指定在训练运行期间每个checkpoint之间消耗了多少秒的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/learn/RunConfig"><code>tf.contrib.learn.RunConfig</code></a>。由于鸢尾花数据集非常小，因此可以快速进行训练，将<code>save_checkpoints_secs</code>设置为1（每秒保存一个检查点）以确保有足够数量的检查点：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">classifier &#x3D; tf.contrib.learn.DNNClassifier(</span><br><span class="line">    feature_columns&#x3D;feature_columns,</span><br><span class="line">    hidden_units&#x3D;[10, 20, 10],</span><br><span class="line">    n_classes&#x3D;3,</span><br><span class="line">    model_dir&#x3D;&quot;&#x2F;tmp&#x2F;iris_model&quot;,</span><br><span class="line">    config&#x3D;tf.contrib.learn.RunConfig(save_checkpoints_secs&#x3D;1))</span><br></pre></td></tr></table></figure>
+<p>注意：<code>model_dir</code>参数为要存储的模型数据指定显式目录（<code>/tmp/iris_model</code>）;此目录路径将比后面自动生成的路径更容易引用。每次运行代码时，在<code>/tmp/iris_model</code>目录下的任何的数据都会被加载，并且模型训练将会在上次停止的位置继续进行（例如，连续运行两次2000步<code>fit</code>操作的脚本将在训练期间执行4000步操作）。如果想要从头开始模型训练，那么需要在执行训练前删除<code>/tmp/iris_model</code>目录。</p>
+<p>最后，为了附加您的<code>validation_monitor</code>，更新<code>fit</code>调用，来包含一个包含在模型训练期间运行的所有监视器的列表的监视器参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(x&#x3D;training_set.data,</span><br><span class="line">               y&#x3D;training_set.target,</span><br><span class="line">               steps&#x3D;2000,</span><br><span class="line">               monitors&#x3D;[validation_monitor])</span><br></pre></td></tr></table></figure>
+<p>现在，当您重新运行代码时，您应该会在日志输出中看到验证指标，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Validation (step 50): loss &#x3D; 1.71139, global_step &#x3D; 0, accuracy &#x3D; 0.266667</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Validation (step 300): loss &#x3D; 0.0714158, global_step &#x3D; 268, accuracy &#x3D; 0.966667</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Validation (step 1750): loss &#x3D; 0.0574449, global_step &#x3D; 1729, accuracy &#x3D; 0.966667</span><br></pre></td></tr></table></figure>
+<h3 id="使用MetricSpec自定义评估指标"><a href="#使用MetricSpec自定义评估指标" class="headerlink" title="使用MetricSpec自定义评估指标"></a>使用MetricSpec自定义评估指标</h3><p>默认情况下，如果未指定评估指标，<code>ValidationMonitor</code>将同时记录loss和accuracy精确度，但您可以自定义将每隔50个步骤运行的指标列表。要指定要在每个评估传递中运行的确切指标，您可以向<code>ValidationMonitor</code>构造函数添加一个<code>metrics</code>参数。<code>metrics</code>接受一个key/value的字典，其中字典的每个键是您要为该指标记录的名称，对应的值是<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/contrib/learn/python/learn/metric_spec.py"><code>MetricSpec</code></a>对象。</p>
+<p><code>MetricSpec</code>构造函数接受四个参数：</p>
+<ul>
+<li><p><code>metric_fn</code> 计算和返回指标值的函数。这可以是<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics">tf.contrib.metrics</a>模块中可用的预定义函数，例如<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics/streaming_precision">tf.contrib.metrics.streaming_precision</a>或<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics/streaming_recall">tf.contrib.metrics.streaming_recall</a>。或者，您可以定义自己的自定义指标函数，必须将<code>predictions</code>和<code>labels</code>tensor作为参数(还可以可选地提供<code>weights</code>参数)。函数必须以以下两种格式之一返回度量的值：</p>
+<ul>
+<li>单个的tensor </li>
+<li>一对操作(<code>value_op</code>, <code>update_op</code>)，其中<code>value_op</code>返回度量值，<code>update_op</code>执行相应的操作以更新内部模型状态。</li>
+</ul>
+</li>
+<li><p><code>prediction_key</code> 包含模型返回的预测的tensor的key。如果模型返回单个tensor或带有单个条目的字典，则可以省略此参数。对于<code>DNNClassifier</code>模型，类别预测将在带有关键字<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/learn/PredictionKey#CLASSES"><code>tf.contrib.learn.PredictionKey.CLASSES</code></a>的tensor中返回。</p>
+</li>
+<li><p><code>label_key</code> tensor的键包含模型返回的标签，由模型的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/input_fn"><code>input_fn</code></a>指定。与<code>prediction_key</code>一样，如果<code>input_fn</code>返回单个tensor或具有单个条目的字典，则可以省略此参数。在本教程的鸢尾花样本中，<code>DNNClassifier</code>没有<code>input_fn</code>（<code>x</code>，<code>y</code>数据直接传递给<code>fit</code>），因此没有必要提供<code>label_key</code>。</p>
+</li>
+<li><p><code>weights_key</code> 可选参数。tensor的键（由<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/input_fn"><code>input_fn</code></a>返回），包含<code>metric_fn</code>的权重输入。</p>
+</li>
+</ul>
+<p>以下代码创建了一个<code>validation_metrics</code>字典，它定义了在模型评估期间要记录的三个指标：</p>
+<ul>
+<li><code>&quot;accuracy&quot;(准确性)</code>,使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics/streaming_accuracy"><code>tf.contrib.metrics.streaming_accuracy</code></a>作为<code>metric_fn</code>。</li>
+<li><code>&quot;precision&quot;(精确)</code>,使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics/streaming_precision"><code>tf.contrib.metrics.streaming_precision</code></a>作为<code>metric_fn </code>。</li>
+<li><code>&quot;recall&quot;(召回)</code>,使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/contrib/metrics/streaming_recall"><code>tf.contrib.metrics.streaming_recall</code></a>作为<code>metric_fn</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">validation_metrics &#x3D; &#123;</span><br><span class="line">    &quot;accuracy&quot;:</span><br><span class="line">        tf.contrib.learn.metric_spec.MetricSpec(</span><br><span class="line">            metric_fn&#x3D;tf.contrib.metrics.streaming_accuracy,</span><br><span class="line">            prediction_key&#x3D;tf.contrib.learn.prediction_key.PredictionKey.</span><br><span class="line">            CLASSES),</span><br><span class="line">    &quot;precision&quot;:</span><br><span class="line">        tf.contrib.learn.metric_spec.MetricSpec(</span><br><span class="line">            metric_fn&#x3D;tf.contrib.metrics.streaming_precision,</span><br><span class="line">            prediction_key&#x3D;tf.contrib.learn.prediction_key.PredictionKey.</span><br><span class="line">            CLASSES),</span><br><span class="line">    &quot;recall&quot;:</span><br><span class="line">        tf.contrib.learn.metric_spec.MetricSpec(</span><br><span class="line">            metric_fn&#x3D;tf.contrib.metrics.streaming_recall,</span><br><span class="line">            prediction_key&#x3D;tf.contrib.learn.prediction_key.PredictionKey.</span><br><span class="line">            CLASSES)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>ValidationMonitor</code>构造函数之前添加上面的代码。然后按如下所示修改<code>ValidationMonitor</code>构造函数，以添加度量参数以记录<code>validation_metrics</code>中指定的accuracy，precision和recall指标（loss是始终被记录的，不需要显示的设定）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">validation_monitor &#x3D; tf.contrib.learn.monitors.ValidationMonitor(</span><br><span class="line">    test_set.data,</span><br><span class="line">    test_set.target,</span><br><span class="line">    every_n_steps&#x3D;50,</span><br><span class="line">    metrics&#x3D;validation_metrics)</span><br></pre></td></tr></table></figure>
+<p>重新运行代码，您应该会在日志输出中看到precision和recall，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Validation (step 50): recall &#x3D; 0.0, loss &#x3D; 1.20626, global_step &#x3D; 1, precision &#x3D; 0.0, accuracy &#x3D; 0.266667</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Validation (step 600): recall &#x3D; 1.0, loss &#x3D; 0.0530696, global_step &#x3D; 571, precision &#x3D; 1.0, accuracy &#x3D; 0.966667</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Validation (step 1500): recall &#x3D; 1.0, loss &#x3D; 0.0617403, global_step &#x3D; 1452, precision &#x3D; 1.0, accuracy &#x3D; 0.966667</span><br></pre></td></tr></table></figure>
+<h3 id="通过ValidationMonitor来提前停止"><a href="#通过ValidationMonitor来提前停止" class="headerlink" title="通过ValidationMonitor来提前停止"></a>通过ValidationMonitor来提前停止</h3><p>注意，在上述日志输出中，通过600步训练，模型已经实现了1.0的精确度和召回率。这体现出了一个问题，即模型训练是否可以从<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Early_stopping">提前停止</a>中受益。</p>
+<p>除了记录eval指标外，<code>ValidationMonitor</code>还可以通过三个参数轻松实现提前停止：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>early_stopping_metric</code></td>
+<td align="left">在<code>early_stopping_rounds</code>和<code>early_stopping_metric_minimize</code>中指定的条件下触发提前停止的指标（例如，loss或accuracy）。默认为“loss”。</td>
+</tr>
+<tr>
+<td align="left"><code>early_stopping_metric_minimize</code></td>
+<td align="left">如果期望的模型行为是最小化<code>early_stopping_metric</code>的值，则为<code>True</code>;如果期望的模型行为是最大化<code>early_stopping_metric</code>的值，则为<code>False</code>。默认值是<code>True</code></td>
+</tr>
+<tr>
+<td align="left"><code>early_stopping_rounds</code></td>
+<td align="left">设置如果<code>early_stopping_metric</code>不减小（如果<code>early_stopping_metric_minimize</code>为<code>True</code>）或增加（如果<code>early_stopping_metric_minimize</code>为<code>False</code>）的步骤数，训练将会停止。默认值为<code>None</code>，这意味着永远不会发生提前停止。</td>
+</tr>
+</tbody></table>
+<p>对<code>ValidationMonitor</code>的构造函数进行以下修改，其指定如果在200个步骤（<code>early_stopping_rounds = 200</code>）的时段内loss（<code>early_stopping_metric =“loss”</code>）不减小（<code>early_stopping_metric_minimize = True</code>），模型训练将在该点立即停止，并且不会完成<code>fit</code>中指定的2000步训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">validation_monitor &#x3D; tf.contrib.learn.monitors.ValidationMonitor(</span><br><span class="line">    test_set.data,</span><br><span class="line">    test_set.target,</span><br><span class="line">    every_n_steps&#x3D;50,</span><br><span class="line">    metrics&#x3D;validation_metrics,</span><br><span class="line">    early_stopping_metric&#x3D;&quot;loss&quot;,</span><br><span class="line">    early_stopping_metric_minimize&#x3D;True,</span><br><span class="line">    early_stopping_rounds&#x3D;200)</span><br></pre></td></tr></table></figure>
+<p>重新运行代码以查看模型训练是否提前停止：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">INFO:tensorflow:Validation (step 1150): recall &#x3D; 1.0, loss &#x3D; 0.056436, global_step &#x3D; 1119, precision &#x3D; 1.0, accuracy &#x3D; 0.966667</span><br><span class="line">INFO:tensorflow:Stopping. Best step: 800 with loss &#x3D; 0.048313818872.</span><br></pre></td></tr></table></figure>
+<p>实际上，这里的训练在第1150步时停止，这说明对于过去的200步，损失没有减少，并且总体上，第800步针对测试数据集产生最小损失值。这表明通过减少步数来额外校准超参数可以进一步改善模型。</p>
+<h2 id="使用TensorBoard可视化日志数据"><a href="#使用TensorBoard可视化日志数据" class="headerlink" title="使用TensorBoard可视化日志数据"></a>使用TensorBoard可视化日志数据</h2><p>通过<code>ValidationMonitor</code>生成的日志读取提供了大量关于模型在训练期间的性能的原始数据，这也对数据可视化以进一步了解趋势是有帮助的 - 例如，精确度是如何随着步数变化而变化的。您可以使用TensorBoard（与TensorFlow一起打包的单独程序）通过将<code>logdir</code>命令行参数设置为保存模型训练数据的目录（此处为<code>/tmp/iris_model</code>）来绘制这样的图。在命令行上运行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tensorboard --logdir&#x3D;&#x2F;tmp&#x2F;iris_model&#x2F;</span><br><span class="line">Starting TensorBoard 39 on port 6006</span><br></pre></td></tr></table></figure>
+<p>然后在你的浏览器中打开<code>http://0.0.0.0:&lt;port_number&gt;</code>，<code>&lt;port_number&gt;</code>是在命令行输出中指定的端口（此处为<code>6006</code>）。</p>
+<p>如果单击accuracy(准确度)字段，您将看到类似以下的图像，其中显示了针对步数的精确度：</p>
+<p><img src="/img/17_03_07/031.png"></p>
+<p>有关使用TensorBoard的更多信息，请参阅<a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/">TensorBoard:可视化学习</a>和<a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/">TensorBoard:图的可视化</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" data-id="ckkwc436n004kpas93fcp6sfg" data-title="【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/21/%E9%80%9A%E8%BF%87AspectJ%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%9D%A5%E5%AE%9E%E7%8E%B0scheme%E8%B7%B3%E8%BD%AC%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%A3%80%E6%9F%A5%E5%88%A4%E6%96%AD/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          通过AspectJ代码注入来实现scheme跳转条件的检查判断
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

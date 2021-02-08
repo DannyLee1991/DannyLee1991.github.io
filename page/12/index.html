@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/12/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-HelloDjango!" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/12/HelloDjango!/" class="article-date">
+  <time class="dt-published" datetime="2016-01-12T17:26:55.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/django/">django</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/01/12/HelloDjango!/">HelloDjango!--Django开发极速入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="About-Django"><a href="#About-Django" class="headerlink" title="About Django"></a>About Django</h2><blockquote>
+<p>**<a target="_blank" rel="noopener" href="https://www.djangoproject.com/">Django</a>**是一个开源的python web应用框架，最初是被开发来用于管理劳伦斯出版集团旗下的一些以新闻内容为主的网站，即是CMS（内容管理系统）软件。于2005年7月在BSD许可证下发布。</p>
+<p>截至目前，Django的最新版本是1.9.1。Django的名字来源于上世纪五十年代的一位吉普赛吉他手的名字Django Reinhardt，其中‘d’是不发音的，为此django官方还录制了一个<a target="_blank" rel="noopener" href="http://red-bean.com/~adrian/django_pronunciation.mp3">音频</a>来更正大家的读音。</p>
+</blockquote>
+<h3 id="Django的理念"><a href="#Django的理念" class="headerlink" title="Django的理念"></a>Django的理念</h3><p>django是一个高级的python web框架，鼓励开发人员快速开发出<strong>干净务实</strong>的设计。由于是由有经验的web开发者创建的，所以它避免了很多web开发的麻烦。</p>
+<p>可以使得开发人员更加专注的写应用程序而不需要重新造轮子。而且django是免费开源的。</p>
+<p><strong>三个特点：</strong></p>
+<ul>
+<li>快速：帮助开发人员快速将想法变成现实</li>
+<li>安全：可以帮助开发人员避免很多常见的安全方面的问题</li>
+<li>可伸缩性：一些很复杂繁琐的web项目也可以由django来构建</li>
+</ul>
+<h3 id="都有谁用过Django呢？"><a href="#都有谁用过Django呢？" class="headerlink" title="都有谁用过Django呢？"></a>都有谁用过Django呢？</h3><p>Disqus, Instagram, Pinterest以及Mozilla 都已经使用Django很多年了，而且Django目前已经可以承受每秒最高5万的访问量。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>在配置好python2.7运行环境之后，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Django&#x3D;&#x3D;1.9.1</span><br></pre></td></tr></table></figure>
+<p>即可自动下载并安装Django，如果提示权限不足，可以尝试<code>sudo pip install Django==1.9.1</code>。</p>
+<p>如果选择通过<a target="_blank" rel="noopener" href="https://www.djangoproject.com/download/1.9.1/tarball/">下载zip包</a>安装，下载成功后，解压zip包，命令行进入到Django-1.9.1目录下，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+<h2 id="创建第一个django项目"><a href="#创建第一个django项目" class="headerlink" title="创建第一个django项目"></a>创建第一个django项目</h2><p>命令行执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure>
+<p>创建mysite项目，<code>cd</code> 进入到mysite，我们可以看到生成了如下几个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysite&#x2F;</span><br><span class="line">    manage.py			＃这是一个与django交互的命令行工具</span><br><span class="line">    mysite&#x2F;</span><br><span class="line">        __init__.py</span><br><span class="line">        settings.py		＃配置设置</span><br><span class="line">        urls.py			＃声明一系列django用来处理分发的url</span><br><span class="line">        wsgi.py			＃PythonWeb服务器网关接口，相当于一种协议，使得python的web应用可以部署到所有遵循这个协议点服务器上。用于部署django项目的</span><br></pre></td></tr></table></figure>
+<p>在这里，我们执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp polls</span><br></pre></td></tr></table></figure>
+<p>来创建一个名叫polls的app。</p>
+<p>我们会发现，在mysite下会多产生一个polls的目录，这个目录的结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">polls&#x2F;</span><br><span class="line">    __init__.py</span><br><span class="line">    admin.py</span><br><span class="line">    apps.py</span><br><span class="line">    migrations&#x2F;</span><br><span class="line">        __init__.py</span><br><span class="line">    models.py 		#定义moudle</span><br><span class="line">    tests.py</span><br><span class="line">    views.py 		＃定义view</span><br></pre></td></tr></table></figure>
+<h3 id="配置url，让我们的项目run起来"><a href="#配置url，让我们的项目run起来" class="headerlink" title="配置url，让我们的项目run起来"></a>配置url，让我们的项目run起来</h3><p>django通过urls.py文件作为路由文件，将获取到的url通过正则匹配去分发到各个app下的urls.py，然后再由app内的urls.py通过正则匹配分发到各个view层中，并执行相关方法。</p>
+<p>这里我们分别配置我们主项目和子项目中的urls.py文件：</p>
+<p>mysite/urls.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import include</span><br><span class="line">	url(r&#39;^polls&#x2F;&#39;, include(&#39;polls.urls&#39;)), </span><br></pre></td></tr></table></figure>
+<p>polls/urls.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url</span><br><span class="line"></span><br><span class="line">from . import views</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">    url(r&#39;^$&#39;, views.index, name&#x3D;&#39;index&#39;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>可以看到子项目中的url指向了views中的index方法，那么我们把views的index进行完善：</p>
+<p>polls/views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    return HttpResponse(&quot;Hello Django&quot;)</span><br></pre></td></tr></table></figure>
+<p>这个时候我们在命令行中输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>把项目跑起来之后，在浏览器输入：<a target="_blank" rel="noopener" href="http://localhost:8000/polls/">http://localhost:8000/polls/</a> 就可以看到以下输出结果了。</p>
+<p><img src="/img/django_01_01.png" alt="Hello Django"></p>
+<h3 id="定义models，创建数据库"><a href="#定义models，创建数据库" class="headerlink" title="定义models，创建数据库"></a>定义models，创建数据库</h3><p>django遵循DRY原则（Don’t repeat yourself），其实道理很简单，避免数据冗余，它认为冗余的就是坏的。<br>所以django中定义的每一个model，都应该是单一的，明确的，包含了所有必要信息的。<br>这样做的目的就是，你在一处定义好model，在任何其他的地方，就可以通过这个model来获取到由他派生出的信息。</p>
+<p>修改models.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Question</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">    question_text = models.CharField(max_length=<span class="number">200</span>)</span><br><span class="line">    pub_date = models.DateTimeField(<span class="string">&#x27;date published&#x27;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">#当前model的字符串表示</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.question_text</span><br><span class="line"></span><br><span class="line">	<span class="comment">#判断这条Question是否是当天发出的</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">was_published_recently</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.pub_date &gt;= timezone.now() - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Choice</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">    question = models.ForeignKey(Question, on_delete=models.CASCADE)</span><br><span class="line">    choice_text = models.CharField(max_length=<span class="number">200</span>)</span><br><span class="line">    votes = models.IntegerField(default=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.choice_text</span><br></pre></td></tr></table></figure>
+<p>mysite下的settings.py:</p>
+<p>的INSTALLED_APPS中加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;polls.apps.PollsConfig&#39;,</span><br></pre></td></tr></table></figure>
+<p>现在，我们可以执行<code>python manage.py makemigrations</code>,这条命令会去遍历所有在settings.py中INSTALLED_APPS下配置的app，如果发现对应app的models文件有改动，就会在这个app下的<code>migrations</code>目录下生成一个数据库的scheme文件，这里我们可以看到生成了一个<code>0001_initial.py</code>文件，这个文件描述了model对应的数据库操作，这个文件是可编辑的。</p>
+<p>我们还可以通过执行<code>python manage.py sqlmigrate polls 0001</code>命令，查看上面那个scheme文件所对应的SQL语句。</p>
+<p>这个时候，其实我们的sql语句并没有执行，数据库也并没有创建，我们需要执行下面这条语句，来让我们的scheme文件生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+<p>这下，我们的表就创建成功了。</p>
+<p>看似繁琐的操作，其实我们只要记住三步走的套路，就很容易掌握：</p>
+<ul>
+<li>1.修改models.py文件</li>
+<li>2.执行python manage.py makemigrations</li>
+<li>3.执行python manage.py migrate</li>
+</ul>
+<p>这里我有一个疑问，就是2，3的操作明明可以一步执行完，为什么还需要分成两条命令呢？</p>
+<p>这里官方的解释是：</p>
+<blockquote>
+<p>The reason that there are separate commands to make and apply migrations is because you’ll commit migrations to your version control system and ship them with your app; they not only make your development easier, they’re also useable by other developers and in production.</p>
+</blockquote>
+<p>我表示依然不理解。</p>
+<h3 id="通过django的shell来插入数据"><a href="#通过django的shell来插入数据" class="headerlink" title="通过django的shell来插入数据"></a>通过django的shell来插入数据</h3><p>django 给我们提供了一个shell，通过执行<code>python manage.py shell</code>进入。</p>
+<p>下面通过这个shell来插入一些数据，也顺便体验一下django的orm数据库操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from polls.models import Question, Choice </span><br><span class="line">&gt;&gt;&gt; from django.utils import timezone</span><br><span class="line">&gt;&gt;&gt; Question.objects.all()</span><br><span class="line">&gt;&gt;&gt; []</span><br><span class="line">&gt;&gt;&gt; q &#x3D; Question(question_text&#x3D;&quot;What&#39;s new?&quot;, pub_date&#x3D;timezone.now())</span><br><span class="line">&gt;&gt;&gt; q.save()</span><br><span class="line">&gt;&gt;&gt; q.id</span><br><span class="line">&gt;&gt;&gt; 1</span><br><span class="line">&gt;&gt;&gt; q.question_text</span><br><span class="line">&gt;&gt;&gt; &quot;What&#39;s new?&quot;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.create(choice_text&#x3D;&#39;Not much&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; &lt;Choice: Not much&gt;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.create(choice_text&#x3D;&#39;The sky&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; &lt;Choice: The sky&gt;</span><br><span class="line">&gt;&gt;&gt; c &#x3D; q.choice_set.create(choice_text&#x3D;&#39;Just hacking again&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; c.question</span><br><span class="line">&gt;&gt;&gt; &lt;Question: What&#39;s new?&gt;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.all()</span><br><span class="line">&gt;&gt;&gt; [&lt;Choice: Not much&gt;, &lt;Choice: The sky&gt;, &lt;Choice: Just hacking again&gt;]</span><br><span class="line">&gt;&gt;&gt; exit()</span><br></pre></td></tr></table></figure>
+<p>至此，我们已经添加了一部分数据到db中了，我们可以通过django下的一个后台管理模块来查看我们插入的数据。</p>
+<p>执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+<p>创建用户。</p>
+<p>将我们的app注册到admin中。</p>
+<p>polls/admin.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">admin.site.register(Question)</span><br></pre></td></tr></table></figure>
+<p>输入<a target="_blank" rel="noopener" href="http://localhost:8000/admin/">http://localhost:8000/admin/</a> 就可以访问后台了。</p>
+<p><img src="/img/django_01_02.png" alt="admin page"></p>
+<h3 id="配置views-和-urls"><a href="#配置views-和-urls" class="headerlink" title="配置views 和 urls"></a>配置views 和 urls</h3><p>views写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import render,HttpResponse</span><br><span class="line"></span><br><span class="line">def detail(request, question_id):</span><br><span class="line">    return HttpResponse(&quot;You&#39;re looking at question %s.&quot; % question_id)</span><br><span class="line"></span><br><span class="line">def results(request, question_id):</span><br><span class="line">    response &#x3D; &quot;You&#39;re looking at the results of question %s.&quot;</span><br><span class="line">    return HttpResponse(response % question_id)</span><br><span class="line"></span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    return HttpResponse(&quot;You&#39;re voting on question %s.&quot; % question_id)</span><br></pre></td></tr></table></figure>
+<p>polls/urls.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url</span><br><span class="line"></span><br><span class="line">from . import views</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">    # ex: &#x2F;polls&#x2F;</span><br><span class="line">    url(r&#39;^$&#39;, views.index, name&#x3D;&#39;index&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;$&#39;, views.detail, name&#x3D;&#39;detail&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;results&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;results&#x2F;$&#39;, views.results, name&#x3D;&#39;results&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;vote&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;vote&#x2F;$&#39;, views.vote, name&#x3D;&#39;vote&#39;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>其中：<br>?P<question_id>定义的名称，是用于识别和匹配模式；[0-9]是一个正则表达式匹配一个数字序列（即一个数）</p>
+<p>当然如果你想要的话，也可以写死一个url：<br><code>url(r&#39;^polls/latest\.html$&#39;, views.index),</code><br>但是django不建议这么做。</p>
+<p>接下来我们可以将models的数据信息显示在view界面上了：</p>
+<p>views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    output &#x3D; &#39;, &#39;.join([q.question_text for q in latest_question_list])</span><br><span class="line">    return HttpResponse(output)</span><br></pre></td></tr></table></figure>
+<p>但是这样写前台界面实在太不友好，我们要引入模版机制，将数据信息渲染到html页面上：</p>
+<p>创建polls/templates/polls/index.html</p>
+<p>用django特有的模版语言写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if latest_question_list %&#125;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">    &#123;% for question in latest_question_list %&#125;</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;polls&#x2F;&#123;&#123; question.id &#125;&#125;&#x2F;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    &lt;p&gt;No polls are available.&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>这些模版语言都是比较易懂的流程控制语句，相信不用解释也可以理解。</p>
+<p>修改views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line">from django.template import loader</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    template &#x3D; loader.get_template(&#39;polls&#x2F;index.html&#39;)</span><br><span class="line">    context &#x3D; &#123;</span><br><span class="line">        &#39;latest_question_list&#39;: latest_question_list,</span><br><span class="line">    &#125;</span><br><span class="line">    return HttpResponse(template.render(context, request))</span><br></pre></td></tr></table></figure>
+<p>还有一种更快捷的写法，使用django封装好的render()方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import render</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    context &#x3D; &#123;&#39;latest_question_list&#39;: latest_question_list&#125;</span><br><span class="line">    return render(request, &#39;polls&#x2F;index.html&#39;, context)</span><br></pre></td></tr></table></figure>
+<p>创建polls/templates/polls/detail.html,并写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; question &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>polls/views.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import get_object_or_404, render</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"># ...</span><br><span class="line">def detail(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;&#39;question&#39;: question&#125;)</span><br></pre></td></tr></table></figure>
+<p>这里我们可以看到404的处理都单独封装了一个方法，django这么处理的原因是为了防止模型层和视图层的耦合，因为404是比较常见的一种错误，而且处理404的判断如果放在了界面层，那么对models的处理就和view层耦合太重。</p>
+<p>现在访问：<code>http://localhost:8000/polls</code>就能看到载入模版之后的样子了。</p>
+<p><img src="/img/django_01_03.png" alt="add template"></p>
+<p>内容页面：</p>
+<p><img src="/img/django_01_04.png" alt="details"></p>
+<p>注意这里有个细节：</p>
+<p>polls/index.html中的a标签的链接我们用了硬编码，为了更好的实现可扩展性，我们将其中的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;polls&#x2F;&#123;&#123; question.id &#125;&#125;&#x2F;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;&lt;a href&#x3D;&quot;&#123;% url &#39;detail&#39; question.id %&#125;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看出来新的写法会去找<code>name</code>属性为<code>ditail</code>的url进行匹配。</p>
+<h3 id="form的实现"><a href="#form的实现" class="headerlink" title="form的实现"></a>form的实现</h3><p>修改我们的<br><code>polls/templates/polls/detail.html</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line"></span><br><span class="line">&#123;% if error_message %&#125;&lt;p&gt;&lt;strong&gt;&#123;&#123; error_message &#125;&#125;&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;&#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">&lt;form action&#x3D;&quot;&#123;% url &#39;polls:vote&#39; question.id %&#125;&quot; method&#x3D;&quot;post&quot;&gt;</span><br><span class="line">&#123;% csrf_token %&#125;</span><br><span class="line">&#123;% for choice in question.choice_set.all %&#125;</span><br><span class="line">    &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;choice&quot; id&#x3D;&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot; value&#x3D;&quot;&#123;&#123; choice.id &#125;&#125;&quot; &#x2F;&gt;</span><br><span class="line">    &lt;label for&#x3D;&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot;&gt;&#123;&#123; choice.choice_text &#125;&#125;&lt;&#x2F;label&gt;&lt;br &#x2F;&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;Vote&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br></pre></td></tr></table></figure>
+<p>view界面加入投票逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import get_object_or_404, render</span><br><span class="line">from django.http import HttpResponseRedirect, HttpResponse</span><br><span class="line">from django.core.urlresolvers import reverse</span><br><span class="line"></span><br><span class="line">from .models import Choice, Question</span><br><span class="line"># ...</span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    try:</span><br><span class="line">        selected_choice &#x3D; question.choice_set.get(pk&#x3D;request.POST[&#39;choice&#39;])</span><br><span class="line">    except (KeyError, Choice.DoesNotExist):</span><br><span class="line">        # Redisplay the question voting form.</span><br><span class="line">        return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;</span><br><span class="line">            &#39;question&#39;: question,</span><br><span class="line">            &#39;error_message&#39;: &quot;You didn&#39;t select a choice.&quot;,</span><br><span class="line">        &#125;)</span><br><span class="line">    else:</span><br><span class="line">        selected_choice.votes +&#x3D; 1</span><br><span class="line">        selected_choice.save()</span><br><span class="line">        # Always return an HttpResponseRedirect after successfully dealing</span><br><span class="line">        # with POST data. This prevents data from being posted twice if a</span><br><span class="line">        # user hits the Back button.</span><br><span class="line">        return HttpResponseRedirect(reverse(&#39;polls:results&#39;, args&#x3D;(question.id,)))from django.shortcuts import get_object_or_404, render</span><br><span class="line">from django.http import HttpResponseRedirect, HttpResponse</span><br><span class="line">from django.core.urlresolvers import reverse</span><br><span class="line"></span><br><span class="line">from .models import Choice, Question</span><br><span class="line"># ...</span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    try:</span><br><span class="line">        selected_choice &#x3D; question.choice_set.get(pk&#x3D;request.POST[&#39;choice&#39;])</span><br><span class="line">    except (KeyError, Choice.DoesNotExist):</span><br><span class="line">        # Redisplay the question voting form.</span><br><span class="line">        return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;</span><br><span class="line">            &#39;question&#39;: question,</span><br><span class="line">            &#39;error_message&#39;: &quot;You didn&#39;t select a choice.&quot;,</span><br><span class="line">        &#125;)</span><br><span class="line">    else:</span><br><span class="line">        selected_choice.votes +&#x3D; 1</span><br><span class="line">        selected_choice.save()</span><br><span class="line">        # Always return an HttpResponseRedirect after successfully dealing</span><br><span class="line">        # with POST data. This prevents data from being posted twice if a</span><br><span class="line">        # user hits the Back button.</span><br><span class="line">        return HttpResponseRedirect(reverse(&#39;polls:results&#39;, args&#x3D;(question.id,)))</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<p>reverse()方法  用于返回一个url，这里直接返回polls/1/vote/</p>
+<p>定义投票的结果页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def results(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    return render(request, &#39;polls&#x2F;results.html&#39;, &#123;&#39;question&#39;: question&#125;)</span><br></pre></td></tr></table></figure>
+<p>以及模版页面：<br><code>polls/results.html</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for choice in question.choice_set.all %&#125;</span><br><span class="line">    &lt;li&gt;&#123;&#123; choice.choice_text &#125;&#125; -- &#123;&#123; choice.votes &#125;&#125; vote&#123;&#123; choice.votes|pluralize &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;a href&#x3D;&quot;&#123;% url &#39;polls:detail&#39; question.id %&#125;&quot;&gt;Vote again?&lt;&#x2F;a&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="静态文件的加载"><a href="#静态文件的加载" class="headerlink" title="静态文件的加载"></a>静态文件的加载</h3><p>创建一个css文件：<code>polls/static/polls/style.css</code>并写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">li a &#123;</span><br><span class="line">    color: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在polls/templates/polls/index.html文件中引入这个css</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load staticfiles %&#125;</span><br><span class="line">&lt;link rel&#x3D;&quot;stylesheet&quot; type&#x3D;&quot;text&#x2F;css&quot; href&#x3D;&quot;&#123;% static &#39;polls&#x2F;style.css&#39; %&#125;&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来添加一个图片：<br><code>polls/static/polls/images/background.gif.</code></p>
+<p>修改<code>polls/static/polls/style.css</code>加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background: white url(&quot;images&#x2F;background.gif&quot;) no-repeat right bottom;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可看到执行效果：</p>
+<p><img src="/img/django_01_05.png" alt="css"></p>
+<h3 id="自定义后台页面"><a href="#自定义后台页面" class="headerlink" title="自定义后台页面"></a>自定义后台页面</h3><p>Django经常被用来开发后台应用，因为它有一个非常强大的，可灵活配置的后台应用。这个admin应用就是<code>settings.py</code>中的<code>INSTALLED_APPS</code>下的<code>django.contrib.admin</code>。</p>
+<p>前面我们在polls项目下的admin.py中将我们的<code>Question</code>注册到了admin中，我们在后台页面可以看到了Question表的相关信息。那么如果我们想把<code>Choice</code>的相关信息也显示出来需要怎么处理呢？</p>
+<p>有一种做法就是也仿照<code>Question</code>将<code>Choice</code>注册进入admin：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line">from .models import Question,Choice</span><br><span class="line"></span><br><span class="line">admin.site.register(Question)</span><br><span class="line">admin.site.register(Choice)</span><br></pre></td></tr></table></figure>
+<p>但这样并不好，因为Choice和Question存在一对多的外键关联，我们直接显示出来，并不能很好的体现出这层含义。为了解决这个问题，我们可以引入<code>ModelAdmin</code>，将Question注册到一个自定义的<code>ModelAdmin</code>上，定义其内联元素为一个Choice。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from .models import Question,Choice</span><br><span class="line"></span><br><span class="line">class ChoiceInline(admin.StackedInline):</span><br><span class="line">    model &#x3D; Choice</span><br><span class="line">    extra &#x3D; 0</span><br><span class="line"></span><br><span class="line">class QuestionAdmin(admin.ModelAdmin):</span><br><span class="line">    inlines &#x3D; [ChoiceInline]</span><br><span class="line"></span><br><span class="line">admin.site.register(Question,QuestionAdmin)</span><br></pre></td></tr></table></figure>
+<p>在Question的详情页面里，我们就可以看到作为内联样式展示的Choices了：</p>
+<p><img src="/img/django_01_06.png" alt="内联"></p>
+<p>接下来我们可以通过对<code>QuestionAdmin</code>简单的配置，实现一个功能更加强大的后台界面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class QuestionAdmin(admin.ModelAdmin):</span><br><span class="line">	# 详情页加入更多字段的显示</span><br><span class="line">    fieldsets &#x3D; [</span><br><span class="line">        (None,               &#123;&#39;fields&#39;: [&#39;question_text&#39;]&#125;),</span><br><span class="line">        (&#39;Date information&#39;, &#123;&#39;fields&#39;: [&#39;pub_date&#39;], &#39;classes&#39;: [&#39;collapse&#39;]&#125;),</span><br><span class="line">    ]</span><br><span class="line">    inlines &#x3D; [ChoiceInline]</span><br><span class="line">    </span><br><span class="line">    # 列表页面加入更多字段的显示</span><br><span class="line">    list_display &#x3D; (&#39;question_text&#39;, &#39;pub_date&#39;, &#39;was_published_recently&#39;)</span><br><span class="line">    </span><br><span class="line">    # 在列表页面右侧加入过滤功能</span><br><span class="line">    list_filter &#x3D; [&#39;pub_date&#39;]</span><br><span class="line">    # 加入搜索功能</span><br><span class="line">    search_fields &#x3D; [&#39;question_text&#39;]</span><br></pre></td></tr></table></figure>
+<p>实现效果如下：</p>
+<p><img src="/img/django_01_07.png" alt="完整后台"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/01/12/HelloDjango!/" data-id="ckkwc434y000jpas93107fevj" data-title="HelloDjango!--Django开发极速入门" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-机器学习(04)Logistic回归" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(04)Logistic%E5%9B%9E%E5%BD%92/" class="article-date">
+  <time class="dt-published" datetime="2016-01-06T23:26:55.000Z" itemprop="datePublished">2016-01-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(04)Logistic%E5%9B%9E%E5%BD%92/">机器学习(04)Logistic回归</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是Logistic回归"><a href="#什么是Logistic回归" class="headerlink" title="什么是Logistic回归"></a>什么是Logistic回归</h2><h3 id="什么是回归？"><a href="#什么是回归？" class="headerlink" title="什么是回归？"></a>什么是<strong>回归</strong>？</h3><p>假设现在有一些数据点，我们用一条直线对这些点进行拟合（该线称为最佳拟合直线），这个拟合过程就称作<strong>回归</strong>。</p>
+<p>Logistic回归分类的主要思想是：根据现有数据边界线建立回归公式，以此进行分类。这里的<code>&quot;回归&quot;</code>一词，源于最佳拟合，在训练分类器时的主要做法就是寻找最佳拟合参数集，这其中运用到的就是<strong>最优化算法</strong>(可以找到最优解的算法)。</p>
+<p>其中回归过程中运用到的数学原理的核心，就是<strong>Logistic函数</strong>。</p>
+<h3 id="什么是Logistic"><a href="#什么是Logistic" class="headerlink" title="什么是Logistic"></a>什么是Logistic</h3><blockquote>
+<p><strong>Logistic函数</strong>或<strong>Logistic曲线</strong>是一种常见的S形函数，它是皮埃尔·弗朗索瓦·韦吕勒在1844或1845年在研究它与人口增长的关系时命名的。广义Logistic曲线可以模仿一些情况人口增长（P）的S形曲线。起初阶段大致是指数增长；然后随着开始变得饱和，增加变慢；最后，达到成熟时增加停止。</p>
+</blockquote>
+<h3 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h3><p>简单来说如果想了解到底哪些因素是胃癌的危险因素，我们就可以使用Logistic回归来处理。</p>
+<p>想探讨胃癌发生的危险因素，可以选择两组人群，一组是胃癌组，一组是非胃癌组，两组人群肯定有不同的体征和生活方式等。这里的因变量就是是否胃癌，即“是”或“否”，为两分类变量，自变量就可以包括很多了，例如年龄、性别、饮食习惯、幽门螺杆菌感染等。自变量既可以是连续的，也可以是分类的。通过Logistic回归分析，我们可以大致了解到底哪些因素是胃癌的危险因素。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(04)Logistic%E5%9B%9E%E5%BD%92/" data-id="ckkwc439b00bipas9dt6c0ali" data-title="机器学习(04)Logistic回归" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Scala(01)基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/06/Scala(01)%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2016-01-06T09:43:55.000Z" itemprop="datePublished">2016-01-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/scala/">scala</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/01/06/Scala(01)%E5%9F%BA%E7%A1%80/">Scala(01)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Scala安装"><a href="#Scala安装" class="headerlink" title="Scala安装"></a>Scala安装</h2><h2 id="Scala解释器"><a href="#Scala解释器" class="headerlink" title="Scala解释器"></a>Scala解释器</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/01/06/Scala(01)%E5%9F%BA%E7%A1%80/" data-id="ckkwc43590016pas99gl1bxrt" data-title="Scala(01)" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scala/" rel="tag">scala</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Numpy快速入门" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/05/Numpy%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" class="article-date">
+  <time class="dt-published" datetime="2016-01-05T11:43:55.000Z" itemprop="datePublished">2016-01-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/01/05/Numpy%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">NumPy快速入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="NumPy快速入门"><a href="#NumPy快速入门" class="headerlink" title="NumPy快速入门"></a>NumPy快速入门</h2><h3 id="为什么需要NumPy"><a href="#为什么需要NumPy" class="headerlink" title="为什么需要NumPy?"></a>为什么需要NumPy?</h3><p>NumPy是python的一个矩阵类型，提供了大量的矩阵处理的函数。</p>
+<p>由于其内部是通过<strong>C语言</strong>来实现，所以效率很高。</p>
+<p>尽管声称是一个关于矩阵的库，NumPy实际上包含了两种基本的数据类型：数组和矩阵。二者在处理上稍有不同。在使用标准的python时，处理这两类数据，均需要使用循环语句，而使用NumPy则可以省去这些语句。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="数组相加"><a href="#数组相加" class="headerlink" title="数组相加"></a>数组相加</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numpy <span class="keyword">import</span> array</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm=array((<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pp=array((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pp+mm</span><br><span class="line">array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<p>如果使用常规的python，就需要循环来处理了。</p>
+<h3 id="数组的数乘运算"><a href="#数组的数乘运算" class="headerlink" title="数组的数乘运算"></a>数组的数乘运算</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pp*<span class="number">2</span></span><br><span class="line">array([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="对每个元素求平方"><a href="#对每个元素求平方" class="headerlink" title="对每个元素求平方"></a>对每个元素求平方</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pp**<span class="number">2</span></span><br><span class="line">array([<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="可以像列表中一样访问数组里的元素："><a href="#可以像列表中一样访问数组里的元素：" class="headerlink" title="可以像列表中一样访问数组里的元素："></a>可以像列表中一样访问数组里的元素：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pp[<span class="number">1</span>]</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>NumPy中也支持多维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj = array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+<p>多维数组中的元素也可以像列表中一样访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj[<span class="number">0</span>]</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>也可以用矩阵方式访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj[<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h3 id="把两个数组乘起来的时候，两个数组的元素将对应相乘："><a href="#把两个数组乘起来的时候，两个数组的元素将对应相乘：" class="headerlink" title="把两个数组乘起来的时候，两个数组的元素将对应相乘："></a>把两个数组乘起来的时候，两个数组的元素将对应相乘：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a1=array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a2=array([<span class="number">0.3</span>, <span class="number">0.2</span>, <span class="number">0.3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a1*a2</span><br><span class="line">array([<span class="number">0.3</span>, <span class="number">0.4</span> <span class="number">0.9</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><h3 id="Numpy矩阵的引入"><a href="#Numpy矩阵的引入" class="headerlink" title="Numpy矩阵的引入"></a>Numpy矩阵的引入</h3><p>与数组一样，需要从NumPy中导入<code>matrix</code>或者<code>mat</code>模块(<code>mat</code>其实就是<code>matrix</code>的缩写)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numpy <span class="keyword">import</span> mat, matrix</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ss = mat([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ss</span><br><span class="line">matrix([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm = matrix([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm</span><br><span class="line">matrix([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br></pre></td></tr></table></figure>
+<p>可以访问矩阵中的单个元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm[<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h3 id="将python列表转换为NumPy矩阵"><a href="#将python列表转换为NumPy矩阵" class="headerlink" title="将python列表转换为NumPy矩阵"></a>将python列表转换为NumPy矩阵</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pyList = [<span class="number">5</span>, <span class="number">11</span>, <span class="number">1605</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mat(pyList)</span><br><span class="line">matrix([[   <span class="number">5</span>,   <span class="number">11</span>, <span class="number">1605</span>]]) </span><br></pre></td></tr></table></figure>
+<h3 id="矩阵乘法的运算"><a href="#矩阵乘法的运算" class="headerlink" title="矩阵乘法的运算"></a>矩阵乘法的运算</h3><p>如果你不熟悉矩阵乘法的运算规则，请看<a href="./2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">这里</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ss = mat([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm = matrix([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm*ss.T</span><br><span class="line">matrix([[<span class="number">14</span>]])</span><br></pre></td></tr></table></figure>
+<p>其中<code>ss.T</code>是将ss进行转置，因为做矩阵乘法运算的两个矩阵必须满足<code>左矩阵的列数与右矩阵的行数相等</code>的条件。</p>
+<h3 id="获取矩阵的行列数"><a href="#获取矩阵的行列数" class="headerlink" title="获取矩阵的行列数"></a>获取矩阵的行列数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numpy <span class="keyword">import</span> shape</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm = matrix([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>shape(mm)</span><br><span class="line">(<span class="number">1</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="两个矩阵对应元素相乘-multiply"><a href="#两个矩阵对应元素相乘-multiply" class="headerlink" title="两个矩阵对应元素相乘(multiply)"></a>两个矩阵对应元素相乘(multiply)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> numpy <span class="keyword">import</span> multiply</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>mm = matrix([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ss = matrix([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>multiply(mm, ss)</span><br><span class="line">matrix([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="矩阵的排序"><a href="#矩阵的排序" class="headerlink" title="矩阵的排序"></a>矩阵的排序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = matrix([<span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.sort()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d</span><br><span class="line">matrix([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure>
+<p>注意：该方法是原地排序（即排序后到结果占用原始的存储空间），所以如果希望保存数据的原始顺序，必须事先拷贝一份。也可以使用argsort()方法得到矩阵中每个元素的排序序号：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = matrix([<span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.argsort()</span><br><span class="line">matrix([[<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="计算矩阵的平均值"><a href="#计算矩阵的平均值" class="headerlink" title="计算矩阵的平均值"></a>计算矩阵的平均值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = matrix([<span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.mean()</span><br><span class="line"><span class="number">3.3333333333333335</span></span><br></pre></td></tr></table></figure>
+<h3 id="通过-去除矩阵中指定片段"><a href="#通过-去除矩阵中指定片段" class="headerlink" title="通过:去除矩阵中指定片段"></a>通过<code>:</code>去除矩阵中指定片段</h3><p>python中的切片用法简单，功能强大，NumPy中的矩阵同样也支持该操作，比如在想在下面一个2x3的矩阵中取出第一行元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj = mat([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],[<span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>shape(jj)</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj[<span class="number">1</span>,:]</span><br><span class="line">matrix([[<span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>]])</span><br></pre></td></tr></table></figure>
+<p>也可以使用以下方法取出第一行第0列到第1列的元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>jj[<span class="number">1</span>,<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line">matrix([[<span class="number">8</span>, <span class="number">8</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>更多NumPy的相关用法，建议浏览完整的官方文档</p>
+<p><a target="_blank" rel="noopener" href="http://docs.scipy.org/doc/">http://docs.scipy.org/doc/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/01/05/Numpy%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" data-id="ckkwc4356000zpas9gpb0ea8x" data-title="NumPy快速入门" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-机器学习(03)朴素贝叶斯构建敏感词过滤系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/12/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(03)%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%9E%84%E5%BB%BA%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2015-12-27T12:08:55.000Z" itemprop="datePublished">2015-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/12/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(03)%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%9E%84%E5%BB%BA%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4%E7%B3%BB%E7%BB%9F/">机器学习(03)朴素贝叶斯构建敏感词过滤系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="贝叶斯理论入门"><a href="#贝叶斯理论入门" class="headerlink" title="贝叶斯理论入门"></a>贝叶斯理论入门</h2><h3 id="贝叶斯？"><a href="#贝叶斯？" class="headerlink" title="贝叶斯？"></a>贝叶斯？</h3><blockquote>
+<p>贝叶斯概率以18世纪的一位神学家**托马斯·贝叶斯<code>(Thomas Bayes)</code>**的名字命名。贝叶斯概率引入先验知识和逻辑推理来处理不确定命题。另一种概率解释称为频数概率<code>(frequency probability)</code>,它只从数据本身获得结论，并不考虑逻辑推理及先验知识。</p>
+</blockquote>
+<p><strong>朴素贝叶斯</strong>中的<strong>朴素</strong>一词的含义是指：整个形式化过程，我们只做最原始、最简单的假设。(如果你不理解这句话的含义，不要担心，后面我们会详细讲解的)。</p>
+<h3 id="条件概率与贝叶斯准则"><a href="#条件概率与贝叶斯准则" class="headerlink" title="条件概率与贝叶斯准则"></a>条件概率与贝叶斯准则</h3><p>如果你对$p(x,y|c_1)$符号很熟悉，那么请跳过本段</p>
+<h4 id="条件概率定义"><a href="#条件概率定义" class="headerlink" title="条件概率定义:"></a>条件概率定义:</h4><blockquote>
+<p>事件A在另外一个事件B已经发生条件下的发生概率。条件概率表示为**P(A|B)**，读作“在B条件下A的概率”。</p>
+</blockquote>
+<h4 id="举个栗子："><a href="#举个栗子：" class="headerlink" title="举个栗子："></a>举个栗子：</h4><p>假设现在有一个装了7块石头的罐子，其中3块是灰色的，4块是黑色的，如果从罐子里随即取出一块石头，那么是灰色石头的可能性是多少？很显然，答案是3/7。</p>
+<p>那么如果把这些石头分别放到两个桶中，A桶中为2块灰色2块黑色，B桶中为1块灰色2块黑色，那么取出灰色石头的概率又该如何计算呢？</p>
+<p>要计算$P(gray)$或者$P(black)$,事先得知道石头所在桶的信息会不会改变结果。你有可能已经想到计算从B桶中取到灰色石头的概率的方法，这就是所谓的**条件概率<code>(conditional probability)</code>**。</p>
+<p>假定计算的是从B桶取到灰色石头的概率，这个概率可以记作$P(gray|bucketB)$,我们称之为“在已知石头出自B桶的条件下，取出灰色石头的概率”。不难得到，$P(gray|bucketA)$值为2/4,$P(gray|bucketB)$的值为1/3。</p>
+<p>记从B桶中取出灰色石头的概率为：$P(gray and bucketB)$，石头出自B桶的概率为$P(pucketB)$，那么条件概率计算公式如下：</p>
+<p>$$P(gray|bucketB) = P(gray and bucketB)/P(bucketB)$$</p>
+<h4 id="贝叶斯准则"><a href="#贝叶斯准则" class="headerlink" title="贝叶斯准则"></a>贝叶斯准则</h4><p>另一种有效计算条件概率的方法称为<strong>贝叶斯准则</strong>。贝叶斯准则告诉我们如何交换条件概率中的条件与结果，即如果已知$p(x|c)$,要求$p(c|x)$,那么可以使用下面的计算方法：</p>
+<p>$$<br>p(c|x) = \dfrac{p(x|c)p(c)}{p(x)}<br>$$</p>
+<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><p>假设有一个数据集，它由两类数据组成，数据分布如下图所示：</p>
+<p><img src="/img/ml_03_01.png" alt="朴素贝叶斯图例"></p>
+<p>其中不同形状代表不同的数据类型。</p>
+<p>我们现在用*<em>$p1(x,y)$**表示数据点$(x,y)$属于类别1</em>(图中圆点表示的类型)<em>的概率，用**$p2(x,y)$**表示数据点$(x,y)$属于类别2</em>(图中三角形表示的类型)*的概率。</p>
+<p>那么对于一个新的数据点$(x,y)$，我们可以通过以下规则来判断它所属于的类型：</p>
+<ul>
+<li>如果$p1(x,y) &gt; p2(x,y)$，那么类型为1</li>
+<li>如果$p1(x,y) &lt; p2(x,y)$，那么类型为2</li>
+</ul>
+<h2 id="使用朴素贝叶斯进行文档分类"><a href="#使用朴素贝叶斯进行文档分类" class="headerlink" title="使用朴素贝叶斯进行文档分类"></a>使用朴素贝叶斯进行文档分类</h2><p>机器学习的一个重要应用就是文档的自动分类。对例如用户留言，邮件内容等任意类型的文本进行分类，我们可以观察文档中出现的词，并把每个词的出现或者不出现作为一个特征，这样得到的特征数目就会跟词汇表中的词目一样多。</p>
+<h3 id="两个假设前提"><a href="#两个假设前提" class="headerlink" title="两个假设前提"></a>两个假设前提</h3><blockquote>
+<p>我们使用的朴素贝叶斯进行文档分类时，需要建立在两个假设前提之上的，虽然这两个假设前提有一些瑕疵，但实际情况证明，贝叶斯工作的效果很好。</p>
+</blockquote>
+<p>假设词汇表中有1000个单词。要得到好的概率分布，就需要足够的数据样本，假定样本数为$N$。由统计学可知，如果每个特征需要$N$个样本，那么对于10个特征将需要$N^{10}$个样本，对于包含1000个特征的词汇表，将需要$N^{1000}$个样本。可以看到，所需要的样本书会随着特征数目的增大而迅速增长。</p>
+<p><strong>假设1:特征之间相互独立</strong>，那么样本数就可以从$N^{1000}$减少到$1000N$了。</p>
+<p><strong>假设2:每个特征同等重要</strong>。</p>
+<blockquote>
+<p>注释：<strong>特征之间相互独立</strong>指的是统计意义上的独立，即一个特征的出现的可能性不受其他特征所影响。 举个例子来说明：比如单词A出现在B后面的概率和出现在C后面的概率相同。很明显这种情况很不靠谱，这也正是<strong>朴素贝叶斯</strong>中<strong>朴素</strong>一词的含义。</p>
+</blockquote>
+<h3 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h3><p>接下来我们要用python代码来实现一个侮辱性词汇过滤系统，要用到我们刚才学习的朴素贝叶斯的知识。也许你会问，构建一个侮辱性词汇集合的数据库，遇到了侮辱性词汇，就认定这个文本为侮辱性文本，不就可以很好的解决这个问题了吗？何必要用贝叶斯呢？</p>
+<p>首先不否认这也是一种实现思路，但我们要做的过滤系统的最终效果将是由人工去判断样本数据是否为侮辱性的文本，然后剩下的就可以交给机器，机器会自动识别出侮辱性词汇，以及判断待测试数据是侮辱性文本的可能性和非侮辱性文本的可能性，取概率较大的作为判定结果来标识出侮辱性的文本。</p>
+<h3 id="数据的处理"><a href="#数据的处理" class="headerlink" title="数据的处理"></a>数据的处理</h3><p>想要从一个文本中获取特征，首先需要<strong>拆分文本</strong>。这里的特征来自于文本的<strong>词条<code>(token)</code>**，我们可以把词条理解为单个单词。我们将出现在所有的文本中的词条做一个</strong>不重复的集合<strong>，然后对每一条文本进行标识，如果对应文本中对应位置的词条没有出现记为0，出现记为1。这样我们可以得到一系列用来标识文本片段特征的由0和1组成的列表，这个列表我们称为</strong>词条向量**。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="准备数据：从文本中构建词条向量"><a href="#准备数据：从文本中构建词条向量" class="headerlink" title="准备数据：从文本中构建词条向量"></a>准备数据：从文本中构建词条向量</h4><p><strong>构建数据源：</strong>首先创建数据源，获取所有文本词条集合以及对应类型集合，这里省略分词部分逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loadDataSet</span>():</span></span><br><span class="line">    <span class="comment"># 文本集合，每条文本中都有若干条词条</span></span><br><span class="line">    postingList = [[<span class="string">&#x27;my&#x27;</span>, <span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;has&#x27;</span>, <span class="string">&#x27;flea&#x27;</span>, <span class="string">&#x27;problems&#x27;</span>, <span class="string">&#x27;help&#x27;</span>, <span class="string">&#x27;please&#x27;</span>],</span><br><span class="line">                   [<span class="string">&#x27;maybe&#x27;</span>, <span class="string">&#x27;not&#x27;</span>, <span class="string">&#x27;take&#x27;</span>, <span class="string">&#x27;him&#x27;</span>, <span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;park&#x27;</span>, <span class="string">&#x27;stupid&#x27;</span>],</span><br><span class="line">                   [<span class="string">&#x27;my&#x27;</span>, <span class="string">&#x27;dalmation&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;so&#x27;</span>, <span class="string">&#x27;cute&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;love&#x27;</span>, <span class="string">&#x27;him&#x27;</span>],</span><br><span class="line">                   [<span class="string">&#x27;stop&#x27;</span>, <span class="string">&#x27;posting&#x27;</span>, <span class="string">&#x27;stupid&#x27;</span>, <span class="string">&#x27;worthless&#x27;</span>, <span class="string">&#x27;garbage&#x27;</span>],</span><br><span class="line">                   [<span class="string">&#x27;mr&#x27;</span>, <span class="string">&#x27;licks&#x27;</span>, <span class="string">&#x27;ate&#x27;</span>, <span class="string">&#x27;my&#x27;</span>, <span class="string">&#x27;steak&#x27;</span>, <span class="string">&#x27;how&#x27;</span>, <span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;stop&#x27;</span>, <span class="string">&#x27;him&#x27;</span>],</span><br><span class="line">                   [<span class="string">&#x27;quit&#x27;</span>, <span class="string">&#x27;buying&#x27;</span>, <span class="string">&#x27;worthless&#x27;</span>, <span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;food&#x27;</span>, <span class="string">&#x27;stupid&#x27;</span>]</span><br><span class="line">    ]</span><br><span class="line">    <span class="comment"># 1代表侮辱性文字，0代表正常言论</span></span><br><span class="line">    <span class="comment"># 这些数据将由人工标注，用于训练程序以便自动检测侮辱性留言</span></span><br><span class="line">    classVec = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> postingList,classVec</span><br></pre></td></tr></table></figure>
+<p><strong>词条字典构建：</strong>将所有词条集合传入，得到一个所有不重复词条的集合字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createVocabList</span>(<span class="params">dataSet</span>):</span></span><br><span class="line">    vocabSet = <span class="built_in">set</span>([])</span><br><span class="line">    <span class="keyword">for</span> document <span class="keyword">in</span> dataSet:</span><br><span class="line">        <span class="comment"># &#x27;|&#x27;操作符可以取两个列表的并集，set()方法可以去除重复项</span></span><br><span class="line">        vocabSet = vocabSet | <span class="built_in">set</span>(document)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(vocabSet)</span><br></pre></td></tr></table></figure>
+<p><strong>构建词条向量：</strong>传入词条字典，和待测试的对应文本词条集合，得到词条向量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setOfWords2Vec</span>(<span class="params">vocabList, inputSet</span>):</span></span><br><span class="line">    <span class="comment"># 初始化词条向量</span></span><br><span class="line">    <span class="comment"># [0]*len(vocabList) 可以获得一个和vocabList等长的，全部由0组成的集合</span></span><br><span class="line">    returnVec = [<span class="number">0</span>]*<span class="built_in">len</span>(vocabList)</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> inputSet:</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">in</span> vocabList:</span><br><span class="line">            <span class="comment"># 如果词条集合中的词条出现在了词条字典中，则将词条向量中的词条对应位置的元素记为1</span></span><br><span class="line">            returnVec[vocabList.index(word)] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span> <span class="string">&quot;the word: %s is not in my Vocabulary!&quot;</span> % word</span><br><span class="line">    <span class="keyword">return</span> returnVec</span><br></pre></td></tr></table></figure>
+<p>执行:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">postingList,classVec = loadDataSet()</span><br><span class="line">print(<span class="string">&quot;------postings------&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> posting <span class="keyword">in</span> postingList:</span><br><span class="line">    print(posting)</span><br><span class="line">print(<span class="string">&quot;------classVec------&quot;</span>)</span><br><span class="line">print(classVec)</span><br><span class="line"></span><br><span class="line">vocabList = createVocabList(postingList)</span><br><span class="line">print(<span class="string">&quot;------vocabList------&quot;</span>)</span><br><span class="line">print(vocabList)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;------words2Vec------&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> posting <span class="keyword">in</span> postingList:</span><br><span class="line">    print(setOfWords2Vec(vocabList,posting))</span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">------postings------</span><br><span class="line">[&#39;my&#39;, &#39;dog&#39;, &#39;has&#39;, &#39;flea&#39;, &#39;problems&#39;, &#39;help&#39;, &#39;please&#39;]</span><br><span class="line">[&#39;maybe&#39;, &#39;not&#39;, &#39;take&#39;, &#39;him&#39;, &#39;to&#39;, &#39;dog&#39;, &#39;park&#39;, &#39;stupid&#39;]</span><br><span class="line">[&#39;my&#39;, &#39;dalmation&#39;, &#39;is&#39;, &#39;so&#39;, &#39;cute&#39;, &#39;I&#39;, &#39;love&#39;, &#39;him&#39;]</span><br><span class="line">[&#39;stop&#39;, &#39;posting&#39;, &#39;stupid&#39;, &#39;worthless&#39;, &#39;garbage&#39;]</span><br><span class="line">[&#39;mr&#39;, &#39;licks&#39;, &#39;ate&#39;, &#39;my&#39;, &#39;steak&#39;, &#39;how&#39;, &#39;to&#39;, &#39;stop&#39;, &#39;him&#39;]</span><br><span class="line">[&#39;quit&#39;, &#39;buying&#39;, &#39;worthless&#39;, &#39;dog&#39;, &#39;food&#39;, &#39;stupid&#39;]</span><br><span class="line">------classVec------</span><br><span class="line">[0, 1, 0, 1, 0, 1]</span><br><span class="line">------vocabList------</span><br><span class="line">[&#39;cute&#39;, &#39;love&#39;, &#39;help&#39;, &#39;garbage&#39;, &#39;quit&#39;, &#39;I&#39;, &#39;problems&#39;, &#39;is&#39;, &#39;park&#39;, &#39;stop&#39;, &#39;flea&#39;, &#39;dalmation&#39;, &#39;licks&#39;, &#39;food&#39;, &#39;not&#39;, &#39;him&#39;, &#39;buying&#39;, &#39;posting&#39;, &#39;has&#39;, &#39;worthless&#39;, &#39;ate&#39;, &#39;to&#39;, &#39;maybe&#39;, &#39;please&#39;, &#39;dog&#39;, &#39;how&#39;, &#39;stupid&#39;, &#39;so&#39;, &#39;take&#39;, &#39;mr&#39;, &#39;steak&#39;, &#39;my&#39;]</span><br><span class="line">------words2Vec------</span><br><span class="line">[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1]</span><br><span class="line">[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0]</span><br><span class="line">[1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]</span><br><span class="line">[0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]</span><br><span class="line">[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1]</span><br><span class="line">[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0]</span><br></pre></td></tr></table></figure>
+<p>这样我们就得到了这六组待测试数据的词条向量。</p>
+<h4 id="训练算法：通过词条向量计算是侮辱性评论的概率"><a href="#训练算法：通过词条向量计算是侮辱性评论的概率" class="headerlink" title="训练算法：通过词条向量计算是侮辱性评论的概率"></a>训练算法：通过词条向量计算是侮辱性评论的概率</h4><h5 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h5><p>前面介绍了如何将一组单词转换为一组数字，接下来看看如何使用这些数字计算概率。</p>
+<p>现在我们已经知道了一个词是否出现在一篇文档中，也知道该文档所属的类别。根据前面提到的贝叶斯准则，我们将其中的$x$替换为$\textbf{w}$。<strong>注意：这里的粗体的$\textbf{w}$代表一个向量，即它是由多个值组成。</strong></p>
+<p>$$<br>p(c_i|\textbf{w}) = \dfrac{p(\textbf{w}|c_i)p(c_i)}{p(\textbf{w})}<br>$$</p>
+<p>我们将使用上述公式，对每个类计算该值，然后比较着两个概率值的大小<code>（这个例子中就是分别计算是侮辱性言论和不是侮辱性言论的概率，比较两种情况的概率大小）</code>。</p>
+<p>如何计算呢？</p>
+<p><strong>step1:计算$p(c_{i})$</strong></p>
+<p>首先可以通过类别i<code>(侮辱性言论或者非侮辱性言论)</code>中文档数除以总的文档数来计算$p(ci)$<code>(对应类别的文档占总文档数的比例)</code></p>
+<p><strong>step2:计算$p(\textbf{w}|c_i)$</strong></p>
+<p>这里就要用到朴素贝叶斯的假设了。假设$\textbf{w}$展开为一个个独立特征，那么可以将上述概率写作$p(w_0,w_1,w_2..w_n|c_i)$。这里假设所有词都互相独立，该假设也称作<strong>条件独立假设</strong>，它意味着可以使用$p(w_0|c_i)p(w_1|c_i)p(w_2|c_i)..p(w_n|c_i)$来计算上述概率，这就极大的简化了计算的过程。</p>
+<h5 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h5><p>朴素贝叶斯分类器训练函数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># trainMatrix:多个词条向量组成的集合矩阵</span></span><br><span class="line"><span class="comment"># trainCategory:分类标签集合</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">trainNBO</span>(<span class="params">trainMatrix, trainCategory</span>):</span></span><br><span class="line">    <span class="comment"># 记录词条向量个数</span></span><br><span class="line">    numTrainDocs = <span class="built_in">len</span>(trainMatrix)</span><br><span class="line">    <span class="comment"># 单个词条向量的长度，即词条字典的长度</span></span><br><span class="line">    numWords = <span class="built_in">len</span>(trainMatrix[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 引入numpy后，sum函数可以计算一个集合的所有元素的总和</span></span><br><span class="line">    <span class="comment"># pAbusive 是所有词条向量中 是侮辱性言论的概率： 3/6 = 0.5</span></span><br><span class="line">    pAbusive = <span class="built_in">sum</span>(trainCategory) / <span class="built_in">float</span>(numTrainDocs)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化 侮辱性/非侮辱性 言论中 词条分布总和向量</span></span><br><span class="line">    <span class="comment"># 引入numpy后,zeros(numWords)方法用来得到一个和numWords等长的0矩阵</span></span><br><span class="line">    p0Num = zeros(numWords)</span><br><span class="line">    p1Num = zeros(numWords)</span><br><span class="line">    <span class="comment"># 初始化 侮辱性/非侮辱性 言论中 词条总个数</span></span><br><span class="line">    p0Denom = <span class="number">0.0</span></span><br><span class="line">    p1Denom = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numTrainDocs):</span><br><span class="line">        <span class="keyword">if</span> trainCategory[i] == <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 如果为侮辱性言论，记录所有侮辱性词条向量累加之后的总向量</span></span><br><span class="line">            p1Num += trainMatrix[i]</span><br><span class="line">            <span class="comment"># 记录所有侮辱性言论中，总的词条个数</span></span><br><span class="line">            p1Denom += <span class="built_in">sum</span>(trainMatrix[i])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 如果为非侮辱性言论，记录所有非侮辱性词条向量累加之后的总向量</span></span><br><span class="line">            p0Num += trainMatrix[i]</span><br><span class="line">            <span class="comment"># 记录所有非侮辱性言论中，总的词条个数</span></span><br><span class="line">            p0Denom += <span class="built_in">sum</span>(trainMatrix[i])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算出一个标示每个词可能是侮辱性词汇概率的向量</span></span><br><span class="line">    p1Vect = p1Num / p1Denom</span><br><span class="line">    <span class="comment"># 计算出一个标示每个词可能是非侮辱性词汇概率的向量</span></span><br><span class="line">    p0Vect = p0Num / p0Denom</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> p0Vect, p1Vect, pAbusive</span><br></pre></td></tr></table></figure>
+<p>运行代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">postingList, classVec = loadDataSet()</span><br><span class="line"></span><br><span class="line">vocabList = createVocabList(postingList)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> posting <span class="keyword">in</span> postingList:</span><br><span class="line">    word2Vec = setOfWords2Vec(vocabList, posting)</span><br><span class="line">    trainMat.append(word2Vec)</span><br><span class="line"></span><br><span class="line">p0V,p1V,pAb = trainNBO(trainMat,classVec)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;------p0V------&quot;</span>)</span><br><span class="line">print(p0V)</span><br><span class="line">print(<span class="string">&quot;------p1V------&quot;</span>)</span><br><span class="line">print(p1V)</span><br><span class="line">print(<span class="string">&quot;------pAb------&quot;</span>)</span><br><span class="line">print(pAb)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">------p0V------</span><br><span class="line">[ <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.04166667</span></span><br><span class="line">  <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.04166667</span></span><br><span class="line">  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.08333333</span>  <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.04166667</span></span><br><span class="line">  <span class="number">0.04166667</span>  <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.04166667</span>  <span class="number">0.</span>          <span class="number">0.04166667</span></span><br><span class="line">  <span class="number">0.04166667</span>  <span class="number">0.125</span>     ]</span><br><span class="line">------p1V------</span><br><span class="line">[ <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">  <span class="number">0.</span>          <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">  <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.</span></span><br><span class="line">  <span class="number">0.10526316</span>  <span class="number">0.</span>          <span class="number">0.05263158</span>  <span class="number">0.05263158</span>  <span class="number">0.</span>          <span class="number">0.10526316</span></span><br><span class="line">  <span class="number">0.</span>          <span class="number">0.15789474</span>  <span class="number">0.</span>          <span class="number">0.05263158</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>        ]</span><br><span class="line">------pAb------</span><br><span class="line"><span class="number">0.5</span></span><br></pre></td></tr></table></figure>
+<p>p0V是所有词汇出现在非侮辱性言论中的概率向量。</p>
+<p>p1V是所有词汇出现在侮辱性言论中的概率向量。</p>
+<p>从中可以看出，p1V中，概率最大的是倒数第六个0.15789474,然后查询词条字典，发现这个词是‘stupid’,这意味着‘stupid’这个单词是最能表征类型1的词条，事实也确实如此。同时我们也能发现最能表征类别0的词条是‘him’。</p>
+<p><code>从结果中我们同样也能看到，在p0V中为0的词条，在p1V中不为0，相反的，在p1V中为0的词条，在p0V中也不为0。其实这并不是绝对的，这是巧合所致，如果我们的测试样本数量足够大，就可以看出这个现象了。</code></p>
+<h3 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h3><p>代码实现了贝叶斯分类器，并不是完事大吉了，有些地方我们需要根据实际情况来优化我们的代码。</p>
+<h4 id="注意点1："><a href="#注意点1：" class="headerlink" title="注意点1："></a>注意点1：</h4><p>利用贝叶斯分类器对文档进行分类时，要计算多个概率的乘积，以获得文档属于某个类别的概率，即计算$p(w_0|1)p(w_1|1)p(w_2|1)$。如果其中一个概率为0，那么最后的成积也为0。为降低这种影响，可以将所有词的出现数初始化为1，并将分母初始化为2<code>(分子分母各加1)</code>。</p>
+<p>将trainNBO()的14到18这几行代码进行修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化 侮辱性/非侮辱性 言论中 词条分布总和向量</span></span><br><span class="line">   <span class="comment"># 引入numpy后,zeros(numWords)方法用来得到一个和numWords等长的单位矩阵</span></span><br><span class="line">   p0Num = ones(numWords)</span><br><span class="line">   p1Num = ones(numWords)</span><br><span class="line">   <span class="comment"># 初始化 侮辱性/非侮辱性 言论中 词条总个数</span></span><br><span class="line">   p0Denom = <span class="number">2.0</span></span><br><span class="line">   p1Denom = <span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+<h4 id="注意点2："><a href="#注意点2：" class="headerlink" title="注意点2："></a>注意点2：</h4><p>另一个问题是下溢出，这是由于太多很小的数相乘造成的。当计算$p(w_0|c_i)p(w_1|c_i)p(w_2|c_i)…p(w_N|c_i)$时，由于大部分因子都非常小，所以非常容易出现下溢出<code>(可以尝试用python计算多个很小的数字相乘，最后的结果会变为0)</code>。</p>
+<p>一种解决办法是对乘积取自然对数。在代数中有$ln(a*b)=ln(a)+ln(b)$,于是通过求对数可以将乘法转化为加法，从而避免下溢出或者浮点数舍入导致的错误。同时，采用自然对数进行处理不会有任何损失。</p>
+<p>修改trainNBO()中的代码，在return之前添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分别对每个元素取对数</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p1Vect)):</span><br><span class="line">    p1Vect[i]=log(p1Vect[i])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p0Vect)):</span><br><span class="line">    p0Vect[i]=log(p0Vect[i])</span><br></pre></td></tr></table></figure>
+<h3 id="只差一步，构建朴素贝叶斯分类函数"><a href="#只差一步，构建朴素贝叶斯分类函数" class="headerlink" title="只差一步，构建朴素贝叶斯分类函数"></a>只差一步，构建朴素贝叶斯分类函数</h3><p>现在已经准备好了构建完整的分类器了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vec2Classify:待测试数据的词条向量</span></span><br><span class="line"><span class="comment"># pClass1:所有词条向量中是侮辱性词条向量的概率</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classifyNB</span>(<span class="params">vec2Classify, p0Vec, p1Vec, pClass1</span>):</span></span><br><span class="line">	<span class="comment"># sum(vec2Classify * p1Vec)当前词条向量中，每个词条可能是侮辱性词条的概率之积p(w:c1)</span></span><br><span class="line">	<span class="comment"># pClass1 : p(c1)</span></span><br><span class="line">    p1 = <span class="built_in">sum</span>(vec2Classify * p1Vec) + log(pClass1)</span><br><span class="line">    p0 = <span class="built_in">sum</span>(vec2Classify * p0Vec) + log(<span class="number">1.0</span> - pClass1)</span><br><span class="line">    <span class="keyword">if</span> p1 &gt; p0:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>执行代码，检验结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">postingList, classVec = loadDataSet()</span><br><span class="line">vocabList = createVocabList(postingList)</span><br><span class="line"></span><br><span class="line">trainMat = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> posting <span class="keyword">in</span> postingList:</span><br><span class="line">    word2Vec = setOfWords2Vec(vocabList, posting)</span><br><span class="line">    trainMat.append(word2Vec)</span><br><span class="line"></span><br><span class="line">p0V,p1V,pAb = trainNBO(trainMat,classVec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试数据1</span></span><br><span class="line">testEntry = [<span class="string">&#x27;love&#x27;</span>,<span class="string">&#x27;my&#x27;</span>,<span class="string">&#x27;dalmation&#x27;</span>]</span><br><span class="line">thisDoc = array(setOfWords2Vec(vocabList,testEntry))</span><br><span class="line"><span class="built_in">print</span> testEntry,<span class="string">&#x27;classified as: &#x27;</span>,classifyNB(thisDoc,p0V,p1V,pAb)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试数据2</span></span><br><span class="line">testEntry = [<span class="string">&#x27;stupid&#x27;</span>,<span class="string">&#x27;garbage&#x27;</span>]</span><br><span class="line">thisDoc = array(setOfWords2Vec(vocabList,testEntry))</span><br><span class="line"><span class="built_in">print</span> testEntry,<span class="string">&#x27;classified as: &#x27;</span>,classifyNB(thisDoc,p0V,p1V,pAb)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;love&#x27;</span>, <span class="string">&#x27;my&#x27;</span>, <span class="string">&#x27;dalmation&#x27;</span>] classified <span class="keyword">as</span>:  <span class="number">0</span></span><br><span class="line">[<span class="string">&#x27;stupid&#x27;</span>, <span class="string">&#x27;garbage&#x27;</span>] classified <span class="keyword">as</span>:  <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>至此，完成了朴素贝叶斯识别侮辱性言论的系统。对于分类而言，有的时候使用概率要比使用硬规则更为有效。可以看出，朴素贝叶斯提供了一种<strong>利用已知值来估计未知概率的有效方法</strong>。</p>
+<p>虽然建立在<strong>特征独立性假设</strong>和<strong>特征同等重要假设</strong>之上，但是，贝叶斯分类器依然是一种很有效的分类器。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/12/27/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(03)%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%9E%84%E5%BB%BA%E6%95%8F%E6%84%9F%E8%AF%8D%E8%BF%87%E6%BB%A4%E7%B3%BB%E7%BB%9F/" data-id="ckkwc439800bepas9cmwuhd2q" data-title="机器学习(03)朴素贝叶斯构建敏感词过滤系统" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-机器学习(02)决策树" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/12/13/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(02)%E5%86%B3%E7%AD%96%E6%A0%91/" class="article-date">
+  <time class="dt-published" datetime="2015-12-13T20:08:55.000Z" itemprop="datePublished">2015-12-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/12/13/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(02)%E5%86%B3%E7%AD%96%E6%A0%91/">机器学习(02)决策树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是决策树"><a href="#什么是决策树" class="headerlink" title="什么是决策树"></a>什么是决策树</h2><blockquote>
+<p>你是否玩过二十个问题的游戏，游戏的规则很简单：参与游戏的一方在脑海里想某个事物，其他参与者向他提问题，只允许提20个问题，问题的答案也只能用对或错回答。问问题的人通过推断分解，逐步缩小待猜测事物的范围。</p>
+</blockquote>
+<p>决策树的工作原理与20个问题类似，用户输入一系列数据，然后给出游戏的答案。</p>
+<p>决策树的概念非常简单。如下图就是一个决策树：</p>
+<p><img src="/img/ml_02_01.png" alt="决策树图例"></p>
+<p>构造决策树能够读取数据集合，并从中提取出一系列规则。</p>
+<p>专家系统中经常使用决策树，而且决策树给出结果往往可以匹敌在当前领域具有几十年工作经验的人类专家。</p>
+<h3 id="决策树的优缺点"><a href="#决策树的优缺点" class="headerlink" title="决策树的优缺点"></a>决策树的优缺点</h3><blockquote>
+<p>优点：计算复杂度不高，输出结果易于理解，对中间值的缺失不敏感，可以处理不相关特征数据。</p>
+<p>缺点：可能会产生过渡匹配的问题。</p>
+<p>使用数据类型：数值型和标称型。</p>
+</blockquote>
+<h2 id="决策树算法"><a href="#决策树算法" class="headerlink" title="决策树算法"></a>决策树算法</h2><h3 id="实施决策树算法的步骤："><a href="#实施决策树算法的步骤：" class="headerlink" title="实施决策树算法的步骤："></a>实施决策树算法的步骤：</h3><ul>
+<li><p>1.收集数据</p>
+</li>
+<li><p>2.处理数据，保证每条数据的最末尾的数据是当前类型。</p>
+</li>
+<li><p>3.对多个可以划分的<strong>特征</strong>进行甄选，甄选的标准是<strong>保证通过甄选之后划分的结果的信息增益最大</strong>。划分的方式:按照当前甄选的特征进行划分。</p>
+</li>
+</ul>
+<blockquote>
+<p>比如影响是否是鱼类的类型的两个特征：不浮出水面是否可以生存，是否有脚蹼，若当前选择的特征“不浮出水面是否可以生存” 信息增益最大，那么将数据划分成：不浮出水面可以生存 和 不浮出水面不可以生存 两类数据。</p>
+</blockquote>
+<ul>
+<li>4.如果划分后的数据全是同一类型（即香浓熵为0），则不再划分，否则，继续递归调用第三步的方法。</li>
+</ul>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>在构造决策树时，我们需要解决的第一个问题就是，<strong>当数据集上哪个特征在划分数据分类时起决定性作用</strong>。为了找到<strong>决定性</strong>的特征，划分出<strong>最好</strong>的结果，我们必须<strong>评估每个特征</strong>。</p>
+<p>完成测试之后，原始数据集就被划分为几个<strong>数据子集</strong>。这些数据子集会分布在第一个<strong>决策点</strong>的所有分支上。</p>
+<p>如果某个分支下的数据属于同一类型，则当前分支下数据已经正确地划分，无需进行进一步对数据集进行分割。如果分支下的数据不属于同一类型，则需要重复划分数据子集，直到<strong>所有具有相同类型的数据均在一个数据子集内</strong>。</p>
+<p>伪代码实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">检测数据集中的每个子项是否属于同一分类</span><br><span class="line">If so return 类标签;</span><br><span class="line">Else</span><br><span class="line">     寻找划分数据集的最好特征</span><br><span class="line">     划分数据集</span><br><span class="line">     创建分支节点</span><br><span class="line">          for 每个划分的子集</span><br><span class="line">               ＃ 递归调用函数createBranch</span><br><span class="line">               调用函数createBranch并增加返回结果到分支节点中</span><br><span class="line">     return 分支节点</span><br></pre></td></tr></table></figure>
+<h3 id="核心算法介绍"><a href="#核心算法介绍" class="headerlink" title="核心算法介绍"></a>核心算法介绍</h3><p><strong>划分算法</strong>：</p>
+<p>主要参考<strong>ID3算法</strong>,每次划分数据集时只选取一个特征属性:</p>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/ID3_algorithm">http://en.wikipedia.org/wiki/ID3_algorithm</a></p>
+<p><strong>香浓熵</strong></p>
+<blockquote>
+<p><strong>克劳德·香农</strong><br>克劳德·香农被公认为是二十世纪最聪明的人之一，威廉·庞德斯通在其2005年出版的《财富公式》一书中是这样描写克劳德·香农的：</p>
+<p>“贝尔实验室和MIT有很多人将香农和爱因斯坦相提并论，而其他人则认为这种对比是不公平的－－对香农是不公平的。”</p>
+</blockquote>
+<p>划分数据集的大原则是：<strong>将无需的数据变得更加有序</strong>。组织杂乱无章的数据的一种方法就是使用<strong>信息论</strong>度量信息，信息论是量化处理信息的分支学科。</p>
+<p><code>在划分数据前后信息发生的变化称为信息增益。</code></p>
+<p><strong>熵</strong>定义为<strong>信息的期望值</strong>，首先我们需要知道<strong>信息的定义</strong>。如果待分类的事务可能划分在多个分类之中，则<strong>符号$x_i$的信息</strong>定义为：</p>
+<p> $$l(n_i) = -log_2p(x_i)$$</p>
+<p> 其中$p(x_i)$是选择该分类的概率。</p>
+<p> 为了计算<strong>熵</strong>，我们需要计算<strong>所有类别所有可能值包含的信息期望值</strong>，通过下面公式得到：</p>
+<p> $$H = -\sum_{i=1}^np(x_i)log_2p(x_i)$$</p>
+<p> 其中n是分类的数目。</p>
+<h2 id="说这么多，不如举个栗子来的实在"><a href="#说这么多，不如举个栗子来的实在" class="headerlink" title="说这么多，不如举个栗子来的实在"></a>说这么多，不如举个栗子来的实在</h2><p>接下来我们对下列数据通过决策树来进行分析：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="center">不浮出水面是否可以生存</th>
+<th align="center">是否有脚蹼</th>
+<th align="center">属于鱼类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="center">是</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
+<h3 id="上代码"><a href="#上代码" class="headerlink" title="上代码"></a>上代码</h3><blockquote>
+<p>对数据进行分类时，我们首先要思考按照哪一个特征分类。这里我们需要分别计算分别按照两个特征进行分类之后的香浓熵，与分类之前的香浓熵进行对比，选取差值最大的（即为信息增益最大的）结果作为分类标准。</p>
+</blockquote>
+<p>模拟获取数据，注意数据的最末尾是当<strong>前数据的类型</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createDataSet</span>():</span></span><br><span class="line">    dataSet = [[<span class="number">1</span>,<span class="number">1</span>,<span class="string">&#x27;yes&#x27;</span>],</span><br><span class="line">               [<span class="number">1</span>,<span class="number">1</span>,<span class="string">&#x27;yes&#x27;</span>],</span><br><span class="line">               [<span class="number">1</span>,<span class="number">0</span>,<span class="string">&#x27;no&#x27;</span>],</span><br><span class="line">               [<span class="number">0</span>,<span class="number">1</span>,<span class="string">&#x27;no&#x27;</span>],</span><br><span class="line">               [<span class="number">0</span>,<span class="number">1</span>,<span class="string">&#x27;no&#x27;</span>]]</span><br><span class="line">    labels = [<span class="string">&#x27;no surfacing&#x27;</span>,<span class="string">&#x27;flippers&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> dataSet,labels</span><br></pre></td></tr></table></figure>
+<p>传说中香农熵的计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算数据中最后一个元素（当前数据类型）的香农熵</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcShannonEnt</span>(<span class="params">dataSet</span>):</span></span><br><span class="line">    numEntries = <span class="built_in">len</span>(dataSet)</span><br><span class="line">    labelCounts = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> featVec <span class="keyword">in</span> dataSet:</span><br><span class="line">        currentLabel = featVec[-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> currentLabel <span class="keyword">not</span> <span class="keyword">in</span> labelCounts.keys():</span><br><span class="line">            labelCounts[currentLabel] = <span class="number">0</span></span><br><span class="line">        labelCounts[currentLabel] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    shannonEnt = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> labelCounts:</span><br><span class="line">        prob = <span class="built_in">float</span>(labelCounts[key])/numEntries</span><br><span class="line">        shannonEnt -= prob * log(prob,<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> shannonEnt</span><br></pre></td></tr></table></figure>
+<p>对数据进行分割：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dataSet:传入数据  </span></span><br><span class="line"><span class="comment"># axis:要进行切割的特征下标  </span></span><br><span class="line"><span class="comment"># value:用来切割的特征值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">splitDataSet</span>(<span class="params">dataSet, axis, value</span>):</span></span><br><span class="line">    retDataSet = []</span><br><span class="line">    <span class="keyword">for</span> featVec <span class="keyword">in</span> dataSet:</span><br><span class="line">        <span class="keyword">if</span> featVec[axis] == value:</span><br><span class="line">            reducedFeatVec = featVec[:axis]</span><br><span class="line">            reducedFeatVec.extend(featVec[axis+<span class="number">1</span>:])</span><br><span class="line">            retDataSet.append(reducedFeatVec)</span><br><span class="line">    <span class="keyword">return</span> retDataSet</span><br></pre></td></tr></table></figure>
+<p>甄选最适合划分的特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chooseBestFeatureToSplit</span>(<span class="params">dataSet</span>):</span></span><br><span class="line">    <span class="comment"># 获取每组数据除去分类标签的数据长度</span></span><br><span class="line">    numFeatures = <span class="built_in">len</span>(dataSet[<span class="number">0</span>]) - <span class="number">1</span></span><br><span class="line">    <span class="comment"># 计算数据的基础的shannon熵</span></span><br><span class="line">    baseEntropy = calcShannonEnt(dataSet)</span><br><span class="line">    bestInfoGain = <span class="number">0.0</span></span><br><span class="line">    bestFeature = -<span class="number">1</span></span><br><span class="line">    print(dataSet)</span><br><span class="line">    print(<span class="string">&quot;------&quot;</span> + <span class="built_in">str</span>(numFeatures))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍历每一列标签</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numFeatures):</span><br><span class="line">        <span class="comment"># 获取每一种标签下的对应的数据</span></span><br><span class="line">        featList = [example[i] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]</span><br><span class="line">        <span class="built_in">print</span> featList</span><br><span class="line">        uniqueVals = <span class="built_in">set</span>(featList)</span><br><span class="line">        newEntropy = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 遍历并按照分类分割这一列下的数据 并计算分割后的shannone熵</span></span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> uniqueVals:</span><br><span class="line">            subDataSet = splitDataSet(dataSet,i,value)</span><br><span class="line">            prob = <span class="built_in">len</span>(subDataSet)/<span class="built_in">float</span>(<span class="built_in">len</span>(dataSet))</span><br><span class="line">            print(<span class="string">&quot;shannone:&quot;</span> + <span class="built_in">str</span>(calcShannonEnt(subDataSet)))</span><br><span class="line">            newEntropy += prob * calcShannonEnt(subDataSet)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 之前基本的shannone熵 减去 分割后的数据的shannone熵 算出前后差值 差值越大，代表后面的分类中，分得的数据混杂项越少</span></span><br><span class="line">        infoGain = baseEntropy - newEntropy</span><br><span class="line">        <span class="keyword">if</span> infoGain &gt; bestInfoGain:</span><br><span class="line">            bestInfoGain = infoGain</span><br><span class="line">            bestFeature = i</span><br><span class="line">    <span class="keyword">return</span> bestFeature</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myDat,labels=createDataSet()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>chooseBestFeatureToSplit(myDat)</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>得到最好的分类是第0个特征。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/12/13/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(02)%E5%86%B3%E7%AD%96%E6%A0%91/" data-id="ckkwc439600bapas9fvoea6l5" data-title="机器学习(02)决策树" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-机器学习(01) kNN算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/12/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(01)%20kNN%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2015-12-06T21:39:55.000Z" itemprop="datePublished">2015-12-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/12/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(01)%20kNN%E7%AE%97%E6%B3%95/">机器学习(01)kNN算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="k-近邻算法概述"><a href="#k-近邻算法概述" class="headerlink" title="k-近邻算法概述"></a>k-近邻算法概述</h2><p>简单的说，k-近邻算法采用<strong>测量不同特征值之间的距离方法进行分类</strong>。</p>
+<h3 id="kNN的工作原理是："><a href="#kNN的工作原理是：" class="headerlink" title="kNN的工作原理是："></a>kNN的工作原理是：</h3><blockquote>
+<p>在一个样本数据集中（又称作训练样本集），每个样本都存在有<strong>标签</strong>，即我们知道样本数据集中每个数据所属分类的对应关系。输入<strong>没有标签</strong>的新数据时，将新数据的每个特征与样本集中数据的对应特征进行比较，然后算法<strong>提取样本集中特征最相似数据</strong>（最近邻）的分类标签。一般来说，我们只选择样本数据集中<strong>前k个</strong>最相似的数据，这就是k-近邻算法中k的出处，通常<strong>k是不大于20</strong>的整数。最后，选择k个最相似数据中出现次数最多的分类，作为新数据的分类。</p>
+</blockquote>
+<h3 id="k-近邻算法的优缺点"><a href="#k-近邻算法的优缺点" class="headerlink" title="k-近邻算法的优缺点"></a>k-近邻算法的优缺点</h3><p>优点：精度高、对异常值不敏感、无数据输入假定。<br>缺点：计算复杂度高、空间复杂度高。<br>试用数据范围：数值型和标称型。</p>
+<h3 id="k-近邻算法的一般流程"><a href="#k-近邻算法的一般流程" class="headerlink" title="k-近邻算法的一般流程"></a>k-近邻算法的一般流程</h3><p>[1] 收集数据：可以使用任何方法。<br>[2] 准备数据：距离计算需要的数值，最好是结构化的数据格式。<br>[3] 分析数据：可以使用任何方法。<br>[4] 训练算法：此步骤不适用于k-近邻算法。<br>[5] 测试算法：计算错误率。<br>[6] 使用算法：首先需要输入样本数据和结构化的输出结果，然后运行k-近邻算法判定输入数据分别属于哪个分类，最后应用对计算出的分类执行后续的处理。</p>
+<h2 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h2><h3 id="使用k-近邻算法分类爱情片和动作片"><a href="#使用k-近邻算法分类爱情片和动作片" class="headerlink" title="使用k-近邻算法分类爱情片和动作片"></a>使用k-近邻算法分类爱情片和动作片</h3><p>有人曾经统计过很多电影的打斗镜头和接吻镜头，下图显示了6部电影的打斗和接吻镜头数。假如有一部未看过的电影，如何确定它是爱情片还是动作片呢？</p>
+<p><img src="/img/ml_01_01.png" alt="使用打斗和接吻镜头数分类电影"></p>
+<p>首先我们需要知道这个未知电影存在多少个打斗镜头和接吻镜头。上图对应的数据如下：</p>
+<p>每部电影的打斗镜头数、接吻镜头数以及电影评估类型：</p>
+<table>
+<thead>
+<tr>
+<th align="left">电影名称</th>
+<th align="right">打斗镜头</th>
+<th align="center">接吻镜头</th>
+<th align="center">电影类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">California Man</td>
+<td align="right">3</td>
+<td align="center">104</td>
+<td align="center">爱情片</td>
+</tr>
+<tr>
+<td align="left">He’s Not Really into Dudes</td>
+<td align="right">2</td>
+<td align="center">100</td>
+<td align="center">爱情片</td>
+</tr>
+<tr>
+<td align="left">Beautiful Woman</td>
+<td align="right">1</td>
+<td align="center">81</td>
+<td align="center">爱情片</td>
+</tr>
+<tr>
+<td align="left">Kevin Longblade</td>
+<td align="right">101</td>
+<td align="center">10</td>
+<td align="center">动作片</td>
+</tr>
+<tr>
+<td align="left">Robo Slayer 3000</td>
+<td align="right">99</td>
+<td align="center">5</td>
+<td align="center">动作片</td>
+</tr>
+<tr>
+<td align="left">Amped II</td>
+<td align="right">98</td>
+<td align="center">2</td>
+<td align="center">动作片</td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="right">18</td>
+<td align="center">90</td>
+<td align="center">未知</td>
+</tr>
+</tbody></table>
+<p>即使不知道未知电影属于哪种类型，我们也可以通过某种方法计算出来。首先<strong>计算未知电影与样本集中其他电影的距离</strong>，如下表所示（暂时不要关心距离是如何计算的）：</p>
+<p>已知电影与未知电影的距离</p>
+<table>
+<thead>
+<tr>
+<th align="left">电影名称</th>
+<th align="center">与未知电影的距离</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">California Man</td>
+<td align="center">20.5</td>
+</tr>
+<tr>
+<td align="left">He’s Not Really into Dudes</td>
+<td align="center">18.7</td>
+</tr>
+<tr>
+<td align="left">Beautiful Woman</td>
+<td align="center">19.2</td>
+</tr>
+<tr>
+<td align="left">Kevin Longblade</td>
+<td align="center">115.3</td>
+</tr>
+<tr>
+<td align="left">Robo Slayer 3000</td>
+<td align="center">117.4</td>
+</tr>
+<tr>
+<td align="left">Amped II</td>
+<td align="center">118.9</td>
+</tr>
+</tbody></table>
+<p>现在我们得到了样本集中所有电影与未知电影的距离，按照距离递增排序，可以找到k个距离最近的电影。假定k=3，则三个最靠近的电影依次是<em>He’s Not Really into Dudes</em>、<em>Beautiful Woman</em>和<em>California Man</em>。k-近邻算法按照距离最近的三部电影的类型，决定未知电影的类型，而这三部电影全是爱情片，因此我们判定未知电影是爱情片。</p>
+<h2 id="代码实现kNN"><a href="#代码实现kNN" class="headerlink" title="代码实现kNN"></a>代码实现kNN</h2><h3 id="创建样本数据集："><a href="#创建样本数据集：" class="headerlink" title="创建样本数据集："></a>创建样本数据集：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createDataSet</span>():</span></span><br><span class="line">	group = array([<span class="number">1.0</span>,<span class="number">1.1</span>],[<span class="number">1.0</span>,<span class="number">1.0</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0.1</span>])</span><br><span class="line">	labels = [<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]</span><br><span class="line">	<span class="keyword">return</span> group,labels</span><br></pre></td></tr></table></figure>
+<p>命令行执行后得到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>group,labels = kNN.createDataSet()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>group</span><br><span class="line">array([[<span class="number">1.0</span>, <span class="number">1.1</span>],</span><br><span class="line">	[<span class="number">1.0</span>, <span class="number">1.0</span>],</span><br><span class="line">	[<span class="number">0.0</span>, <span class="number">0.0</span>],</span><br><span class="line">	[<span class="number">0.0</span>, <span class="number">0.1</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>labels</span><br><span class="line">[<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;B&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<p>向量label包含了每个数据点的标签信息，label包含的元素个数等于group矩阵行数。这里，我们将数据点（1.0，1.1）定义为类A，数据点(0,0.1)定义为类B。</p>
+<p>下图是四个点在坐标系中的表示：</p>
+<p><img src="/img/ml_01_02.png" alt="k-近邻算法：带有4个数据点的简单例子"></p>
+<h3 id="从文本文件中解析数据"><a href="#从文本文件中解析数据" class="headerlink" title="从文本文件中解析数据"></a>从文本文件中解析数据</h3><p>将每组数据划分到某个类中，伪代码如下：</p>
+<p><code>对未知类别属性的数据集中的每个点依次执行以下操作：</code></p>
+<ul>
+<li>(1) 计算已知类别数据集中的点与当前点之间的距离；</li>
+<li>(2) 按照距离递增次序排序；</li>
+<li>(3) 选取与当前点距离最小的k个点；</li>
+<li>(4) 确定前k个点所在类别的出现频率；</li>
+<li>(5) 返回前k个点出现频率最高的类别作为当前点的预测分类。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># inX:用于分类的输入向量  </span></span><br><span class="line"><span class="comment"># dataSet:输入的训练样本集</span></span><br><span class="line"><span class="comment"># labels:标签向量</span></span><br><span class="line"><span class="comment"># k:用于选择最近邻的数量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classify0</span>(<span class="params">inX, dataSet, labels, k</span>):</span></span><br><span class="line">	<span class="comment"># 距离计算</span></span><br><span class="line">	dataSetSize = dataSet.shape[<span class="number">0</span>] <span class="comment"># 数据的条目数</span></span><br><span class="line">	diffMat = tile(inX, (dataSetSize,<span class="number">1</span>)) - dataSet</span><br><span class="line">	sqDiffMat = diffMat**<span class="number">2</span></span><br><span class="line">	sqDistances = sqDiffMat.<span class="built_in">sum</span>(axis=<span class="number">1</span>)</span><br><span class="line">	distances = sqDistances**<span class="number">0.5</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 将距离值按照从小到大排序</span></span><br><span class="line">	sortedDistIndicies = distances.argsort()</span><br><span class="line">	classCount=&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 取出前k个元素</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> rangs(k):</span><br><span class="line">		<span class="comment"># 取出对应的label</span></span><br><span class="line">		voteIlabel = labels[sortedDistIndicies[i]]</span><br><span class="line">		<span class="comment"># 计算当前取出的label的数量</span></span><br><span class="line">		classCount[voteIlabel] = classCount.get(voteIlabel,<span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 逆序排列label对应总数的列表 返回对应的label</span></span><br><span class="line">	sortedClassCount = <span class="built_in">sorted</span>(classCount.iteritems(),key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="literal">True</span>)</span><br><span class="line">	<span class="keyword">return</span> sortedClassCount[<span class="number">0</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p><code>关于距离计算的部分</code></p>
+<p>参考欧式距离公式：<br><img src="/img/ml_01_03.png" alt="欧式距离公式"></p>
+<p>例如，计算点(0,0)到(1,2)之间的距离为：<br><img src="/img/ml_01_04.png" alt="距离计算例子1"></p>
+<p>计算点(1,0,0,1)与(7,6,9,4)之间的距离为：<br><img src="/img/ml_01_05.png" alt="距离计算例子2"></p>
+<p>为了预测数据所在的分类，在Python提示符中输入下列命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>kNN.classify0([<span class="number">0</span>,<span class="number">0</span>], group, labels, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>输出的结果应该是B。</p>
+<h3 id="测试分类器"><a href="#测试分类器" class="headerlink" title="测试分类器"></a>测试分类器</h3><p>分类器并不会得到百分之百的正确的结果，为了测试分类器的效果，我们可以使用已知晓答案的数据，当然答案不能告诉分类器，检验分类器给出的结果是否符合预期结果。</p>
+<p>通过大量的测试数据，我们可以得到分类器的错误率–分类器给出错误结果的词数 除以 测试执行的总数。</p>
+<p>错误率是常用的评估方法，主要用于评估分类器在某个数据集上的执行效果。完美分类器的错误率为0，最差分类器的错误率是1.0，在这种情况下，分类器根本就无法找到一个正确答案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/12/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(01)%20kNN%E7%AE%97%E6%B3%95/" data-id="ckkwc439400b6pas92j7o9rkw" data-title="机器学习(01)kNN算法" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线性代数06-向量简介" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B006-%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B/" class="article-date">
+  <time class="dt-published" datetime="2015-12-05T13:50:55.000Z" itemprop="datePublished">2015-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B006-%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B/">线性代数06-向量简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="实数"><a href="#实数" class="headerlink" title="实数"></a>实数</h2><blockquote>
+<p>有理数和无理数.其中无理数就是无限不循环小数,有理数就包括整数和分数.实数直观地定义为和数轴上的点一一对应的数.本来实数仅称作数,后来引入了虚数概念,原本的数称作“实数”——意义是“实在的数”</p>
+</blockquote>
+<p>π是一个实数，e是一个实数，√2是实数，3也是实数。但是1+2i不是实数。</p>
+<h2 id="R-n"><a href="#R-n" class="headerlink" title="$R^n$"></a><strong>$R^n$</strong></h2><p>**$R^n$**代表所有有序集的集合。（这里的n并不是n次方的意思。）</p>
+<p>例如：</p>
+<p>$$<br>R^2 = \{(x1,x2)  |  x1,x2\in R  \}<br>$$</p>
+<p>什么是$R^n$上的向量呢？</p>
+<p>其实就是这些n元组中的一个特定值。[n个实数的有序集]</p>
+<p>表示一个向量，有很多种方法，例如一个二维向量可以用（x1，x2）来表示，看起来有点像坐标系。或者可以这样表示&lt;x1,x2&gt;</p>
+<p>也可以用矩阵表示：</p>
+<p>例如定义一个n维向量:</p>
+<p>$$<br>V=<br>\left[<br>\begin{matrix}<br> v1  \<br> v2  \<br> \vdots \<br> vn  \<br>\end{matrix}<br>\right]<br>$$</p>
+<h2 id="矩阵的加法"><a href="#矩阵的加法" class="headerlink" title="矩阵的加法"></a>矩阵的加法</h2><p>$$<br>A=<br>\left[<br>\begin{matrix}<br> a1  \<br> a2  \<br> \vdots \<br> an  \<br>\end{matrix}<br>\right]<br>$$</p>
+<p>$$<br>B=<br>\left[<br>\begin{matrix}<br> b1  \<br> b2  \<br> \vdots \<br> bn  \<br>\end{matrix}<br>\right]<br>$$</p>
+<p>$$<br>A + B=<br>\left[<br>\begin{matrix}<br> a1 + b1  \<br> a2 + b2  \<br> \vdots \<br> an + bn  \<br>\end{matrix}<br>\right]<br>$$</p>
+<h2 id="数乘运算"><a href="#数乘运算" class="headerlink" title="数乘运算"></a>数乘运算</h2><p>$$<br>A=<br>\left[<br>\begin{matrix}<br> a1  \<br> a2  \<br> \vdots \<br> an  \<br>\end{matrix}<br>\right]<br>$$</p>
+<p>$$<br>cA=<br>\left[<br>\begin{matrix}<br> ca1  \<br> ca2  \<br> \vdots \<br> can  \<br>\end{matrix}<br>\right]<br>$$</p>
+<h2 id="零向量"><a href="#零向量" class="headerlink" title="零向量"></a>零向量</h2><p>零向量：每个元素都为0的n维向量。</p>
+<p>$$<br>\left[<br>\begin{matrix}<br> 0  \<br> 0  \<br> \vdots \<br> 0  \<br>\end{matrix}<br>\right]<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B006-%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B/" data-id="ckkwc439l00capas92ppmfcwk" data-title="线性代数06-向量简介" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线性代数05-求解三元线性方程组" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B005-%E6%B1%82%E8%A7%A3%E4%B8%89%E5%85%83%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/" class="article-date">
+  <time class="dt-published" datetime="2015-12-05T13:01:55.000Z" itemprop="datePublished">2015-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B005-%E6%B1%82%E8%A7%A3%E4%B8%89%E5%85%83%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/">线性代数05-求解三元线性方程组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="求解三元线性方程组"><a href="#求解三元线性方程组" class="headerlink" title="求解三元线性方程组"></a>求解三元线性方程组</h2><p>二元线性方程组，相当于求解在x，y坐标系中，两条不平行的直线的焦点坐标。</p>
+<p>同理，求解三元线性方程组，相当于求解在x，y，z坐标系中，三个互不平行的平面的焦点坐标。</p>
+<p>例如：</p>
+<p>$$<br>\begin{cases}<br>-x + 2y - z = 9\\<br>x - 7y - 2z = -20\\<br>2x + 2y + z = 2<br>\end{cases}<br>$$ </p>
+<p>通过增广矩阵求解：</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|c}<br>      -1 &amp; 2 &amp; -1 &amp; 9\<br>      3 &amp; -7 &amp; -2 &amp; -20\<br>      2 &amp; 2 &amp; 1 &amp; 2<br>    \end{array}<br>\right]\tag{1}<br>$$</p>
+<p>第二行加上第一行的3倍，第三行加第一行的2倍，消去第一列。</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|c}<br>      -1 &amp; 2 &amp; -1 &amp; 9\<br>      0 &amp; -1 &amp; -5 &amp; 7\<br>      0 &amp; 6 &amp; -1 &amp; 20<br>    \end{array}<br>\right]\tag{2}<br>$$</p>
+<p>同理，第三行与第二行进行运算，消除第二列：</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|c}<br>      -1 &amp; 2 &amp; -1 &amp; 9\<br>      0 &amp; -1 &amp; -5 &amp; 7\<br>      0 &amp; 0 &amp; -31 &amp; 62<br>    \end{array}<br>\right]\tag{3}<br>$$</p>
+<p>$$<br>\left[<br>    \begin{array}{ccc|c}<br>      -1 &amp; 2 &amp; -1 &amp; 9\<br>      0 &amp; -1 &amp; -5 &amp; 7\<br>      0 &amp; 0 &amp; 1&amp; -2<br>    \end{array}<br>\right]\tag{4}<br>$$</p>
+<p>从而得出：</p>
+<p>$$<br>\begin{cases}<br>-x + 2y - z = 9\\<br>-y - 5z = 7\\<br>z = -2<br>\end{cases}<br>$$ </p>
+<p>$$<br>\begin{cases}<br>x = -1\\<br>y = 3\\<br>z = -2<br>\end{cases}<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B005-%E6%B1%82%E8%A7%A3%E4%B8%89%E5%85%83%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/" data-id="ckkwc439j00c2pas93359bcdu" data-title="线性代数05-求解三元线性方程组" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-线性代数04-奇异矩阵" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/30/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B004-%E5%A5%87%E5%BC%82%E7%9F%A9%E9%98%B5/" class="article-date">
+  <time class="dt-published" datetime="2015-11-30T09:01:55.000Z" itemprop="datePublished">2015-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/30/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B004-%E5%A5%87%E5%BC%82%E7%9F%A9%E9%98%B5/">线性代数04-奇异矩阵</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="奇异矩阵"><a href="#奇异矩阵" class="headerlink" title="奇异矩阵"></a>奇异矩阵</h2><blockquote>
+<p>当一个矩阵<strong>没有逆矩阵</strong>的时候，则称这个矩阵称为奇异矩阵。</p>
+</blockquote>
+<p>对于2x2矩阵的分析：</p>
+<p>$$<br>  A=<br>  \begin{bmatrix}<br>   a &amp; b \<br>   c &amp; d<br>  \end{bmatrix}<br>  \tag{0}<br>$$</p>
+<p>$$<br>A^{-1}=\dfrac{1}{|A|}<br>\begin{bmatrix}<br>   d &amp; -b \<br>   -c &amp; a<br>  \end{bmatrix}<br>  \tag{1}<br>$$</p>
+<p>$$<br>{|A|}=ad - bc<br>\tag{2}<br>$$</p>
+<p>跟进2x2矩阵的逆矩阵的推导过程，我们发现当ad=bc时，无解。</p>
+<p>所以，<strong>当行列式为0的时候，矩阵为奇异矩阵</strong>。</p>
+<p>这条定律也可以推广到任意的[n:n]矩阵</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/11/30/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B004-%E5%A5%87%E5%BC%82%E7%9F%A9%E9%98%B5/" data-id="ckkwc439h00bxpas9hunt67vu" data-title="线性代数04-奇异矩阵" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/11/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/13/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

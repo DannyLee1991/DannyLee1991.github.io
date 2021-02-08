@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>通过AspectJ代码注入来实现scheme跳转条件的检查判断 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="scheme跳转是Android通过外部链接打开APP指定页面的一种常见的实现方式，如果只是简单的跳转，那么不需要做什么额外的判断就可以打开指定页面了，但我们的产品中有一个需求就是：在通过scheme跳转打开某一个页面的时候，需要判断一些前置条件，如果前置条件满足的情况下，才能执行跳转，如果前置条件不满足，那么需要缓存本次跳转，直到需要满足的条件被触发时，才去执行跳转。 简单说来就是下面这张图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过AspectJ代码注入来实现scheme跳转条件的检查判断">
+<meta property="og:url" content="http://example.com/2017/03/21/%E9%80%9A%E8%BF%87AspectJ%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%9D%A5%E5%AE%9E%E7%8E%B0scheme%E8%B7%B3%E8%BD%AC%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%A3%80%E6%9F%A5%E5%88%A4%E6%96%AD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="scheme跳转是Android通过外部链接打开APP指定页面的一种常见的实现方式，如果只是简单的跳转，那么不需要做什么额外的判断就可以打开指定页面了，但我们的产品中有一个需求就是：在通过scheme跳转打开某一个页面的时候，需要判断一些前置条件，如果前置条件满足的情况下，才能执行跳转，如果前置条件不满足，那么需要缓存本次跳转，直到需要满足的条件被触发时，才去执行跳转。 简单说来就是下面这张图：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_03_21/001.png">
+<meta property="article:published_time" content="2017-03-21T22:48:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_03_21/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-通过AspectJ代码注入来实现scheme跳转条件的检查判断" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/21/%E9%80%9A%E8%BF%87AspectJ%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%9D%A5%E5%AE%9E%E7%8E%B0scheme%E8%B7%B3%E8%BD%AC%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%A3%80%E6%9F%A5%E5%88%A4%E6%96%AD/" class="article-date">
+  <time class="dt-published" datetime="2017-03-21T22:48:58.000Z" itemprop="datePublished">2017-03-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      通过AspectJ代码注入来实现scheme跳转条件的检查判断
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>scheme跳转是Android通过外部链接打开APP指定页面的一种常见的实现方式，如果只是简单的跳转，那么不需要做什么额外的判断就可以打开指定页面了，但我们的产品中有一个需求就是：在通过scheme跳转打开某一个页面的时候，需要判断一些前置条件，如果前置条件满足的情况下，才能执行跳转，如果前置条件不满足，那么需要缓存本次跳转，直到需要满足的条件被触发时，才去执行跳转。</p>
+<p>简单说来就是下面这张图：</p>
+<p><img src="/img/17_03_21/001.png"></p>
+<p>一开始我想到的处理方式是通过在Activity的基类里的<code>onCreate()</code>方法之前做判断逻辑，如果符合条件，则正常执行，如果条件不满足，则执行<code>finish()</code>。</p>
+<p>虽然可以满足需求，但这样的代码侵入性太高，逻辑必须侵入到Activity的基类中，容易与基类中其他逻辑产生耦合。</p>
+<p>因此为了解决这个方式，我想到的解决方式就是使用AOP的方式，在<code>onCreate()</code>之前注入我们的判断逻辑的代码，最后的使用方式可以简化到仅仅使用一行注解来添加判断条件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SchemeCheck(conditions = &#123;Condition.LOGIN&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TargetActivityA</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样一来，我们就不用考虑在Activity的基类中写这些可能产生冗余的逻辑了。</p>
+<p>最终实现效果如下：</p>
+<ul>
+<li>判断<strong>登录</strong>条件</li>
+</ul>
+<video width='300px' autoplay="autoplay" loop="loop" id="video" controls="" preload="none" >
+  <source id="mp4" src="/img/17_03_21/002.mp4" type="video/mp4">
+  <p>Your user agent does not support the HTML5 Video element.</p>
+</video>
+    
+- 判断**下载**条件
+
+<video width='300px' autoplay="autoplay" loop="loop" id="video" controls="" preload="none" >
+  <source id="mp4" src="/img/17_03_21/003.mp4" type="video/mp4">
+  <p>Your user agent does not support the HTML5 Video element.</p>
+</video>
+
+<ul>
+<li>判断<strong>登录并且下载</strong></li>
+</ul>
+<video width='300px' align="center" autoplay="autoplay" loop="loop" id="video" controls="" preload="none" >
+  <source id="mp4" src="/img/17_03_21/004.mp4" type="video/mp4">
+  <p>Your user agent does not support the HTML5 Video element.</p>
+</video>
+
+<ul>
+<li>判断登录或者下载</li>
+</ul>
+<video width='300px' autoplay="autoplay" loop="loop" id="video" controls="" preload="none" >
+  <source id="mp4" src="/img/17_03_21/005.mp4" type="video/mp4">
+  <p>Your user agent does not support the HTML5 Video element.</p>
+</video>
+
+<p>接下来介绍一下我是如何实现的。</p>
+<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><p>首先关于<strong>依赖注入</strong>以及<strong>AspectJ</strong>的相关使用，我参考了以下文章以及代码，具体使用方式我就不再赘述：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/0fa8073fd144">【翻译】Android中的AOP编程</a>  这一篇对AOP概念进行了介绍，并且通过AspectJ仿照<a target="_blank" rel="noopener" href="https://github.com/JakeWharton/hugo">Hugo</a>实现了一个AOP的Demo。</li>
+<li>JakeWharton大神的<a target="_blank" rel="noopener" href="https://github.com/JakeWharton/hugo">hugo</a> 项目，通过AspectJ实现的日志工具。</li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/crazy__chen/article/details/52014672">使用AspectJ在Android中实现Aop</a>这一篇文章是对上面的文章和hugo项目的总结。</li>
+</ul>
+<hr>
+<p>下面是我的实现：</p>
+<p>首先，定义注解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">@Target(&#123;ElementType.TYPE&#125;)</span><br><span class="line">public @interface SchemeCheck &#123;</span><br><span class="line">    Condition[] conditions();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>值得提醒的是，这里<code>@Retention</code>要定义为<code>RetentionPolicy.RUNTIME</code>，因为我们要在运行时检查注解的参数，来判断scheme的触发条件。如果你写成了<code>RetentionPolicy.CLASS</code>或者<code>RetentionPolicy.SOURCE</code>就检查不到了。</p>
+<p><code>Condition</code>是我们定义的需要判断的条件枚举：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public enum Condition &#123;</span><br><span class="line">    NULL(null),</span><br><span class="line">    LOGIN(new LoginCondition()),</span><br><span class="line">    DOWNLOAD_BOOK(new BookDownloadCondition()),</span><br><span class="line">    LOGIN_OR_DOWNLOAD_BOOK(new LoginOrBookDownloadCondition());</span><br><span class="line"></span><br><span class="line">    BaseCondition condition;</span><br><span class="line">    Condition(BaseCondition condition) &#123;</span><br><span class="line">        this.condition &#x3D; condition;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BaseCondition getCondition() &#123;</span><br><span class="line">        return condition;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Condition</code>可以通过<code>getCondition()</code>来获取到具体的继承自<code>BaseCondition</code>的Condition对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public abstract class BaseCondition &#123;</span><br><span class="line">    public abstract boolean isSatisfied();</span><br><span class="line"></span><br><span class="line">    public abstract String unSatisfiedInfo();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于是Demo，我们的登录条件暂时写死，到时候换成你具体的业务逻辑即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class LoginCondition extends BaseCondition &#123;</span><br><span class="line"></span><br><span class="line">    public static boolean isLogin &#x3D; false;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean isSatisfied() &#123;</span><br><span class="line">        return isLogin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String unSatisfiedInfo() &#123;</span><br><span class="line">        return &quot;请先登录&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了这些，我们就可以写注入代码了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">public class SchemeCheckAspect &#123;</span><br><span class="line">    @Pointcut(&quot;within(@demo.com.aj.anno.SchemeCheck *)&quot;)</span><br><span class="line">    public void withinAnnotatedClass() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Pointcut(&quot;execution(!synthetic * *(..)) &amp;&amp; withinAnnotatedClass()&quot;)</span><br><span class="line">    public void methodInsideAnnotatedType() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Pointcut(&quot;execution(@demo.com.aj.anno.SchemeCheck * *(..)) || methodInsideAnnotatedType()&quot;)</span><br><span class="line">    public void method() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Around(&quot;method()&quot;)</span><br><span class="line">    public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable &#123;</span><br><span class="line">        Signature signature &#x3D; joinPoint.getSignature();</span><br><span class="line">        String methodName &#x3D; signature.getName();</span><br><span class="line"></span><br><span class="line">        if (TextUtils.equals(methodName, &quot;onCreate&quot;)) &#123;</span><br><span class="line">            SchemeCheck anno &#x3D; (SchemeCheck) signature.getDeclaringType().getAnnotation(SchemeCheck.class);</span><br><span class="line">            if (anno !&#x3D; null) &#123;</span><br><span class="line">                Condition[] conditions &#x3D; anno.conditions();</span><br><span class="line">                Object point &#x3D; joinPoint.getThis();</span><br><span class="line">                if (point !&#x3D; null &amp;&amp; point instanceof Activity) &#123;</span><br><span class="line">                    Activity activity &#x3D; (Activity) point;</span><br><span class="line">                    handleScheme(activity, conditions);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return joinPoint.proceed();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 检查前置条件</span><br><span class="line">     *</span><br><span class="line">     * @return 是否通过检查</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private boolean checkCondition(Condition[] conditions) &#123;</span><br><span class="line">        if (conditions !&#x3D; null) &#123;</span><br><span class="line">            for (Condition condition : conditions) &#123;</span><br><span class="line">                BaseCondition conditionObj &#x3D; condition.getCondition();</span><br><span class="line">                if (conditionObj !&#x3D; null</span><br><span class="line">                        &amp;&amp; !conditionObj.isSatisfied()) &#123;</span><br><span class="line">                    Toast.makeText(App.getContext(), conditionObj.unSatisfiedInfo(), Toast.LENGTH_SHORT).show();</span><br><span class="line">                    SchemeManager.Cache.save(condition);</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 通过验证</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private void passSatisfy() &#123;</span><br><span class="line">        SchemeManager.Cache.clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 处理前置条件的检查结果</span><br><span class="line">     *</span><br><span class="line">     * @param isPass 检查是否通过</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private void handleCheck(Activity activity, boolean isPass) &#123;</span><br><span class="line">        if (isPass) &#123;</span><br><span class="line">            passSatisfy();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (activity !&#x3D; null) &#123;</span><br><span class="line">                activity.finish();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     *</span><br><span class="line">     * 处理scheme相关的事情</span><br><span class="line">     *</span><br><span class="line">     * @param activity</span><br><span class="line">     * @param conditions</span><br><span class="line">     * @return 是否通过验证</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private boolean handleScheme(Activity activity, Condition[] conditions) &#123;</span><br><span class="line">        boolean passCheck &#x3D; true;</span><br><span class="line">        if (isStartByScheme(activity)) &#123;</span><br><span class="line">            passCheck &#x3D; checkCondition(conditions);</span><br><span class="line">            handleCheck(activity, passCheck);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            passCheck &#x3D; true;</span><br><span class="line">            passSatisfy();</span><br><span class="line">        &#125;</span><br><span class="line">        return passCheck;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 检查是否是由scheme开启</span><br><span class="line">     *</span><br><span class="line">     * @return</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private boolean isStartByScheme(Activity activity) &#123;</span><br><span class="line">        boolean isScheme &#x3D; false;</span><br><span class="line">        if (activity !&#x3D; null) &#123;</span><br><span class="line">            Intent intent &#x3D; activity.getIntent();</span><br><span class="line">            if (intent !&#x3D; null) &#123;</span><br><span class="line">                isScheme &#x3D; intent.getBooleanExtra(KEY_IS_SCHEME, false);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return isScheme;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们在<code>onCreate()</code>方法开始之前，我们注入了scheme的判断逻辑，当条件满足时，直接执行了后面的逻辑；当条件不满足时，将不满足的条件进行缓存，并且<code>finish()</code>当前Activity。当正常执行了scheme跳转之后，清空缓存。</p>
+<p>其中<code>SchemeManager</code>的逻辑如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">public class SchemeManager &#123;</span><br><span class="line">    public static final String KEY_IS_SCHEME &#x3D; &quot;isScheme&quot;;</span><br><span class="line"></span><br><span class="line">    public static class Cache &#123;</span><br><span class="line">        public static String next &#x3D; &quot;&quot;;</span><br><span class="line">        public static Condition unSatisfiedCondition;</span><br><span class="line"></span><br><span class="line">        public static void save(Condition condition) &#123;</span><br><span class="line">            unSatisfiedCondition &#x3D; condition;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static void clear()&#123;</span><br><span class="line">            next &#x3D; &quot;&quot;;</span><br><span class="line">            unSatisfiedCondition &#x3D; null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void reExecuteScheme(Activity activity, Condition condition) &#123;</span><br><span class="line">        if (Cache.unSatisfiedCondition !&#x3D; null) &#123;</span><br><span class="line">            &#x2F;&#x2F; 当缓存的条件与当前重复执行时触发的条件一致时，再次执行scheme</span><br><span class="line">            if (Cache.unSatisfiedCondition &#x3D;&#x3D; condition) &#123;</span><br><span class="line">                String scheme &#x3D; Cache.next;</span><br><span class="line">                executeScheme(activity, scheme);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void executeScheme(Activity activity, String schemeStr) &#123;</span><br><span class="line">        Cache.next &#x3D; schemeStr;</span><br><span class="line">        Class&lt;? extends Activity&gt; target &#x3D; null;</span><br><span class="line">        switch (schemeStr) &#123;</span><br><span class="line">            case &quot;startA&quot;:</span><br><span class="line">                target &#x3D; TargetActivityA.class;</span><br><span class="line">                break;</span><br><span class="line">            case &quot;startB&quot;:</span><br><span class="line">                target &#x3D; TargetActivityB.class;</span><br><span class="line">                break;</span><br><span class="line">            case &quot;startC&quot;:</span><br><span class="line">                target &#x3D; TargetActivityC.class;</span><br><span class="line">                break;</span><br><span class="line">            case &quot;startD&quot;:</span><br><span class="line">                target &#x3D; TargetActivityD.class;</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (target !&#x3D; null) &#123;</span><br><span class="line">            &#x2F;&#x2F; 如果当前页和目标页面是同一个页面  则清空缓存  防止递归调用产生死循环</span><br><span class="line">            if (target.equals(activity.getClass())) &#123;</span><br><span class="line">                Cache.clear();</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            Intent intent &#x3D; new Intent(activity, target);</span><br><span class="line">            intent.putExtra(KEY_IS_SCHEME, true);</span><br><span class="line">            activity.startActivity(intent);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里包含有缓存管理的逻辑，以及<strong>执行scheme</strong>和<strong>重复执行scheme</strong>的逻辑。</p>
+<p>其中，由于是Demo，执行scheme的逻辑用固定的字符串来代表scheme链接，这里需要你来替换为你自己的业务逻辑，因为你可能有解析scheme参数并且传递到目标Activity的逻辑。</p>
+<p>scheme缓存保存了scheme链接和最后一次没有通过的条件枚举值，当下一次条件被触发时，通过<code>reExecuteScheme</code>来执行缓存中的scheme，达到继续跳转的效果。</p>
+<p>例如，在登录成功的地方，可以执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reExecuteScheme(this, Condition.LOGIN);</span><br></pre></td></tr></table></figure>
+<p>来达到登录成功时继续触发<strong>因未登录导致的scheme跳转失败的scheme跳转</strong>（好绕啊…）。</p>
+<h2 id="愉快的调用"><a href="#愉快的调用" class="headerlink" title="愉快的调用"></a>愉快的调用</h2><p>接下来我们在需要加入scheme跳转判断的Activity的类上加入注解判断即可，例如我们在下面的Activity上加入<strong>登录</strong>以及<strong>词书下载</strong>的条件判断：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@SchemeCheck(conditions &#x3D; &#123;Condition.LOGIN, Condition.DOWNLOAD_BOOK&#125;)</span><br><span class="line">public class TargetActivityC extends Activity &#123;</span><br><span class="line"></span><br><span class="line">    public static void start(Activity activity) &#123;</span><br><span class="line">        activity.startActivity(new Intent(activity, TargetActivityC.class));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是很简单呢？</p>
+<h2 id="注意！这里有坑"><a href="#注意！这里有坑" class="headerlink" title="注意！这里有坑"></a>注意！这里有坑</h2><p>目前发现的一个坑就是我们的加入scheme跳转判断的子类Activity中必须有<code>onCreate</code>方法才可以正常执行，因为<code>AspectJ</code>只能判断当前子类中所触发的子类的方法。也就是说如果即使你对Activity的基类的<code>onCreate</code>进行了一层封装，完成了<code>onCreate</code>的所有工作，子类也需要复写一下<code>onCreate</code>。就像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">       super.onCreate(savedInstanceState);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>否则会crash。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/03/21/%E9%80%9A%E8%BF%87AspectJ%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%9D%A5%E5%AE%9E%E7%8E%B0scheme%E8%B7%B3%E8%BD%AC%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%A3%80%E6%9F%A5%E5%88%A4%E6%96%AD/" data-id="ckkwc439p00clpas9husw87d1" data-title="通过AspectJ代码注入来实现scheme跳转条件的检查判断" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/11/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(3)%E4%BD%BF%E7%94%A8SVM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          斯坦福机器学习课程 第七周 (3)使用SVM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

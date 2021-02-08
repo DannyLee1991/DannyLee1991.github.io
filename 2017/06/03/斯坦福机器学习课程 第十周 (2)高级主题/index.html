@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第十周 (2)高级主题 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在线学习视频地址  在本节，我将会讨论一种新的大规模的机器学习机制，叫做在线学习机制。在拥有连续一波数据或连续的数据流涌进来，而我们又需要一个算法来从中学习的时候来模型化问题时，我们就需要用到在线学习机制。  今天许多大型网站，或者许多大型网络公司，都在使用不同版本的在线学习机制算法从大批的涌入又离开网站的用户身上进行学习。 特别要提及的是，如果你有一个由连续的用户流引发的连续的数据流，用户流进入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第十周 (2)高级主题">
+<meta property="og:url" content="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在线学习视频地址  在本节，我将会讨论一种新的大规模的机器学习机制，叫做在线学习机制。在拥有连续一波数据或连续的数据流涌进来，而我们又需要一个算法来从中学习的时候来模型化问题时，我们就需要用到在线学习机制。  今天许多大型网站，或者许多大型网络公司，都在使用不同版本的在线学习机制算法从大批的涌入又离开网站的用户身上进行学习。 特别要提及的是，如果你有一个由连续的用户流引发的连续的数据流，用户流进入">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_06_03/001.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/002.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/003.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/004.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/005.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/006.png">
+<meta property="og:image" content="http://example.com/img/17_06_03/007.png">
+<meta property="article:published_time" content="2017-06-03T12:19:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_06_03/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第十周 (2)高级主题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2017-06-03T12:19:00.000Z" itemprop="datePublished">2017-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第十周 (2)高级主题
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="在线学习"><a href="#在线学习" class="headerlink" title="在线学习"></a>在线学习</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/ABO2q/online-learning">视频地址</a></p>
+<blockquote>
+<p>在本节，我将会讨论一种新的大规模的机器学习机制，叫做<strong>在线学习机制</strong>。在拥有连续一波数据或连续的数据流涌进来，而我们又需要一个算法来从中学习的时候来模型化问题时，我们就需要用到<strong>在线学习机制</strong>。 </p>
+<p>今天许多大型网站，或者许多大型网络公司，都在使用不同版本的在线学习机制算法从大批的涌入又离开网站的用户身上进行学习。</p>
+<p>特别要提及的是，如果你有一个由连续的用户流引发的连续的数据流，用户流进入你的网站，你能做的是使用一个在线学习机制，从数据流中学习用户的偏好，然后使用这些信息，来优化一些关于网站的决策。</p>
+</blockquote>
+<h3 id="在线学习机制举例"><a href="#在线学习机制举例" class="headerlink" title="在线学习机制举例"></a>在线学习机制举例</h3><h4 id="运输服务对于定价的预测"><a href="#运输服务对于定价的预测" class="headerlink" title="运输服务对于定价的预测"></a>运输服务对于定价的预测</h4><p>假如你有一个提供运输服务的网站，在网站上提供用户选择包裹邮寄的起始地址和目的地址，并显示运输价格。然和我们需要根据用户对给出邮费价格的选择接受或者走掉，来作为正样本（$y=1$）和负样本（$y=0$），通过这些样本来构建学习算法，来帮助我们找到用户的特点，从而给出一个合理的邮费价格预测。</p>
+<p>我们使用这些优化后的价格，很有可能会提高我们的利润。</p>
+<p>对于持续运行的网站来说，以下就是在线学习算法要做的：</p>
+<ul>
+<li>网站一直保持在线学习状态。</li>
+<li>当一个用户偶然访问网站时，我们会得到当前用户对应的数据$(x,y)$(特征$x$是指用户所指定的起始地与目的地以及我们这一次提供给客户的价格，而$y$的取值是0或1，具体值取决于用户最终是否选择了我们的运输服务)。</li>
+<li>通过该用户的数据$(x,y)$来更新$\theta$。<ul>
+<li>$\theta_j := \theta_j - \alpha(h_{\theta}(x)-y)x_j \ \ \ \  \ \ \ (j=0,…,n)$</li>
+</ul>
+</li>
+</ul>
+<p>与以往的学习过程不同的是，在线学习中，每次梯度下降使用的这个当前用户的样本数据$(x,y)$，我们使用一次之后就丢弃了，我们永远都不会再次使用它。这就是为什么我们在一个时间点只会处理一个样本的原因。</p>
+<p>如果你真的运行一个大型网站，在这个网站里你有一个连续的用户流登陆网站，那么这种在线学习算法，是一种非常合理的算法。因为数据本质上是自由的，而且数据本质上是无限的，那么或许就真的没必要重复处理一个样本。当然，如果我们只有少量的用户，那么我们就不选择像这样的在线学习算法，这种情况下最好是要保存好所有的数据，然后对这个数据集使用某种算法。</p>
+<p>我也必须要提到一个这种在线学习算法会带来的有趣的效果，那就是它可以对正在变化的用户偏好进行调适。</p>
+<h4 id="搜索中对于搜索结果的优化"><a href="#搜索中对于搜索结果的优化" class="headerlink" title="搜索中对于搜索结果的优化"></a>搜索中对于搜索结果的优化</h4><p>在搜索引擎中，我们想使用一种学习机制来学习如何反馈给用户好的搜索列表。</p>
+<p>举个具体的例子，假如你有一个在线卖手机的网站，你有一个可以提供搜索的用户界面。在你的网站中，有100部正在售卖的手机，用户每次搜索时会提供10部手机的搜索结果。那么当用户输入类似“安卓 手机 1080p 摄像头”这样的搜索词时，我们应该推荐哪十部手机给用户呢？</p>
+<p>我们想要做的是拥有一个在线学习机制来帮助我们 找到在这100部手机中哪十部手机是我们真正应该反馈给用户的，而且这个返回的列表是对类似这样的用户搜索条目最佳的回应。</p>
+<p>接下来要说的是一种解决问题的思路。</p>
+<p>对于每一个手机以及一个给定的用户搜索命令，我们可以构建一个特征矢量$x$，那么这个特征矢量$x$可能会抓取手机的各种特点，它可能会抓取类似于用户搜索命令与这部电话的类似程度有多高这样的信息，我们获取类似于：这个用户搜索命令中有多少个词，可以与这部手机的名字相匹配；或者这个搜索命令中有多少词，与这部手机的描述相匹配。</p>
+<p>$$<br>x=手机的特征，\\用户的搜索词中有多少个词与手机名称匹配，\\用户的搜索词中有多少个词与手机的描述匹配，\\等等<br>$$</p>
+<p>所以特征矢量$x$获取手机的特点，并且它还会获取这部手机与搜索命令的结果在各个方面的匹配程度。我们想要做的就是估测一个概率，这个概率是指用户将会点进某一个特定的手机的链接的概率。因为我们想要给用户提供那些他们很可能在浏览器中点进去查看的手机，所以我定义$y=1$是指用户点击了手机的链接，而$y=0$是指用户没有点击链接。</p>
+<p>$$<br>y=1 （如果用户点击了链接） \\<br>y=0 （用户没有点击链接）<br>$$</p>
+<p>然后我们想要做的就是学习到用户将会点击某一个特定的手机的概率：</p>
+<p>$$<br>p(y=1|x;\theta)<br>$$</p>
+<p>你知道的，特征$x$获取了手机的特点以及搜索条目与手机的匹配程度。这类问题其实被称作<strong>预估点击率CTR</strong>，它仅仅代表这学习用户将点击某一个特定的、你提供给他们的链接的概率。所以<strong>CTR</strong>是**点击率(Click Through Rate)**的简称。</p>
+<p>如果你能够估计任意一个特定手机的点击率，我们可以做的就是利用这个来给用户展示十个他们最有可能点击的手机。因为从这一百个手机中，我们可以计算出每一部手机的可能的点击率，然后选择10部用户最有可能点击的手机，那么这就是一个非常合理的来决定要展示给用户的十个搜索结果的方法。</p>
+<p>更明确地说，假定每次用户进行一次搜索，我们回馈给用户十个结果。在线学习算法会真正地提供给我们十个$(x,y)$数据对样本。每当一个用户来到 我们网站时就给了我们十个样本，因为对于这十部我们选择要展示给用户的手机的每一个我们会得到 一个特征矢量x，而且对于这10部手机中的任何一个手机，我们还会得到$y$的取值。这些取值是根据用户有没有点击那个网页链接来决定的。这样运行此类网站的一种方法就是连续给用户展示你的十个最佳猜测，这十个推荐是指用户可能会喜欢的其他的手机，那么每次一个用户访问，你将会得到十个$(x,y)$样本数据对，然后利用一个在线学习 算法来更新你的参数。更新过程中会对这十个样本利用10步梯度下降法，然后你可以丢弃你的数据了。</p>
+<p>如果你真的拥有一个连续的用户流进入你的网站，这将会是一个非常合理的学习方法，来学习你的算法中的参数从而来给用户展示十部他们最有可能点击查看的手机。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>上面几个例子的原理，你应该也能懂得其他应用的原理。例如优惠券推荐、新闻推荐等。</p>
+<p>而且实际上，如果你有一个协作过滤系统，你可以想象到一个协作过滤系统可以给你更多的特征，这些特征可以整合到逻辑回归的分类器，从而可以尝试着预测对于你可能推荐给用户的不同产品的点击率。</p>
+<p>这就是<strong>在线学习机制</strong>，与<strong>随机梯度下降算法</strong>非常类似，唯一的区别的是我们不会使用一个固定的数据集，而是获取一个用户样本，从那个样本中学习，然后丢弃那个样本并继续下去。而且如果你对某一种应用有一个连续的数据流，这样的算法可能会非常值得考虑。</p>
+<p>当然在线学习的一个优点，就是如果你有一个变化的用户群、又或者你在尝试预测的事情在缓慢变化，就像你的用户的品味在缓慢变化，这个在线学习算法可以慢慢地调试你所学习到的假设，将其调节更新到最新的用户行为。</p>
+<h2 id="Map-Reduce-和数据并行"><a href="#Map-Reduce-和数据并行" class="headerlink" title="Map Reduce 和数据并行"></a>Map Reduce 和数据并行</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/10sqI/map-reduce-and-data-parallelism">视频地址</a></p>
+<blockquote>
+<p>在之前，我们讨论了<strong>随机梯度下降</strong>，以及梯度下降算法的其他一些变种，包括如何将其运用于在线学习。然而所有这些算法都只能在一台计算机上运行，但有的时候，机器学习的运算量巨大，以至于单台机器处理起来特别耗时，所以人们希望能在多台机器上同时执行运算来提高效率。</p>
+<p>在本节中，我将介绍进行大规模机器学习的另一种方法，称为<strong>Map Reduce</strong>。尽管我们用了很多内容来讲解随机梯度下降算法，而对于<strong>Map Reduce</strong>的介绍比较少，但是请不要根据我们介绍内容的长短来判断哪一种技术更加重要。事实上 许多人认为<strong>Map Reduce</strong>与梯度梯度下降算法相比至少是同等重要的，还有人认为<strong>Map Reduce</strong>甚至比梯度下降方法更重要。</p>
+<p>我们之所以在<strong>Map Reduce</strong>上花的时间比较少，只是因为它相对简单，容易解释。然而实际上相比于随机梯度下降方法，<strong>Map Reduce</strong>能够处理更大规模的问题。</p>
+</blockquote>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><p>假设我们要拟合一个线性回归模型，或者逻辑回归模型，或者其他的什么模型。让我们再次从随机梯度下降算法开始：</p>
+<p><img src="/img/17_06_03/001.png"></p>
+<p>假设我们有400个样本$m=400$（实际应用中会比这个数字大很多）：</p>
+<p>$$<br>(x^{(1)},y^{(1)}),…,<br>(x^{(400)},y^{(400)})<br>$$</p>
+<p>根据<strong>Map Reduce</strong>的思想，一种解决方案是将训练集划分成几个不同的子集，然后分别放在多台机器上并行的处理我们的训练数据（这里我们把数据集划分成四份，并且放在4台机器上并行处理）。</p>
+<p>每台机器内部都去计算对应的子集的求和运算：</p>
+<p><img src="/img/17_06_03/002.png"></p>
+<p>最后，当这些计算机全都完成了各自的工作，我们将这些临时变量收集到一起，送到一个中心计算服务器，这台服务器会将这些临时变量合并起来：</p>
+<p><img src="/img/17_06_03/003.png"></p>
+<p>图中右侧更新的公式如下：</p>
+<p>$$<br>\theta_j :=<br>\theta_j - \alpha\frac{1}{400}<br>(temp_j^{(1)} + temp_j^{(2)} + temp_j^{(3)} + temp_j^{(4)})<br>\\<br>(j = 0,…,n)<br>$$</p>
+<p>其实这个公式计算的数值和原先的梯度下降公式计算的数值是完全一样的。</p>
+<h3 id="Map-Reduce工作原理"><a href="#Map-Reduce工作原理" class="headerlink" title="Map Reduce工作原理"></a>Map Reduce工作原理</h3><blockquote>
+<p>这里值得说明的一点是<strong>Map Reduce</strong>基本思想来自于<strong>Jeffrey Dean</strong>和<strong>Sanjay Ghemawat</strong>这两位研究者。其中<strong>Jeffrey Dean</strong>是硅谷最为传奇的一位工程师，今天Google所有的服务所依赖的后台基础架构，有很大一部分是他创建的。</p>
+</blockquote>
+<p>总结来说<strong>Map Reduce</strong>技术是这么工作的：</p>
+<ul>
+<li>将原始训练样本均分成4份</li>
+<li>将这4份训练样本的子集送给4台不同的计算机，每一台计算机对四分之一的训练数据进行求和运算</li>
+<li>最后这4个求和结果 被送到一台中心计算服务器负责对结果进行汇总。</li>
+</ul>
+<p><img src="/img/17_06_03/004.png"></p>
+<p>通过<strong>Map Reduce</strong>技术，我们相较于之前的方式提升了4倍的速度。</p>
+<p>特别的，如果没有网络延时也不考虑通过网络来回传输数据所消耗的时间，那么你可能可以得到4倍的加速。当然，在实际工作中，因为网络延时数据汇总额外消耗时间，以及其他的一些因素，你能得到的加速总是略小于4倍的。但是，不管怎么说，这Map Reduce算法确实让我们能够处理之前单台机器无法处理的大规模数据。</p>
+<h3 id="使用Map-Reduce的条件"><a href="#使用Map-Reduce的条件" class="headerlink" title="使用Map Reduce的条件"></a>使用Map Reduce的条件</h3><p>如果你打算将Map Reduce技术用于加速某个机器学习算法，也就是说你打算运用多台不同的计算机并行的进行计算，那么你需要问自己一个很关键的问题，那就是<strong>你的机器学习算法是否可以表示为训练样本的某种求和</strong>。</p>
+<p>事实证明，很多机器学习算法的确可以表示为关于训练样本的函数求和。而在处理大数据时，这些算法的主要运算量在于对大量训练数据求和。</p>
+<h3 id="Map-Reduce处理逻辑回归"><a href="#Map-Reduce处理逻辑回归" class="headerlink" title="Map Reduce处理逻辑回归"></a>Map Reduce处理逻辑回归</h3><p>对于某些使用<strong>逻辑回归</strong>的优化算法（比如说<strong>LBFGS算法</strong>，或者<strong>共轭梯度算法</strong>等等），我们需要计算两个值：</p>
+<h4 id="计算优化目标代价函数"><a href="#计算优化目标代价函数" class="headerlink" title="计算优化目标代价函数"></a>计算优化目标代价函数</h4><p>首先，我们需要提供一种方法用于计算优化目标的代价函数值。比如逻辑回归的代价函数计算如下：</p>
+<p><img src="/img/17_06_03/005.png"></p>
+<p>如果你想在10台计算机上并行计算，那么你需要将训练样本分给这10台计算机，让每台计算机计算10份之一训练数据。</p>
+<h4 id="计算梯度下降的偏导数项"><a href="#计算梯度下降的偏导数项" class="headerlink" title="计算梯度下降的偏导数项"></a>计算梯度下降的偏导数项</h4><p>另外，高级优化算法还需要提供某种偏导数的计算方法。对于逻辑回归，这些偏导数可以表示为训练数据的求和：</p>
+<p><img src="/img/17_06_03/006.png"></p>
+<p>因此，和之前的例子类似，你可以让每台计算机只计算部分训练数据上的求和。最后当这些求和计算完成之后，求和结果会被发送到一台中心计算服务器上，这台服务器将对结果进行再次求和。这等同于对临时变量$temp^{(i)}_j$进行求和。而这些临时标量是第$i$台计算机算出来的。</p>
+<p>中心计算服务器对这些临时变量求和得到了总的代价函数值，以及总的偏导数值，然后你可以将这两个值传给高级优化函数。</p>
+<p>因此更广义的来说，通过将机器学习算法表示为 求和的形式，或者是训练数据的函数求和形式，你就可以运用<strong>Map Reduce</strong>技术来将算法并行化，这样就可以处理大规模数据了。</p>
+<h3 id="单台设备运行Map-Reduce"><a href="#单台设备运行Map-Reduce" class="headerlink" title="单台设备运行Map Reduce"></a>单台设备运行Map Reduce</h3><p>目前我们只讨论了在多台计算机上运用<strong>Map Reduce</strong>技术实现并行计算。但实际上有时即使我们只有一台计算机，我们也可以运用这种技术。</p>
+<p>具体来说，现在的许多计算机都是多核的，你可以有多个CPU，而每个CPU又包括多个核。</p>
+<p>如果你有一个很大的训练样本，那么你可以使用一台四核的计算机，然后将训练样本分成4份，让每一个核处理其中一份子样本：</p>
+<p><img src="/img/17_06_03/007.png"></p>
+<p>这样，在单台计算机或者单个服务器上，你也可以实现利用Map Reduce技术来划分计算任务了。</p>
+<p>相对于多台计算机，这样在单台计算机上使用Map Reduce技术的一个优势在于：你不需要担心网络延时问题，因为所有的通讯所有的来回数据传输都发生在一台计算机上。</p>
+<h4 id="一个细节问题"><a href="#一个细节问题" class="headerlink" title="一个细节问题"></a>一个细节问题</h4><p>如果你的算法实现使用的是某种自动利用多核的线性代数运算库，那么你就没有必要去手动在单台机器上实现Map Reduce了。但并不是所有的库都会自动并行运算。</p>
+<h3 id="一个广告：Hadoop"><a href="#一个广告：Hadoop" class="headerlink" title="一个广告：Hadoop"></a>一个广告：Hadoop</h3><p>今天，网上有许多优秀的开源Map Reduce实现。</p>
+<p>实际上一个称为<strong>Hadoop</strong>的开源系统已经拥有了众多的用户。通过自己实现Map Reduce算法 或者使用别人的开源实现，你就可以利用Map Reduce技术来并行化机器学习算法。这样你的算法将能够处理单台计算机处理不了的大数据。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" data-id="ckkwc438z00anpas9c33sc7tr" data-title="斯坦福机器学习课程 第十周 (2)高级主题" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          斯坦福机器学习课程 第十一周 (1)照片OCR
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/01/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(1)%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第十周 (1)大数据集梯度下降</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Docker入门Part4-Swarms | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前提条件 安装Docker 1.13或更高的版本。 按照Part3部分，获取Docker Compos。 获取预装Docker for Mac和Docker for Windows的Docker Machine，但在Linux系统上需要直接安装它。在没有Hyper-V的Windows 10系统之前以及Windows 10 Home中，使用Docker Toolbox。 阅读Part1。 学习Par">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker入门Part4-Swarms">
+<meta property="og:url" content="http://example.com/2018/04/26/Docker%E5%85%A5%E9%97%A8Part4-Swarms/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前提条件 安装Docker 1.13或更高的版本。 按照Part3部分，获取Docker Compos。 获取预装Docker for Mac和Docker for Windows的Docker Machine，但在Linux系统上需要直接安装它。在没有Hyper-V的Windows 10系统之前以及Windows 10 Home中，使用Docker Toolbox。 阅读Part1。 学习Par">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/18_04_26/002.png">
+<meta property="og:image" content="http://example.com/img/18_04_26/003.png">
+<meta property="article:published_time" content="2018-04-26T13:46:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/18_04_26/002.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Docker入门Part4-Swarms" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/04/26/Docker%E5%85%A5%E9%97%A8Part4-Swarms/" class="article-date">
+  <time class="dt-published" datetime="2018-04-26T13:46:00.000Z" itemprop="datePublished">2018-04-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>►<a class="article-category-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Docker入门Part4-Swarms
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>安装<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">Docker 1.13或更高的版本</a>。</li>
+<li>按照Part3部分，获取<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/overview/">Docker Compos</a>。</li>
+<li>获取预装<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>和<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>的<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/overview/">Docker Machine</a>，但在Linux系统上需要<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/install-machine/#installing-machine-directly">直接安装它</a>。在没有<em>Hyper-V</em>的Windows 10系统之前以及Windows 10 Home中，使用<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>。</li>
+<li>阅读Part1。</li>
+<li>学习Part2中的如何创建容器。</li>
+<li>确保您已发布了那个<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#share-your-image">推送到仓库的</a><code>friendlyhello</code>镜像。我们在这里使用该共享镜像。</li>
+<li>确定你的镜像作为一个已部署的容器。运行下面这条命令，插入你的<code>username</code>、<code>repo</code>、和<code>tag</code>:<code>docker run -p 80:80 username/repo:tag</code>，然后访问<code>http://localhost/</code>。</li>
+<li>有一份Part3中的<code>docker-compose.yml</code>。</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在Part3中，你介绍了在Part2中编写的应用程序，并通过将其转化为service来定义应该如何在生产环境中运行，并在其进程内扩大5倍。</p>
+<p>在Part4部分，您将此应用程序部署到集群上，并在多台机器上运行它。通过将多台机器连接到称为<strong>swarm</strong>的“Dockerized”群集，使多容器，多机器应用成为可能。</p>
+<h2 id="了解Swarm集群"><a href="#了解Swarm集群" class="headerlink" title="了解Swarm集群"></a>了解Swarm集群</h2><p>Swarm是一组运行Docker并加入到集群中的机器。发生这种情况后，您将继续运行您习惯的Docker命令，但现在它们将由<strong>swarm manager</strong>在群集上执行。swarm中的机器可以是物理的或虚拟的。加入swarm后，他们被称为节点。</p>
+<p>swarm管理器可以使用几种策略来运行容器，例如“emptiest node”–它用容器填充最少使用的机器。或者“global”，它可以确保每台机器只获取指定容器的一个实例。您指示swarm manager在Compose文件中使用这些策略，就像您已经使用的策略一样。</p>
+<p>swarm manager是群体中唯一可以执行你的命令，或者授权其他机器作为<strong>worker</strong>加入群体的机器。worker只是提供能力，并没有权力告诉任何其他机器它能做什么和不能做什么。</p>
+<p>到目前为止，您已经在本地机器上以单主机模式使用Docker。但是Docker也可以切换到<strong>swarm模式</strong>，这就是使用群集的原因。立即启用swarm模式使当前的机器成为swarm manager。从此，Docker将运行您在您管理的swarm上执行的命令，而不仅仅是在当前机器上执行。</p>
+<h2 id="设置你的swarm"><a href="#设置你的swarm" class="headerlink" title="设置你的swarm"></a>设置你的swarm</h2><p>一个swarm是由多个节点组成，这些节点可以是物理机或虚拟机。基本概念很简单：运行<code>docker swarm init</code>来启用swarm模式，并使您当前的机器成为swarm管理器，然后在其他机器上运行<code>docker swarm join</code>，使其他机器以worker的身份加入到swarm中。我们将使用虚拟机快速创建一个双机群集，并将其变成swarm。</p>
+<h3 id="创建一个集群"><a href="#创建一个集群" class="headerlink" title="创建一个集群"></a>创建一个集群</h3><h4 id="本地虚拟机（Mac，Linux，Windows-7和8）"><a href="#本地虚拟机（Mac，Linux，Windows-7和8）" class="headerlink" title="本地虚拟机（Mac，Linux，Windows 7和8）"></a>本地虚拟机（Mac，Linux，Windows 7和8）</h4><p>您需要一个可以创建虚拟机（VM）的虚拟机管理程序，因此请为您的计算机的操作系统<a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">安装Oracle VirtualBox</a>。</p>
+<blockquote>
+<p>注意：如果你在Windows系统下，并且已经安装了Hyper-V，例如Windows 10，那就没必要安装VirtualBox了，你可以使用Hyper-V替代。如果你正在使用<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>，你应该已经安装好了VirtualBox。</p>
+</blockquote>
+<p>现在，使用<code>docker-machine</code>创建两个虚拟机VM，使用VirtualBox驱动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1</span><br><span class="line">docker-machine create --driver virtualbox myvm2</span><br></pre></td></tr></table></figure>
+<h4 id="本地虚拟机（Windows-10-Hyper-V）"><a href="#本地虚拟机（Windows-10-Hyper-V）" class="headerlink" title="本地虚拟机（Windows 10/Hyper-V）"></a>本地虚拟机（Windows 10/Hyper-V）</h4><p>首先，快速为您的虚拟机（VM）创建一个虚拟交换机以便共享，以便它们可以相互连接。</p>
+<ul>
+<li>1.开启 Hyper-V Manager</li>
+<li>2.点击右上角菜单中的<strong>Virtual Switch Manager</strong></li>
+<li>3.单击创建类型为<strong>External</strong>的<strong>虚拟交换机</strong></li>
+<li>4.将它命名为<code>myswitch</code>，然后选中复选框以共享主机的活动网络适配器</li>
+</ul>
+<p>现在，使用我们的节点管理工具<code>docker-machine</code>创建几个虚拟机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm1</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm2</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="列出虚拟机，并显示其IP地址"><a href="#列出虚拟机，并显示其IP地址" class="headerlink" title="列出虚拟机，并显示其IP地址"></a>列出虚拟机，并显示其IP地址</h3><p>你现在创建了两个虚拟机，名叫<code>myvm1</code>和<code>myvm2</code>。</p>
+<p>使用下面的命令来列出这些虚拟机以及他们的IP地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ls</span><br></pre></td></tr></table></figure>
+<p>这里是这个命令的输出示例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.100:2376           v17.06.2-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.101:2376           v17.06.2-ce   </span><br></pre></td></tr></table></figure>
+<h3 id="初始化swarm和节点"><a href="#初始化swarm和节点" class="headerlink" title="初始化swarm和节点"></a>初始化swarm和节点</h3><p>第一台机器作为manager，它负责执行管理命令并认证worker机器加入集群，第二台机器是worker。</p>
+<p>你可以对你的虚拟机通过<code>docker-machine ssh</code>来发送命令。通过执行<code>docker swarm init</code>来指导<code>myvm1</code>来成为swarm manager，然后你会看到像下面这样的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm1 &quot;docker swarm init --advertise-addr &lt;myvm1 ip&gt;&quot;</span><br><span class="line">Swarm initialized: current node &lt;node ID&gt; is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following command:</span><br><span class="line"></span><br><span class="line">  docker swarm join \</span><br><span class="line">  --token &lt;token&gt; \</span><br><span class="line">  &lt;myvm ip&gt;:&lt;port&gt;</span><br><span class="line"></span><br><span class="line">To add a manager to this swarm, run &#39;docker swarm join-token manager&#39; and follow the instructions.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>端口2377和2376</strong></p>
+<p>始终使用端口2377（群管理端口）运行<code>docker swarm init</code>和<code>docker swarm join</code>，或根本不指定运行端口，并让其采用默认值。</p>
+<p>由<code>docker-machine ls</code>返回的计算机IP地址包括端口2376，它是Docker守护进程端口。请勿使用此端口，否则<a target="_blank" rel="noopener" href="https://forums.docker.com/t/docker-swarm-join-with-virtualbox-connection-error-13-bad-certificate/31392/2">可能会遇到错误</a>。</p>
+</blockquote>
+<blockquote>
+<p><strong>无法使用SSH？试试–native-ssh标志</strong></p>
+<p>如果由于某些原因，您无法将命令发送给Swarm管理器，Docker Machine可以<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/reference/ssh/#different-types-of-ssh">选择让您使用自己的系统的SSH</a>。只需在调用<code>ssh</code>命令时指定<code>--native-ssh</code>标志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine --native-ssh ssh myvm1 ...</span><br></pre></td></tr></table></figure>
+<p>如您所见，对<code>docker swarm init</code>的响应包含一个预配置的<code>docker swarm join</code>命令，您可以在要添加的任何节点上运行该命令。复制这条命令，并通过<code>docker-machine ssh</code>发送到<code>myvm2</code>，使<code>myvm2</code>作为woker的角色来加入到你新创建的集群中。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm2 &quot;docker swarm join \</span><br><span class="line">--token &lt;token&gt; \</span><br><span class="line">&lt;ip&gt;:2377&quot;</span><br><span class="line"></span><br><span class="line">This node joined a swarm as a worker.</span><br></pre></td></tr></table></figure>
+<p>恭喜，您已经创建了您的第一个swarm集群！</p>
+<p>在manager机器上运行<code>docker node ls</code>来查看swarm中的node：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm1 &quot;docker node ls&quot;</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS</span><br><span class="line">brtu9urxwfd5j0zrmkubhpkbd     myvm2               Ready               Active</span><br><span class="line">rihwohkh3ph38fhillhhb84sk *   myvm1               Ready               Active              Leader</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>离开一个swarm</strong></p>
+<p>如果你的某个节点想要退出集群，你可以在节点上运行<code>docker swarm leave</code>。</p>
+</blockquote>
+<h2 id="发布你的应用到swarm集群"><a href="#发布你的应用到swarm集群" class="headerlink" title="发布你的应用到swarm集群"></a>发布你的应用到swarm集群</h2><p>最困难的部分已经结束了。现在你只需重复第3部分用于部署新swarm的流程即可。请记住，只有像<code>myvm1</code>这样的群集管理器才能执行Docker命令；worker机器只是提供使用而已。</p>
+<h3 id="为swarm-manager配置docker-machine-shell"><a href="#为swarm-manager配置docker-machine-shell" class="headerlink" title="为swarm manager配置docker-machine shell"></a>为swarm manager配置<code>docker-machine</code> shell</h3><p>到目前为止，你已经可以在<code>docker-machine ssh</code>中包裹Docker命令来在虚拟机上执行指令了。另一种选择是运行<code>docker-machine env &lt;machine&gt;</code>来获取并执行一个命令，该命令将当前shell配置为与虚拟机上的Docker守护进程进行通信。此方法对下一步更有利，因为它允许您使用本地<code>docker-compose.yml</code>文件“远程”部署应用程序，而无需将其复制到任何位置。</p>
+<p>键入<code>docker-machine env myvm1</code>，然后复制粘贴并运行作为输出最后一行提供的命令，这样可以将shell配置为swarm manager可以与<code>myvm1</code>进行对话。</p>
+<p>配置shell的命令根据你是Mac，Linux还是Windows而有所不同。</p>
+<h4 id="Mac，Linux"><a href="#Mac，Linux" class="headerlink" title="Mac，Linux"></a>Mac，Linux</h4><p>Mac或Linux上的Docker Machine shell</p>
+<p>运行<code>docker-machine env myvm1</code>来获取与<code>myvm1</code>进行交互的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine env myvm1</span><br><span class="line">export DOCKER_TLS_VERIFY&#x3D;&quot;1&quot;</span><br><span class="line">export DOCKER_HOST&#x3D;&quot;tcp:&#x2F;&#x2F;192.168.99.100:2376&quot;</span><br><span class="line">export DOCKER_CERT_PATH&#x3D;&quot;&#x2F;Users&#x2F;sam&#x2F;.docker&#x2F;machine&#x2F;machines&#x2F;myvm1&quot;</span><br><span class="line">export DOCKER_MACHINE_NAME&#x3D;&quot;myvm1&quot;</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># eval $(docker-machine env myvm1)</span><br></pre></td></tr></table></figure>
+<p>运行给出的命令，来配置你的shell来与<code>myvm1</code>进行交互：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval $(docker-machine env myvm1)</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker-machine ls</code>以验证<code>myvm1</code>处于激活状态，星号表示激活状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.100:2376           v17.06.2-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.101:2376           v17.06.2-ce   </span><br></pre></td></tr></table></figure>
+<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p>运行<code>docker-machine env myvm1</code>来获取与<code>myvm1</code>进行交互的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\sam\sandbox\get-started&gt; docker-machine env myvm1</span><br><span class="line">$Env:DOCKER_TLS_VERIFY &#x3D; &quot;1&quot;</span><br><span class="line">$Env:DOCKER_HOST &#x3D; &quot;tcp:&#x2F;&#x2F;192.168.203.207:2376&quot;</span><br><span class="line">$Env:DOCKER_CERT_PATH &#x3D; &quot;C:\Users\sam\.docker\machine\machines\myvm1&quot;</span><br><span class="line">$Env:DOCKER_MACHINE_NAME &#x3D; &quot;myvm1&quot;</span><br><span class="line">$Env:COMPOSE_CONVERT_WINDOWS_PATHS &#x3D; &quot;true&quot;</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># &amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>运行给出的命令，来配置你的shell来与<code>myvm1</code>进行交互：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker-machine ls</code>以验证<code>myvm1</code>处于激活状态，星号表示激活状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:PATH&gt; docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER   STATE     URL                          SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        hyperv   Running   tcp:&#x2F;&#x2F;192.168.203.207:2376           v17.06.2-ce</span><br><span class="line">myvm2   -        hyperv   Running   tcp:&#x2F;&#x2F;192.168.200.181:2376           v17.06.2-ce</span><br></pre></td></tr></table></figure>
+<h3 id="在swarm-manager上发布应用"><a href="#在swarm-manager上发布应用" class="headerlink" title="在swarm manager上发布应用"></a>在swarm manager上发布应用</h3><p>现在你已经拥有了<code>myvm1</code>，你可以使用它的权力作为swarm manager来部署你的应用，方法是使用第三部分中的<code>docker stack deploy</code>命令将你的本地副本<code>docker-compose.yml</code>发布到<code>myvm1</code>。这个命令也许会花费几秒钟时间来完成这一操作，部署需要花一段时间才能完成。在swarm manager上使用<code>docker service ps &lt;service_name&gt;</code>命令验证所有服务是否已被重新部署。</p>
+<p>您通过<code>docker-machine shell</code>配置链接到<code>myvm1</code>，并且您仍然可以访问本地主机上的文件。确保你和之前在同一个目录下，并且其中包括你在第3部分中创建的<code>docker-compose.yml</code>文件。</p>
+<p>就像之前一样，运行以下命令在<code>myvm1</code>上部署应用程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>就是这样，该应用程序就成功部署在了swarm集群上了！</p>
+<blockquote>
+<p>注意：如果你的镜像保存在了一个私有仓库而不是Docker Hub上，你需要登录到通过命令<code>docker login &lt;your-registry&gt;</code>来登录到这个仓库，并且然后你需要在上面的命令添加<code>--with-registry-auth</code>指令。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker login registry.example.com</span><br><span class="line"></span><br><span class="line">docker stack deploy --with-registry-auth -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+
+<p>这使用加密的WAL日志将登录令牌从本地客户端传递到部署服务的群集节点。有了这些信息，这些节点就能够登录到仓库并提取镜像。</p>
+</blockquote>
+<p>现在你可以使用Part3中的docker命令。只有这次注意到services（和相关容器）已经在<code>myvm1</code>和<code>myvm2</code>之间分配了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker stack ps getstartedlab</span><br><span class="line"></span><br><span class="line">ID            NAME                  IMAGE                   NODE   DESIRED STATE</span><br><span class="line">jq2g3qp8nzwx  getstartedlab_web.1   john&#x2F;get-started:part2  myvm1  Running</span><br><span class="line">88wgshobzoxl  getstartedlab_web.2   john&#x2F;get-started:part2  myvm2  Running</span><br><span class="line">vbb1qbkb0o2z  getstartedlab_web.3   john&#x2F;get-started:part2  myvm2  Running</span><br><span class="line">ghii74p9budx  getstartedlab_web.4   john&#x2F;get-started:part2  myvm1  Running</span><br><span class="line">0prmarhavs87  getstartedlab_web.5   john&#x2F;get-started:part2  myvm2  Running</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>使用<code>docker-machine env</code>和<code>docker-machine ssh</code>连接到VM</strong></p>
+<ul>
+<li><p>要将shell设置为与<code>myvm2</code>等其他机器通信，只需在相同或不同的shell中重新运行<code>docker-machine env</code>，然后运行给定的命令以指向<code>myvm2</code>。这里指的是当前的shell。如果你更改为未配置的shell或打开一个新的shell，则需要重新运行这些命令。使用<code>docker-machine ls</code>列出机器列表，查看它们所处的状态，获取IP地址，如果有的话，并找出具体连接到的是哪一个地址。更多请参阅<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/get-started/#create-a-machine">Docker Machine getting started topics</a>。</p>
+</li>
+<li><p>或者，你可以以<code>docker-machine ssh &lt;machine&gt; &quot;&lt;command&gt;&quot;</code>的形式来打包Docker命令，该命令可以直接登陆到VM，但不会立即访问本地主机上的文件。</p>
+</li>
+<li><p>在Mac和Linux上，你可以使用<code>docker-machine scp &lt;file&gt; &lt;machine&gt;:~</code>来在机器间复制文件，但在Windows上，需要使用一个Linux类似<a target="_blank" rel="noopener" href="https://git-for-windows.github.io/">Git Bash</a>的终端模拟器来完成这类工作。</p>
+</li>
+</ul>
+<p>本教程演示了<code>docker-machine ssh</code>和<code>docker-machine env</code>因为这些都可以通过<code>docker-machine</code>CLI在平台上使用。</p>
+</blockquote>
+<h3 id="访问你的集群"><a href="#访问你的集群" class="headerlink" title="访问你的集群"></a>访问你的集群</h3><p>你可以从<code>myvm1</code>或<code>myvm2</code>的IP地址访问您的应用程序。</p>
+<p>你创建的网络在它们之间共享负载均衡。运行<code>docker-machine ls</code>来获取你的VM的IP地址，并通过浏览器访问其中的任何一个，点击刷新（或者仅仅使用<code>curl</code>来访问）</p>
+<p><img src="/img/18_04_26/002.png"></p>
+<p>有五个可能的容器ID全部随机循环，体现了负载均衡。</p>
+<p>两个IP地址工作的原因是群中的节点参与<strong>入口路由网格</strong>。这可以确保部署在集群中某个端口的服务始终将该端口保留给自己，而不管实际运行容器的节点是什么。以下是三节点swarm的端口8080上发布的名为<code>my-web</code>的服务的路由网络示意图：</p>
+<p><img src="/img/18_04_26/003.png"></p>
+<blockquote>
+<p><strong>连接有问题？</strong></p>
+<p>请记住，要使用swarm中的入口网络，在启用swarm模式之前，需要在swarm节点之间打开以下端口：</p>
+<ul>
+<li>端口7946 TCP/UDP （用于容器网络发现）</li>
+<li>端口4789 UDP （用于容器入口网络）</li>
+</ul>
+</blockquote>
+<h2 id="迭代和缩放你的应用程序"><a href="#迭代和缩放你的应用程序" class="headerlink" title="迭代和缩放你的应用程序"></a>迭代和缩放你的应用程序</h2><p>在这里，你可以完成你在Part2和Part3中学到的一切。</p>
+<p>通过修改<code>docker-compose.yml</code>文件，可以缩放应用程序。</p>
+<p>通过编辑代码，来改变应用的行为，然后重新构建，并将新的镜像push上去。（要做到这一点，请按照之前用于构建应用程序和发布镜像的相同步骤）。</p>
+<p>无论是哪种情况，只需要通过再次运行<code>docker stack deploy</code>就可以发布这些变更。</p>
+<p>你可以加入任何虚拟的或物理的机器到这个swarm中，对<code>myvm2</code>使用相同的<code>docker swarm join</code>命令，然后集群的容量就被扩大了。在运行<code>docker stack deploy</code>之后，你的应用程序就可以利用到这些资源了。</p>
+<h2 id="清空并重启"><a href="#清空并重启" class="headerlink" title="清空并重启"></a>清空并重启</h2><h3 id="堆栈和swarm"><a href="#堆栈和swarm" class="headerlink" title="堆栈和swarm"></a>堆栈和swarm</h3><p>你可以通过运行<code>docker stack rm</code>来卸下堆栈。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>保留或删除swarm</strong>？</p>
+<p>在稍后，如果您想要使某个worker离开swarm，可以在worker上使用<code>docker-machine ssh myvm2 &quot;docker swarm leave&quot;</code>来卸下woker，如果是manager的话，可以这样执行<code>docker-machine ssh myvm1 &quot;docker swarm leave --force&quot;</code>，但在后面的Part5的教学中，你还需要它，所以暂时保留。</p>
+</blockquote>
+<h3 id="重置docker-machine-shell变量设置"><a href="#重置docker-machine-shell变量设置" class="headerlink" title="重置docker-machine shell变量设置"></a>重置docker-machine shell变量设置</h3><p>你可以通过你当前的shell执行以下命令来重置<code>docker-machine</code>环境变量。</p>
+<p>在Mac或Linux上，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval $(docker-machine env -u)</span><br></pre></td></tr></table></figure>
+<p>在Windows上，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env -u | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>这将shell与<code>docker-machine</code>创建的虚拟机断开连接，并允许你继续在同一个shell中工作，现在使用本机docker命令。更多信息，请见<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/get-started/#unset-environment-variables-in-the-current-shell">Machine topic on unsetting environment variables</a>。</p>
+<p>重启Docker machines</p>
+<p>如果你关闭本地主机，Docker machines将停止运行。你可以通过运行<code>docker-machine ls</code>来检查机器运行的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL   SWARM   DOCKER    ERRORS</span><br><span class="line">myvm1   -        virtualbox   Stopped                 Unknown</span><br><span class="line">myvm2   -        virtualbox   Stopped                 Unknown</span><br></pre></td></tr></table></figure>
+<p>重启已经停止的机器，运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine start &lt;machine-name&gt;</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine start myvm1</span><br><span class="line">Starting &quot;myvm1&quot;...</span><br><span class="line">(myvm1) Check network to re-create if needed...</span><br><span class="line">(myvm1) Waiting for an IP...</span><br><span class="line">Machine &quot;myvm1&quot; was started.</span><br><span class="line">Waiting for SSH to be available...</span><br><span class="line">Detecting the provisioner...</span><br><span class="line">Started machines may have new IP addresses. You may need to re-run the &#96;docker-machine env&#96; command.</span><br><span class="line"></span><br><span class="line">$ docker-machine start myvm2</span><br><span class="line">Starting &quot;myvm2&quot;...</span><br><span class="line">(myvm2) Check network to re-create if needed...</span><br><span class="line">(myvm2) Waiting for an IP...</span><br><span class="line">Machine &quot;myvm2&quot; was started.</span><br><span class="line">Waiting for SSH to be available...</span><br><span class="line">Detecting the provisioner...</span><br><span class="line">Started machines may have new IP addresses. You may need to re-run the &#96;docker-machine env&#96; command.</span><br></pre></td></tr></table></figure>
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><p>在part4部分，你学习到了什么是swarm，节点在swarm中可以作为worker，也可以作为manager，创建一个swarm，并在上面发布一个应用。你看到Docker的核心命令和part3中并没有什么不同，他们只需要将目标锁定在swarm主机上运行。你还看到了Docker网络的力量，即使它们运行在不同的机器上，也可以跨容器保持请求负载均衡。最后，你学习了如何在集群上迭代和缩放应用程序。以下是您可能想要运行的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1 # Create a VM (Mac, Win7, Linux)</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm1 # Win10</span><br><span class="line">docker-machine env myvm1                # View basic information about your node</span><br><span class="line">docker-machine ssh myvm1 &quot;docker node ls&quot;         # List the nodes in your swarm</span><br><span class="line">docker-machine ssh myvm1 &quot;docker node inspect &lt;node ID&gt;&quot;        # Inspect a node</span><br><span class="line">docker-machine ssh myvm1 &quot;docker swarm join-token -q worker&quot;   # View join token</span><br><span class="line">docker-machine ssh myvm1   # Open an SSH session with the VM; type &quot;exit&quot; to end</span><br><span class="line">docker node ls                # View nodes in swarm (while logged on to manager)</span><br><span class="line">docker-machine ssh myvm2 &quot;docker swarm leave&quot;  # Make the worker leave the swarm</span><br><span class="line">docker-machine ssh myvm1 &quot;docker swarm leave -f&quot; # Make master leave, kill swarm</span><br><span class="line">docker-machine ls # list VMs, asterisk shows which VM this shell is talking to</span><br><span class="line">docker-machine start myvm1            # Start a VM that is currently not running</span><br><span class="line">docker-machine env myvm1      # show environment variables and command for myvm1</span><br><span class="line">eval $(docker-machine env myvm1)         # Mac command to connect shell to myvm1</span><br><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression   # Windows command to connect shell to myvm1</span><br><span class="line">docker stack deploy -c &lt;file&gt; &lt;app&gt;  # Deploy an app; command shell must be set to talk to manager (myvm1), uses local Compose file</span><br><span class="line">docker-machine scp docker-compose.yml myvm1:~ # Copy file to node&#39;s home dir (only required if you use ssh to connect to manager and deploy the app)</span><br><span class="line">docker-machine ssh myvm1 &quot;docker stack deploy -c &lt;file&gt; &lt;app&gt;&quot;   # Deploy an app using ssh (you must have first copied the Compose file to myvm1)</span><br><span class="line">eval $(docker-machine env -u)     # Disconnect shell from VMs, use native docker</span><br><span class="line">docker-machine stop $(docker-machine ls -q)               # Stop all running VMs</span><br><span class="line">docker-machine rm $(docker-machine ls -q) # Delete all VMs and their disk images</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/04/26/Docker%E5%85%A5%E9%97%A8Part4-Swarms/" data-id="ckkwc434t0009pas9bpn87ppj" data-title="Docker入门Part4-Swarms" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/02/Docker%E5%85%A5%E9%97%A8Part5-%E5%A0%86%E6%A0%88/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker入门Part5-堆栈
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/26/Docker%E5%85%A5%E9%97%A8Part3-%E6%9C%8D%E5%8A%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker入门Part3-服务</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

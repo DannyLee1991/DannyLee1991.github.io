@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>gradle学习笔记-持续构建 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="持续构建是一个正在发**孵化中(incubating)**的feature。这意味着它目前还是不完整的，并且没有达到gradle产品的标准。这同样也意味着这一章节的用户指南也是在不断完善中的。  通常，你让gradle执行一个你指定task。gradle需要制定一系列实际需要执行的满足要求的task，并将它们全部执行，然后停止工作直到下一次请求出现。持续构建不同于gradle那种通过在检查到之前">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle学习笔记-持续构建">
+<meta property="og:url" content="http://example.com/2016/07/13/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%8C%81%E7%BB%AD%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="持续构建是一个正在发**孵化中(incubating)**的feature。这意味着它目前还是不完整的，并且没有达到gradle产品的标准。这同样也意味着这一章节的用户指南也是在不断完善中的。  通常，你让gradle执行一个你指定task。gradle需要制定一系列实际需要执行的满足要求的task，并将它们全部执行，然后停止工作直到下一次请求出现。持续构建不同于gradle那种通过在检查到之前">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_07_13/javaPluginTasks.png">
+<meta property="article:published_time" content="2016-07-13T22:06:55.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="gradle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_07_13/javaPluginTasks.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-gradle学习笔记-持续构建" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/07/13/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%8C%81%E7%BB%AD%E6%9E%84%E5%BB%BA/" class="article-date">
+  <time class="dt-published" datetime="2016-07-13T22:06:55.000Z" itemprop="datePublished">2016-07-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/gradle/">gradle</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      gradle学习笔记-持续构建
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>持续构建是一个正在发**孵化中(<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/feature_lifecycle.html">incubating</a>)**的feature。这意味着它目前还是不完整的，并且没有达到gradle产品的标准。这同样也意味着这一章节的用户指南也是在不断完善中的。</p>
+</blockquote>
+<p>通常，你让gradle执行一个你指定task。gradle需要制定一系列实际需要执行的满足要求的task，并将它们全部执行，然后停止工作直到下一次请求出现。持续构建不同于gradle那种通过在检查到之前的构建已经过时时执行构建，来保持满足初始化构建的条件（直到指示停止）。例如：如果你将java代码编译为class文件，一个持续构建将在源码文件改变时自动初始化一次编译。持续构建在很多场景下都很有用。</p>
+<h2 id="1-我该如何开始和终止一个持续构建呢？"><a href="#1-我该如何开始和终止一个持续构建呢？" class="headerlink" title="1.我该如何开始和终止一个持续构建呢？"></a>1.我该如何开始和终止一个持续构建呢？</h2><p>一个持续构建可以通过输入<code>--continuous</code>或<code>-t</code>开关来开启，通过对任务列表中的任务切换开关和参数，来定义要执行的任务。例如：<code>gradle build --continuous</code>。这和执行<code>gradle build</code>的效果是一样的，但当gradle执行完时，它会等待发生改变的文件输入。当有改变产生时，<code>gradle build</code>将会被再次自动的执行，再次执行构建。</p>
+<p>如果gradle附加在了一个交互式输入源，例如终端，持续构建会在按下<strong>CTRL-D</strong>（在Microsoft Windows上，在按下<strong>CTRL-D</strong>之后还需要按下<strong>ENTER</strong>或者<strong>RETURN</strong>）时执行。如果gradle没有附加在交互式输入源(例如以一个脚本的形式运行)，构建进程一定需要被中断（使用<code>kill</code>命令或类似的其他方式）。如果构建是通过Tooling API执行的，构建可以通过Tooling API的取消机制来终止。</p>
+<h2 id="2-什么将会导致后续的构建？"><a href="#2-什么将会导致后续的构建？" class="headerlink" title="2.什么将会导致后续的构建？"></a>2.什么将会导致后续的构建？</h2><p>这时，只有对task输入的更改会被注意到。gradle会在task开始时就对改变进行监控。没有其他的改变会初始化一次构建。例如：对于构建脚本和构建逻辑的修改不会初始化构建。同样的，对于修改配置文件在构建时读入的文件，没有执行，将不会初始化一次构建。为了纳入这种变化，持续构建必须手动重启。</p>
+<p>对于一个典型的使用java插件的构建，使用传统的文件系统布局。下面是<code>gradle build</code>的生词的task图。</p>
+<p><strong>Java plugin task graph</strong></p>
+<p><img src="/img/16_07_13/javaPluginTasks.png"></p>
+<p>下面对于图中用到的task使用相对路径作为输入：</p>
+<p><strong>compileJava</strong></p>
+<pre><code>src/main/java
+</code></pre>
+<p><strong>processResources</strong></p>
+<pre><code>src/main/resources
+</code></pre>
+<p><strong>compileTestJava</strong></p>
+<pre><code>src/test/java
+</code></pre>
+<p><strong>processTestResources</strong></p>
+<pre><code>src/test/resources
+</code></pre>
+<p>假设初始化构建执行成功（比如：构建task和它的依赖的编译都没有错误），对文件的更改，或者对文件的增删操作，上述的场景将会初始化一次构建。如果在<code>src/main/java</code>目录下的java代码发生了变动，构建将会启动，并且所有的task将开始执行。gradle的增量构建支持，确保只有被变动所影响的task会被执行。</p>
+<p>如果主项目中的java代码编译失败，那么子变动<code>src/test/java</code>目录将不会被执行构建。由于测试代码依赖于主代码，直到主代码发生了改变，才有可能修复编译产生的错误。在每次构建之后，只有task的输入文件会被检测变化。</p>
+<h2 id="3-限制和异常"><a href="#3-限制和异常" class="headerlink" title="3.限制和异常"></a>3.限制和异常</h2><p>目前有几个关于持续构建的问题。这些问题有可能会在未来的gradle版本中进行修复。</p>
+<h3 id="3-1-构建循环"><a href="#3-1-构建循环" class="headerlink" title="3.1 构建循环"></a>3.1 构建循环</h3><p>gradle会在task执行之前就去监测改变。如果一个task在执行过程中改变了它自己，gradle将会查出这个变动，并且触发一次新的构建。如果每次task的执行，输入都被改变，那么构建就会再一次被触发。这不仅仅在持续构建中会出问题。当在“normally”模式并不是持续构建模式下运行，task改变了他自身的输入时也不会被视为有“up-to-date”标签。</p>
+<p>如果你的构建进入了一个这样的循环，你可以通过gradle的查看报告清单中的变动追踪task。当确认有文件在每次构建期间发生了改变，你应该找到那个出问题的task。在某些情况下，这种问题会很明显（例如：java文件通过<code>compileJava</code>来执行编译）。在其他的情况下，你可以通过使用<code>--info logging</code>来找到识别为<code>out-of-date</code>的文件所在的task。</p>
+<h3 id="3-2-需要Java7或更高版本"><a href="#3-2-需要Java7或更高版本" class="headerlink" title="3.2 需要Java7或更高版本"></a>3.2 需要Java7或更高版本</h3><p>gradle使用jdk的<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/api/java/nio/file/WatchService.html">WatchService</a>来在每次构建之间接收文件改变的通知。这个API是在Java7中引进的。由于这个原因，gradle的持续构建暂时不支持在Java6下的构建。</p>
+<h3 id="3-3-性能和稳定性"><a href="#3-3-性能和稳定性" class="headerlink" title="3.3 性能和稳定性"></a>3.3 性能和稳定性</h3><p>Jdk文件监控设备在 Mac OS X（见<a target="_blank" rel="noopener" href="https://bugs.openjdk.java.net/browse/JDK-8079620">JDK-8079620</a>）上会依赖于一个无效的文件系统。这在大型项目中能感受到通知改变有显著的延迟。</p>
+<p>此外，监控机制可能在 Mac OS X （见<a target="_blank" rel="noopener" href="https://bugs.openjdk.java.net/browse/JDK-8079620">JDK-8079620</a>）下进行<strong>超负荷</strong>的加载时发生死锁。这表明，gradle不会通知文件改变。如果你怀疑这种情况发生了，退出持续构建，并且重新启动。</p>
+<p>在Linux下，OpenJDK的文件检测服务有时会丢失一些系统事件（见：<a target="_blank" rel="noopener" href="https://bugs.openjdk.java.net/browse/JDK-8145981">JDK-8145981</a>）。</p>
+<h3 id="3-4-符号链接的更改"><a href="#3-4-符号链接的更改" class="headerlink" title="3.4 符号链接的更改"></a>3.4 符号链接的更改</h3><ul>
+<li>创建或删除符号链接到文件将启动一次构建。</li>
+<li>修改一个符号链接的目标不会导致重建。</li>
+<li>创建或删除符号链接目录不会造成重建。</li>
+<li>在一个符号链接的目标目录中创建新文件将不会导致重建。</li>
+<li>删除目标目录将不会导致重建。</li>
+</ul>
+<h3 id="3-5-不考虑构建逻辑的更改"><a href="#3-5-不考虑构建逻辑的更改" class="headerlink" title="3.5 不考虑构建逻辑的更改"></a>3.5 不考虑构建逻辑的更改</h3><p>当前的实现是在不会重新计算构建模型。这意味着对task配置的更改，或者其他对构建modle的改动，都是被忽略的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/07/13/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%8C%81%E7%BB%AD%E6%9E%84%E5%BB%BA/" data-id="ckkwc435i001zpas92fle9w1o" data-title="gradle学习笔记-持续构建" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/19/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(1)%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          斯坦福机器学习课程 第一周 (1)欢迎来到机器学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/11/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E4%BB%8B%E7%BB%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">gradle学习笔记-多项目构建介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

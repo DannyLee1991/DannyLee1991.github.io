@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>房价预测（1）-搜房网数据爬取 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="搜房网数据爬取 如今房事牵动着每家每户的心，所以以搜房网数据为例，用程序员的角度去客观分析一下房价走势，并对房价数据进行预测，也顺便对学到的机器学习相关知识练练手。  爬虫Scrapy数据分析的第一步，当然是数据的采集。这里我使用的是Scrpy。这是一个开源的python爬虫框架，可以很方便的处理很多爬虫方面的工作，而且中文的文档写的也比较明确。 安装好python环境后，通过pip即可安装： 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="房价预测（1）-搜房网数据爬取">
+<meta property="og:url" content="http://example.com/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="搜房网数据爬取 如今房事牵动着每家每户的心，所以以搜房网数据为例，用程序员的角度去客观分析一下房价走势，并对房价数据进行预测，也顺便对学到的机器学习相关知识练练手。  爬虫Scrapy数据分析的第一步，当然是数据的采集。这里我使用的是Scrpy。这是一个开源的python爬虫框架，可以很方便的处理很多爬虫方面的工作，而且中文的文档写的也比较明确。 安装好python环境后，通过pip即可安装： 1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_11_30/001.png">
+<meta property="og:image" content="http://example.com/img/16_11_30/002.png">
+<meta property="og:image" content="http://example.com/img/16_11_30/003.png">
+<meta property="og:image" content="http://example.com/img/16_11_30/004.png">
+<meta property="og:image" content="http://example.com/img/16_11_30/005.png">
+<meta property="og:image" content="http://example.com/img/16_11_30/006.png">
+<meta property="article:published_time" content="2016-11-30T22:21:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_11_30/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-房价预测（1）-搜房网数据爬取" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/" class="article-date">
+  <time class="dt-published" datetime="2016-11-30T22:21:58.000Z" itemprop="datePublished">2016-11-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      房价预测（1）-搜房网数据爬取
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="搜房网数据爬取"><a href="#搜房网数据爬取" class="headerlink" title="搜房网数据爬取"></a>搜房网数据爬取</h2><blockquote>
+<p>如今<strong>房事</strong>牵动着每家每户的心，所以以搜房网数据为例，用程序员的角度去客观分析一下房价走势，并对房价数据进行预测，也顺便对学到的<strong>机器学习</strong>相关知识练练手。</p>
+</blockquote>
+<h3 id="爬虫Scrapy"><a href="#爬虫Scrapy" class="headerlink" title="爬虫Scrapy"></a>爬虫Scrapy</h3><p>数据分析的第一步，当然是数据的采集。这里我使用的是<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/">Scrpy</a>。这是一个开源的python爬虫框架，可以很方便的处理很多爬虫方面的工作，而且中文的文档写的也比较明确。</p>
+<p>安装好python环境后，通过pip即可安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Scrapy</span><br></pre></td></tr></table></figure>
+<p>具体使用方式，可以看一下这个<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/intro/tutorial.html">Scrapy入门教程</a>，也不难，这里就不做过多的介绍了。</p>
+<h3 id="fang-com从何处入手呢？"><a href="#fang-com从何处入手呢？" class="headerlink" title="fang.com从何处入手呢？"></a>fang.com从何处入手呢？</h3><p>大致了解了Scrapy的用法之后，我们就可以实际操作一把了。那么我们面对搜房网这个庞然大物到底要从何处开始爬呢？</p>
+<p>首先，先声明一下我的目的：目的是分析房价数据，所以要爬取的数据主要是每个房源信息的数据咯。</p>
+<p>想要拿到每条房源信息的url，通常我们是拿到每个列表页的数据。</p>
+<p>那么我们第一个要爬取的数据就是房源列表信息了。</p>
+<h4 id="列表爬取"><a href="#列表爬取" class="headerlink" title="列表爬取"></a>列表爬取</h4><p>所谓列表页，就是这个页面：<a target="_blank" rel="noopener" href="http://esf.sh.fang.com/housing/">上海二手房</a>，下面“全部小区”部分的列表信息就是我们想要的。</p>
+<p>通过观察搜房网，我发现还有另外一个列表页入口，看起来似乎更容易爬取一些，就是：<a target="_blank" rel="noopener" href="http://esf.sh.fang.com/map/">地图页</a>。</p>
+<p>在这个页面左侧有个列表：</p>
+<p><img src="/img/16_11_30/001.png"></p>
+<p>进一步点击这个列表，最后我们可以得到这个页面：</p>
+<p><img src="/img/16_11_30/002.png"></p>
+<p>通过抓包工具，我们可以看到这个列表通过Ajax发送get请求，得到一段json数据：</p>
+<p><img src="/img/16_11_30/003.png"></p>
+<p>我们真正想要的数据在这段json中最后的<code>item</code>中：</p>
+<p><img src="/img/16_11_30/004.png"></p>
+<p>这里藏的就是这个列表的html代码。</p>
+<p>回过头来，再来看看我们请求的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;district&#x3D;996&amp;subwayline&#x3D;&amp;subwaystation&#x3D;&amp;price&#x3D;&amp;room&#x3D;&amp;area&#x3D;&amp;towards&#x3D;&amp;floor&#x3D;&amp;hage&#x3D;&amp;equipment&#x3D;&amp;keyword&#x3D;&amp;comarea&#x3D;21929&amp;orderby&#x3D;30&amp;isyouhui&#x3D;&amp;x1&#x3D;120.798&amp;y1&#x3D;30.926054&amp;x2&#x3D;122.177798&amp;y2&#x3D;31.571157&amp;newCode&#x3D;&amp;houseNum&#x3D;&amp;schoolDist&#x3D;&amp;schoolid&#x3D;&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;1&amp;zoom&#x3D;16&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan</span><br></pre></td></tr></table></figure>
+<p>这里需要凭借直觉来剔除掉一些多余的参数的，至少满足请求到的数据不是局限于<strong>崇明区</strong>的，而是全上海的。</p>
+<p>经过一些尝试之后，我发现下面这个url可以请求到全部的列表数据，其中<code>PageNo</code>参数是页数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;2&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan</span><br></pre></td></tr></table></figure>
+<p>我们可以先通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scrapy shell &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;2&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>来找出房源详情页的url。</p>
+<p>最终，我发现通过<code>response.xpath(&quot;//a/@href&quot;).extract()</code>可以提取出所有的链接地址，其中如果url中包含<code>&quot;esf&quot;</code>字符串，是二手房房源的url地址。所以<code>parse()</code>的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def parse(self, response):</span><br><span class="line"></span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样我们就得到了所有二手房房源详情页面的url了。</p>
+<blockquote>
+<p>这里有一个小坑：</p>
+<p>这一行代码<code>i_str = str(i).encode(&quot;utf-8&quot;)</code>中，由于i默认没有解码成utf-8的格式，所以不能直接和字符串<code>&quot;esf&quot;</code>进行运算，所以需要一部encode操作。</p>
+</blockquote>
+<h4 id="详情页爬取"><a href="#详情页爬取" class="headerlink" title="详情页爬取"></a>详情页爬取</h4><p>对于详情页，我主要想爬取的数据如下：</p>
+<p><img src="/img/16_11_30/005.png"></p>
+<p>这个页面似乎没有什么取巧的方式了，只能硬着头皮去看他的源码，一层层的抽取了。下面是详情页解析的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">def parse_details(self, response):</span><br><span class="line"></span><br><span class="line">        # path</span><br><span class="line">        xpath &#x3D; &quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;main clearfix&#39;]&#x2F;div[@class&#x3D;&#39;mainBoxL&#39;]&quot;</span><br><span class="line">        div_title &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;title&#39;]&quot;</span><br><span class="line">        p_gray9 &#x3D; &quot;&#x2F;p[@class&#x3D;&#39;gray9&#39;]&quot;</span><br><span class="line">        h1 &#x3D; &quot;&#x2F;h1&quot;</span><br><span class="line">        span_mr10 &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;mr10&#39;]&quot;</span><br><span class="line">        div_houseInfor_clearfix &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;houseInfor clearfix&#39;]&quot;</span><br><span class="line">        div_inforTxt &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;inforTxt&#39;]&quot;</span><br><span class="line">        dl &#x3D; &quot;&#x2F;dl&quot;</span><br><span class="line">        dt_gray6_zongjia1 &#x3D; &quot;&#x2F;dt[@class&#x3D;&#39;gray6 zongjia1&#39;]&quot;</span><br><span class="line">        span_red20b &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;red20b&#39;]&quot;</span><br><span class="line">        dd_gray6 &#x3D; &quot;&#x2F;dd[@class&#x3D;&#39;gray6&#39;]&quot;</span><br><span class="line">        dd &#x3D; &quot;&#x2F;dd&quot;</span><br><span class="line">        dt &#x3D; &quot;&#x2F;dt&quot;</span><br><span class="line"></span><br><span class="line">        item &#x3D; ESFItem()</span><br><span class="line">        item[&#39;id&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                    div_title +</span><br><span class="line">                                    p_gray9 +</span><br><span class="line">                                    span_mr10).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;publish_time&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                              div_title +</span><br><span class="line">                                              p_gray9).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;title&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                       div_title +</span><br><span class="line">                                       h1).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;total_price&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                             div_houseInfor_clearfix +</span><br><span class="line">                                             div_inforTxt +</span><br><span class="line">                                             dl +</span><br><span class="line">                                             dt_gray6_zongjia1 +</span><br><span class="line">                                             span_red20b).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        dd_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dd).extract()</span><br><span class="line">        huxing_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;户&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;型：&quot;</span><br><span class="line">        jzmj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;建筑面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        symj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;使用面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        nd_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;年&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;代：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;朝&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;向：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        lc_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;楼&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;层：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jg_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;结&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;构：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;装&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;修：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;住宅类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;建筑类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cqxz_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;产权性质：&lt;&#x2F;span&gt;&quot;</span><br><span class="line"></span><br><span class="line">        for i in dd_infos:</span><br><span class="line">            if huxing_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_type&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif jzmj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_build_area&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif symj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_use_area&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif nd_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_age&#39;] &#x3D; i.strip()</span><br><span class="line">               </span><br><span class="line">            elif cx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;orientation&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif lc_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;floor&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif jg_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;structure&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif zx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;decoration&#39;] &#x3D; i</span><br><span class="line">                </span><br><span class="line">            elif zzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;residential_category&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif jzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;building_class&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif cqxz_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_right&#39;] &#x3D; i.strip()</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">        dt_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dt + &quot;&#x2F;a&quot;).extract()</span><br><span class="line">        for i in dt_infos:</span><br><span class="line">            if &quot;查看此楼盘的更多二手房房源&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_name&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif &quot;&lt;span class&#x3D;\&quot;gray6 floatl\&quot;&gt;学&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;校：&lt;&#x2F;span&gt;&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;school&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样我们就可以得到详情页的信息了。</p>
+<p>接下来，把上面两个爬取的操作链接在一起：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def parse(self, response):</span><br><span class="line">       infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">       for i in infos:</span><br><span class="line">           i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">           if &quot;esf&quot; in i_str:</span><br><span class="line">               url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line">               </span><br><span class="line">               # 执行下一个request，回去自动调用callback函数，去解析详情页</span><br><span class="line">               yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br></pre></td></tr></table></figure>
+<h4 id="设置起始url"><a href="#设置起始url" class="headerlink" title="设置起始url"></a>设置起始url</h4><p>由于要爬取的不仅仅是一页数据，所以我们的<code>start_urls</code>列表不能只有一个url，我们需要有一个<code>PageNo</code>自增长的url的list。</p>
+<p>直接上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">base_url &#x3D; &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;$&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line">    start_urls &#x3D; []</span><br><span class="line">    # 可以把10设置成一个比较大的数字，由于测试使用，所以写死一个较小的数</span><br><span class="line">    for i in range(2, 10):</span><br><span class="line">        start_urls.append(str(base_url).replace(&quot;$&quot;, str(i)))</span><br></pre></td></tr></table></figure>
+<h4 id="可以开始了吗？"><a href="#可以开始了吗？" class="headerlink" title="可以开始了吗？"></a>可以开始了吗？</h4><p>列表爬取和详情爬取，以及起始url都设置ok了，那么我们是不是可以让我们的蜘蛛行动起来了呢？</p>
+<p>且慢，这里也有坑。</p>
+<p>这里我将页面数设置了200页，开始爬取，结果悲剧就发生了，由于短时间内访问量过大，搜房网的二手房页面似乎把我的ip屏蔽了：</p>
+<p><img src="/img/16_11_30/006.png"></p>
+<p>这里我参考了<a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/VRfQR3U">这篇文章</a>，通过</p>
+<ul>
+<li>设置随机UserAgent</li>
+<li>添加代理IP</li>
+<li>禁用cookies</li>
+<li>设置加载延迟</li>
+</ul>
+<p>这些方式来防止被屏蔽。</p>
+<p>设置完毕后，就可以愉快的开始爬取了~</p>
+<h4 id="蜘蛛代码"><a href="#蜘蛛代码" class="headerlink" title="蜘蛛代码"></a>蜘蛛代码</h4><p>最终蜘蛛的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"># coding&#x3D;utf-8</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">import scrapy</span><br><span class="line">from ..items import ESFItem</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(&#39;utf-8&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ESFListSpider(scrapy.Spider):</span><br><span class="line">    name &#x3D; &quot;esflist&quot;</span><br><span class="line"></span><br><span class="line">    # allowed_domains &#x3D; [&quot;fang.com&quot;]</span><br><span class="line"></span><br><span class="line">    base_url &#x3D; &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;$&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line">    start_urls &#x3D; []</span><br><span class="line">    for i in range(2, 4):</span><br><span class="line">        start_urls.append(str(base_url).replace(&quot;$&quot;, str(i)))</span><br><span class="line"></span><br><span class="line">    def __init__(self, user_agent&#x3D;&#39;&#39;):</span><br><span class="line">        self.user_agent &#x3D; user_agent</span><br><span class="line"></span><br><span class="line">    def process_request(self, request, spider):</span><br><span class="line">        # 这句话用于随机选择user-agent</span><br><span class="line">        ua &#x3D; random.choice(self.user_agent_list)</span><br><span class="line">        if ua:</span><br><span class="line">            request.headers.setdefault(&#39;User-Agent&#39;, ua)</span><br><span class="line"></span><br><span class="line">    user_agent_list &#x3D; [</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;22.0.1207.1 Safari&#x2F;537.1&quot; \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; CrOS i686 2268.111.0) AppleWebKit&#x2F;536.11 (KHTML, like Gecko) Chrome&#x2F;20.0.1132.57 Safari&#x2F;536.11&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.6 (KHTML, like Gecko) Chrome&#x2F;20.0.1092.0 Safari&#x2F;536.6&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.6 (KHTML, like Gecko) Chrome&#x2F;20.0.1090.0 Safari&#x2F;536.6&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;19.77.34.5 Safari&#x2F;537.1&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; Linux x86_64) AppleWebKit&#x2F;536.5 (KHTML, like Gecko) Chrome&#x2F;19.0.1084.9 Safari&#x2F;536.5&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.0) AppleWebKit&#x2F;536.5 (KHTML, like Gecko) Chrome&#x2F;19.0.1084.36 Safari&#x2F;536.5&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 5.1) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1062.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1062.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; Linux x86_64) AppleWebKit&#x2F;535.24 (KHTML, like Gecko) Chrome&#x2F;19.0.1055.1 Safari&#x2F;535.24&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2; WOW64) AppleWebKit&#x2F;535.24 (KHTML, like Gecko) Chrome&#x2F;19.0.1055.1 Safari&#x2F;535.24&quot;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    def parse(self, response):</span><br><span class="line"></span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line"></span><br><span class="line">                yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br><span class="line"></span><br><span class="line">    def parse_details(self, response):</span><br><span class="line">        print &quot;+++++++++++++被执行了+++++++++++++++++++&quot;</span><br><span class="line"></span><br><span class="line">        # path</span><br><span class="line">        xpath &#x3D; &quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;main clearfix&#39;]&#x2F;div[@class&#x3D;&#39;mainBoxL&#39;]&quot;</span><br><span class="line">        div_title &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;title&#39;]&quot;</span><br><span class="line">        p_gray9 &#x3D; &quot;&#x2F;p[@class&#x3D;&#39;gray9&#39;]&quot;</span><br><span class="line">        h1 &#x3D; &quot;&#x2F;h1&quot;</span><br><span class="line">        span_mr10 &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;mr10&#39;]&quot;</span><br><span class="line">        div_houseInfor_clearfix &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;houseInfor clearfix&#39;]&quot;</span><br><span class="line">        div_inforTxt &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;inforTxt&#39;]&quot;</span><br><span class="line">        dl &#x3D; &quot;&#x2F;dl&quot;</span><br><span class="line">        dt_gray6_zongjia1 &#x3D; &quot;&#x2F;dt[@class&#x3D;&#39;gray6 zongjia1&#39;]&quot;</span><br><span class="line">        span_red20b &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;red20b&#39;]&quot;</span><br><span class="line">        dd_gray6 &#x3D; &quot;&#x2F;dd[@class&#x3D;&#39;gray6&#39;]&quot;</span><br><span class="line">        dd &#x3D; &quot;&#x2F;dd&quot;</span><br><span class="line">        dt &#x3D; &quot;&#x2F;dt&quot;</span><br><span class="line"></span><br><span class="line">        item &#x3D; ESFItem()</span><br><span class="line">        item[&#39;id&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                    div_title +</span><br><span class="line">                                    p_gray9 +</span><br><span class="line">                                    span_mr10).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;publish_time&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                              div_title +</span><br><span class="line">                                              p_gray9).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;title&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                       div_title +</span><br><span class="line">                                       h1).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;total_price&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                             div_houseInfor_clearfix +</span><br><span class="line">                                             div_inforTxt +</span><br><span class="line">                                             dl +</span><br><span class="line">                                             dt_gray6_zongjia1 +</span><br><span class="line">                                             span_red20b).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        dd_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dd).extract()</span><br><span class="line">        huxing_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;户&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;型：&quot;</span><br><span class="line">        jzmj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;建筑面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        symj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;使用面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        nd_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;年&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;代：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;朝&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;向：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        lc_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;楼&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;层：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jg_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;结&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;构：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;装&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;修：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;住宅类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;建筑类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cqxz_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;产权性质：&lt;&#x2F;span&gt;&quot;</span><br><span class="line"></span><br><span class="line">        for i in dd_infos:</span><br><span class="line">            if huxing_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_type&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jzmj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_build_area&#39;] &#x3D; i.strip()</span><br><span class="line">            elif symj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_use_area&#39;] &#x3D; i.strip()</span><br><span class="line">            elif nd_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_age&#39;] &#x3D; i.strip()</span><br><span class="line">            elif cx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;orientation&#39;] &#x3D; i.strip()</span><br><span class="line">            elif lc_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;floor&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jg_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;structure&#39;] &#x3D; i.strip()</span><br><span class="line">            elif zx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;decoration&#39;] &#x3D; i</span><br><span class="line">            elif zzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;residential_category&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;building_class&#39;] &#x3D; i.strip()</span><br><span class="line">            elif cqxz_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_right&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">        dt_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dt + &quot;&#x2F;a&quot;).extract()</span><br><span class="line">        for i in dt_infos:</span><br><span class="line">            if &quot;查看此楼盘的更多二手房房源&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_name&#39;] &#x3D; i.strip()</span><br><span class="line">            elif &quot;&lt;span class&#x3D;\&quot;gray6 floatl\&quot;&gt;学&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;校：&lt;&#x2F;span&gt;&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;school&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="what-s-next"><a href="#what-s-next" class="headerlink" title="what`s next?"></a>what`s next?</h3><p>接下来我会将爬取到的数据进行加工后持久化到本地，不过今天就先到这里吧~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/" data-id="ckkwc437i006ipas97lj8byui" data-title="房价预测（1）-搜房网数据爬取" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/03/%E5%8F%91%E5%B8%83aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          发布aar到jcenter的正确姿势
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(1)%E8%AF%84%E4%BB%B7%E4%B8%80%E4%B8%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第六周 (1)评价一个学习算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

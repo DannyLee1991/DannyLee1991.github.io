@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【Codelab】自动性能测试 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="https:&#x2F;&#x2F;codelabs.developers.google.com&#x2F;codelabs&#x2F;android-perf-testing&#x2F;index.html?index&#x3D;..%2F..%2Findex#0 1.概述在这个codelab中，您将创建一个稳定和可重用的测试工具，在非常简单的现有应用程序上运行性能测试。线束将自动收集信息，如系统日志，位置请求，电池电压，图形配置等。测试失败也将记录到文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Codelab】自动性能测试">
+<meta property="og:url" content="http://example.com/2017/01/15/%E3%80%90Codelab%E3%80%91%E8%87%AA%E5%8A%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="https:&#x2F;&#x2F;codelabs.developers.google.com&#x2F;codelabs&#x2F;android-perf-testing&#x2F;index.html?index&#x3D;..%2F..%2Findex#0 1.概述在这个codelab中，您将创建一个稳定和可重用的测试工具，在非常简单的现有应用程序上运行性能测试。线束将自动收集信息，如系统日志，位置请求，电池电压，图形配置等。测试失败也将记录到文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_01_14/003.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/004.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/005.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/006.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/007.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/008.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/009.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/010.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/011.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/012.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/013.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/014.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/015.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/016.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/017.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/018.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/019.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/020.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/021.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/022.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/023.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/024.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/025.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/026.png">
+<meta property="og:image" content="http://example.com/img/17_01_14/027.png">
+<meta property="article:published_time" content="2017-01-15T20:21:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_01_14/003.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【Codelab】自动性能测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/01/15/%E3%80%90Codelab%E3%80%91%E8%87%AA%E5%8A%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2017-01-15T20:21:58.000Z" itemprop="datePublished">2017-01-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【Codelab】自动性能测试
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/codelabs/android-perf-testing/index.html?index=../../index#0">https://codelabs.developers.google.com/codelabs/android-perf-testing/index.html?index=..%2F..%2Findex#0</a></p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>在这个codelab中，您将创建一个稳定和可重用的测试工具，在非常简单的现有应用程序上运行性能测试。线束将自动收集信息，如系统日志，位置请求，电池电压，图形配置等。测试失败也将记录到文件中，我们将向您展示如何编写基于性能的测试的示例。哇，这很多，对吧？Good luck!! :)</p>
+<h3 id="你会学到什么"><a href="#你会学到什么" class="headerlink" title="你会学到什么"></a>你会学到什么</h3><ul>
+<li>如何快速导航某些Android性能工具</li>
+<li>如何使用Espresso测试框架编写单元和性能测试</li>
+<li>如何使用MonkeyRunner和Gradle来自动化测试工作流</li>
+<li>如何查看systrace输出以了解应用程序的性能问题</li>
+</ul>
+<p>由于此Codelab中的移动部件和组件的数量相当大，因此您可以通过取消注释现有代码来启用每个部件。这将使得您熟悉线束，同时还使得您对自己的项目执行类似的步骤。我们将最终得到一个测试工具，逻辑上看起来像这样。</p>
+<p><img src="/img/17_01_14/003.png"></p>
+<p>让我们开始吧！</p>
+<h2 id="2-设置"><a href="#2-设置" class="headerlink" title="2.设置"></a>2.设置</h2><p>首先，您需要设置您的开发环境。</p>
+<h3 id="你需要什么"><a href="#你需要什么" class="headerlink" title="你需要什么"></a>你需要什么</h3><p>安装以下软件包的计算机：</p>
+<ul>
+<li>最新版本的Android Studio</li>
+<li>最新版本的Android SDK</li>
+<li>JAVA JDK(1.7)</li>
+<li>Python 2.7(不是 Python 3.x)</li>
+</ul>
+<p>还应满足以下环境条件：</p>
+<ul>
+<li>Python应该可以通过PATH环境变量使用。输入命令<code>python --version</code>应该输出类似于<code>Python 2.7.10</code>。</li>
+<li>JAVA JDK应包含在PATH环境变量中，并可通过<code>JAVA_HOME</code>环境变量访问。输入命令<code>javac -version</code>应该输出类似于<code>javac 1.7.0_79</code>的内容。</li>
+<li>Android SDK路径应设置为<code>ANDROID_HOME</code>环境变量。输入命令<code>echo $JAVA_HOME</code>或<code>echo％ANDROID_HOME％</code>应输出正在运行的Android SDK的目录。</li>
+</ul>
+<p>最后，您应该有一个Android设备通过USB电缆连接到您的计算机，可用于运行测试。</p>
+<ul>
+<li>Android Marshmallow或更高的版本是首选，因为它将最大化线束的功能。</li>
+<li>需要启用Android“开发者模式”（通过点击“关于手机”下的Build Number七次）并且通过Android设置应用程序的“USB调试”。</li>
+<li>对于典型的应用程序开发，Android模拟器将是足够的，因为这个codelab是关于性能测试，最好是使用物理设备。</li>
+</ul>
+<blockquote>
+<p><strong>注意：</strong>线束将适用于较旧版本的Android，但某些数据将无法收集。</p>
+</blockquote>
+<p>在下一步中，我们将下载并构建测试应用程序。</p>
+<h2 id="3-运行并理解测试应用程序"><a href="#3-运行并理解测试应用程序" class="headerlink" title="3.运行并理解测试应用程序"></a>3.运行并理解测试应用程序</h2><p>在此步骤中，我们在您的Android设备上构建并运行提供的测试应用程序。</p>
+<h3 id="获取代码"><a href="#获取代码" class="headerlink" title="获取代码"></a>获取代码</h3><p>运行以下命令从GitHub下载示例代码。或者从<a target="_blank" rel="noopener" href="https://github.com/googlecodelabs/android-perf-testing/archive/master.zip">这里</a>直接作为zip文件下载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;googlecodelabs&#x2F;android-perf-testing.git</span><br></pre></td></tr></table></figure>
+<p>当这样做之后，你的计算机上会有一个<code>android-perf-testing</code>文件夹。</p>
+<p>打开Android Studio。在快速启动屏幕上，点击“打开现有的Android Studio项目”（或选择<strong>File &gt; Open</strong>）。</p>
+<p><img src="/img/17_01_14/004.png"></p>
+<p>在导入选择器窗口中打开在上一步中克隆的<code>android-perf-testing</code>文件夹。选择<code>settings.gradle</code>文件，然后单击<strong>Choose</strong>。</p>
+<p>通过单击Android Studio窗口左上角的项目文本按钮打开项目导航器。在项目导航器顶部，您可以选择不同的视图透视图，通常，导入后默认为Android透视图。将此更改为<strong>Project</strong>，以确保您可以看到我们将使用的所有文件。这个过程见下面的屏幕截图。</p>
+<p><img src="/img/17_01_14/005.png"></p>
+<p>等待完成导入过程，通过查看Android Studio屏幕的最底部，以便在状态栏中显示“Gradle build finished”消息。</p>
+<p><img src="/img/17_01_14/006.png"></p>
+<p>您可能会看到构建错误，但我们会尽快解决。 Gradle构建完成后，点击Android Studio菜单顶部的绿色<strong>Run</strong>图标即可安装并运行应用程序。</p>
+<p><img src="/img/17_01_14/007.png"></p>
+<p>如果您还没有，请插入Android设备并解锁设备的屏幕。从出现的窗口中，从可用于运行应用程序的设备列表中选择设备。</p>
+<p><img src="/img/17_01_14/008.png"></p>
+<p>应用在您的设备上运行后，应该看起来像这样。应用程序可能需要一两分钟才能部署和第一次打开。</p>
+<p><img src="/img/17_01_14/009.png"></p>
+<p>你会注意到测试应用程序的功能非常有限。使用应用程序熟悉它：</p>
+<ul>
+<li>如上所述，您可以使用“Update Text”更新<code>TextView</code>。</li>
+<li>触摸“Open List View”显示一个大的<code>ListView</code>。 <code>ListView</code>后面的实现有各种性能问题。</li>
+<li>触摸“Open Recycler View”，显示一个大型<code>RecyclerView</code>，消除了以前的一些性能问题。</li>
+</ul>
+<p>现在我们有示例应用程序的源代码导入和应用程序构建和运行。在我们自动执行某些测试之前，让我们快速了解应用的效果以及我们通常用于诊断性能问题的工具，然后我们将更好地准备自动执行这些步骤。</p>
+<blockquote>
+<p><strong>重要提示，在下一步之前，确定你：</strong></p>
+<pre><code>- 使用Android Studio窗口顶部的“**Run**”图标部署示例应用程序。
+</code></pre>
+</blockquote>
+<h2 id="4-练习包含的应用程序的性能问题"><a href="#4-练习包含的应用程序的性能问题" class="headerlink" title="4.练习包含的应用程序的性能问题"></a>4.练习包含的应用程序的性能问题</h2><p>我们将手动检查应用程序中的性能问题。如果我们不了解我们正在寻找什么，我们不能自动进行性能测试，所以让我们手动寻找一些jank。</p>
+<p>再次启动应用程式，然后轻触<strong>Open List View</strong>按钮。您将看到一个如下所示的屏幕：</p>
+<p><img src="/img/17_01_14/010.png"></p>
+<p>滚动到列表的底部;该应用程序随着你的滚动的距离变得更加jankier。这是因为应用程序无法为每16毫秒（大多数与UI相关的性能问题的主要原因）提供渲染子系统一帧;因此，Android正在跳过这一帧并导致视觉上的jank。当您向下滚动页面时，应用程序会跳过更多帧。如果你足够持久，你甚至会注意到它可能崩溃，直到到达列表的底部。</p>
+<blockquote>
+<p><strong>注意：</strong>如果您使用更高端的设备测试，您可能看不到jank，尽管代码是次优的。请考虑使用中低端设备。</p>
+</blockquote>
+<p>幸运的是，我们不必依靠仔细的视力来观看我们设备上的jank。在大多数Android设备的<strong>开发人员选项</strong>中有一个GPU渲染配置文件选项（靠近列表底部）。启用此选项，将屏幕上显示为条选项，然后打开应用程序，并再次使用<strong>Open List View</strong>选项。你的屏幕看起来会是类似这样：</p>
+<p><img src="/img/17_01_14/011.png"></p>
+<p>在Android设备上靠近屏幕中下部的绿色线，表示您的应用程序应该尝试从不交叉的重要的16毫秒屏障，同时向渲染子系统提供帧。帧作为时间序列水平地画在屏幕上，每个垂直条表示一个帧。条的高度指示框架花费多长时间绘制，并且当线的任何彩色部分超过绿色条时，其指示框架错过16毫秒超时并引起jank。条形的颜色表示在帧渲染的每个主要阶段中花费的时间量。栏的橙色部分表示应用程序进程代码;这个程序是浪费大量的时间。</p>
+<blockquote>
+<p><strong>注意：</strong>有关GPU渲染配置文件的更多详细信息，请参阅<a target="_blank" rel="noopener" href="http://developer.android.com/tools/performance/profile-gpu-rendering/index.html">文档</a>。</p>
+</blockquote>
+<p>当你看到像<code>ListView</code>这样的jank，你通常转向一个名为<strong>Systrace</strong>的工具，以深入了解发生了什么。</p>
+<blockquote>
+<p><strong>重要，在进一步之前，请务必确认：</strong></p>
+<ul>
+<li>使用与启用GPU渲染配置文件相同的过程停用GPU渲染配置文件。</li>
+</ul>
+</blockquote>
+<h2 id="5-使用Systrace"><a href="#5-使用Systrace" class="headerlink" title="5.使用Systrace"></a>5.使用Systrace</h2><p>我们不会深入到Systrace，但我们将调试该应用程序与systrace快速诊断jank问题。此步骤还将确保Systrace在您的系统上正确配置，但如果您精通Systrace，则可以跳过此步骤。</p>
+<h3 id="什么是Systrace？"><a href="#什么是Systrace？" class="headerlink" title="什么是Systrace？"></a>什么是Systrace？</h3><p>见<a target="_blank" rel="noopener" href="http://developer.android.com/tools/help/systrace.html">Android文档</a>:</p>
+<p><em>Systrace是一个工具，它将帮助您通过捕获和显示应用程序进程和其他Android系统进程的执行时间来分析应用程序的性能。</em></p>
+<h3 id="我们用它做什么？"><a href="#我们用它做什么？" class="headerlink" title="我们用它做什么？"></a>我们用它做什么？</h3><p>我们正在使用Systrace在我们的应用程序中查找性能问题。当我们使用我们的应用程序运行Systrace时，它会从Android中收集数据，然后将其格式化为一个html文件，我们可以在网络浏览器中查看。当我们打开Systrace结果时，我们希望它能够帮助我们解决与我们的应用程序相关的一些基本问题。到目前为止，我们所知道的是，我们的应用程序是janky;如果工具帮助我们找出原因，这将是很好的。</p>
+<h3 id="如何运行Systrace"><a href="#如何运行Systrace" class="headerlink" title="如何运行Systrace"></a>如何运行Systrace</h3><p>点击Android Studio窗口左下角的“<strong>Terminal</strong>”文本按钮。</p>
+<p><img src="/img/17_01_14/012.png"></p>
+<p>运行以下命令：</p>
+<p>Mac / Linux:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python $ANDROID_HOME&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py --time&#x3D;10 -o ~&#x2F;trace.html gfx view res</span><br></pre></td></tr></table></figure>
+<p>Windows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python %ANDROID_HOME%&#x2F;platform-tools&#x2F;systrace&#x2F;systrace.py --time&#x3D;10 -o %userprofile%&#x2F;trace.html gfx view res</span><br></pre></td></tr></table></figure>
+<p>这将运行Systrace 10秒，给你足够的时间来重现你在之前的步骤中看到的janky行为。运行以上命令，当systrace正在运行时，打开应用程序并再次滚动简单列表视图。Systrace将在您使用应用程序时收集数据。它将结果输出到文件：<code>trace.html</code>。</p>
+<p>打开浏览器并查看<code>trace.html</code>文件。您应该看到类似以下的显示：</p>
+<p><img src="/img/17_01_14/013.png"></p>
+<blockquote>
+<p><strong>注意</strong>：如果您在浏览器中打开该工具时遇到问题，可以按照屏幕截图。 codelab的点是自动化一些你可以在systrace中找到的东西。</p>
+</blockquote>
+<p>这是一个可视化的性能数据是由您的应用程序和系统在10秒的时间段内提供的线性时间表。</p>
+<p>同样，这不是一个Systrace教程，但请注意此窗口右上角的浮动导航栏，将光标置于与跟踪交互的不同模式。在以下屏幕截图中，从上到下，图片图标允许指针以以下方式影响屏幕：</p>
+<ul>
+<li>选择项目以查看更多详细信息</li>
+<li>在时间轴内滚动（在使用缩放之前不需要）</li>
+<li>在时间轴上放大或缩小</li>
+<li>突出显示某些时间段</li>
+</ul>
+<p><img src="/img/17_01_14/014.png"></p>
+<p>Systrace工具用于缩放和平移。</p>
+<p>您也可以使用键盘上的W，A，S，D键缩放和平移，如果这更容易。</p>
+<p>首先将您的注意力集中在警报的最上面的水平部分。</p>
+<p><img src="/img/17_01_14/015.png"></p>
+<p>此处的警报行突出显示在跟踪期间可能出现的问题;如果您单击一个，详细信息面板将在浏览器底部打开，您可以阅读警报详细信息。例如：</p>
+<p><img src="/img/17_01_14/016.png"></p>
+<p>你会注意到，应用程序的<code>ListView</code>实现有多个问题。警报提供有关性能改进的详细信息，以及可帮助解决问题的文档链接。</p>
+<p>下一个水平部分，通常有一个包含您的包名称的头。如果没有，请使用其他软件包名称右侧的箭头折叠各个部分，直到您的软件包名称可见。</p>
+<p>如果这是您第一次使用该工具，您将需要专注于Frames行（见下面的预览）。</p>
+<p><img src="/img/17_01_14/017.png"></p>
+<p>您可以在浏览器窗口底部再次找到非绿色警报的说明。特别是，查找警报，指示您的应用程序缺少可怕的16ms时间窗口以产生一帧。警报还标记其他问题，如不回收视图或不正确的时间布局充气。点击此行中的一些红色提醒，直到您也找到一个<strong>Inflation during ListView recycling</strong>的描述。应该有很多。</p>
+<p>想想为什么它可能告诉你。你将如何解决它？</p>
+<p>每当你有性能问题，Systrace是你应该开始寻找问题的主要地方之一。在这里我们验证帧被丢弃，我们发现我们的应用程序的问题。但是我们真的不应该通过手动协调我们的测试运行与Systrace来找到这个问题。在下一步中，我们将自动执行我们执行的测试，然后我们将跟踪自动化Systrace。</p>
+<h2 id="Espresso自动化UI测试"><a href="#Espresso自动化UI测试" class="headerlink" title="Espresso自动化UI测试"></a>Espresso自动化UI测试</h2><p>现在，让我们开始自动化我们之前执行的手动测试：打开<code>ListView</code>并滚动整个列表。</p>
+<p>作为一个快速的Android测试引擎：通常有两种类型的测试为Android应用程序编写。单元测试通常执行离散的代码位。Android仪表化测试练习应用程序组件，以及通常模拟Android用户输入和/或模拟零件，没有专门测试。<a target="_blank" rel="noopener" href="http://developer.android.com/tools/testing-support-library/index.html#Espresso">Espressolibrary</a>用于协助Android仪表化测试。</p>
+<h3 id="Espresso-Test-Library"><a href="#Espresso-Test-Library" class="headerlink" title="Espresso Test Library"></a>Espresso Test Library</h3><p>Espresso是一个测试库，提供用于编写​​UI测试的API，以模拟单个应用程序中的用户交互。大多数用户交互可以在使用Espresso和<a target="_blank" rel="noopener" href="http://developer.android.com/tools/testing-support-library/index.html">Android测试支持库</a>的其他部分的测试中快速简洁地编写脚本。</p>
+<blockquote>
+<p>注意：有时Android测试需要特定的架构设计，以允许模拟Android框架的部分。这是一个复杂的主题，在这个特定的代码库的范围之外。</p>
+</blockquote>
+<h3 id="Espresso-Library依赖"><a href="#Espresso-Library依赖" class="headerlink" title="Espresso Library依赖"></a>Espresso Library依赖</h3><p>使用Espresso的第一步是向项目添加库依赖项。通过在依赖关系部分中的<code>app/build.gradle</code>文件中取消注释以下行来添加库。这个片段包括一对其他经常被用到的与Espresso关联的库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">androidTestCompile &quot;com.android.support:support-annotations:$&#123;supportLibVersion&#125;&quot;</span><br><span class="line">androidTestCompile &#39;com.android.support.test:runner:0.5&#39;</span><br><span class="line">androidTestCompile &#39;com.android.support.test:rules:0.5&#39;</span><br><span class="line">androidTestCompile &#39;com.android.support.test.espresso:espresso-core:2.2.1&#39;</span><br></pre></td></tr></table></figure>
+<p>每次编辑Gradle脚本时，Android Studio都会询问您是否要在文件查看器顶部的黄色栏中与Gradle进行同步。单击<strong>Sync Now</strong>，然后等待项目的构建和重新配置。</p>
+<h3 id="编写Espresso测试"><a href="#编写Espresso测试" class="headerlink" title="编写Espresso测试"></a>编写Espresso测试</h3><p>现在我们将编写一个测试来滚动应用程序<code>ListView</code>，就像我们之前手动操作一样。</p>
+<p>在<code>app/src/androidTest/java/</code>中导航到<code>androidTest</code>源目录。一些测试类已在<code>com.google.android.perftesting</code>包中定义。打开<code>SimpleListActivityTest</code>类。这个类保存你将为<code>SimpleListActivity</code>类逻辑编写的测试。</p>
+<p><img src="/img/17_01_14/018.png"></p>
+<p>取消注释在文件中定义的<code>ActivityTestRule</code>（见下文）。此JUnit规则确保在运行类中定义的任何测试之前创建指定的activity。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Rule</span><br><span class="line">public ActivityTestRule&lt;SimpleListActivity&gt; mActivityRule &#x3D; new ActivityTestRule&lt;&gt;(SimpleListActivity.class);</span><br></pre></td></tr></table></figure>
+<p>接下来，取消注释测试方法<code>scrollFullList</code>并检查测试方法代码。测试获取被测Activity中的<code>ListView</code>，并滚动整个列表。测试等待滚动完成。查看代码后，您需要通过右键单击文件中的每个错误来解决缺少的导入错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">@PerfTest</span><br><span class="line">public void scrollFullList() throws InterruptedException &#123;</span><br><span class="line">ListView listView &#x3D; (ListView) mActivityRule.getActivity().findViewById(android.R.id.list);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>最后，取消注释<code>SimpleListActivityTest</code>类声明顶部的<code>@PerfTest</code>。这对于确保测试类稍后被仪器拾取很重要。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@PerfTest</span><br><span class="line">public class SimpleListActivityTest &#123;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：</strong> <code>@PerfTest</code>注解用于隔离应包括在性能测试中的测试和类。</p>
+</blockquote>
+<h3 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h3><p>要运行所有应用程序的配置，您应当运行<code>connectedCheck</code> Gradle任务。在Android Studio中有几种方法可以运行此任务。记住确保您的测试设备的屏幕在设备上运行测试之前已解锁。</p>
+<ul>
+<li>在屏幕的最右侧有一个Gradle文本按钮，可用于打开Gradle任务导航器。在<strong>android-perf-testing &gt; android-perf-testing &gt; Tasks &gt; verification</strong>路径结构下，您可以双击<code>connectedCheck</code>任务。</li>
+</ul>
+<p><img src="/img/17_01_14/019.png"></p>
+<ul>
+<li>等待任务完成，如Android Studio窗口底部状态栏所示。此屏幕截图指示测试仍在运行，因为最右边的微调器仍在移动。如果您在运行测试之前忘记解锁设备，则任务可能会卡住。如果测试耗时超过3分钟，请停止并重新启动<code>connectedCheck </code>gradle任务。</li>
+</ul>
+<p><img src="/img/17_01_14/020.png"></p>
+<ul>
+<li>任务运行完成后，可以在Android Studio的“消息”面板中看到此生成的输出。测试运行通常会失败，您将看到类似于下图所示的故障。在更高性能的设备上，您可能不会看到此失败;考虑在中端或低端设备上进行性能测试。</li>
+</ul>
+<p><img src="/img/17_01_14/021.png"></p>
+<ul>
+<li>现在让我们在命令行上运行测试。在Android Studio屏幕的最底部，使用终端文本按钮打开终端窗口并键入：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;gradlew :app:connectedCheck</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意：如果Android Studio在<strong>Run -&gt; Edit Configurations</strong>菜单中创建新的Android测试运行配置，则拒绝该选项。你稍后会以一种不同的方式来处理。</li>
+</ul>
+<p>再次，当你运行任务，你可能看到运行测试的异常。在大多数设备上，编写不良的<code>ListView</code>会导致<code>OutOfMemoryException</code>。这可以通过导航到Android Studio窗口右下角的Gradle Console文本按钮来看到。</p>
+<p><img src="/img/17_01_14/022.png"></p>
+<blockquote>
+<p><strong>重要：</strong>如果你的测试套件没有出现失败，在确认运行测试之后继续使用Codelab是很好的。通过查看Gradle输出中指定的<code>index.html</code>文件（请参阅上一屏幕截图）来执行此操作。寻找<code>scrollFullList()</code>测试并确保它被执行。如果未执行，请确保您在上述所有代码段（包括注释）中进行了注释。</p>
+</blockquote>
+<blockquote>
+<p>恭喜，到目前为止你已经：</p>
+<ul>
+<li>编译一个有较差的实现的<code>ListView</code>的应用程序。</li>
+<li>使用性能工具来确认<code>ListView</code>的性能不佳</li>
+<li>写一个性能测试，滚动<code>ListView</code>，并在大多数设备上抛出<code>OutOfMemory</code>异常，失败的测试套件。</li>
+</ul>
+</blockquote>
+<p>让我们继续自动化Systrace，在测试中检测jank。</p>
+<h2 id="7-使用MonkeyRunner自动化Systrace"><a href="#7-使用MonkeyRunner自动化Systrace" class="headerlink" title="7.使用MonkeyRunner自动化Systrace"></a>7.使用MonkeyRunner自动化Systrace</h2><p>自动化systrace是有点棘手，因为它需要与测试套件并行运行。Android开发套件附带一个名为<a target="_blank" rel="noopener" href="http://developer.android.com/tools/help/monkeyrunner_concepts.html">MonkeyRunner</a>的工具，我们可以使用它。 MonkeyRunner允许您使用Python 2.7语法创建脚本，允许使用连接的Android设备进行编排。这允许我们启动Systrace，然后在并行线程（以及其他）中启动测试套件。</p>
+<h3 id="MonkeyRunner脚本"><a href="#MonkeyRunner脚本" class="headerlink" title="MonkeyRunner脚本"></a>MonkeyRunner脚本</h3><p>自动化systrace和测试套件的脚本相当长，所以它被包含在repo中作为一个名为<a target="_blank" rel="noopener" href="https://github.com/googlecodelabs/android-perf-testing/blob/master/run_perf_tests.py">run_perf_tests.py</a>的文件。在脚本末尾查看函数调用调用，作为自动化所需逻辑的摘要。你会注意到脚本遵循这个一般结构：</p>
+<ul>
+<li>1.检查环境变量</li>
+<li>2.定义函数</li>
+<li>3.清除先前运行的本地数据</li>
+<li>4.查找Android设备</li>
+<li>5.启用和清除图形信息dumpsys</li>
+<li>6.并行启动systrace线程和测试套件线程</li>
+<li>7.等待两个线程完成</li>
+<li>8.从设备下载文件</li>
+<li>9.对下载的文件运行分析</li>
+</ul>
+<p>你会注意到脚本有两个参数，（1）一个目录来记录数据（2）Android设备ID。由于您手动运行此脚本，您必须通过在Android Studio终端窗口中运行此命令手动检索设备ID。</p>
+<p>Mac / Linux:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;ANDROID_HOME&#125;&#x2F;platform-tools&#x2F;adb devices -l</span><br></pre></td></tr></table></figure>
+<p>Windows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%ANDROID_HOME%\platform-tools\adb devices -l</span><br></pre></td></tr></table></figure>
+<p>它会输出类似的东西;选择屏幕左侧的设备ID以运行测试（如果您有多个设备）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List of devices attached</span><br><span class="line">84B0456625000123       device usb:337123368X product:angler model:Nexus_6P device:angler</span><br></pre></td></tr></table></figure>
+<p>现在，使用设备ID替换<code>&lt;INSERT ID&gt;</code>后，在Android Studio终端窗口中输入这两个命令，运行脚本。如果已连接的Android设备在运行第二个命令之前已进入睡眠状态，请记住解锁它。</p>
+<p>Mac / Linux:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;gradlew :app:assembleDebug :app:assembleDebugAndroidTest :app:installDebug :app:installDebugAndroidTest</span><br><span class="line">$&#123;ANDROID_HOME&#125;&#x2F;tools&#x2F;monkeyrunner .&#x2F;run_perf_tests.py .&#x2F; &lt;INSERT_ID&gt; </span><br></pre></td></tr></table></figure>
+<p>Windows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gradlew :app:assembleDebug :app:assembleDebugAndroidTest :app:installDebug :app:installDebugAndroidTest</span><br><span class="line">%ANDROID_HOME%\tools\monkeyrunner run_perf_tests.py .\ &lt;INSERT_ID&gt;</span><br></pre></td></tr></table></figure>
+<p>第一个命令的输出应该看起来类似于下面的文本。请确保它确认APK已安装到您的测试设备上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">:app:preDexDebugAndroidTest UP-TO-DATE</span><br><span class="line">:app:dexDebugAndroidTest UP-TO-DATE</span><br><span class="line">:app:packageDebugAndroidTest UP-TO-DATE</span><br><span class="line">:app:assembleDebugAndroidTest UP-TO-DATE</span><br><span class="line">:app:installDebug</span><br><span class="line">Installing APK &#39;app-debug.apk&#39; on &#39;Nexus 6P - 6.0&#39;</span><br><span class="line">Installed on 1 device.</span><br><span class="line">:app:installDebugAndroidTest</span><br><span class="line">Installing APK &#39;app-debug-androidTest-unaligned.apk&#39; on &#39;Nexus 6P - 6.0&#39;</span><br><span class="line">Installed on 1 device.</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 21.073 secs</span><br></pre></td></tr></table></figure>
+<p>第二个命令应该完成一个与此类似的日志。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Writing logs to: .&#x2F;</span><br><span class="line">Using device_id: 84B0115625000732</span><br><span class="line">Your ANDROID_HOME is set to: &#x2F;Users&#x2F;paulrashidi&#x2F;android_sdk2</span><br><span class="line">Cleaning data files</span><br><span class="line">Waiting for a device to be connected.</span><br><span class="line">Device connected.</span><br><span class="line">Starting dump permission grant</span><br><span class="line">Starting storage permission grant</span><br><span class="line">Clearing gfxinfo on device</span><br><span class="line">Starting test</span><br><span class="line">Executing systrace</span><br><span class="line">Exception in thread TestThread:Traceback (most recent call last):</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;paulrashidi&#x2F;android_sdk2&#x2F;tools&#x2F;lib&#x2F;jython-standalone-2.5.3.jar&#x2F;Lib&#x2F;threading.py&quot;, line 179, in _Thread__bootstrap</span><br><span class="line">    self.run()</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;paulrashidi&#x2F;android_sdk2&#x2F;tools&#x2F;lib&#x2F;jython-standalone-2.5.3.jar&#x2F;Lib&#x2F;threading.py&quot;, line 170, in run</span><br><span class="line">    self._target(*self._args, **self._kwargs)</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;paulrashidi&#x2F;verytmp&#x2F;android-perf-testing&#x2F;.&#x2F;run_perf_tests.py&quot;, line 51, in perform_test</span><br><span class="line">    print device.instrument(test_runner, params)[&#39;stream&#39;]</span><br><span class="line">KeyError: &#39;stream&#39;</span><br><span class="line">Done running tests</span><br><span class="line">Done systrace logging</span><br><span class="line">Systrace Thread Done</span><br><span class="line">Test Thread Done</span><br><span class="line">Time between test and trace thread completion: 0</span><br><span class="line">Starting adb pull for test files</span><br><span class="line"></span><br><span class="line">FAIL: Could not find file indicating the test run completed.</span><br><span class="line"></span><br><span class="line">OVERALL: FAILED. See above for more information.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>重要：</strong>在测试失败的时候，流错误是预期的。如果测试通过，那是因为您使用的是更高端的设备，那么您将看到那个测试完成的报告。如果日志报告没有测试完成，请仔细检查以确保您没有跳过对<code>SimpleListActivityTest</code>类的<code>@PerfTest</code>注解的注释。</p>
+<p>我们使用注解将特定测试标记为性能测试，以显示如何仅将一部分测试声明为性能测试，而不是全部运行。</p>
+</blockquote>
+<p>你应该有一个<code>perftesting</code>目录，有一个有限的文件集，类似于下面的屏幕截图。</p>
+<p><img src="/img/17_01_14/023.png"></p>
+<blockquote>
+<p><strong>重要：</strong>该脚本将在编码表的这个阶段报告“OVERALL”故障，因为并不是所有的测试配件都已就位。您可能还会收到关于“流”故障的错误或测试套件可能失败。这些错误在这一点上也是正常的。</p>
+<p>重要的是确保您在项目中的<code>perftesting/&lt;DeviceID&gt;/testdata/</code>目录中有一个<code>trace.html</code>文件。还要仔细观察<code>perftesting/&lt;DeviceID&gt;/logs/files</code>，以确保<code>run_perf_tests.py</code>脚本中的命令没有失败。您的<code>perftesting/&lt;DeviceID&gt;/testdata/</code>目录中目前应该没有文件。</p>
+</blockquote>
+<h3 id="为MonkeyRunner添加Gradle任务"><a href="#为MonkeyRunner添加Gradle任务" class="headerlink" title="为MonkeyRunner添加Gradle任务"></a>为MonkeyRunner添加Gradle任务</h3><p>现在，我们让脚本对开发环境更加原生，所以我们可以从Gradle和/或Android Studio运行它。最简单的方法是创建一个将运行monkeyrunner脚本的Gradle任务。在Gradle中，我们可以通过在<code>buildSrc</code>目录中定义一个新任务来为一个典型的项目做到这一点;让我们这样做。</p>
+<p>导航到<code>buildSrc/src/main/groovy/com/google/android/perftesting/RunLocalPerfTestsTask</code>并取消注释那里的代码来实现任务。Android Studio可能会在与重复类定义相关的文件编辑窗口中报告这些Gradle任务上的构建错误，因此可以忽略这些错误。</p>
+<p><img src="/img/17_01_14/024.png"></p>
+<p>你也应该仔细阅读<code>buildSrc/src/main/groovy/com/google/android/perftesting/PerfTestTaskGeneratorPlugin</code>。这是一个自定义Gradle插件，它查询连接的Android设备，然后为每个连接的设备设置一个<code>RunLocalPerfTestsTask</code>Gradle任务。自定义Gradle插件还创建一个额外的通用<code>RunLocalPerfTests</code>任务，在运行时执行每个特定于设备的gradle任务。</p>
+<p>现在让我们将自定义Gradle插件安装到我们的项目中，以便所有自定义Gradle任务都可用。</p>
+<p>导航到<code>app/build.gradle</code>并在以下代码行中注释。重要的是，在配置Android Gradle插件之后应用此插件，因此，它被放置在<code>build.gradle</code>文件的末尾。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Create performance testing tasks for all connected Android devices using a Gradle plugin defined</span><br><span class="line">&#x2F;&#x2F; in the buildSrc directory.</span><br><span class="line">apply plugin: PerfTestTaskGeneratorPlugin</span><br></pre></td></tr></table></figure>
+<p>然后将此代码段添加为<code>app/build.gradle</code>文件的第一行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import com.google.android.perftesting.PerfTestTaskGeneratorPlugin</span><br></pre></td></tr></table></figure>
+<p>Android Studio屏幕顶部会显示一条消息，询问您是否要再次同步Gradle文件。执行Gradle文件同步，然后导航到Gradle任务列表。您应该看到Gradle插件添加的新任务。如果您连接了多个设备，您将有比下面的屏幕截图更多的任务。</p>
+<p><img src="/img/17_01_14/025.png"></p>
+<p>Gradle任务<code>runLocalPerfTests</code>是运行性能测试的任务。从Gradle运行monkeyrunner脚本的一个主要优点是我们使新的性能测试任务取决于App和Test APKs的安装。每当我们对代码库进行更改时，只要我们使用Gradle任务来执行测试，Gradle就会分析所有的项目文件，并在运行测试之前根据需要重新生成相关的APK。</p>
+<p>让我们确保新任务工作。双击<code>runLocalPerfTests</code>任务运行它。耐心等待，可能需要一点时间来构建，安装，运行你的应用程序和启动monkeyrunner仪器。确保设备的屏幕显示性能测试正在运行。</p>
+<p>为了使事情更容易，让我们继续，使用保存配置选项将<code>runLocalPerfTests</code> gradle任务添加到运行配置菜单，如图所示。</p>
+<p><img src="/img/17_01_14/026.png"></p>
+<p>你现在应该有一个运行配置<code>runLocalPerfTests</code>在你的gradle边栏，如下图所示：</p>
+<p><img src="/img/17_01_14/027.png"></p>
+<p>赞！！现在，您可以在Android Studio中连接到计算机的设备上运行性能测试，并且在对源代码进行更改时，应用和测试APK都会根据需要重新构建。您还在<code>testdata</code>目录中有Systrace <code>trace.html</code>文件以进行调试，但是目前您没有关于正在运行的测试的大量数据。让我们解决这个问题。</p>
+<h2 id="8-收集更多数据并添加性能约束"><a href="#8-收集更多数据并添加性能约束" class="headerlink" title="8.收集更多数据并添加性能约束"></a>8.收集更多数据并添加性能约束</h2><p>我们已经启用了Systrace和测试执行，但我们需要更多的信息。此外，由于我们现在通过MonkeyRunner运行测试，我们失去了测试成功/失败信息。让我们解决这个问题。</p>
+<h3 id="收集更多数据"><a href="#收集更多数据" class="headerlink" title="收集更多数据"></a>收集更多数据</h3><p>团队开发了一些我们可以使用的JUnit规则示例。这些规则在<code>com.google.android.perftesting.testrules</code>包中的<code>app/src/androidTest/java/</code>目录中可用。让我们将这些规则添加到现有测试中。</p>
+<p>导航到<code>app/src/androidTests</code>目录。打开<code>SimpleListActivityTest</code>类并取消注解<code>@Rule</code>注释的成员变量，其中类名以<code>Enable</code>开头，例如下面的行。同时解决导入错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Rule</span><br><span class="line">public EnableTestTracing mEnableTestTracing &#x3D; new EnableTestTracing();</span><br><span class="line">    </span><br><span class="line">@Rule</span><br><span class="line">public EnablePostTestDumpsys mEnablePostTestDumpsys &#x3D; new EnablePostTestDumpsys();</span><br><span class="line"></span><br><span class="line">@Rule</span><br><span class="line">public EnableLogcatDump mEnableLogcatDump &#x3D; new EnableLogcatDump();</span><br><span class="line"></span><br><span class="line">@Rule</span><br><span class="line">public EnableNetStatsDump mEnableNetStatsDump &#x3D; new EnableNetStatsDump();</span><br></pre></td></tr></table></figure>
+<p>这些规则中的每一个导致记录不同的数据集。</p>
+<ul>
+<li><code>EnableTestTracing</code>在每个测试之前和之后调用Trace＃<a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/os/Trace.html#beginSection(java.lang.String">beginSection</a>和<code>Trace＃endSection</code>方法。这允许您查看Systrace并查看每个测试运行时在调试期间为您提供更多上下文。</li>
+<li><code>EnablePostTestDumpsys</code>在每次测试后收集图形信息dumpsys输出。在Android Marshmallow和更大的设备上，这包括“Janky”百分比摘要。这个Jank百分比由现有的设置的<code>run_perf_test.py</code>脚本监控。当百分比高于配置的阈值时，脚本将发出警报。</li>
+<li><code>EnableLogcatDump</code>在运行测试之前重置设备上的Logcat缓冲区，然后在测试后提取缓冲区。这在研究回归失败或只是希望看到Logcat输出的测试时很有用。</li>
+<li><code>EnableNetStatsDump</code>转储历史网络信息。这在调试网络相关问题时尤其有用。例如，如果文件下载测试超时，您可能需要仔细检查网络是否不可用，然后再深入分析问题。</li>
+</ul>
+<p>现在取消注释<code>GlobalTimeout</code>规则以添加性能约束。此规则确保此类中的任何测试在超过指定的时间量时都会抛出错误。你会注意到<code>scrollFullList</code>测试方法在它的末尾有一个while循环。如果<code>ListView</code>代码的性能不足以允许某人在合理的时间内滚动整个列表，while循环和<code>GlobalTimeout</code>规则会导致失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Rule</span><br><span class="line">public Timeout globalTimeout&#x3D; new Timeout(</span><br><span class="line">SCROLL_TIME_IN_MILLIS + MAX_ADAPTER_VIEW_PROCESSING_TIME_IN_MILLIS, TimeUnit.MILLISECONDS);</span><br></pre></td></tr></table></figure>
+<p>现在导航到同一目录中的<code>TestListener</code>类。取消注释<code>testRunStarted</code>和<code>testRunFinished</code>方法的代码，解决导入构建错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void testRunStarted(Description description) throws Exception &#123;</span><br><span class="line">    Log.w(LOG_TAG, &quot;Test run started.&quot;);</span><br><span class="line">    &#x2F;&#x2F; Cleanup data from past test runs.</span><br><span class="line">    deleteExistingTestFilesInAppData();</span><br><span class="line">   deleteExistingTestFilesInExternalData();</span><br><span class="line">....</span><br><span class="line">@Override</span><br><span class="line">public void testRunFinished(Result result) throws Exception &#123;</span><br><span class="line">    Log.w(LOG_TAG, &quot;Test run finished.&quot;);</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>这将启用电池统计信息收集，测试失败日志记录，并且在测试完成后，此代码还将所有正在收集的日志文件移动到可访问的位置，在那里可以通过简单的adb命令从主机计算机拉出。</p>
+<h3 id="再次运行测试"><a href="#再次运行测试" class="headerlink" title="再次运行测试"></a>再次运行测试</h3><p>接下来，使用Android Studio窗口顶部的<code>runLocalPerfTests</code><strong>Run Configuration</strong>再次运行性能测试。</p>
+<p>您可能会注意到，monkeyrunner脚本已经标记更多的问题，因为更多的文件现在被拉到，因此，可以执行检查。导航到项目根目录中的<code>testdata</code>目录。你会发现相当多的信息现在被记录到目录结构类似于测试类包结构的目录。浏览这些文件以查看正在记录的信息。</p>
+<blockquote>
+<p><strong>重要：</strong>如果此时没有看到新文件，请转到下一步，解决性能问题，然后再次查找文件。</p>
+</blockquote>
+<p>在下一步中，我们将查看当前脚本的输出，并从线束的信息开始修复性能问题。</p>
+<h2 id="9-修复性能问题"><a href="#9-修复性能问题" class="headerlink" title="9.修复性能问题"></a>9.修复性能问题</h2><p>在上次性能测试运行中，您遇到了性能问题。让我们现在利用线束收集的信息来解决这些问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1) scrollFullList(com.google.android.perftesting.SimpleListActivityTest)</span><br><span class="line">Script: org.junit.runners.model.TestTimedOutException: test timed out after 2500 milliseconds</span><br><span class="line">Script:         at java.lang.Thread.sleep(Native Method)</span><br><span class="line">Script:         at java.lang.Thread.sleep(Thread.java:1031)</span><br><span class="line">Script:         at java.lang.Thread.sleep(Thread.java:985)</span><br><span class="line">Script:         at com.google.android.perftesting.SimpleListActivityTest.scrollFullList(SimpleListActivityTest.java:101)</span><br><span class="line">Script:         at java.lang.reflect.Method.invoke(Native Method)</span><br><span class="line">Script:         at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)</span><br><span class="line">Script:         at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)</span><br><span class="line">Script:         at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)</span><br><span class="line">Script:         at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)</span><br><span class="line">Script:         at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:298)</span><br><span class="line">Script:         at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:292)</span><br><span class="line">Script:         at java.util.concurrent.FutureTask.run(FutureTask.java:237)</span><br><span class="line">Script:         at java.lang.Thread.run(Thread.java:818)</span><br></pre></td></tr></table></figure>
+<p>此错误也记录在<code>testdata</code>目录的子目录中名为<code>test.failure.log</code>的文件中，该文件对应于测试类和方法名称。</p>
+<p>如果你打开<code>gfxinfo.dumpsys.log</code>文件，你会看到一行注明了JANK过量的存在（样本中下方约92％）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">** Graphics info for pid 31367 [com.google.android.perftesting] **</span><br><span class="line"></span><br><span class="line">Stats since: 19840518836088ns</span><br><span class="line">Total frames rendered: 323</span><br><span class="line">Janky frames: 296 (91.64%)</span><br><span class="line">90th percentile: 117ms</span><br><span class="line">95th percentile: 125ms</span><br><span class="line">99th percentile: 133ms</span><br><span class="line">Number Missed Vsync: 290</span><br><span class="line">Number High input latency: 0</span><br><span class="line">Number Slow UI thread: 295</span><br><span class="line">Number Slow bitmap uploads: 286</span><br><span class="line">Number Slow issue draw commands: 15</span><br></pre></td></tr></table></figure>
+<p>打开systrace并观察指示性能问题的警报数量。</p>
+<blockquote>
+<p><strong>重要提示：</strong> 在Android Studio终端窗口中键入<code>open testdata/trace.html</code>，以便在所选的Web浏览器中快速打开跟踪。</p>
+</blockquote>
+<p>Systrace警报清楚地指向<code>ListView</code>回收视图问题以及调用<code>getView()</code>的时间过长。要解决此问题，请打开<code>com.google.android.perftesting.contacts.ContactsArrayAdapter</code>类，并解决显示的lint错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LayoutInflater inflater &#x3D; LayoutInflater.from(getContext());</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; This line is wrong, we&#39;re inflating a new view always instead of only if it&#39;s null.</span><br><span class="line">&#x2F;&#x2F; For demonstration purposes, we will leave this here to show the resulting jank.</span><br><span class="line">convertView &#x3D; inflater.inflate(R.layout.item_contact, parent, false);</span><br></pre></td></tr></table></figure>
+<p>应该改为这样:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (convertView &#x3D;&#x3D; null) &#123;</span><br><span class="line">   LayoutInflater inflater &#x3D; LayoutInflater.from(getContext());</span><br><span class="line">   convertView &#x3D; inflater.inflate(R.layout.item_contact, parent, false);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再次运行perf测试，并在web浏览器中刷新<code>trace.html</code>文件。嗯…看起来像<code>getView()</code>仍然导致性能问题。看看位图代码在getView一点点你意识到它应该实际上使用的东西，有一个缓存加载位图。一个常见的选择是滑翔(Glide)。所以改变这段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Let&#39;s just create another bitmap when we need one. This makes no attempts to re-use</span><br><span class="line">&#x2F;&#x2F; bitmaps that were previously used in rendering past list view elements, causing a large</span><br><span class="line">&#x2F;&#x2F; amount of memory to be consumed as you scroll farther down the list.</span><br><span class="line">Bitmap bm &#x3D; BitmapFactory.decodeResource(convertView.getResources(), R.drawable.bbq);</span><br><span class="line">contactImage.setImageBitmap(bm);</span><br></pre></td></tr></table></figure>
+<p>变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(contactImage.getContext())</span><br><span class="line">       .load(R.drawable.bbq)</span><br><span class="line">       .fitCenter()</span><br><span class="line">       .into(contactImage);</span><br></pre></td></tr></table></figure>
+<p>再次运行perf测试，并在web浏览器中刷新<code>trace.html</code>文件。你可以继续优化，但你得到了一种方法。现在，您有一个可重复的方式标记问题，然后运行测试，以查看具体的更改是否有所作为。</p>
+<h2 id="10-总结"><a href="#10-总结" class="headerlink" title="10.总结"></a>10.总结</h2><p>恭喜！你已经完成了codelab。让我们再花几分钟来总结你学到的东西和一些关键的事情要记住。</p>
+<h3 id="我们所涵盖的"><a href="#我们所涵盖的" class="headerlink" title="我们所涵盖的"></a>我们所涵盖的</h3><ul>
+<li>如何构建一个可重复使用的测试工具，用于检测Android应用程序中的jank和性能问题，并且可以从Android Studio中进行管理</li>
+<li>如何使用MonkeyRunner自动化测试框架的大多数功能</li>
+<li>如何使用性能约束和JUnit规则注解测试</li>
+<li>如何在测试周期中以各种粒度从测试收集各种数据</li>
+</ul>
+<h3 id="需要记住的事情"><a href="#需要记住的事情" class="headerlink" title="需要记住的事情"></a>需要记住的事情</h3><ul>
+<li>必需是 Debuggable apk</li>
+<li>对于大多数数据的统计，需要Android Marshmallow设备</li>
+<li>使用项目定义的PerfTest注释来限制测试的范围</li>
+<li>Systrace当前设置为在示例中运行10秒，您可能需要延长此时间。</li>
+</ul>
+<h3 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h3><p>如果您想详细了解效果测试，请参阅Android开发者文档网站上的<a target="_blank" rel="noopener" href="https://developer.android.com/preview/testing/performance.html">测试展示效果</a>。</p>
+<p>如果您想了解更多关于Systrace的信息，请参阅<a target="_blank" rel="noopener" href="http://developer.android.com/tools/help/systrace.html">官方文档</a>。</p>
+<p>如果你对Espresso和UI测试更好奇，请查看这些<a target="_blank" rel="noopener" href="http://developer.android.com/training/testing/ui-testing/espresso-testing.html">官方文档</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/01/15/%E3%80%90Codelab%E3%80%91%E8%87%AA%E5%8A%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" data-id="ckkwc4366003kpas9e260e03b" data-title="【Codelab】自动性能测试" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/16/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC1%E7%AB%A0%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【Python3教程 第1章】基本概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/14/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%B5%8B%E8%AF%95%E6%80%A7%E8%83%BD%E5%B1%95%E7%A4%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【Android文档翻译】测试性能展示</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

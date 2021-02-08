@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第二周 (3)参数的计算分析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="正规方程(Normal Equation)视频地址 这一节我们要讲正规方程(Normal Equation)**。对于某些线性回归问题，用正规方程法求解参数$θ$的最优值更好。具体而言，到目前为止，我们一直在使用的线性回归的算法是梯度下降法，就是说，为了最小化代价函数$J(θ)$，我们通过多次迭代来计算梯度下降，来收敛到全局最小值。相反地，正规方程法提供了一种可以直接一次性求解$θ$的最优值的解法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第二周 (3)参数的计算分析">
+<meta property="og:url" content="http://example.com/2016/08/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(3)%E5%8F%82%E6%95%B0%E7%9A%84%E8%AE%A1%E7%AE%97%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="正规方程(Normal Equation)视频地址 这一节我们要讲正规方程(Normal Equation)**。对于某些线性回归问题，用正规方程法求解参数$θ$的最优值更好。具体而言，到目前为止，我们一直在使用的线性回归的算法是梯度下降法，就是说，为了最小化代价函数$J(θ)$，我们通过多次迭代来计算梯度下降，来收敛到全局最小值。相反地，正规方程法提供了一种可以直接一次性求解$θ$的最优值的解法">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_08_12/001.png">
+<meta property="og:image" content="http://example.com/img/16_08_12/002.png">
+<meta property="og:image" content="http://example.com/img/16_08_12/003.png">
+<meta property="og:image" content="http://example.com/img/16_08_12/004.png">
+<meta property="article:published_time" content="2016-08-12T10:58:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_08_12/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第二周 (3)参数的计算分析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/08/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(3)%E5%8F%82%E6%95%B0%E7%9A%84%E8%AE%A1%E7%AE%97%E5%88%86%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2016-08-12T10:58:00.000Z" itemprop="datePublished">2016-08-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第二周 (3)参数的计算分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="正规方程-Normal-Equation"><a href="#正规方程-Normal-Equation" class="headerlink" title="正规方程(Normal Equation)"></a>正规方程(Normal Equation)</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/2DKxQ/normal-equation">视频地址</a></p>
+<p>这一节我们要讲<strong>正规方程(Normal Equation)**。对于某些线性回归问题，用正规方程法求解参数$θ$的最优值更好。具体而言，到目前为止，我们一直在使用的线性回归的算法是</strong>梯度下降法<strong>，就是说，为了最小化代价函数$J(θ)$，我们通过多次迭代来计算梯度下降，来收敛到全局最小值。相反地，</strong>正规方程法提供了一种可以直接一次性求解$θ$的最优值的解法**。</p>
+<p>首先让我们先对这个算法有一个直观的理解，我们举一个例子来解释这个问题：</p>
+<p><img src="/img/16_08_12/001.png"></p>
+<p>我们假设有一个非常简单的代价函数$J(θ)$，它就是一个实数$θ$的函数，所以现在假设$θ$只是一个标量($θ$只有一行，它是一个数字，不是向量)。假设我们的代价函数$J$是这个实参数$θ$的二次函数，所以$J(θ)$看起来是这样的:</p>
+<p><img src="/img/16_08_12/002.png"></p>
+<p>那么如何最小化一个二次函数呢? 对于那些了解一点微积分的同学来说，你可能知道最小化的一个函数的方法是对它求导，并且将导数置零。这样你就可以求得使得$J(θ)$最小的$θ$值。</p>
+<p>在实际情况中，我们感兴趣的是$θ$为$n+1$维参数向量的情况，如下：</p>
+<p><img src="/img/16_08_12/003.png"></p>
+<p>我们如何最小化这个代价函数$J$?实际上微积分告诉我们一种方法: 对每个参数$θ$求$J$的偏导数，然后把它们全部置零。如果你这样做 并且求出$θ_{0}$，$θ_{1}$，一直到$θ_{n}$的值，这样就能得到能够最小化代价函数$J$的$θ$值。</p>
+<p><img src="/img/16_08_12/004.png"></p>
+<h3 id="正规方程法-实例"><a href="#正规方程法-实例" class="headerlink" title="正规方程法 实例"></a>正规方程法 实例</h3><p>举个实现正规方程法的例子：</p>
+<p>假如说我有$m=4$个训练样本，训练集如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>Size($feet^{2}$)</strong></th>
+<th align="center"><strong>Number of bedrooms</strong></th>
+<th align="center"><strong>Number of floors</strong></th>
+<th align="center"><strong>Age of home(years)</strong></th>
+<th align="center"><strong>Price($1000)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$x_{1}$</td>
+<td align="center">$x_{2}$</td>
+<td align="center">$x_{3}$</td>
+<td align="center">$x_{4}$</td>
+<td align="center">$y$</td>
+</tr>
+<tr>
+<td align="center">2104</td>
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">45</td>
+<td align="center">460</td>
+</tr>
+<tr>
+<td align="center">1416</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">40</td>
+<td align="center">232</td>
+</tr>
+<tr>
+<td align="center">1534</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">30</td>
+<td align="center">315</td>
+</tr>
+<tr>
+<td align="center">852</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">36</td>
+<td align="center">178</td>
+</tr>
+</tbody></table>
+<p>我们假设这4个训练样本就是我的所有数据，另外我所要做的是在我的训练集中加上一列对应额外特征变量的$x_{0}$(就是那个取值永远是1的)。</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"><strong>Size($feet^{2}$)</strong></th>
+<th align="center"><strong>Number of bedrooms</strong></th>
+<th align="center"><strong>Number of floors</strong></th>
+<th align="center"><strong>Age of home(years)</strong></th>
+<th align="center"><strong>Price($1000)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$x_{0}$</td>
+<td align="center">$x_{1}$</td>
+<td align="center">$x_{2}$</td>
+<td align="center">$x_{3}$</td>
+<td align="center">$x_{4}$</td>
+<td align="center">$y$</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">2104</td>
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">45</td>
+<td align="center">460</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1416</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">40</td>
+<td align="center">232</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1534</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">30</td>
+<td align="center">315</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">852</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">36</td>
+<td align="center">178</td>
+</tr>
+</tbody></table>
+<p>接下来我要做的是构建一个矩阵$X$，这个矩阵基本包含了训练样本的所有特征变量：</p>
+<p>$$<br>X =<br>\begin{bmatrix}<br>1 &amp; 2104 &amp; 5 &amp; 1 &amp; 45 \\<br>1 &amp; 1416 &amp; 3 &amp; 2 &amp; 40 \\<br>1 &amp; 1534 &amp; 3 &amp; 2 &amp; 30 \\<br>1 &amp; 852 &amp; 2 &amp; 1 &amp; 36<br>\end{bmatrix}<br>$$</p>
+<p>我要对$y$做类似的事情:</p>
+<p>$$<br>y =<br>\begin{bmatrix}<br>460 \\<br>232 \\<br>315 \\<br>178<br>\end{bmatrix}<br>$$</p>
+<p>最后，你可以通过下面这个方程来计算使得代价函数最小化的$θ$:</p>
+<p>$$<br>θ = (X^{T}X)^{-1}X^{T}y<br>$$</p>
+<p>这样就得到能够使得代价函数最小化的$θ$。</p>
+<p>让我把这个写成更加通用的形式，在之后的视频中我会仔细介绍这个方程，以防你不完全清楚要如何做。</p>
+<p>在一般情况下，假如我们有$m$个训练样本:</p>
+<p>$$<br>(x^{(1)},y^{(1)}),…,(x^{(m)},y^{(m)})<br>$$</p>
+<p>$n$个特征变量:</p>
+<p>$$<br>x^{(i)} =<br>\begin{bmatrix}<br>x_{0}^{(i)} \\<br>x_{1}^{(i)} \\<br>x_{2}^{(i)} \\<br>… \\<br>x_{n}^{(i)}<br>\end{bmatrix}<br>\in<br>\mathbb{R}^{n+1}<br>$$</p>
+<p>每一个训练样本$x^{(i)}$看起来像一个$n+1$维的特征向量。</p>
+<p>我要构建矩阵$X$，也被称为**设计矩阵(design matrix)**。如下所示：</p>
+<p>$$<br>X =<br>\begin{bmatrix}<br>(x^{(1)})^{T} \\<br>(x^{(2)})^{T} \\<br>(x^{(3)})^{T} \\<br>… \\<br>(x^{(m)})^{T} \\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>x_{0}^{(1)} &amp; x_{1}^{(1)} &amp; x_{2}^{(1)} &amp; … &amp;x_{n}^{(1)} \\<br>x_{0}^{(2)} &amp; x_{1}^{(2)} &amp; x_{2}^{(2)} &amp; … &amp;x_{n}^{(2)} \\<br>x_{0}^{(3)} &amp; x_{1}^{(3)} &amp; x_{2}^{(3)} &amp; … &amp;x_{n}^{(3)} \\<br>… \\<br>x_{0}^{(m)} &amp; x_{1}^{(m)} &amp; x_{2}^{(m)} &amp; … &amp;x_{n}^{(m)} \\<br>\end{bmatrix}<br>$$</p>
+<p>矩阵$X$是一个$m * (n+1)$维矩阵。</p>
+<p>举个具体的例子：假如我只有一个特征变量(就是说除了$x_{0}$之外只有一个特征变量，而$x_{0}$始终为1)，比如说房屋的大小：</p>
+<p>$$<br>x^{(i)} =<br>\begin{bmatrix}<br>1 \\<br>x^{(i)}_{1}<br>\end{bmatrix}<br>$$</p>
+<p>那么我的设计矩阵$X$会是这样：</p>
+<p>$$<br>X =<br>\begin{bmatrix}<br>1 &amp; x^{(1)}_{1}\\<br>1 &amp; x^{(1)}_{2}\\<br>…<br>1 &amp; x^{(1)}_{mysql}\\<br>\end{bmatrix}<br>$$</p>
+<p>向量$y$代表所有训练集中正确的房屋价格，是这样的：</p>
+<p>$$<br>y =<br>\begin{bmatrix}<br>y^{1} \\<br>y^{2} \\<br>…<br>y^{m} \\<br>\end{bmatrix}<br>$$</p>
+<p>最后，构建完矩阵$X$和向量$y$，我们就可以通过计算：</p>
+<p>$$<br>θ = (X^{T}X)^{-1}X^{T}y<br>$$</p>
+<p>来得到$θ$。</p>
+<blockquote>
+<p>这就是通过正规方程来求解最优的$θ$值的过程，在数学上可以证明这个式子会给出最优的$θ$值，可以最小化代价函数$J(θ)$，但在这里我并不打算给出证明过程。</p>
+</blockquote>
+<h3 id="使用Octave来执行正规方程"><a href="#使用Octave来执行正规方程" class="headerlink" title="使用Octave来执行正规方程"></a>使用Octave来执行正规方程</h3><p>$$<br>θ = (X^{T}X)^{-1}X^{T}y<br>$$</p>
+<p>这个方程在Octave中的表达方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pinv(X&#96;*X)*X&#96;*y</span><br></pre></td></tr></table></figure>
+<p>其中X`代表X的转置，pinv是用来计算矩阵的逆的函数。</p>
+<h3 id="正规方程不需要对特征变量归一化"><a href="#正规方程不需要对特征变量归一化" class="headerlink" title="正规方程不需要对特征变量归一化"></a>正规方程不需要对特征变量归一化</h3><p>在之前视频中我提到<strong>特征变量归一化</strong>和让特征变量在相似的范围内的想法将所有的值归一化在类似范围内。<strong>如果你使用正规方程法 那么就不需要归一化特征变量，实际上这是没问题的</strong>。</p>
+<p>例如：$x_{1}$在0到1的区间，$x_{2}$在0到1000的区间，$x_{3}$在0到$10^{-5}$的区间，如果使用正规方程法，不需要做特征变量归一化也是没有问题的，<strong>但如果你使用梯度下降法，特征变量归一化就很重要</strong>。</p>
+<h3 id="梯度下降法VS正规方程"><a href="#梯度下降法VS正规方程" class="headerlink" title="梯度下降法VS正规方程"></a>梯度下降法VS正规方程</h3><p>最后你何时应该使用梯度下降法，而何时应该使用正规方程法呢？这里列举了一些它们的优点和缺点：</p>
+<p>假如你有$m$个训练样本和$n$个特征变量 :</p>
+<table>
+<thead>
+<tr>
+<th align="center">梯度下降算法</th>
+<th align="center">正规方程法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">需要选择一个学习速率$α$</td>
+<td align="center">不需要选择一个学习速率$α$</td>
+</tr>
+<tr>
+<td align="center">需要多次迭代</td>
+<td align="center">不需要多次迭代</td>
+</tr>
+<tr>
+<td align="center">当$n$很大时也能良好运行</td>
+<td align="center">需要计算$(X^{T}X)^{-1}$</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">当$n$很大时，运行会很慢(因为复杂度为:$O(n^3)$)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>那么在什么情况下会考虑使用梯度下降算法呢？ 通常$n&lt;10000$的情况下，建议使用正规方程法，当$n&gt;10000$时，建议使用梯度下降法。</p>
+</blockquote>
+<p>随着我们要讲的学习算法越来越复杂，例如当我们讲到分类算法：像逻辑回归算法，我们会看到实际上对于那些问题，并不能使用正规方程法。对于那些更复杂的学习算法，我们将不得不仍然使用梯度下降法。因此，梯度下降法是一个非常有用的算法，可以用在有大量特征变量的线性回归问题，因为标准方程法不适合用在它们上。但对于特征变量比较少的情况下，正规方程法是一个比梯度下降法更快的替代算法。所以这两算法都是值得学习的。</p>
+<h2 id="正规方程法的不可逆性"><a href="#正规方程法的不可逆性" class="headerlink" title="*正规方程法的不可逆性"></a>*正规方程法的不可逆性</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/zSiE6/normal-equation-noninvertibility">视频地址</a></p>
+<p>在这段视频中我想谈谈正规方程(normal equation)以及它们的不可逆性。由于这是一种较为深入的概念，并且总有人问我有关这方面的问题，因此我想在这里来讨论它。由于概念较为深入，所以对这段可选材料大家放轻松吧，也许你可能会深入地探索下去并且会觉得理解以后会非常有用，但即使你没有理解正规方程和线性回归的关系也没有关系。</p>
+<p>首先，我们知道，并不是所有的矩阵都是可逆的，不可逆的矩阵被称为<strong>奇异矩阵</strong>或<strong>退化矩阵</strong></p>
+<p>那么当计算</p>
+<p>$$<br>θ = (X^{T}X)^{-1}X^{T}y<br>$$</p>
+<p>时，当$X^{T}X$不可逆时，怎么办呢？</p>
+<p>问题的关键在于实际上$X^{T}X$不可逆的情况很少发生。</p>
+<p>在Octave里，如果你用它来实现θ的计算 你将会得到一个正常的解 </p>
+<blockquote>
+<p>在Octave里有两个函数可以求解矩阵的逆，一个是pinv()另一个是inv()。这两者之间的差异是些许计算过程上的，一个是所谓的伪逆，另一个被称为逆。使用pinv()函数可以展现数学上的过程，它可以在即便矩阵$X^{T}X$是不可逆的的情况下，计算出$θ$的值。另外在计算法方面，inv()引入了先进的数值计算的概念。</p>
+</blockquote>
+<p>下面来看看$X^{T}X$不可逆的情况的处理：</p>
+<p>关于矩阵$X^{T}X$的不可逆的问题，如果你懂一点线性代数或许你会感兴趣。我不会从数学的角度来证明它，但如果矩阵$X^{T}X$结果是不可逆的通常有两种最常见的原因：</p>
+<ul>
+<li><p>第一个原因是，多余的特征（线性依赖）：</p>
+<p>  例如：</p>
+<p>  $$<br>  x_{1} = size\ in\ feet^{2}<br>  $$</p>
+<p>  $$<br>  x_{2} = size\ in\ m^{2}<br>  $$</p>
+<p>  在预测住房价格时,如果$x_{1}$是以英尺为尺寸规格计算的房子，$x_{2}$是以平方米为尺寸规格计算的房子，同时你也知道1米等于3.28英尺(四舍五入到两位小数)。这样你的这两个特征值将始终满足约束$x_{1}=(3.28)^{2}$x_{2}$，这种矩阵$X^{T}X$是不可逆的。</p>
+</li>
+<li><p>第二个原因是，过多的特征($m\leq{n}$)：</p>
+<p>  在你想用大量的特征值尝试实践你的学习算法的时候，可能会导致矩阵$X^{T}X$的结果是不可逆的。具体地说，在$m\leq{n}$的时候不可逆。</p>
+<p>  例如有$m=10$的训练样本，也有$n=100$的特征数量，仅仅通过10各训练样本来适应这100个特征向量，数据还是有些少。稍后我们将看到，如何使用小数据样本以得到这100或101个参数。通常我们会使用一种叫做<strong>正则化</strong>的线性代数方法通过删除某些特征，或者是使用某些技术来解决当$m\leq{n}$小的时候的问题，这也是在本节课后面要讲到的内容。即使你有一个相对较小的训练集，也可使用很多的特征来找到很多合适的参数。</p>
+<p>  有关正规化的内容将是本节之后课程的话题，总之当你发现的矩阵$X^{T}X$的结果是奇异矩阵(不可逆)，建议你：</p>
+<ul>
+<li><p>首先看特征值里是否有一些多余的特征，例如$x_{1}$和$x_{2}$是否线性相关，同时当有一些多余的特征时，可以删除这两个重复特征里的其中一个，无须两个特征同时保留,直到他们不再是多余的为止。</p>
+</li>
+<li><p>其次如果特征里没有多余的，我会检查是否有过多的特征，如果特征数量实在太多，我会删除些用较少的特征来反映尽可能多内容</p>
+<p>否则我会考虑使用正规化方法，这也是我们将要谈论的话题。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>总之出现不可逆矩阵的情况极少发生，所以在大多数实现线性回归中，出现不可逆的问题不应该过多的关注。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/08/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(3)%E5%8F%82%E6%95%B0%E7%9A%84%E8%AE%A1%E7%AE%97%E5%88%86%E6%9E%90/" data-id="ckkwc438d0096pas9dpua8soa" data-title="斯坦福机器学习课程 第二周 (3)参数的计算分析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/13/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(4)Octave:Matlab%20%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          斯坦福机器学习课程 第二周 (4)Octave/Matlab 使用说明
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/29/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(2)%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">斯坦福机器学习课程 第二周 (2)多元线性回归分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

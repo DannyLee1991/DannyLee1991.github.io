@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Docker入门Part6-发布你的app | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前提条件 安装Docker 1.13或更高的版本。 按照Part3部分，获取Docker Compos。 按照Part4部分，获取Docker Machine。 阅读Part1。 学习Part2中的如何创建容器。 确保您的镜像作为一个发布容器在运行。运行这条插入了username、repo和tag信息的命令:docker run -p 80:80 username&#x2F;repo:tag，然后访问htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker入门Part6-发布你的app">
+<meta property="og:url" content="http://example.com/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前提条件 安装Docker 1.13或更高的版本。 按照Part3部分，获取Docker Compos。 按照Part4部分，获取Docker Machine。 阅读Part1。 学习Part2中的如何创建容器。 确保您的镜像作为一个发布容器在运行。运行这条插入了username、repo和tag信息的命令:docker run -p 80:80 username&#x2F;repo:tag，然后访问htt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/18_05_02/004.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/005.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/006.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/007.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/008.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/009.png">
+<meta property="og:image" content="http://example.com/img/18_05_02/010.png">
+<meta property="article:published_time" content="2018-05-03T14:46:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/18_05_02/004.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Docker入门Part6-发布你的app" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/" class="article-date">
+  <time class="dt-published" datetime="2018-05-03T14:46:00.000Z" itemprop="datePublished">2018-05-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>►<a class="article-category-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Docker入门Part6-发布你的app
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>安装<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">Docker 1.13或更高的版本</a>。</li>
+<li>按照Part3部分，获取<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/overview/">Docker Compos</a>。</li>
+<li>按照Part4部分，获取<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/overview/">Docker Machine</a>。</li>
+<li>阅读Part1。</li>
+<li>学习Part2中的如何创建容器。</li>
+<li>确保您的镜像作为一个发布容器在运行。运行这条插入了<code>username</code>、<code>repo</code>和<code>tag</code>信息的命令:<code>docker run -p 80:80 username/repo:tag</code>，然后访问<code>http://localhost/</code>。</li>
+<li>获取到Part5中的最终版本的<code>compose.yml</code>文件。</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>您一直在为整个教程编辑相同的Compose文件。那么，我们有一个好消息，这个Compose文件在生产环境中的效果与你的计算机上的效果是相同的。在这里，我们通过一些选项来运行Docker化的程序。</p>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><h3 id="Docker社区版（云服务提供者）"><a href="#Docker社区版（云服务提供者）" class="headerlink" title="Docker社区版（云服务提供者）"></a>Docker社区版（云服务提供者）</h3><p>如果您可以在生产环境中使用Docker社区版，那么你可以使用Docker Cloud来帮助您管理应用程序，例如Amazon Web Services，DigitalOcean，和Microsoft Azure等常用的服务提供商。</p>
+<p>设置和部署：</p>
+<ul>
+<li>将Docker Cloud与您的首选提供商连接，授予Docker Cloud权限，以便为您自动配置以及为您”Docker化”VM。</li>
+<li>使用Docker Cloud创建您的计算资源并创建您的swarm。</li>
+<li>部署您的应用。</li>
+</ul>
+<blockquote>
+<p>注意：我们没有链接到Docker Cloud文档。请务必在完成每个步骤后回到此页面。</p>
+</blockquote>
+<h4 id="连接Docker-Cloud"><a href="#连接Docker-Cloud" class="headerlink" title="连接Docker Cloud"></a>连接Docker Cloud</h4><p>你可以在<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/">标准模式</a>或<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/">swarm模式</a>下运行Docker Cloud。</p>
+<p>如果你正在标准模式下运行Docker Cloud，请按照以下说明将您的服务提供商链接到Docker Cloud。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/link-aws-swarm/">Amazon Web Services 设置说明</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/link-do/">DigitalOcean 设置说明</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/link-azure/">Microsoft Azure 设置说明</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/link-packet/">Packet 设置说明</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/link-softlayer/">SoftLayer 设置说明</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/byoh/">使用Docker Cloud 代理来访问自己的主机</a>。</li>
+</ul>
+<p>如果您在Swarm模式下运行（推荐用于Amazon Web Services或Microsoft Azure），那么请跳至下一节关于如何<a href="#%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84swarm">创建swarm</a>的部分。</p>
+<h3 id="创建你的swarm"><a href="#创建你的swarm" class="headerlink" title="创建你的swarm"></a>创建你的swarm</h3><p>准备好创建一个swarm了吗？</p>
+<ul>
+<li>如果你在使用Amazon Web Services(AWS)，那么你可以<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/create-cloud-swarm-aws/">在AWS上自动地创建一个swarm</a>。</li>
+<li>如果你在使用Microsoft Azure，那么你可以<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/create-cloud-swarm-azure/">在Azure上自动地创建一个swarm</a>。</li>
+<li>否则，在Docker Cloud UI界面<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/getting-started/your_first_node/">创建你的节点</a>，然后运行<code>docker swarm init</code>并执行在Part4部分所学的<code>docker swarm join</code>命令。最后，通过点击屏幕顶部的开关<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/using-swarm-mode/">启用swarm模式</a>，并<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/register-swarms/">注册你刚刚创建的swarm</a>。</li>
+</ul>
+<blockquote>
+<p>注意：如果您<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/infrastructure/byoh/">使用Docker云代理来自带主机</a>，则此提供程序不支持swarm模式。您可以使用Docker Cloud<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/register-swarms/">注册您自己的现有的swarm</a>。</p>
+</blockquote>
+<h3 id="在云服务平台上部署你的应用程序"><a href="#在云服务平台上部署你的应用程序" class="headerlink" title="在云服务平台上部署你的应用程序"></a>在云服务平台上部署你的应用程序</h3><ul>
+<li><p>1.<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/connect-to-swarm/">通过Docker Cloud连接到你自己的swarm</a>。有几种不同的连接方式：</p>
+<ul>
+<li><p>从Swarm模式的Docker Cloud Web界面中，选择页面顶部的Swarms，单击要连接的swarm，然后将给定的命令复制粘贴到命令行终端中。</p>
+<p><img src="/img/18_05_02/004.png"></p>
+<p>或者。。。</p>
+</li>
+<li><p>在Docker for Mac或Docker for Windows上，您可以<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/cloud-swarm/connect-to-swarm/#use-docker-for-mac-or-windows-edge-to-connect-to-swarms">通过桌面应用菜单直接连接到swarm</a>。</p>
+<p><img src="/img/18_05_02/005.png"></p>
+<p>无论哪种方式，都将打开一个终端，其上下文是本地计算机，但其Docker命令会路由到云服务提供商上运行的swarm。您可以直接访问本地文件系统和远程swarm，从而启用纯粹的<code>docker</code>命令。</p>
+</li>
+</ul>
+</li>
+<li><p>2.运行<code>docker stack deploy -c docker-compose.yml getstartedlab</code>在云托管swarm上部署应用程序。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br><span class="line">	</span><br><span class="line">Creating network getstartedlab_webnet</span><br><span class="line">Creating service getstartedlab_web</span><br><span class="line">Creating service getstartedlab_visualizer</span><br><span class="line">Creating service getstartedlab_redis</span><br></pre></td></tr></table></figure>
+<p>  您的应用现在运行在了云服务平台上了。</p>
+</li>
+</ul>
+<p><strong>运行一些swarm命令来验证部署：</strong></p>
+<p>你可以使用swarm命令行，就像你之前做的那样，浏览并管理你的swarm。这里有一些你比较熟悉的例子：</p>
+<ul>
+<li>使用<code>docker node ls</code>列出节点。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[getstartedlab] ~ $ docker node ls</span><br><span class="line">ID                            HOSTNAME                                      STATUS              AVAILABILITY        MANAGER STATUS</span><br><span class="line">9442yi1zie2l34lj01frj3lsn     ip-172-31-5-208.us-west-1.compute.internal    Ready               Active              </span><br><span class="line">jr02vg153pfx6jr0j66624e8a     ip-172-31-6-237.us-west-1.compute.internal    Ready               Active              </span><br><span class="line">thpgwmoz3qefdvfzp7d9wzfvi     ip-172-31-18-121.us-west-1.compute.internal   Ready               Active              </span><br><span class="line">n2bsny0r2b8fey6013kwnom3m *   ip-172-31-20-217.us-west-1.compute.internal   Ready               Active              Leader</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>docker service ls</code>列出服务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[getstartedlab] ~&#x2F;sandbox&#x2F;getstart $ docker service ls</span><br><span class="line">ID                  NAME                       MODE                REPLICAS            IMAGE                             PORTS</span><br><span class="line">x3jyx6uukog9        dockercloud-server-proxy   global              1&#x2F;1                 dockercloud&#x2F;server-proxy          *:2376-&gt;2376&#x2F;tcp</span><br><span class="line">ioipby1vcxzm        getstartedlab_redis        replicated          0&#x2F;1                 redis:latest                      *:6379-&gt;6379&#x2F;tcp</span><br><span class="line">u5cxv7ppv5o0        getstartedlab_visualizer   replicated          0&#x2F;1                 dockersamples&#x2F;visualizer:stable   *:8080-&gt;8080&#x2F;tcp</span><br><span class="line">vy7n2piyqrtr        getstartedlab_web          replicated          5&#x2F;5                 sam&#x2F;getstarted:part6    *:80-&gt;80&#x2F;tcp</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>docker service ps &lt;service&gt;</code>查看service的任务列表。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[getstartedlab] ~&#x2F;sandbox&#x2F;getstart $ docker service ps vy7n2piyqrtr</span><br><span class="line">ID                  NAME                  IMAGE                            NODE                                          DESIRED STATE       CURRENT STATE            ERROR               PORTS</span><br><span class="line">qrcd4a9lvjel        getstartedlab_web.1   sam&#x2F;getstarted:part6   ip-172-31-5-208.us-west-1.compute.internal    Running             Running 20 seconds ago                       </span><br><span class="line">sknya8t4m51u        getstartedlab_web.2   sam&#x2F;getstarted:part6   ip-172-31-6-237.us-west-1.compute.internal    Running             Running 17 seconds ago                       </span><br><span class="line">ia730lfnrslg        getstartedlab_web.3   sam&#x2F;getstarted:part6   ip-172-31-20-217.us-west-1.compute.internal   Running             Running 21 seconds ago                       </span><br><span class="line">1edaa97h9u4k        getstartedlab_web.4   sam&#x2F;getstarted:part6   ip-172-31-18-121.us-west-1.compute.internal   Running             Running 21 seconds ago                       </span><br><span class="line">uh64ez6ahuew        getstartedlab_web.5   sam&#x2F;getstarted:part6   ip-172-31-18-121.us-west-1.compute.internal   Running             Running 22 seconds ago        </span><br></pre></td></tr></table></figure>
+<p><strong>在云供应商机器上开放服务端口</strong></p>
+<p>此时，您的应用作为一个swarm部署在您的云提供商服务器上，正如刚刚运行的<code>docker</code>命令所证明的那样。但是，您仍然需要在云服务器上打开端口，以便：</p>
+<ul>
+<li>允许在工作节点上的<code>redis</code>服务和<code>web</code>服务之间进行通信</li>
+<li>允许入站流量通过worker节点上的<code>web</code>服务，以便可以在浏览器访问Hello World和Visualizer。</li>
+<li>允许运行<code>manager</code>的服务器上的入站SSH流量（这可能已在您的云提供商上设置）</li>
+</ul>
+<p>这些是您需要为每项服务公开的端口：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Service</th>
+<th align="left">类型</th>
+<th align="left">协议</th>
+<th align="left">端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>web</code></td>
+<td align="left">HTTP</td>
+<td align="left">TCP</td>
+<td align="left">80</td>
+</tr>
+<tr>
+<td align="left"><code>visualizer</code></td>
+<td align="left">HTTP</td>
+<td align="left">TCP</td>
+<td align="left">8080</td>
+</tr>
+<tr>
+<td align="left"><code>redis</code></td>
+<td align="left">TCP</td>
+<td align="left">TCP</td>
+<td align="left">6379</td>
+</tr>
+</tbody></table>
+<p>具体的做法取决于云服务平台。</p>
+<p>我们以Amazon Web Services（AWS）为例。</p>
+<blockquote>
+<p><strong>redis如何持久化数据？</strong></p>
+<p>为了使<code>redis</code>服务正常工作，在运行<code>docker stack deploy</code>之前，需要<code>ssh</code>进入manager运行的云服务器，并在<code>/home/docker/</code>中创建<code>data/</code>目录。另一种选择是将<code>docker-stack.yml</code>中的数据路径更改为manager服务器上已存在的一个路径。此示例不包含此步骤，因此示例输出中的<code>redis</code>服务未启动。</p>
+</blockquote>
+<p><strong>示例：AWS</strong></p>
+<ul>
+<li>1.登录<a target="_blank" rel="noopener" href="https://aws.amazon.com/">AWS控制台</a>，转到EC2仪表板，然后单击进入<strong>Running Instances</strong>查看节点。</li>
+<li>2.在左侧的按钮，进入Network &amp; Security &gt; <strong>Security Groups</strong>。  请参阅<code>getstartedlab-Manager-&lt;xxx&gt;</code>, <code>getstartedlab-Nodes-&lt;xxx&gt;</code>, 和 <code>getstartedlab-SwarmWide-&lt;xxx&gt;</code>的与swarm相关的安全组。</li>
+<li>3.为swarm选择“节点”安全组。组名是这样的：<code>getstartedlab-NodeVpcSG-9HV9SMHDZT8C</code>。</li>
+<li>4.为<code>web</code>，<code>visualizer</code>和<code>redis</code>服务添加入站规则，为每个服务设置类型，协议和端口（如上表所示），然后单击保存以应用规则。</li>
+</ul>
+<p><img src="/img/18_05_02/006.png"></p>
+<blockquote>
+<p>提示：当你保存新的规则时，会为IPv4和IPv6地址自动创建HTTP和TCP端口。</p>
+</blockquote>
+<p><img src="/img/18_05_02/007.png"></p>
+<ul>
+<li>5.进入<strong>Running Instances</strong>列表，获取其中一个worker的公共DNS名称，并将其粘贴到浏览器地址栏中。</li>
+</ul>
+<p><img src="/img/18_05_02/008.png"></p>
+<p>就像本教程的前几部分一样，Hello World应用程序显示在端口<code>80</code>上，而Visualizer显示在端口<code>8080</code>上。</p>
+<p><img src="/img/18_05_02/009.png"></p>
+<p><img src="/img/18_05_02/010.png"></p>
+<h3 id="迭代和清理"><a href="#迭代和清理" class="headerlink" title="迭代和清理"></a>迭代和清理</h3><p>从这里你可以完成你在教程前面部分学到的所有知识。</p>
+<ul>
+<li>通过修改<code>docker-compose.yml</code>文件并使用命令<code>docker stack deploy</code>重新发布来扩展你的应用程序。</li>
+<li>通过编辑代码更改应用程序行为，然后重新构建并推送新镜像。（要做到这一点，请按照之前用于<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#build-the-app">构建应用程序</a>和<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#publish-the-image">发布镜像</a>的相同步骤）。</li>
+<li>您可以使用<code>docker stack rm</code>命令来拆卸堆栈。例如：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
+<p>与在本地Docker机器虚拟机上运行swarm的场景不同，不管您是否关闭本地主机，您的swarm和部署在其上的任何应用程序都将继续在云服务器上运行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/" data-id="ckkwc434w000epas9d7uw5syb" data-title="Docker入门Part6-发布你的app" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          NumPy入门教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/02/Docker%E5%85%A5%E9%97%A8Part5-%E5%A0%86%E6%A0%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker入门Part5-堆栈</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

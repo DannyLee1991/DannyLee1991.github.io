@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HelloDjango!--Django开发极速入门 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="About Django **Django**是一个开源的python web应用框架，最初是被开发来用于管理劳伦斯出版集团旗下的一些以新闻内容为主的网站，即是CMS（内容管理系统）软件。于2005年7月在BSD许可证下发布。 截至目前，Django的最新版本是1.9.1。Django的名字来源于上世纪五十年代的一位吉普赛吉他手的名字Django Reinhardt，其中‘d’是不发音的，为此dj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HelloDjango!--Django开发极速入门">
+<meta property="og:url" content="http://example.com/2016/01/12/HelloDjango!/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="About Django **Django**是一个开源的python web应用框架，最初是被开发来用于管理劳伦斯出版集团旗下的一些以新闻内容为主的网站，即是CMS（内容管理系统）软件。于2005年7月在BSD许可证下发布。 截至目前，Django的最新版本是1.9.1。Django的名字来源于上世纪五十年代的一位吉普赛吉他手的名字Django Reinhardt，其中‘d’是不发音的，为此dj">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/django_01_01.png">
+<meta property="og:image" content="http://example.com/img/django_01_02.png">
+<meta property="og:image" content="http://example.com/img/django_01_03.png">
+<meta property="og:image" content="http://example.com/img/django_01_04.png">
+<meta property="og:image" content="http://example.com/img/django_01_05.png">
+<meta property="og:image" content="http://example.com/img/django_01_06.png">
+<meta property="og:image" content="http://example.com/img/django_01_07.png">
+<meta property="article:published_time" content="2016-01-12T17:26:55.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/django_01_01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-HelloDjango!" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/12/HelloDjango!/" class="article-date">
+  <time class="dt-published" datetime="2016-01-12T17:26:55.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/django/">django</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      HelloDjango!--Django开发极速入门
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="About-Django"><a href="#About-Django" class="headerlink" title="About Django"></a>About Django</h2><blockquote>
+<p>**<a target="_blank" rel="noopener" href="https://www.djangoproject.com/">Django</a>**是一个开源的python web应用框架，最初是被开发来用于管理劳伦斯出版集团旗下的一些以新闻内容为主的网站，即是CMS（内容管理系统）软件。于2005年7月在BSD许可证下发布。</p>
+<p>截至目前，Django的最新版本是1.9.1。Django的名字来源于上世纪五十年代的一位吉普赛吉他手的名字Django Reinhardt，其中‘d’是不发音的，为此django官方还录制了一个<a target="_blank" rel="noopener" href="http://red-bean.com/~adrian/django_pronunciation.mp3">音频</a>来更正大家的读音。</p>
+</blockquote>
+<h3 id="Django的理念"><a href="#Django的理念" class="headerlink" title="Django的理念"></a>Django的理念</h3><p>django是一个高级的python web框架，鼓励开发人员快速开发出<strong>干净务实</strong>的设计。由于是由有经验的web开发者创建的，所以它避免了很多web开发的麻烦。</p>
+<p>可以使得开发人员更加专注的写应用程序而不需要重新造轮子。而且django是免费开源的。</p>
+<p><strong>三个特点：</strong></p>
+<ul>
+<li>快速：帮助开发人员快速将想法变成现实</li>
+<li>安全：可以帮助开发人员避免很多常见的安全方面的问题</li>
+<li>可伸缩性：一些很复杂繁琐的web项目也可以由django来构建</li>
+</ul>
+<h3 id="都有谁用过Django呢？"><a href="#都有谁用过Django呢？" class="headerlink" title="都有谁用过Django呢？"></a>都有谁用过Django呢？</h3><p>Disqus, Instagram, Pinterest以及Mozilla 都已经使用Django很多年了，而且Django目前已经可以承受每秒最高5万的访问量。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>在配置好python2.7运行环境之后，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Django&#x3D;&#x3D;1.9.1</span><br></pre></td></tr></table></figure>
+<p>即可自动下载并安装Django，如果提示权限不足，可以尝试<code>sudo pip install Django==1.9.1</code>。</p>
+<p>如果选择通过<a target="_blank" rel="noopener" href="https://www.djangoproject.com/download/1.9.1/tarball/">下载zip包</a>安装，下载成功后，解压zip包，命令行进入到Django-1.9.1目录下，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+<h2 id="创建第一个django项目"><a href="#创建第一个django项目" class="headerlink" title="创建第一个django项目"></a>创建第一个django项目</h2><p>命令行执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject mysite</span><br></pre></td></tr></table></figure>
+<p>创建mysite项目，<code>cd</code> 进入到mysite，我们可以看到生成了如下几个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysite&#x2F;</span><br><span class="line">    manage.py			＃这是一个与django交互的命令行工具</span><br><span class="line">    mysite&#x2F;</span><br><span class="line">        __init__.py</span><br><span class="line">        settings.py		＃配置设置</span><br><span class="line">        urls.py			＃声明一系列django用来处理分发的url</span><br><span class="line">        wsgi.py			＃PythonWeb服务器网关接口，相当于一种协议，使得python的web应用可以部署到所有遵循这个协议点服务器上。用于部署django项目的</span><br></pre></td></tr></table></figure>
+<p>在这里，我们执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp polls</span><br></pre></td></tr></table></figure>
+<p>来创建一个名叫polls的app。</p>
+<p>我们会发现，在mysite下会多产生一个polls的目录，这个目录的结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">polls&#x2F;</span><br><span class="line">    __init__.py</span><br><span class="line">    admin.py</span><br><span class="line">    apps.py</span><br><span class="line">    migrations&#x2F;</span><br><span class="line">        __init__.py</span><br><span class="line">    models.py 		#定义moudle</span><br><span class="line">    tests.py</span><br><span class="line">    views.py 		＃定义view</span><br></pre></td></tr></table></figure>
+<h3 id="配置url，让我们的项目run起来"><a href="#配置url，让我们的项目run起来" class="headerlink" title="配置url，让我们的项目run起来"></a>配置url，让我们的项目run起来</h3><p>django通过urls.py文件作为路由文件，将获取到的url通过正则匹配去分发到各个app下的urls.py，然后再由app内的urls.py通过正则匹配分发到各个view层中，并执行相关方法。</p>
+<p>这里我们分别配置我们主项目和子项目中的urls.py文件：</p>
+<p>mysite/urls.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import include</span><br><span class="line">	url(r&#39;^polls&#x2F;&#39;, include(&#39;polls.urls&#39;)), </span><br></pre></td></tr></table></figure>
+<p>polls/urls.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url</span><br><span class="line"></span><br><span class="line">from . import views</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">    url(r&#39;^$&#39;, views.index, name&#x3D;&#39;index&#39;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>可以看到子项目中的url指向了views中的index方法，那么我们把views的index进行完善：</p>
+<p>polls/views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    return HttpResponse(&quot;Hello Django&quot;)</span><br></pre></td></tr></table></figure>
+<p>这个时候我们在命令行中输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>把项目跑起来之后，在浏览器输入：<a target="_blank" rel="noopener" href="http://localhost:8000/polls/">http://localhost:8000/polls/</a> 就可以看到以下输出结果了。</p>
+<p><img src="/img/django_01_01.png" alt="Hello Django"></p>
+<h3 id="定义models，创建数据库"><a href="#定义models，创建数据库" class="headerlink" title="定义models，创建数据库"></a>定义models，创建数据库</h3><p>django遵循DRY原则（Don’t repeat yourself），其实道理很简单，避免数据冗余，它认为冗余的就是坏的。<br>所以django中定义的每一个model，都应该是单一的，明确的，包含了所有必要信息的。<br>这样做的目的就是，你在一处定义好model，在任何其他的地方，就可以通过这个model来获取到由他派生出的信息。</p>
+<p>修改models.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Question</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">    question_text = models.CharField(max_length=<span class="number">200</span>)</span><br><span class="line">    pub_date = models.DateTimeField(<span class="string">&#x27;date published&#x27;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">#当前model的字符串表示</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.question_text</span><br><span class="line"></span><br><span class="line">	<span class="comment">#判断这条Question是否是当天发出的</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">was_published_recently</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.pub_date &gt;= timezone.now() - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Choice</span>(<span class="params">models.Model</span>):</span></span><br><span class="line">    question = models.ForeignKey(Question, on_delete=models.CASCADE)</span><br><span class="line">    choice_text = models.CharField(max_length=<span class="number">200</span>)</span><br><span class="line">    votes = models.IntegerField(default=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.choice_text</span><br></pre></td></tr></table></figure>
+<p>mysite下的settings.py:</p>
+<p>的INSTALLED_APPS中加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;polls.apps.PollsConfig&#39;,</span><br></pre></td></tr></table></figure>
+<p>现在，我们可以执行<code>python manage.py makemigrations</code>,这条命令会去遍历所有在settings.py中INSTALLED_APPS下配置的app，如果发现对应app的models文件有改动，就会在这个app下的<code>migrations</code>目录下生成一个数据库的scheme文件，这里我们可以看到生成了一个<code>0001_initial.py</code>文件，这个文件描述了model对应的数据库操作，这个文件是可编辑的。</p>
+<p>我们还可以通过执行<code>python manage.py sqlmigrate polls 0001</code>命令，查看上面那个scheme文件所对应的SQL语句。</p>
+<p>这个时候，其实我们的sql语句并没有执行，数据库也并没有创建，我们需要执行下面这条语句，来让我们的scheme文件生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+<p>这下，我们的表就创建成功了。</p>
+<p>看似繁琐的操作，其实我们只要记住三步走的套路，就很容易掌握：</p>
+<ul>
+<li>1.修改models.py文件</li>
+<li>2.执行python manage.py makemigrations</li>
+<li>3.执行python manage.py migrate</li>
+</ul>
+<p>这里我有一个疑问，就是2，3的操作明明可以一步执行完，为什么还需要分成两条命令呢？</p>
+<p>这里官方的解释是：</p>
+<blockquote>
+<p>The reason that there are separate commands to make and apply migrations is because you’ll commit migrations to your version control system and ship them with your app; they not only make your development easier, they’re also useable by other developers and in production.</p>
+</blockquote>
+<p>我表示依然不理解。</p>
+<h3 id="通过django的shell来插入数据"><a href="#通过django的shell来插入数据" class="headerlink" title="通过django的shell来插入数据"></a>通过django的shell来插入数据</h3><p>django 给我们提供了一个shell，通过执行<code>python manage.py shell</code>进入。</p>
+<p>下面通过这个shell来插入一些数据，也顺便体验一下django的orm数据库操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from polls.models import Question, Choice </span><br><span class="line">&gt;&gt;&gt; from django.utils import timezone</span><br><span class="line">&gt;&gt;&gt; Question.objects.all()</span><br><span class="line">&gt;&gt;&gt; []</span><br><span class="line">&gt;&gt;&gt; q &#x3D; Question(question_text&#x3D;&quot;What&#39;s new?&quot;, pub_date&#x3D;timezone.now())</span><br><span class="line">&gt;&gt;&gt; q.save()</span><br><span class="line">&gt;&gt;&gt; q.id</span><br><span class="line">&gt;&gt;&gt; 1</span><br><span class="line">&gt;&gt;&gt; q.question_text</span><br><span class="line">&gt;&gt;&gt; &quot;What&#39;s new?&quot;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.create(choice_text&#x3D;&#39;Not much&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; &lt;Choice: Not much&gt;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.create(choice_text&#x3D;&#39;The sky&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; &lt;Choice: The sky&gt;</span><br><span class="line">&gt;&gt;&gt; c &#x3D; q.choice_set.create(choice_text&#x3D;&#39;Just hacking again&#39;, votes&#x3D;0)</span><br><span class="line">&gt;&gt;&gt; c.question</span><br><span class="line">&gt;&gt;&gt; &lt;Question: What&#39;s new?&gt;</span><br><span class="line">&gt;&gt;&gt; q.choice_set.all()</span><br><span class="line">&gt;&gt;&gt; [&lt;Choice: Not much&gt;, &lt;Choice: The sky&gt;, &lt;Choice: Just hacking again&gt;]</span><br><span class="line">&gt;&gt;&gt; exit()</span><br></pre></td></tr></table></figure>
+<p>至此，我们已经添加了一部分数据到db中了，我们可以通过django下的一个后台管理模块来查看我们插入的数据。</p>
+<p>执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+<p>创建用户。</p>
+<p>将我们的app注册到admin中。</p>
+<p>polls/admin.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">admin.site.register(Question)</span><br></pre></td></tr></table></figure>
+<p>输入<a target="_blank" rel="noopener" href="http://localhost:8000/admin/">http://localhost:8000/admin/</a> 就可以访问后台了。</p>
+<p><img src="/img/django_01_02.png" alt="admin page"></p>
+<h3 id="配置views-和-urls"><a href="#配置views-和-urls" class="headerlink" title="配置views 和 urls"></a>配置views 和 urls</h3><p>views写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import render,HttpResponse</span><br><span class="line"></span><br><span class="line">def detail(request, question_id):</span><br><span class="line">    return HttpResponse(&quot;You&#39;re looking at question %s.&quot; % question_id)</span><br><span class="line"></span><br><span class="line">def results(request, question_id):</span><br><span class="line">    response &#x3D; &quot;You&#39;re looking at the results of question %s.&quot;</span><br><span class="line">    return HttpResponse(response % question_id)</span><br><span class="line"></span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    return HttpResponse(&quot;You&#39;re voting on question %s.&quot; % question_id)</span><br></pre></td></tr></table></figure>
+<p>polls/urls.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from django.conf.urls import url</span><br><span class="line"></span><br><span class="line">from . import views</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">    # ex: &#x2F;polls&#x2F;</span><br><span class="line">    url(r&#39;^$&#39;, views.index, name&#x3D;&#39;index&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;$&#39;, views.detail, name&#x3D;&#39;detail&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;results&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;results&#x2F;$&#39;, views.results, name&#x3D;&#39;results&#39;),</span><br><span class="line">    # ex: &#x2F;polls&#x2F;5&#x2F;vote&#x2F;</span><br><span class="line">    url(r&#39;^(?P&lt;question_id&gt;[0-9]+)&#x2F;vote&#x2F;$&#39;, views.vote, name&#x3D;&#39;vote&#39;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>其中：<br>?P<question_id>定义的名称，是用于识别和匹配模式；[0-9]是一个正则表达式匹配一个数字序列（即一个数）</p>
+<p>当然如果你想要的话，也可以写死一个url：<br><code>url(r&#39;^polls/latest\.html$&#39;, views.index),</code><br>但是django不建议这么做。</p>
+<p>接下来我们可以将models的数据信息显示在view界面上了：</p>
+<p>views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    output &#x3D; &#39;, &#39;.join([q.question_text for q in latest_question_list])</span><br><span class="line">    return HttpResponse(output)</span><br></pre></td></tr></table></figure>
+<p>但是这样写前台界面实在太不友好，我们要引入模版机制，将数据信息渲染到html页面上：</p>
+<p>创建polls/templates/polls/index.html</p>
+<p>用django特有的模版语言写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if latest_question_list %&#125;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">    &#123;% for question in latest_question_list %&#125;</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;polls&#x2F;&#123;&#123; question.id &#125;&#125;&#x2F;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    &lt;p&gt;No polls are available.&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>这些模版语言都是比较易懂的流程控制语句，相信不用解释也可以理解。</p>
+<p>修改views.py:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from django.http import HttpResponse</span><br><span class="line">from django.template import loader</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    template &#x3D; loader.get_template(&#39;polls&#x2F;index.html&#39;)</span><br><span class="line">    context &#x3D; &#123;</span><br><span class="line">        &#39;latest_question_list&#39;: latest_question_list,</span><br><span class="line">    &#125;</span><br><span class="line">    return HttpResponse(template.render(context, request))</span><br></pre></td></tr></table></figure>
+<p>还有一种更快捷的写法，使用django封装好的render()方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import render</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"></span><br><span class="line">def index(request):</span><br><span class="line">    latest_question_list &#x3D; Question.objects.order_by(&#39;-pub_date&#39;)[:5]</span><br><span class="line">    context &#x3D; &#123;&#39;latest_question_list&#39;: latest_question_list&#125;</span><br><span class="line">    return render(request, &#39;polls&#x2F;index.html&#39;, context)</span><br></pre></td></tr></table></figure>
+<p>创建polls/templates/polls/detail.html,并写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; question &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>polls/views.py：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import get_object_or_404, render</span><br><span class="line"></span><br><span class="line">from .models import Question</span><br><span class="line"># ...</span><br><span class="line">def detail(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;&#39;question&#39;: question&#125;)</span><br></pre></td></tr></table></figure>
+<p>这里我们可以看到404的处理都单独封装了一个方法，django这么处理的原因是为了防止模型层和视图层的耦合，因为404是比较常见的一种错误，而且处理404的判断如果放在了界面层，那么对models的处理就和view层耦合太重。</p>
+<p>现在访问：<code>http://localhost:8000/polls</code>就能看到载入模版之后的样子了。</p>
+<p><img src="/img/django_01_03.png" alt="add template"></p>
+<p>内容页面：</p>
+<p><img src="/img/django_01_04.png" alt="details"></p>
+<p>注意这里有个细节：</p>
+<p>polls/index.html中的a标签的链接我们用了硬编码，为了更好的实现可扩展性，我们将其中的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;polls&#x2F;&#123;&#123; question.id &#125;&#125;&#x2F;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;li&gt;&lt;a href&#x3D;&quot;&#123;% url &#39;detail&#39; question.id %&#125;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看出来新的写法会去找<code>name</code>属性为<code>ditail</code>的url进行匹配。</p>
+<h3 id="form的实现"><a href="#form的实现" class="headerlink" title="form的实现"></a>form的实现</h3><p>修改我们的<br><code>polls/templates/polls/detail.html</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line"></span><br><span class="line">&#123;% if error_message %&#125;&lt;p&gt;&lt;strong&gt;&#123;&#123; error_message &#125;&#125;&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;&#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">&lt;form action&#x3D;&quot;&#123;% url &#39;polls:vote&#39; question.id %&#125;&quot; method&#x3D;&quot;post&quot;&gt;</span><br><span class="line">&#123;% csrf_token %&#125;</span><br><span class="line">&#123;% for choice in question.choice_set.all %&#125;</span><br><span class="line">    &lt;input type&#x3D;&quot;radio&quot; name&#x3D;&quot;choice&quot; id&#x3D;&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot; value&#x3D;&quot;&#123;&#123; choice.id &#125;&#125;&quot; &#x2F;&gt;</span><br><span class="line">    &lt;label for&#x3D;&quot;choice&#123;&#123; forloop.counter &#125;&#125;&quot;&gt;&#123;&#123; choice.choice_text &#125;&#125;&lt;&#x2F;label&gt;&lt;br &#x2F;&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot; value&#x3D;&quot;Vote&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br></pre></td></tr></table></figure>
+<p>view界面加入投票逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from django.shortcuts import get_object_or_404, render</span><br><span class="line">from django.http import HttpResponseRedirect, HttpResponse</span><br><span class="line">from django.core.urlresolvers import reverse</span><br><span class="line"></span><br><span class="line">from .models import Choice, Question</span><br><span class="line"># ...</span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    try:</span><br><span class="line">        selected_choice &#x3D; question.choice_set.get(pk&#x3D;request.POST[&#39;choice&#39;])</span><br><span class="line">    except (KeyError, Choice.DoesNotExist):</span><br><span class="line">        # Redisplay the question voting form.</span><br><span class="line">        return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;</span><br><span class="line">            &#39;question&#39;: question,</span><br><span class="line">            &#39;error_message&#39;: &quot;You didn&#39;t select a choice.&quot;,</span><br><span class="line">        &#125;)</span><br><span class="line">    else:</span><br><span class="line">        selected_choice.votes +&#x3D; 1</span><br><span class="line">        selected_choice.save()</span><br><span class="line">        # Always return an HttpResponseRedirect after successfully dealing</span><br><span class="line">        # with POST data. This prevents data from being posted twice if a</span><br><span class="line">        # user hits the Back button.</span><br><span class="line">        return HttpResponseRedirect(reverse(&#39;polls:results&#39;, args&#x3D;(question.id,)))from django.shortcuts import get_object_or_404, render</span><br><span class="line">from django.http import HttpResponseRedirect, HttpResponse</span><br><span class="line">from django.core.urlresolvers import reverse</span><br><span class="line"></span><br><span class="line">from .models import Choice, Question</span><br><span class="line"># ...</span><br><span class="line">def vote(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    try:</span><br><span class="line">        selected_choice &#x3D; question.choice_set.get(pk&#x3D;request.POST[&#39;choice&#39;])</span><br><span class="line">    except (KeyError, Choice.DoesNotExist):</span><br><span class="line">        # Redisplay the question voting form.</span><br><span class="line">        return render(request, &#39;polls&#x2F;detail.html&#39;, &#123;</span><br><span class="line">            &#39;question&#39;: question,</span><br><span class="line">            &#39;error_message&#39;: &quot;You didn&#39;t select a choice.&quot;,</span><br><span class="line">        &#125;)</span><br><span class="line">    else:</span><br><span class="line">        selected_choice.votes +&#x3D; 1</span><br><span class="line">        selected_choice.save()</span><br><span class="line">        # Always return an HttpResponseRedirect after successfully dealing</span><br><span class="line">        # with POST data. This prevents data from being posted twice if a</span><br><span class="line">        # user hits the Back button.</span><br><span class="line">        return HttpResponseRedirect(reverse(&#39;polls:results&#39;, args&#x3D;(question.id,)))</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<p>reverse()方法  用于返回一个url，这里直接返回polls/1/vote/</p>
+<p>定义投票的结果页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def results(request, question_id):</span><br><span class="line">    question &#x3D; get_object_or_404(Question, pk&#x3D;question_id)</span><br><span class="line">    return render(request, &#39;polls&#x2F;results.html&#39;, &#123;&#39;question&#39;: question&#125;)</span><br></pre></td></tr></table></figure>
+<p>以及模版页面：<br><code>polls/results.html</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; question.question_text &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for choice in question.choice_set.all %&#125;</span><br><span class="line">    &lt;li&gt;&#123;&#123; choice.choice_text &#125;&#125; -- &#123;&#123; choice.votes &#125;&#125; vote&#123;&#123; choice.votes|pluralize &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;a href&#x3D;&quot;&#123;% url &#39;polls:detail&#39; question.id %&#125;&quot;&gt;Vote again?&lt;&#x2F;a&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="静态文件的加载"><a href="#静态文件的加载" class="headerlink" title="静态文件的加载"></a>静态文件的加载</h3><p>创建一个css文件：<code>polls/static/polls/style.css</code>并写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">li a &#123;</span><br><span class="line">    color: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在polls/templates/polls/index.html文件中引入这个css</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load staticfiles %&#125;</span><br><span class="line">&lt;link rel&#x3D;&quot;stylesheet&quot; type&#x3D;&quot;text&#x2F;css&quot; href&#x3D;&quot;&#123;% static &#39;polls&#x2F;style.css&#39; %&#125;&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来添加一个图片：<br><code>polls/static/polls/images/background.gif.</code></p>
+<p>修改<code>polls/static/polls/style.css</code>加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">    background: white url(&quot;images&#x2F;background.gif&quot;) no-repeat right bottom;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可看到执行效果：</p>
+<p><img src="/img/django_01_05.png" alt="css"></p>
+<h3 id="自定义后台页面"><a href="#自定义后台页面" class="headerlink" title="自定义后台页面"></a>自定义后台页面</h3><p>Django经常被用来开发后台应用，因为它有一个非常强大的，可灵活配置的后台应用。这个admin应用就是<code>settings.py</code>中的<code>INSTALLED_APPS</code>下的<code>django.contrib.admin</code>。</p>
+<p>前面我们在polls项目下的admin.py中将我们的<code>Question</code>注册到了admin中，我们在后台页面可以看到了Question表的相关信息。那么如果我们想把<code>Choice</code>的相关信息也显示出来需要怎么处理呢？</p>
+<p>有一种做法就是也仿照<code>Question</code>将<code>Choice</code>注册进入admin：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from django.contrib import admin</span><br><span class="line">from .models import Question,Choice</span><br><span class="line"></span><br><span class="line">admin.site.register(Question)</span><br><span class="line">admin.site.register(Choice)</span><br></pre></td></tr></table></figure>
+<p>但这样并不好，因为Choice和Question存在一对多的外键关联，我们直接显示出来，并不能很好的体现出这层含义。为了解决这个问题，我们可以引入<code>ModelAdmin</code>，将Question注册到一个自定义的<code>ModelAdmin</code>上，定义其内联元素为一个Choice。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from .models import Question,Choice</span><br><span class="line"></span><br><span class="line">class ChoiceInline(admin.StackedInline):</span><br><span class="line">    model &#x3D; Choice</span><br><span class="line">    extra &#x3D; 0</span><br><span class="line"></span><br><span class="line">class QuestionAdmin(admin.ModelAdmin):</span><br><span class="line">    inlines &#x3D; [ChoiceInline]</span><br><span class="line"></span><br><span class="line">admin.site.register(Question,QuestionAdmin)</span><br></pre></td></tr></table></figure>
+<p>在Question的详情页面里，我们就可以看到作为内联样式展示的Choices了：</p>
+<p><img src="/img/django_01_06.png" alt="内联"></p>
+<p>接下来我们可以通过对<code>QuestionAdmin</code>简单的配置，实现一个功能更加强大的后台界面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class QuestionAdmin(admin.ModelAdmin):</span><br><span class="line">	# 详情页加入更多字段的显示</span><br><span class="line">    fieldsets &#x3D; [</span><br><span class="line">        (None,               &#123;&#39;fields&#39;: [&#39;question_text&#39;]&#125;),</span><br><span class="line">        (&#39;Date information&#39;, &#123;&#39;fields&#39;: [&#39;pub_date&#39;], &#39;classes&#39;: [&#39;collapse&#39;]&#125;),</span><br><span class="line">    ]</span><br><span class="line">    inlines &#x3D; [ChoiceInline]</span><br><span class="line">    </span><br><span class="line">    # 列表页面加入更多字段的显示</span><br><span class="line">    list_display &#x3D; (&#39;question_text&#39;, &#39;pub_date&#39;, &#39;was_published_recently&#39;)</span><br><span class="line">    </span><br><span class="line">    # 在列表页面右侧加入过滤功能</span><br><span class="line">    list_filter &#x3D; [&#39;pub_date&#39;]</span><br><span class="line">    # 加入搜索功能</span><br><span class="line">    search_fields &#x3D; [&#39;question_text&#39;]</span><br></pre></td></tr></table></figure>
+<p>实现效果如下：</p>
+<p><img src="/img/django_01_07.png" alt="完整后台"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/01/12/HelloDjango!/" data-id="ckkwc434y000jpas93107fevj" data-title="HelloDjango!--Django开发极速入门" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/29/R%E8%AF%AD%E8%A8%80%EF%BC%8801%EF%BC%89%EF%BC%8DR%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          R语言（01）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/06/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0(04)Logistic%E5%9B%9E%E5%BD%92/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">机器学习(04)Logistic回归</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>房价预测（2）-数据清洗与持久化 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在房价预测（1）-搜房网数据爬取中，已经介绍了爬虫的核心代码，但是爬取到的数据是没有经过加工且带有html标签的，很不利于阅读和使用，并且我们没有把数据持久化到本地，那么这篇文章主要介绍的就是这两步工作。  Item Pipeline介绍Scrapy中有个很好用的工具Item Pipeline。 通过阅读文档我们可以看到它的作用是：  清理HTML数据 验证爬取的数据(检查item包含某些字段)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="房价预测（2）-数据清洗与持久化">
+<meta property="og:url" content="http://example.com/2016/12/08/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%882%EF%BC%89-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在房价预测（1）-搜房网数据爬取中，已经介绍了爬虫的核心代码，但是爬取到的数据是没有经过加工且带有html标签的，很不利于阅读和使用，并且我们没有把数据持久化到本地，那么这篇文章主要介绍的就是这两步工作。  Item Pipeline介绍Scrapy中有个很好用的工具Item Pipeline。 通过阅读文档我们可以看到它的作用是：  清理HTML数据 验证爬取的数据(检查item包含某些字段)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_12_07/001.gif">
+<meta property="og:image" content="http://example.com/img/16_12_07/002.png">
+<meta property="article:published_time" content="2016-12-08T23:05:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_12_07/001.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-房价预测（2）-数据清洗与持久化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/12/08/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%882%EF%BC%89-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2016-12-08T23:05:58.000Z" itemprop="datePublished">2016-12-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      房价预测（2）-数据清洗与持久化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>在<a href="/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/">房价预测（1）-搜房网数据爬取</a>中，已经介绍了爬虫的核心代码，但是爬取到的数据是没有经过加工且带有html标签的，很不利于阅读和使用，并且我们没有把数据持久化到本地，那么这篇文章主要介绍的就是这两步工作。</p>
+</blockquote>
+<h2 id="Item-Pipeline介绍"><a href="#Item-Pipeline介绍" class="headerlink" title="Item Pipeline介绍"></a>Item Pipeline介绍</h2><p>Scrapy中有个很好用的工具<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/topics/item-pipeline.html">Item Pipeline</a>。</p>
+<p>通过阅读文档我们可以看到它的作用是：</p>
+<ul>
+<li>清理HTML数据</li>
+<li>验证爬取的数据(检查item包含某些字段)</li>
+<li>查重(并丢弃)</li>
+<li>将爬取结果保存到数据库中</li>
+</ul>
+<p>真是完全符合我们的要求。</p>
+<blockquote>
+<p><strong>Pipeline</strong>的意思是<strong>管道</strong>,如果你玩过Linux的话，对这个名称一定不会陌生。管道是计算机中一个非常常见且重要的概念，大致的作用就是<strong>将管道前一部分的输出结果作为它后一部分的输入</strong>。类似这种设计都可以称为<strong>管道</strong>。</p>
+</blockquote>
+<p>还记得我们之前写的蜘蛛吗？在<code>ESFListSpider</code>这个蜘蛛中，开始爬取数据时会走到这个方法中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 爬取房源列表信息</span><br><span class="line">def parse(self, response):</span><br><span class="line">        self.log(&#39;A response from %s just arrived!&#39; % response.url)</span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line">                yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br></pre></td></tr></table></figure>
+<p>在这个方法的内部的循环中会遍历链接地址，再次发起request，之后会自动调用回调函数<code>self.parse_details</code>，自动执行<code>parse_details</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 爬取房源详情信息</span><br><span class="line">def parse_details(self, response):</span><br><span class="line">	...</span><br><span class="line">	# 顺便爬取一下详情页 url</span><br><span class="line">	item &#x3D; ESFItem()</span><br><span class="line">    item[&#39;url&#39;] &#x3D; response.url</span><br><span class="line">    </span><br><span class="line">    # 详情页对应的 城市-一级区域-二级区域 信息</span><br><span class="line">	bread_list &#x3D; response.xpath(&quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;bread&#39;]&#x2F;p[@class&#x3D;&#39;floatl&#39;]&#x2F;a&quot;).extract()</span><br><span class="line">    for index,bread in enumerate(bread_list[1:]):</span><br><span class="line">        if index &#x3D;&#x3D; 0:</span><br><span class="line">            item[&quot;bread_city&quot;] &#x3D; bread</span><br><span class="line">        elif index &#x3D;&#x3D; 1:</span><br><span class="line">            item[&quot;bread_area&quot;] &#x3D; bread</span><br><span class="line">        elif index &#x3D;&#x3D; 2:</span><br><span class="line">            item[&quot;bread_positon&quot;] &#x3D; bread</span><br><span class="line">	...</span><br><span class="line">	# 这句很重要，保证item可以传递到后面的Pipeline中</span><br><span class="line">	yield item</span><br></pre></td></tr></table></figure>
+<p>以上是我们蜘蛛的部分核心代码，如果我们配置了Pipeline，蜘蛛会把塞满信息的item传递到我们定义的Pipeline中。</p>
+<h3 id="创建Pipeline"><a href="#创建Pipeline" class="headerlink" title="创建Pipeline"></a>创建Pipeline</h3><p>为了满足<strong>清洗数据</strong>和<strong>存储数据</strong>的功能，我们创建两个Pipeline来分别处理这两类逻辑：</p>
+<p>在<code>pipelines.py</code>中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class ExtractDataPipeline(object):</span><br><span class="line">	def process_item(self, item, spider):</span><br><span class="line">		...</span><br><span class="line">		return item</span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class SaveDataPipline(object):</span><br><span class="line">	def process_item(self, item, spider):</span><br><span class="line">		...</span><br><span class="line">		return item</span><br></pre></td></tr></table></figure>
+<p>并在<code>settings.py</code>中进行注册：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">ITEM_PIPELINES &#x3D; &#123;</span><br><span class="line">   &#39;soufang.pipelines.ExtractDataPipeline&#39;: 300,</span><br><span class="line">   &#39;soufang.pipelines.SaveDataPipline&#39;:500,</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>后面的数字范围是0-1000之内的任意整数，代表的是优先级。可以看出来我们是优先清洗数据，然后保存数据。</p>
+<h2 id="清洗数据"><a href="#清洗数据" class="headerlink" title="清洗数据"></a>清洗数据</h2><p>清洗数据的代码如下，就是将每一个字段的信息的html标签进行剥离，并且截取掉冗余的字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># 剔除html代码</span><br><span class="line">def take_out_html(str):</span><br><span class="line">    dr &#x3D; re.compile(r&#39;&lt;[^&gt;]+&gt;&#39;, re.S)</span><br><span class="line">    return dr.sub(&#39;&#39;, str)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ExtractDataPipeline(object):</span><br><span class="line">    def process_item(self, item, spider):</span><br><span class="line">        print &quot;&gt;&gt;&gt; ExtractDataPipeline &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;</span><br><span class="line">        self.extract_data(item, &quot;url&quot;)</span><br><span class="line">        self.extract_data(item, &quot;id&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;publish_time&quot;, f&#x3D;-10)</span><br><span class="line">        self.extract_data(item, &quot;title&quot;)</span><br><span class="line">        self.extract_data(item, &quot;total_price&quot;)</span><br><span class="line">        self.extract_data(item, &quot;house_type&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;house_build_area&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;house_use_area&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;house_age&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;orientation&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;floor&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;structure&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;decoration&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;residential_category&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;building_class&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;property_right&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;property_name&quot;)</span><br><span class="line">        self.extract_data(item, &quot;school&quot;)</span><br><span class="line">        self.extract_data(item, &quot;supporting_facilities&quot;)</span><br><span class="line">        self.extract_data(item, &quot;bread_city&quot;, t&#x3D;-3)</span><br><span class="line">        self.extract_data(item, &quot;bread_area&quot;, t&#x3D;-3)</span><br><span class="line">        self.extract_data(item, &quot;bread_positon&quot;, t&#x3D;-3)</span><br><span class="line">        return item</span><br><span class="line"></span><br><span class="line">    # 剔除数据中的多余部分</span><br><span class="line">    def extract_data(self, item, key_bread_positon, f&#x3D;None, t&#x3D;None):</span><br><span class="line">        if self.check_key_exist(item, key_bread_positon):</span><br><span class="line">            item[key_bread_positon] &#x3D; take_out_html(item[key_bread_positon]).strip()[f:t]</span><br><span class="line">        else:</span><br><span class="line">            item[key_bread_positon] &#x3D; &quot;&quot;</span><br><span class="line">        self.print_itme_value(item, key_bread_positon)</span><br><span class="line"></span><br><span class="line">    # 检查key是否存在</span><br><span class="line">    def check_key_exist(self, item, key):</span><br><span class="line">        return key in item.keys()</span><br><span class="line"></span><br><span class="line">    # 输出数据</span><br><span class="line">    def print_itme_value(self, item, key):</span><br><span class="line">        print key + &quot; &gt;&gt;&gt; &quot; + item[key]</span><br></pre></td></tr></table></figure>
+<h2 id="保存数据到MongoDB"><a href="#保存数据到MongoDB" class="headerlink" title="保存数据到MongoDB"></a>保存数据到MongoDB</h2><p>保存数据我们使用<a target="_blank" rel="noopener" href="http://www.mongodb.org/">MongoDB</a>，这是一个很简单易用且功能强大的<strong>非关系型数据库</strong>，它可以把数据保存成一种类似Json的格式。</p>
+<p>使用教程网上很容易搜到，推荐一个自学网站：<a target="_blank" rel="noopener" href="http://www.runoob.com/mongodb/mongodb-tutorial.html">MongoDB教程</a></p>
+<p>mongo的可视化工具也有很多，我使用的是<a target="_blank" rel="noopener" href="https://robomongo.org/">Robomongo</a>。</p>
+<p>使用mongo我们需要在<code>settings.py</code>中增添下面的配置信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">MONGO_URI &#x3D; &quot;mongodb:&#x2F;&#x2F;localhost:27017&quot;;</span><br><span class="line">MONGO_DATABASE &#x3D; &quot;soufang&quot;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>下面是<code>SaveDataPipline</code>的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class SaveDataPipline(object):</span><br><span class="line">    def __init__(self, mongo_uri, mongo_db):</span><br><span class="line">        self.mongo_uri &#x3D; mongo_uri</span><br><span class="line">        self.mongo_db &#x3D; mongo_db</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def from_crawler(cls, crawler):</span><br><span class="line">        return cls(</span><br><span class="line">            mongo_uri&#x3D;crawler.settings.get(&#39;MONGO_URI&#39;),</span><br><span class="line">            mongo_db&#x3D;crawler.settings.get(&#39;MONGO_DATABASE&#39;, &#39;items&#39;)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    def open_spider(self, spider):</span><br><span class="line">        self.client &#x3D; pymongo.MongoClient(self.mongo_uri)</span><br><span class="line">        self.db &#x3D; self.client[self.mongo_db]</span><br><span class="line"></span><br><span class="line">    def close_spider(self, spider):</span><br><span class="line">        self.client.close()</span><br><span class="line"></span><br><span class="line">    def process_item(self, item, spider):</span><br><span class="line">        print &quot;&gt;&gt;&gt; SaveDataPipline &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;</span><br><span class="line">        collection_name &#x3D; self.mongo_db</span><br><span class="line">        self.db[collection_name].insert(dict(item))</span><br><span class="line">        return item</span><br></pre></td></tr></table></figure>
+<h3 id="去除重复项"><a href="#去除重复项" class="headerlink" title="去除重复项"></a>去除重复项</h3><p>为了保证id重复的房源信息不再重复爬取，我们可以对数据库建立<strong>唯一索引</strong>，这样既能够提高查询效率，又能够去除重复数据。</p>
+<p>后台建立唯一索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.soufang.ensureIndex(&#123;&quot;id&quot;:1&#125;,&#123;&quot;unique&quot;:true&#125;,&#123;&quot;background&quot;:true&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="开始爬取！"><a href="#开始爬取！" class="headerlink" title="开始爬取！"></a>开始爬取！</h2><p>终于可以开心的爬取数据啦~</p>
+<p>命令行输入<code>mongod</code>开启mongo服务后，进入我们的爬虫项目，开启我们的爬虫：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl esflist</span><br></pre></td></tr></table></figure>
+<p><img src="/img/16_12_07/001.gif"></p>
+<p>在Robomongo中我们执行一条查询语句<code>db.soufang.find()</code>就可以看到我们爬取到的全部数据：</p>
+<p><img src="/img/16_12_07/002.png"></p>
+<p>执行<code>db.soufang.findOne()</code>可以查询到一条记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; db.soufang.findOne()</span><br><span class="line">&#123;</span><br><span class="line">	&quot;_id&quot; : ObjectId(&quot;58497108f26cd3d1ac97004b&quot;),</span><br><span class="line">	&quot;orientation&quot; : &quot;&quot;,</span><br><span class="line">	&quot;bread_area&quot; : &quot;普陀&quot;,</span><br><span class="line">	&quot;publish_time&quot; : &quot;2016-10-20&quot;,</span><br><span class="line">	&quot;id&quot; : &quot;268151561&quot;,</span><br><span class="line">	&quot;property_name&quot; : &quot;甘泉一村&quot;,</span><br><span class="line">	&quot;title&quot; : &quot;甘泉一村 边套全明户型 黄金3楼 得房率高 配套成熟 便利&quot;,</span><br><span class="line">	&quot;building_class&quot; : &quot;板楼&quot;,</span><br><span class="line">	&quot;bread_positon&quot; : &quot;甘泉&quot;,</span><br><span class="line">	&quot;house_build_area&quot; : &quot;55.27㎡&quot;,</span><br><span class="line">	&quot;bread_city&quot; : &quot;上海&quot;,</span><br><span class="line">	&quot;house_use_area&quot; : &quot;&quot;,</span><br><span class="line">	&quot;house_type&quot; : &quot;2室1厅1厨1卫&quot;,</span><br><span class="line">	&quot;structure&quot; : &quot;平层&quot;,</span><br><span class="line">	&quot;decoration&quot; : &quot;简装修&quot;,</span><br><span class="line">	&quot;school&quot; : &quot;&quot;,</span><br><span class="line">	&quot;total_price&quot; : &quot;275&quot;,</span><br><span class="line">	&quot;url&quot; : &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;chushou&#x2F;3_268151561.htm&quot;,</span><br><span class="line">	&quot;house_age&quot; : &quot;1987年&quot;,</span><br><span class="line">	&quot;floor&quot; : &quot;中层(共6层)&quot;,</span><br><span class="line">	&quot;property_right&quot; : &quot;个人产权&quot;,</span><br><span class="line">	&quot;supporting_facilities&quot; : &quot;&quot;,</span><br><span class="line">	&quot;residential_category&quot; : &quot;普通住宅&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全上海目前在售的二手房源大概有60到70万套之间，我们可以把速度缩短到1秒中爬取一条，如果24小时爬取的话，预计6天可以爬完全上海。不过我们的目的是对数据进行分析，没必要盲目的采集大量的数据，只要数据够用即可。</p>
+<p>如果数据量过大，后面进行训练机器性能也跟不上，所以我准备将总数据量控制在5万条（按照各区域房源数量占比进行组合）。</p>
+<h2 id="what-s-next"><a href="#what-s-next" class="headerlink" title="what`s next?"></a>what`s next?</h2><p>接下来我们将构建一个可视化的界面来直观的观察我们爬取到的房源数据。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/12/08/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%882%EF%BC%89-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96/" data-id="ckkwc437j006npas9fawdczwu" data-title="房价预测（2）-数据清洗与持久化" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/15/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%883%EF%BC%89-%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          房价预测（3）-数据可视化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/03/%E5%8F%91%E5%B8%83aar%E5%88%B0jcenter%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">发布aar到jcenter的正确姿势</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

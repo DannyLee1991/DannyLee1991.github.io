@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/14/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-单一职责原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/09/06/%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-09-06T22:01:55.000Z" itemprop="datePublished">2015-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/09/06/%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99/">设计模式六大原则之 单一职责原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><p>单一职责原则的英文名称是<strong>Single Responsibility Principle</strong>,简称<strong>SRP</strong>.</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><strong>单一职责的定义是：</strong></p>
+<blockquote>
+<p>There should never be more than one reason for a class to change.</p>
+<p>应该有且仅有一个原因引起类的变更。</p>
+</blockquote>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p>例如IUserInfo接口定义如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">IUserInfo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+void setUserID(String userID)</td>
+</tr>
+<tr>
+<td align="left">+String getUserID()</td>
+</tr>
+<tr>
+<td align="left">+void setPassword(String password)</td>
+</tr>
+<tr>
+<td align="left">+String getPassword()</td>
+</tr>
+<tr>
+<td align="left">+void setUserName(String userName)</td>
+</tr>
+<tr>
+<td align="left">+String getUserName()</td>
+</tr>
+<tr>
+<td align="left">+boolean changePassword(String oldPassword)</td>
+</tr>
+<tr>
+<td align="left">+boolean deleteUser()</td>
+</tr>
+<tr>
+<td align="left">+void mapUser()</td>
+</tr>
+<tr>
+<td align="left">+boolean addOrg(int orgID)</td>
+</tr>
+<tr>
+<td align="left">+boolean addRole(int roleID)</td>
+</tr>
+</tbody></table>
+<p>这个接口按照<strong>单一职责</strong>的原则进行拆分，将<strong>用户信息</strong>抽取成一个<strong>BO</strong>(Business Object,业务对象)，将<strong>用户行为</strong>抽取成一个<strong>Biz</strong>(Business Logic,业务逻辑)</p>
+<table>
+<thead>
+<tr>
+<th align="left">IUserBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+void setUserID(String userID)</td>
+</tr>
+<tr>
+<td align="left">+String getUserID()</td>
+</tr>
+<tr>
+<td align="left">+void setPassword(String password)</td>
+</tr>
+<tr>
+<td align="left">+String getPassword()</td>
+</tr>
+<tr>
+<td align="left">+void setUserName(String userName)</td>
+</tr>
+<tr>
+<td align="left">+String getUserName()</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">IUserBiz</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+boolean changePassword(String oldPassword)</td>
+</tr>
+<tr>
+<td align="left">+boolean deleteUser()</td>
+</tr>
+<tr>
+<td align="left">+void mapUser()</td>
+</tr>
+<tr>
+<td align="left">+boolean addOrg(int orgID)</td>
+</tr>
+<tr>
+<td align="left">+boolean addRole(int roleID)</td>
+</tr>
+</tbody></table>
+<p>IUserInfo接口继承IUserBO和IUserBiz</p>
+<p>分清职责后的代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">IUserInfo userInfo = <span class="keyword">new</span> UserInfo();</span><br><span class="line"><span class="comment">//我要赋值了，我就认为它是一个纯粹的BO</span></span><br><span class="line">IUserBO userBO = (IUserBO)userInfo;</span><br><span class="line">userBO.setPassword(<span class="string">&quot;abc&quot;</span>);</span><br><span class="line"><span class="comment">//我要执行动作了，我就认为是一个业务逻辑类</span></span><br><span class="line">IUserBiz userBiz = (IUserBiz)userInfo;</span><br><span class="line">userBiz.deleteUser();</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<h2 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h2><p>单一职责原则最难划分的就是职责。一个职责一个接口，但问题是“职责”没有一个量化的标准，一个类到底要负责那些职责？这些职责该怎样细化？细化后是否都要有一个接口或类？这些都需要从实际的项目去考虑。</p>
+<p>对于接口，我们在设计的时候一定要做到单一，但是对于实现类酒需要多方面考虑了。生搬硬套单一职责原则会引起类的剧增，给维护带来非常多的麻烦，而且过分细分类的职责也会人为地增加系统的复杂性。本来一个类可以实现的，硬要拆成两个类，然后再使用聚合或组合的方式藕合在一起，人为地制造了系统的复杂性。**<em>所以原则是死的，人是活的，这句话很有道理。**</em></p>
+<p>单一职责适用于接口，类，同时也适用于方法，什么意思呢？一个方法尽可能只做一件事情，比如一个方法修改用户密码，不要把这个方法放到“修改用户信息”方法中，这个方法点颗粒度很粗，比如下面这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个方法承担多个职责</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">changeUser</span><span class="params">(IUserBO userBO,String..changeOptions)</span></span></span><br></pre></td></tr></table></figure>
+<p>相比较而言，比较好的写法应该是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">changeUserName</span><span class="params">(String newUserName)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">changeHomeAddress</span><span class="params">(String newHomeAddress)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">changeOfficeTel</span><span class="params">(String telNumber)</span></span></span><br></pre></td></tr></table></figure>
+<p>对于单一职责原则，笔者的建议是**<em>接口一定要做到单一职责，类的设计尽量做到只有一个原因引起变化。**</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/09/06/%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%E5%8E%9F%E5%88%99/" data-id="ckkwc437f006apas95z1t3a77" data-title="设计模式六大原则之 单一职责原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-里氏替换原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/09/06/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99/" class="article-date">
+  <time class="dt-published" datetime="2015-09-06T22:01:55.000Z" itemprop="datePublished">2015-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/09/06/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99/">设计模式六大原则之 里氏替换原则</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><p>里氏替换原则 英文名称<strong>Liskov Subtitution Principle, LSP</strong></p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>传说中最正宗的定义：</p>
+<blockquote>
+<p>If for each object o1 of type S there is an object o2 of type T such that for all programs P defined in terms of T, the behavior of P is unchanged when o1 is substituted for o2 then S is a subtype of T.</p>
+<p>如果对每一个类型为S的对象o1,都有类型为T的对象o2,使得以T定义的所有程序P在所有的对象o1都代换成o2时，程序P的行为没有发生变化，那么类型S是类型T的子类型.</p>
+</blockquote>
+<p>传说中第二种比较通俗的定义：</p>
+<blockquote>
+<p>Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it.</p>
+<p>所有引用基类的地方必须能透明地使用其子类的对象。</p>
+</blockquote>
+<p>更通俗的一种定义：</p>
+<blockquote>
+<p>只要父类能出现的地方子类就可以出现，而且替换为子类也不会产生任何错误或异常，使用者可能根本就不需要知道是父类还是子类。但是反过来就不行了，有子类出现的地方，父类未必就能适应。</p>
+</blockquote>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><h3 id="子类必须完全实现父类的方法"><a href="#子类必须完全实现父类的方法" class="headerlink" title="子类必须完全实现父类的方法"></a>子类必须完全实现父类的方法</h3><p>cs游戏中的枪支类图:<br><img src="/img/lishitihuan_1.png" alt="cs游戏枪支类图"></p>
+<p>代码清单：</p>
+<p>枪支的抽象类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractGun</span> </span>&#123;</span><br><span class="line">	<span class="comment">//枪用来干什么的？杀敌！</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">shoot</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>手枪、步枪、机枪的实现类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handgun</span> <span class="keyword">extends</span> <span class="title">AbstractGun</span> </span>&#123;</span><br><span class="line">	<span class="comment">//手枪的特点是携带方便，射程短</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shoot</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;手枪射击...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rifle</span> <span class="keyword">extends</span> <span class="title">AbstractGun</span> </span>&#123;</span><br><span class="line">	<span class="comment">//步枪的特点是射程远，威力大</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shoot</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;步枪射击...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MachineGun</span> <span class="keyword">extends</span> <span class="title">AbstractGun</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shoot</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;机枪射击...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>士兵的实现类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Soldier</span> </span>&#123;</span><br><span class="line">	<span class="comment">//定义士兵的枪支</span></span><br><span class="line">	<span class="keyword">private</span> AbstractGun gun;</span><br><span class="line">	<span class="comment">//给士兵一支枪</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setGun</span><span class="params">(AbstractGun _gun)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.gun = _gun;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">killEnemy</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;士兵开始杀敌人...&quot;</span>);</span><br><span class="line">		gun.shoot();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>场景类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//产生三毛这个士兵</span></span><br><span class="line">		Soldier sanMao = <span class="keyword">new</span> Soldier();</span><br><span class="line">		<span class="comment">//给三毛一支枪</span></span><br><span class="line">		sanMao.setGun(<span class="keyword">new</span> Rifle());</span><br><span class="line">		sanMao.killEnemy();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">士兵开始杀敌人...</span><br><span class="line">步枪射击...</span><br></pre></td></tr></table></figure>
+<p>在这个程序中，我们给三毛这个士兵一把步枪，然后就开始杀敌了。如果要使用机枪，当然也可以，直接把sanMao.setGun(new Rifle())修改为sanMao.setGun(new MachineGun())即可,在编写程序时Solider士兵类根本不用知道是哪个型号的枪（子类）被传入。</p>
+<blockquote>
+<p><strong>注意</strong> 在类中调用其他类时，务必要使用父类或接口，如果不能使用父类或接口，则说明类的设计已经违背了LSP原则。</p>
+</blockquote>
+<p>如果我们要加入一把玩具枪，该如何处理呢？</p>
+<p>第一种处理方式 ToyGun继承AbstractGun<br><img src="/img/lishitihuan_2.png" alt="继承方式拓展玩具枪"></p>
+<p>但是玩具枪毕竟是玩具，不能当作真枪来杀敌人，所以这样拓展并不妥当，更好的处理方式应该是如下图：</p>
+<p><img src="/img/lishitihuan_3.png" alt="委托的方式来拓展玩具枪"></p>
+<p>ToyGun脱离继承，建立一个独立的父类，为了实现代码复用，可以与AbastractGun建立关联委托关系。例如，可以在AbstractToy中声明将声音、形状都委托给AbstractGun处理，仿真枪嘛，形状和声音都要和真实的枪一样了，然后两个基类下的子类自由延展，互不影响。</p>
+<blockquote>
+<p><strong>注意</strong> 如果子类不能完整地实现父类的方法，或者父类的某些方法在子类中已经发生“畸变”，则建议断开父子继承关系，采用依赖、聚集、组合等关系代替继承。</p>
+</blockquote>
+<h3 id="子类可以有自己的个性"><a href="#子类可以有自己的个性" class="headerlink" title="子类可以有自己的个性"></a>子类可以有自己的个性</h3><p>子类当然可以有自己的方法和属性了，这里再次强调，是因为里氏替换原则可以正着用，但是不能反过来用。在子类出现的地方，父类未必就可以胜任。</p>
+<p>以刚才对枪支为例，步枪有几个比较“响亮”的型号，比如AK47、AUG狙击步枪等，把这两个型号的枪引入后的Rifle子类图如下：</p>
+<p><img src="/img/lishitihuan_4.png" alt="步枪扩展"></p>
+<p>代码清单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AUG</span> <span class="keyword">extends</span> <span class="title">Rifle</span></span>&#123;</span><br><span class="line">	<span class="comment">//狙击枪都携带一个精准的望远镜</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">zoomOut</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;通过望远镜观察敌人...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shoot</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;AUG射击...&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>狙击手代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Snipper</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">killEnemy</span><span class="params">(AUG aug)</span></span>&#123;</span><br><span class="line">		<span class="comment">//首先看看敌人的情况，别杀死敌人，自己也被人干掉</span></span><br><span class="line">		aug.zoomOut();</span><br><span class="line">		<span class="comment">//开始射击</span></span><br><span class="line">		aug.shoot();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>场景类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//产生三毛这个狙击手</span></span><br><span class="line">		Snipper sanMao = <span class="keyword">new</span> Snipper();</span><br><span class="line">		sanMao.setRifle(<span class="keyword">new</span> AUG());</span><br><span class="line">		sanMao.killEnemy();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">通过望远镜观察敌人...</span><br><span class="line">AUG射击...</span><br></pre></td></tr></table></figure>
+<p>那么我们能不能传递Rifle父类给sanMao呢？如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//产生三毛这个狙击手</span></span><br><span class="line">		Snipper sanMao = <span class="keyword">new</span> Snipper();</span><br><span class="line">		sanMao.setRifle((AUG)(<span class="keyword">new</span> Rifle()));</span><br><span class="line">		sanMao.killEnemy();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显示是不行的，会在运行期抛出java.lang.ClassCastException异常，这也是大家常说的向下转型（downcast）是不安全的，从里氏替换原则来看，就是有子类出现的地方父类未必就可以出现。</p>
+<h3 id="覆盖或实现父类的方法时输入参数可以被放大"><a href="#覆盖或实现父类的方法时输入参数可以被放大" class="headerlink" title="覆盖或实现父类的方法时输入参数可以被放大"></a>覆盖或实现父类的方法时输入参数可以被放大</h3><blockquote>
+<p>即子类方法的参数应该大于父类方法的参数，即子类方法的参数应该至少与父类相同或者或者是其父类</p>
+</blockquote>
+<h3 id="复写或实现父类的方法时输出结果可以被缩小"><a href="#复写或实现父类的方法时输出结果可以被缩小" class="headerlink" title="复写或实现父类的方法时输出结果可以被缩小"></a>复写或实现父类的方法时输出结果可以被缩小</h3><blockquote>
+<p>即子类方法的返回值应该小于父类方法的返回值，即子类的返回值应该至多与父类的返回值相同或者是其子类</p>
+</blockquote>
+<p>以上两点 归根结底一句话：<strong>重载或实现 子类的方法输入范围&gt;=父类，返回范围&lt;=父类</strong>L</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/09/06/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99/" data-id="ckkwc439t00ctpas9fls23981" data-title="设计模式六大原则之 里氏替换原则" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-unixArt" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/08/29/unixArt/" class="article-date">
+  <time class="dt-published" datetime="2015-08-29T02:01:55.000Z" itemprop="datePublished">2015-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/08/29/unixArt/">Unix编程艺术 读书笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Unix管道的发明人、Unix传统的奠基人之一<strong>Doug Mcllroy</strong>在［Mcllroy78］中曾经说过：</p>
+<ul>
+<li>（i）让每个程序就做好一件事。如果有新任务，就重新开始，不要往原程序中加入新功能而搞得复杂。</li>
+<li>（ii）假定每个程序的输出都会成为另一个程序的输入，哪怕那个程序还是未知的。输出中不要有无关的信息干扰。避免使用严格的分栏式和二进制格式输入。不要坚持使用交互式输入。</li>
+<li>（iii）经可能早地将设计和编译的软件投入试用，哪怕是操作系统也不例外，理想情况下，应该是在几星期内。对拙劣的代码别犹豫，扔掉重写。</li>
+<li>（iv）优先使用工具而不是拙劣的帮助来减轻编程任务的负担。工欲善其事，必先利其器。</li>
+</ul>
+<p>后来他这样总结道（引自<strong>《Unix的四分之一世纪》</strong>）：</p>
+<blockquote>
+<p>Unix哲学是这样的：一个程序制作一件事，并做好。程序要能协作。程序要能处理文本流，因为这是最通用的接口。</p>
+</blockquote>
+<p><strong>Rob Pike</strong>，最伟大的C语言大师之一，在<strong>《Notes on C Programming》</strong> 中从另一个稍微不同的角度阐述了Unix的哲学[Pike]:</p>
+<ul>
+<li>**原则1:**你无法判定程序会在什么地方耗费运行时间。瓶颈经常出现在想不到的地方，所以别急于胡乱找个地方改代码，除非你已经证实那儿就是瓶颈所在。</li>
+<li>**原则2:**估量。在你没对代码进行估量，特别是没有找到最耗时的那部分之前，别去优化速度。</li>
+<li>**原则3:**花哨的算法在n很小时通常很慢，而n通畅很小。花哨算法的常熟复杂度很大。除非你确定n总是很大，否则不要用花哨算法（即使n很大，也优先考虑原则2）</li>
+<li>**原则4:**花哨的算法比简单算法更容易出bug、更难实现。尽量使用简单的算法配合简单的数据结构。</li>
+<li>**原则5:**数据压倒一切。如果已经选择了正确的数据结构并且把一切都组织得井井有条，正确的算法也有不言自明。编程的核心是数据结构，而不是算法。</li>
+<li>**原则6:**没有原则6.</li>
+</ul>
+<p><strong>Ken Thompson</strong>  –Unix最初版本的设计者和实现者，禅宗偈语般地对Pike的原则4作了强调：</p>
+<blockquote>
+<p>拿不准就穷举。</p>
+</blockquote>
+<p>Unix哲学中更多的内容不是这些先哲们口头表述出来的，而是由他们所作的一切和Unix本身所作出的榜样体现出来的.从整体上来说，可以概括为以下几点：</p>
+<ul>
+<li>1.模块原则：使用简洁的接口拼合借口简单的部件。</li>
+<li>2.清晰原则：清晰声誉机巧。</li>
+<li>3.组合原则：设计时考虑拼接组合。</li>
+<li>4.分离原则：策略同机制分离，接口同引擎分离。</li>
+<li>5.简洁原则：设计要简洁，复杂度能低则低。</li>
+<li>6.吝啬原则：除非确无它法，不要编写庞大的程序。</li>
+<li>7.透明性原则：设计要可见，以便审查和调试。</li>
+<li>8.健壮原则：健壮源于透明与简洁。</li>
+<li>9.表示原则：把知识叠入数据以求逻辑质朴而健壮。</li>
+<li>10.通俗原则：接口设计避免标新立异。</li>
+<li>11.缄默原则：如果一个程序没什么好说的，就沉默。</li>
+<li>12.补救原则：出现异常时，马上退出并给出足够错误信息。</li>
+<li>13.经济原则：宁花机器一分钟，不花程序员一秒。</li>
+<li>14.生成原则：避免手工hack，尽量编写程序去生成程序。</li>
+<li>15.优化原则：雕琢前先要有原则，跑之前先学会走。</li>
+<li>16.多样原则：绝不相信所谓“不二法门”的断言。</li>
+<li>17.扩展原则：设计着眼未来，未来总比预想来得快。</li>
+</ul>
+<p>正如<strong>Brian Kernighan</strong>曾经说过的：<strong>“计算机编程的本质就是控制复杂度”</strong></p>
+<blockquote>
+<p>汇编语言、编译语言、流程图、过程化编程、结构化编程、所谓的人工智能、第四代编程语言、面向对象、以及软件开发的方法论，不计其数的解决之道被抛售者吹得神乎其神。但实际上这些用处都不大，原因恰恰在于它们“成功”地将程序的复杂度提升到了人脑几乎不能处理的地步。就像Fredbrooks的一句名言[Brooks]:<strong>没有万能药</strong></p>
+</blockquote>
+<blockquote>
+<p>永远不要去吃力地解读一段晦涩的代码三次。第一次也许侥幸成功，但如果发现必须重新解读一遍－－离第一次太久了、具体细节无从回想－－那么你该注释代码了，这样第三次就相对不会那么痛苦了。<br>                            －－Henry Spencer</p>
+</blockquote>
+<blockquote>
+<p>“错综复杂的美妙事务”听来自相矛盾。Unix程序员相互比的是谁能够做到“简洁而漂亮”并以此为荣，这一点虽然只是隐含在这些规则之中，但还是很值得公开提出来强调一下。<br>                            －－Doug Mcllroy</p>
+</blockquote>
+<blockquote>
+<p>最小立异原则的另一面是避免表象相似而实际略有不同。这回极端危险，因为表象相似往往导致人们产生错误的假定。所以最好不要让不同事务有明显区别，而不要看起来几乎一模一样。<br>                            －－Henry Spencer</p>
+</blockquote>
+<p>由于略微不同的一些原因，<strong>Donald Knuth</strong>（程序设计领域中屈指可数的经典著作之一《计算机程序设计艺术》的作者）广为传播普及了这样的观点：<strong>“过早优化是万恶之源”</strong>。他是对的。<br>    <em>完整的句子是这样的：“97%的时间里，我们不应该考虑蝇头小利的效率提升：过早优化是万恶之源”。Knuth自称这一观点来自C.A.R.Hoare。</em></p>
+<p>在Unix世界里，有一个非常明确的悠久传统（例证之一是Rob Pike以上的评论，另一个是Ken Thompson关于穷举法的格言）：<strong>先制作原型，再精雕细琢。优化之前先确保能用。</strong>或者：<strong>先能走，再学跑。</strong>“极限编程”宗师Kent Beck从另一种不同的文化将这一点有效地扩展为：<strong>先求运行，再求正确，最后求快</strong>。</p>
+<blockquote>
+<p>我最有成效的一天就是扔掉了1000行代码。 －－Ken Thompson</p>
+</blockquote>
+<p>所有的Unix哲学浓缩为一条铁律，那就是各地编程大师们奉为圭臬的<strong>“KISS”</strong>原则：</p>
+<h1 id="K-I-S-S"><a href="#K-I-S-S" class="headerlink" title="K.I.S.S."></a>K.I.S.S.</h1><blockquote>
+<p>Keep It Simple,Stupid!</p>
+</blockquote>
+<ul>
+<li>只要可行，一切都应该做成与来源和目标无关的过滤器。</li>
+<li>数据流应尽可能文本化（这样可以使用标准工具来查看和过滤）。</li>
+<li>数据库部署和应用协议应尽可能文本化（让人可以阅读和编辑）。</li>
+<li>复杂的前端（用户界面）和后端应该泾渭分明。</li>
+<li>如果可能，用C编写前，先用解释性语言搭建原型。</li>
+<li>当且仅当只用一门语言编程会提高程序复杂度时，混用语言编程才比单一语言编程来得好。</li>
+<li>宽收严发（对接收的东西要包容，对输出的东西要严格）。</li>
+<li>过滤时，不需要丢弃的信息决不丢。</li>
+<li>小就是美。在确保完成任务的基础上，程序功能尽可能少。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/08/29/unixArt/" data-id="ckkwc435m002bpas92et4d2lt" data-title="Unix编程艺术 读书笔记" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-helloWorld" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/08/28/helloWorld/" class="article-date">
+  <time class="dt-published" datetime="2015-08-28T00:08:06.000Z" itemprop="datePublished">2015-08-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/other/">other</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/08/28/helloWorld/">Jeklly搬家到Hexo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Hexo 果然比Jeklly 漂亮许多，使用了NexT的模版，以后可以愉快的写blog了～</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2015/08/28/helloWorld/" data-id="ckkwc435j0024pas9bb37g956" data-title="Jeklly搬家到Hexo" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

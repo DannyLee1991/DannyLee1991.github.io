@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>斯坦福机器学习课程 第六周 (3)机器学习系统设计-[构建垃圾邮件分类器][误差分析] | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="构建垃圾邮件分类器 在接下来的视频中，我将谈到机器学习的系统设计。 这些视频将谈及在设计复杂的机器学习系统时，你将遇到的主要问题。同时我们会试着给出一些关于如何巧妙构建一个复杂的机器学习系统的建议。 接下来的视频可能看起来有点不连贯，因为这些视频会涉及一些你在设计机器学习系统时可能会遇到的不同问题。虽然下面的课程数学性可能不是那么的强，但是我认为我们将要讲到的这些东西是非常有用的。可能在构建大型机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斯坦福机器学习课程 第六周 (3)机器学习系统设计-[构建垃圾邮件分类器][误差分析]">
+<meta property="og:url" content="http://example.com/2016/12/18/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(3)%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="构建垃圾邮件分类器 在接下来的视频中，我将谈到机器学习的系统设计。 这些视频将谈及在设计复杂的机器学习系统时，你将遇到的主要问题。同时我们会试着给出一些关于如何巧妙构建一个复杂的机器学习系统的建议。 接下来的视频可能看起来有点不连贯，因为这些视频会涉及一些你在设计机器学习系统时可能会遇到的不同问题。虽然下面的课程数学性可能不是那么的强，但是我认为我们将要讲到的这些东西是非常有用的。可能在构建大型机">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/16_12_18/001.png">
+<meta property="og:image" content="http://example.com/img/16_12_18/002.png">
+<meta property="article:published_time" content="2016-12-18T17:51:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="斯坦福课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/16_12_18/001.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-斯坦福机器学习课程 第六周 (3)机器学习系统设计" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/12/18/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(3)%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time class="dt-published" datetime="2016-12-18T17:51:58.000Z" itemprop="datePublished">2016-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      斯坦福机器学习课程 第六周 (3)机器学习系统设计-[构建垃圾邮件分类器][误差分析]
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="构建垃圾邮件分类器"><a href="#构建垃圾邮件分类器" class="headerlink" title="构建垃圾邮件分类器"></a>构建垃圾邮件分类器</h2><blockquote>
+<p>在接下来的视频中，我将谈到机器学习的系统设计。</p>
+<p>这些视频将谈及在设计复杂的机器学习系统时，你将遇到的主要问题。同时我们会试着给出一些关于如何巧妙构建一个复杂的机器学习系统的建议。</p>
+<p>接下来的视频可能看起来有点不连贯，因为这些视频会涉及一些你在设计机器学习系统时可能会遇到的不同问题。虽然下面的课程数学性可能不是那么的强，但是我认为我们将要讲到的这些东西是非常有用的。可能在构建大型机器学习系统时节省大量的时间。</p>
+</blockquote>
+<h3 id="先想想第一步做什么"><a href="#先想想第一步做什么" class="headerlink" title="先想想第一步做什么"></a>先想想第一步做什么</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/4h5X4/prioritizing-what-to-work-on">视频地址</a></p>
+<p>具体的说，我们首先要讲的是当我们在进行机器学习时，着重要考虑什么问题。首先我要举一个垃圾邮件分类的例子。</p>
+<p>假如你想建立一个垃圾邮件分类器，看这些垃圾邮件与非垃圾邮件的例子（左侧是垃圾邮件，右侧是非垃圾邮件）：</p>
+<p><img src="/img/16_12_18/001.png"></p>
+<h4 id="建立特征向量"><a href="#建立特征向量" class="headerlink" title="建立特征向量"></a>建立特征向量</h4><p>左侧这封邮件想要向你推销某个商品。注意这封垃圾邮件有意的拼错一些单词，例如<code>w4tchs</code>,<code>Med1cine</code>。右边的邮件显然不是一个垃圾邮件。假设我们已经有一些加过标签的训练集，包括标注的垃圾邮件（<code>y=1</code>）和非垃圾邮件(<code>y=0</code>)。我们如何以监督学习的方法来构造一个分类器来区分垃圾邮件和非垃圾邮件呢？</p>
+<p>为了应用监督学习，我们首先必须确定的是如何用邮件的特征构造向量$x$。给出训练集中的特征$x$和标签$y$，我们就能够训练出某种分类器，比如用逻辑回归的方法。</p>
+<ul>
+<li>$x = features\ of\ email\ (邮件的特征)$</li>
+<li>$y = spam(1)\ or\ not\ spam(0)\ (是否为垃圾邮件：1是、0否)$</li>
+</ul>
+<p>这里有一种选择邮件的一些特征变量的方法，比如说我们可能会想出一系列单词，我们可以认为这些单词能够用来区分垃圾邮件或非垃圾邮件。</p>
+<p>比如说，如果有封邮件，包含单词<code>deal</code>，那么它就很有可能是一封垃圾邮件，同时包含单词<code>buy</code>的邮件也很有可能是一封垃圾邮件，包含<code>discount</code>的邮件也很有可能是垃圾邮件。</p>
+<p>如果一封邮件中包含了我的名字，这有可能是一个知道我的人写的，说明这封邮件不太可能是垃圾邮件。因为某些原因，我认为<code>now</code>这个单词表明了这封邮件可能并不是垃圾邮件，因为我经常收到一些很紧急的邮件，当然还有别的单词。我们可以选出这样成百上千的单词。</p>
+<p>给出一封这样的邮件：</p>
+<p><img src="/img/16_12_18/002.png"></p>
+<p>我们可以将这封邮件用一个特征向量来表示，方法如下：</p>
+<p>首先根据字母顺序排序列出我之前选好的单词：</p>
+<p><code>andrew</code>,<code>buy</code>,<code>deal</code>,<code>discount</code>,…,<code>now</code>,…</p>
+<p>然后对当前这封邮件检查一下这些词汇是否出现在这封邮件中。</p>
+<p>我用一个特征向量x来表示这些词汇是否出现在了邮件中：</p>
+<p>$$<br>x=<br>\begin{bmatrix}<br>   0(andrew) \\<br>   1(buy) \\<br>   1(deal) \\<br>   0(discont) \\<br>   … \\<br>   1(now) \\<br>   …<br>\end{bmatrix}<br>$$</p>
+<p>在这个例子中，我选择了100个词用于表示是否可能为垃圾邮件，所以这个特征向量的维度是100。</p>
+<p>并且:</p>
+<p>$$<br>x_{j} =<br>\begin{matrix}<br>   1\ 如果单词出现在email中 \\<br>   0\ 如果单词没出现在email中<br>\end{matrix}<br>$$</p>
+<p>这样我们就可以用特征向量来表示这封邮件。</p>
+<p>顺便说一句，虽然我所描述的这个过程是我自己选取的100个词，但是在实际工作中最普遍的做法是遍历整个训练集，然后在训练集中选出出现次数最多的n个单词，n一般介于10000到50000之间。然后把这些词作为你要用的特征，因此不同于手动选取，我们只用遍历训练样本，然后选出出现频率最高的词语。这些单词会构成特征，这样你就可以使用它们来做垃圾邮件分类了。</p>
+<h4 id="从何处入手来提高分类准确度？"><a href="#从何处入手来提高分类准确度？" class="headerlink" title="从何处入手来提高分类准确度？"></a>从何处入手来提高分类准确度？</h4><p>如果你正在构造一个垃圾邮件分类器，你应该会面对这样一个问题，那就是：</p>
+<p><strong>你最该去使用哪一种改进你的方法，从而使得你的垃圾邮件分类器具有较高的准确度？</strong></p>
+<h5 id="积累大量数据"><a href="#积累大量数据" class="headerlink" title="积累大量数据"></a>积累大量数据</h5><p>从直觉上讲，是要收集大量的数据。事实上确实好多人这么做，很多人认为收集越多的数据，算法就会表现的越好。事实上就垃圾邮件分类而言，有一个叫做<strong>“Honey  Pot”</strong>的项目，它可以建立一个假的邮箱地址，故意将这些地址泄露给发垃圾邮件的人，这样就能收集到大量的垃圾邮件了。这样的话我们就能得到非常多的垃圾邮件来训练学习算法了。</p>
+<h5 id="从email的header中提取路径等信息"><a href="#从email的header中提取路径等信息" class="headerlink" title="从email的header中提取路径等信息"></a>从email的header中提取路径等信息</h5><p>但是在前面的课程中我们知道，大量的数据可能会有帮助，但也可能没有。对于大部分的机器学习问题，还有很多办法用来提升机器学习效果。比如对于垃圾邮件来说，也许你会想到用更复杂的特征变量，像是邮件的路径信息（这种信息通常会出现在邮件的标题中）。因此，垃圾邮件发送方在发送垃圾邮件时，他们总会试图让这个邮件的来源变得模糊一些，或者是用假的邮件标题，或者通过不常见的服务器来发送邮件，用不常用的路由来发送邮件。</p>
+<p>因此我们可以通过邮件的标题部分来构造更加复杂的特征，来获得一系列的邮件路由信息，进而判定是不是一封垃圾邮件。</p>
+<h5 id="从email的正文中提取特征"><a href="#从email的正文中提取特征" class="headerlink" title="从email的正文中提取特征"></a>从email的正文中提取特征</h5><p>你可能还会想到别的方法，比如从邮件的正文出发，寻找一些复杂点的特征，例如单词<code>discount</code>是否和单词<code>discounts</code>是一样的，又比如单词<code>deal</code>和<code>dealer</code>是否也应视为等同？甚至像这个例子中有的单词小写，有的单词大写。或者我们是否应该用标点符号来构造复杂的特征变量，因为垃圾邮件可能更多的使用感叹号。</p>
+<h5 id="构建错词识别算法，来区分邮件中恶意拼写错误的单词"><a href="#构建错词识别算法，来区分邮件中恶意拼写错误的单词" class="headerlink" title="构建错词识别算法，来区分邮件中恶意拼写错误的单词"></a>构建错词识别算法，来区分邮件中恶意拼写错误的单词</h5><p>同样的，我们也可能构造更加复杂的算法来检测或者纠正那些故意的拼写错误 ，例如<code>m0rtgage</code>,<code>med1cine</code>,<code>w4tches</code>。因为垃圾邮件发送方确实这么做了，因为如果你将4放到<code>w4tches</code>中,那么用我们之前提到的简单的方法，垃圾邮件分类器不会把<code>w4tches</code>和<code>watches</code>看成一样的，这样我们就很难区分这些故意拼错的垃圾邮件。发垃圾邮件的也很机智，他们这么做就逃避了一些过滤。</p>
+<hr>
+<p>当我们使用机器学习时，总是可以“头脑风暴”一下，想出一堆方法来试试，就像这样。顺带一提，我有一段时间研究过垃圾邮件分类的问题，尽管我能够理解垃圾邮件分类的问题，我确实懂一些这方面的东西，但是我还是很难告诉你，这四种方法中，你最该去使用哪一种。</p>
+<p>事实上，坦白地说，最常见的情况是：一个研究小组，可能会随机确定其中的一个方法，但是有时候，这种方法并不是最有成效的。你知道，你只是随机选择了其中的一种方法。<strong>实际上，当你需要通过头脑风暴来想出不同方法来尝试去提高精度的时候，你可能已经超越了很多人了。令人难过的是，大部分人他们并不尝试着列出可能的方法。</strong>他们做的只是某天早上醒来，因为某些原因，有了一个突发奇想：”让我们来试试 用Honey Pot项目 收集大量的数据吧”。不管出于什么奇怪的原因，早上的灵机一动，还是随机选一个，然后干上大半年。</p>
+<p>但是我觉得我们有更好的方法，是的，我们将在随后的课程中讲到这个，那就是<strong>误差分析</strong>。</p>
+<p>我会告诉你，<strong>怎样用一个更加系统性的方法从一堆不同的方法中选取合适的那一个。</strong>因此，你更有可能选择一个真正的好方法，能让你花上几天几周甚至是几个月去进行深入的研究。</p>
+<h2 id="误差分析，几个小窍门"><a href="#误差分析，几个小窍门" class="headerlink" title="误差分析，几个小窍门"></a>误差分析，几个小窍门</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/x62iE/error-analysis">视频地址</a></p>
+<p>在上一节课中，我讲到应当怎样面对机器学习问题，有很多提高算法表现的方法，在本次课程中，我们将会讲到**误差分析(error analysis)**的概念。这会帮助你更系统地做出决定。</p>
+<h3 id="推荐方法："><a href="#推荐方法：" class="headerlink" title="推荐方法："></a><strong>推荐方法：</strong></h3><ul>
+<li>1.以一个你可以快速实现的简单的算法作为开始。实现它并且在交叉验证数据集上进行测试。</li>
+</ul>
+<blockquote>
+<p>如果你准备研究机器学习的东西，或者构造机器学习应用程序，最好的实践方法不是建立一个非常复杂的系统，拥有那么多复杂的变量，而是构建一个简单的算法，这样你可以很快地实现它。</p>
+</blockquote>
+<ul>
+<li><p>2.绘制出学习曲线来进而决定是否需要更多的数据，或者更多的特征，等等。</p>
+</li>
+<li><p>3.误差分析：主要检查出在你的算法下，有误差的（在交叉验证集中的）样本数据。</p>
+</li>
+</ul>
+<h3 id="错误分析："><a href="#错误分析：" class="headerlink" title="错误分析："></a><strong>错误分析：</strong></h3><p>$m_{cv}=500$个在交叉验证集中的样本。</p>
+<p>算法错误的分类了100封邮件。</p>
+<p>手工的检查这100个错误邮件，然后基于下面两个条件重新进行分类：</p>
+<ul>
+<li>(i) 它们是什么类别的邮件<blockquote>
+<p>如果你发现算法对于某个类别的分类区分的很差（比如说大部分的错误分类的邮件其实都属于<strong>钓鱼邮件</strong>这种类别，就证明算法对钓鱼邮件的识别很差）这说明，你应该花更多时间来研究这种类型的邮件。然后看看你是否能通过构造更好的特征变量来正确区分这种类型的邮件。</p>
+</blockquote>
+</li>
+<li>(ii) 看看哪些特征变量可能会帮助算法正确地分类邮件<blockquote>
+<p>比如说查看邮件分别属于<strong>故意拼写错误</strong>、<strong>不正常的来源</strong>、<strong>有垃圾邮件特有的标点符号</strong>，如果你发现在错误分类的邮件中，很少有<strong>故意拼写错误</strong>的情况，那么你就可以不用花太多时间在这一类别上了。如果你发现<strong>有垃圾邮件特有的标点符号</strong>这种类别的邮件很多，那么这就是一个很强的特征，说明你应该花费时间在这种类别的分类上。</p>
+</blockquote>
+</li>
+</ul>
+<p>这种类型的误差分析是一种手动检测的过程，检测算法可能会犯的错误，这通常能够帮你找到更为有效的手段。这也解释了为什么我总是推荐先实践一种快速但不完美的算法。</p>
+<p>我们真正想要的是找出什么类型的邮件，是这种算法最难分类出来的，对于不同的机器学习算法，它们所遇到的问题一般总是相同的。通过实现一些快速即便不完美的算法，你能够更快地找到错误的所在，并且快速找出算法难以处理的例子。这样你就能集中精力在这些真正的问题上。</p>
+<h3 id="数值计算的方式来评估你的机器学习算法："><a href="#数值计算的方式来评估你的机器学习算法：" class="headerlink" title="数值计算的方式来评估你的机器学习算法："></a><strong>数值计算的方式来评估你的机器学习算法：</strong></h3><p>如果你在构造一个学习算法，如果你能有一种评估你算法的方法，这将是非常有用的。</p>
+<p>假设我们试图决定是否把像”discount”,”discounts”,”discounter”,”discountring”这样的单词都视为等同。</p>
+<p>一种方法是检查这些单词的开头几个字母，比如检查”discoun”这几个字母，认为以这几个字母开头的单词大概可能有着相同的意思。</p>
+<blockquote>
+<p>在自然语言处理中，这种方法是通过一种叫做<strong>词干提取</strong>的软件实现的。如果你想自己来试试，你可以在网上搜索**”Porter<br> Stemmer(波特词干提取法)”**，这是在词干提取方面一个比较不错的软件。这个软件会将单词”discount”、”discounts”等词视为同一个单词。</p>
+<p>但是这类词干提取软件只会检查单词的开头几个字母，这虽然有用，但也可能会造成一些问题。举个例子，这个软件会把单词”universe(宇宙)”和”university(大学)”也视为同一个单词，因为他们的开头是一样的。</p>
+</blockquote>
+<p>因此，当你在决定是否应该使用词干提取软件来分类时，这总是很难说清楚到底是好还是坏。特别地，<strong>误差分析</strong>也并不能帮助你决定词干提取是不是一个好的方法。</p>
+<p>与之相对地最好的方法来发现词干提取软件对你的分类器到底有没有用，是迅速的着手试一试，来看看它表现到底怎么样。</p>
+<p>为了这么做，通过数值来评估你的算法是非常有用的，具体的说，自然而然地你应该通过<strong>交叉验证</strong>来验证不用词干提取与用词干提取的算法的错误率。</p>
+<p>因此，如果你不在你的算法中使用词干提取，然后你得到比如5%的分类错误率，然后你再使用词干提取来运行你的算法，你得到比如3%的分类错误率，那么这很大的减少了错误的发生，于是你决定词干提取是一个好方法。</p>
+<p>就这个特定的问题而言，这里有一个数量的评估数字，即<strong>交叉验证错误率</strong>。我们以后会发现这个例子中的评估数字还需要一些处理，但是我们可以在今后的课程中看到这么做还是会让你能更快地做出决定，比如是否使用词干提取。</p>
+<hr>
+<h3 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h3><p>当你在研究一个新的机器学习问题时，我总是推荐你实现一个较为简单快速即便不是那么完美的算法，我几乎从未见过人们是这样做。大家经常干的事情是花费大量的时间在构造算法上，构造他们以为的简单的方法，因此，不要担心你的算法太简单，或者太不完美，而是尽可能快地实现你的算法，当你有了初始的实现之后，它会变成一个非常有力的工具，来帮助你决定下一步的做法。因为我们可以先看看算法造成的错误，通过误差分析来看看它犯了什么错，然后来决定优化的方式。</p>
+<p>另一件事，假设你有了一个快速而不完美的算法实现，又有一个数值的评估数据，这会帮助你尝试新的想法快速地发现你尝试的这些想法是否能够提高算法的表现。从而你会更快地做出决定，在算法中放弃什么，吸收什么。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2016/12/18/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(3)%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="ckkwc438u00a5pas9fa0d0wg2" data-title="斯坦福机器学习课程 第六周 (3)机器学习系统设计-[构建垃圾邮件分类器][误差分析]" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/09/%E9%83%A8%E7%BD%B2Django%E5%88%B0Apach/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          部署Django到Apach
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/15/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%883%EF%BC%89-%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">房价预测（3）-数据可视化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

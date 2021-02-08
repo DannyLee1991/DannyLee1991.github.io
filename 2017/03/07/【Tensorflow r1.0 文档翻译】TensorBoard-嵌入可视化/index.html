@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="嵌入在机器学习中无处不在，出现在推荐系统，NLP和许多其他应用程序中。事实上，在TensorFlow的上下文中，将tensor（或tensor切片）视为空间中的点是自然的，因此几乎任何TensorFlow系统将自然地产生各种嵌入。 要了解有关嵌入和如何训练它们的更多信息，请参阅单词向量表示教程。如果你对图像的嵌入感兴趣，请查看这篇文章，了解MNIST图像的有趣的可视化。另一方面，如果你对单词嵌入感">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化">
+<meta property="og:url" content="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%B5%8C%E5%85%A5%E5%8F%AF%E8%A7%86%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="嵌入在机器学习中无处不在，出现在推荐系统，NLP和许多其他应用程序中。事实上，在TensorFlow的上下文中，将tensor（或tensor切片）视为空间中的点是自然的，因此几乎任何TensorFlow系统将自然地产生各种嵌入。 要了解有关嵌入和如何训练它们的更多信息，请参阅单词向量表示教程。如果你对图像的嵌入感兴趣，请查看这篇文章，了解MNIST图像的有趣的可视化。另一方面，如果你对单词嵌入感">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/17_03_07/003.png">
+<meta property="og:image" content="http://example.com/img/17_03_07/006.png">
+<meta property="og:image" content="http://example.com/img/17_03_07/004.png">
+<meta property="og:image" content="http://example.com/img/17_03_07/005.png">
+<meta property="article:published_time" content="2017-03-07T21:07:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="Tensorflow">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/17_03_07/003.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【Tensorflow r1.0 文档翻译】TensorBoard-嵌入可视化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%B5%8C%E5%85%A5%E5%8F%AF%E8%A7%86%E5%8C%96/" class="article-date">
+  <time class="dt-published" datetime="2017-03-07T21:07:58.000Z" itemprop="datePublished">2017-03-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>►<a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>嵌入在机器学习中无处不在，出现在推荐系统，NLP和许多其他应用程序中。事实上，在TensorFlow的上下文中，将tensor（或tensor切片）视为空间中的点是自然的，因此几乎任何TensorFlow系统将自然地产生各种嵌入。</p>
+<p>要了解有关嵌入和如何训练它们的更多信息，请参阅<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/word2vec">单词向量表示教程</a>。如果你对图像的嵌入感兴趣，请查看<a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-10-Visualizing-MNIST/">这篇文章</a>，了解MNIST图像的有趣的可视化。另一方面，如果你对单词嵌入感兴趣，那么<a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-10-Visualizing-MNIST/">这篇文章</a>会给你一个很好的介绍。</p>
+<p>TensorBoard有一个内置的可视化工具，称为嵌入投影仪，用于交互式可视化和分析高维数据，例如嵌入。这意味着对开发人员和研究人员同样有用。它从保存tensorflow变量的检查点文件读取。虽然它对嵌入最有用，它将加载任何2D tensor，可能包括您的训练权重。</p>
+<video height=363 width=710 id="video" controls="" preload="none" poster="/img/17_03_07/002.png">
+    <source id="mp4" src="/img/17_03_07/001.mp4" type="video/mp4">
+    <p>Your user agent does not support the HTML5 Video element.</p>
+</video>
+
+<p>默认情况下，嵌入投影仪执行三维<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Principal_component_analysis">主成分分析</a>，这意味着它接受你的高维数据，并试图找到一个结构保留投影到三维空间。基本上，它通过旋转你的数据，使前三个维度显示尽可能多的数据方差。<a target="_blank" rel="noopener" href="http://setosa.io/ev/principal-component-analysis/">这里</a>有一个很好的视觉解释。另一个非常有用的投影是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">t-SNE</a>。我们稍后在教程中讨论更多的t-SNE。</p>
+<p>如果您使用嵌入，您可能需要将标签/图像附加到数据点，以告诉可视化器每个数据点对应的标签/图像。您可以通过生成元数据文件，使用我们的Python API将其附加到tensor，或将其上传到已经运行的TensorBoard来完成。</p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>有关如何运行TensorBoard并确保您记录所有必要的信息，请参阅<a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/">TensorBoard-可视化学习/</a>。</p>
+<p>要可视化您的嵌入，您需要做3件事：</p>
+<p>1）设置一个二维tensor变量来保存你的嵌入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">embedding_var &#x3D; tf.Variable(....)</span><br></pre></td></tr></table></figure>
+<p>2）定期将您的嵌入保存在<code>LOG_DIR</code>中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">saver &#x3D; tf.train.Saver()</span><br><span class="line">saver.save(session, os.path.join(LOG_DIR, &quot;model.ckpt&quot;), step)</span><br></pre></td></tr></table></figure>
+<p>以下步骤不是必要的，但是如果您有与嵌入相关联的任何元数据（标签，图像），则需要将它们链接到tensor上，以便TensorBoard知道它。</p>
+<p>3）将元数据与嵌入关联。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from tensorflow.contrib.tensorboard.plugins import projector</span><br><span class="line"># Use the same LOG_DIR where you stored your checkpoint.</span><br><span class="line">summary_writer &#x3D; tf.train.SummaryWriter(LOG_DIR)</span><br><span class="line"></span><br><span class="line"># Format: tensorflow&#x2F;contrib&#x2F;tensorboard&#x2F;plugins&#x2F;projector&#x2F;projector_config.proto</span><br><span class="line">config &#x3D; projector.ProjectorConfig()</span><br><span class="line"></span><br><span class="line"># You can add multiple embeddings. Here we add only one.</span><br><span class="line">embedding &#x3D; config.embeddings.add()</span><br><span class="line">embedding.tensor_name &#x3D; embedding_var.name</span><br><span class="line"># Link this tensor to its metadata file (e.g. labels).</span><br><span class="line">embedding.metadata_path &#x3D; os.path.join(LOG_DIR, &#39;metadata.tsv&#39;)</span><br><span class="line"></span><br><span class="line"># Saves a configuration file that TensorBoard will read during startup.</span><br><span class="line">projector.visualize_embeddings(summary_writer, config)</span><br></pre></td></tr></table></figure>
+<p>运行模型并训练嵌入后，运行TensorBoard并将其指向job的<code>LOG_DIR</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir&#x3D;LOG_DIR</span><br></pre></td></tr></table></figure>
+<p>然后单击顶部窗格上的<em>Embeddings</em>选项卡，并选择适当的运行（如果有多个运行）。</p>
+<h2 id="元数据（可选）"><a href="#元数据（可选）" class="headerlink" title="元数据（可选）"></a>元数据（可选）</h2><p>通常嵌入具有与其相关联的元数据（例如，标签，图像）。元数据应存储在模型检查点之外的单独文件中，因为元数据不是模型的可训练参数。格式应为TSV文件，第一行包含列标题，后续行包含元数据值。这里有一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Name\tType\n</span><br><span class="line">Caterpie\tBug\n</span><br><span class="line">Charmeleon\tFire\n</span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+<p>没有与主数据文件共享的显式键;相反，假设元数据文件中的顺序与嵌入tensor中的顺序匹配。换句话说，第一行是头信息，元数据文件中的第(i+1)行对应于存储在检查点中的嵌入tensor的第i行。</p>
+<blockquote>
+<p><strong>注意：</strong>如果TSV元数据文件只有一个列，那么我们不需要一个标题行，并且假设每一行都是嵌入的标签。我们包含此异常，因为它匹配常用的“词汇文件”格式。</p>
+</blockquote>
+<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>如果您有与嵌入关联的图像，则需要生成包含每个数据点的小缩略图的单个图像。这被称为<a target="_blank" rel="noopener" href="https://www.google.com/webhp#q=what+is+a+sprite+image">精灵图像（sprite image）</a>。精灵应具有相同数目的行和列，缩略图按行首先顺序存储：第一个数据点放置在左上角，最后一个数据点在右下角：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">7</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>请注意，在上面的示例中，最后一行不必填写。对于精灵的一个具体示例，请看这个<a target="_blank" rel="noopener" href="https://www.tensorflow.org/images/mnist_10k_sprite.png">精灵图像</a>的10,000 MNIST数字（100x100）。</p>
+<blockquote>
+<p><strong>注意：</strong>我们目前支持高达8192px X 8192px.的精灵。</p>
+</blockquote>
+<p>构造精灵后，您需要告诉嵌入投影机在哪里可以找到它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">embedding.sprite.image_path &#x3D; PATH_TO_SPRITE_IMAGE</span><br><span class="line"># Specify the width and height of a single thumbnail.</span><br><span class="line">embedding.sprite.single_image_dim.extend([w, h])</span><br></pre></td></tr></table></figure>
+<h2 id="相互作用"><a href="#相互作用" class="headerlink" title="相互作用"></a>相互作用</h2><p>嵌入式投影机有三个面板</p>
+<ul>
+<li>1.位于左上方的数据面板，你可以选择你指定的运行、嵌入tensor和数据列来着色和标记点。</li>
+<li>2.位于左下方的预测面板，用于选择投影类型（例如PCA，t-SNE）。</li>
+<li>3.位于右侧的监视面板，在那里你可以搜索特定的点，并查看最近的邻居列表。</li>
+</ul>
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>嵌入投影仪具有减少数据集的维度的三种方法：两个线性的和一个非线性的。每个方法可用于创建二维或三维视图。</p>
+<p><strong>主成分分析（Principal Component Analysis）</strong>减少维度的主要技术是主成分分析（PCA）。嵌入投影仪计算前10个主要元素。该菜单允许您将这些元素投影到两个或三个任意组合。PCA是一个线性投影，通常用于检查全局几何。</p>
+<p><strong>t-SNE</strong>一种流行的非线性降维技术是T-SNE。嵌入投影机提供二维和三维t-SNE视图。布局是在客户端对算法的每一步执行动画。因为t-SNE经常保留一些局部结构，所以它对于探索局部邻域和找到簇是有用的。虽然对于可视化高维数据非常有用，但t-SNE图有时可能会产生迷惑或者误导的作用。想要了解如何有效地使用t-SNE，可以看看这篇<a target="_blank" rel="noopener" href="http://distill.pub/2016/misread-tsne/">很棒的文章</a>。</p>
+<p><strong>自定义（Custom）</strong>您还可以基于文本搜索来构造专门的线性投影，以在空间中找到有意义的方向。要定义投影轴，请输入两个搜索字符串或正则表达式。程序计算出其标签与这些搜索匹配的点集合的质心，并使用质心之间的差向量作为投影轴。</p>
+<h3 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h3><p>要探索数据集，您可以在2D或3D模式中浏览视图，使用自然的点击和拖动手势进行缩放，旋转和平移。单击一个点会使右窗格显示最近邻居的显式文本列表，以及到当前点的距离。最近邻点本身在投影上突出显示。</p>
+<p>放大集群会提供一些信息，但有时更有帮助的是将视图限制为点的子集，并仅对这些点执行投影。为此，您可以通过多种方式选择点：</p>
+<ul>
+<li>1.点击一个点后，也选择其最近的邻居。</li>
+<li>2.搜索后，选择与查询匹配的点。</li>
+<li>3.启用选择，单击点并拖动定义选择球体。</li>
+</ul>
+<p>选择一组点后，您可以使用右侧“检查器”窗格中的“隔离点”按钮单独隔离这些点以进行进一步分析。</p>
+<p><img src="/img/17_03_07/003.png"></p>
+<p><em>在词嵌入数据集中选择“重要”的最近邻。</em></p>
+<p>过滤与自定义投影的组合的功能是非常强大的。下面，我们过滤了“politics”的100个最接近的邻居，并将它们投影到“best” - “worst”向量作为x轴。 y轴是随机的。</p>
+<p>你可以看到，在右边我们有“ideas”，“science”，“perspective”，“journalism”，而在左边我们有“crisis”，“violence”和“conflict”。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><img src="/img/17_03_07/006.png"></th>
+<th align="left"><img src="/img/17_03_07/004.png"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">自定义投影控件。</td>
+<td align="left">将“politics”的邻居定义为“best” - “worst”向量。</td>
+</tr>
+</tbody></table>
+<h3 id="共同特征"><a href="#共同特征" class="headerlink" title="共同特征"></a>共同特征</h3><p>如果你想要分享您的发现，您可以使用右下角的书签面板，并将当前状态（包括任何投影的计算坐标）保存为小文件。投影仪可以同时打开并展示一个或多个这些小文件。这样一来，其他用户就可以浏览这些书签了。</p>
+<p><img src="/img/17_03_07/005.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%B5%8C%E5%85%A5%E5%8F%AF%E8%A7%86%E5%8C%96/" data-id="ckkwc436g0045pas93v08efgo" data-title="【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【Tensorflow r1.0 文档翻译】TensorBoard:可视化学习</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

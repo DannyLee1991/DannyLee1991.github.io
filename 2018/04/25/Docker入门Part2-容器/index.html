@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Docker入门Part2-容器 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前提条件 安装Docker1.13或更高版本。 阅读Part1部分。 让您的环境快速测试运行，以确保您全部设置完毕：  1docker run hello-world 介绍现在是开始以Docker方式构建应用程序的时候了。我们从这种应用程序的层次结构的容器的底部开始，进行详细介绍。在这个层次上面是一个服务，它定义了容器在生产中的行为方式，如Part3部分所述。最后，在顶层的堆栈部分定义了Part5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker入门Part2-容器">
+<meta property="og:url" content="http://example.com/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前提条件 安装Docker1.13或更高版本。 阅读Part1部分。 让您的环境快速测试运行，以确保您全部设置完毕：  1docker run hello-world 介绍现在是开始以Docker方式构建应用程序的时候了。我们从这种应用程序的层次结构的容器的底部开始，进行详细介绍。在这个层次上面是一个服务，它定义了容器在生产中的行为方式，如Part3部分所述。最后，在顶层的堆栈部分定义了Part5">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/18_04_25/004.png">
+<meta property="article:published_time" content="2018-04-25T16:43:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/18_04_25/004.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Docker入门Part2-容器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/" class="article-date">
+  <time class="dt-published" datetime="2018-04-25T16:43:00.000Z" itemprop="datePublished">2018-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>►<a class="article-category-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Docker入门Part2-容器
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">安装Docker1.13或更高版本</a>。</li>
+<li>阅读Part1部分。</li>
+<li>让您的环境快速测试运行，以确保您全部设置完毕：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>现在是开始以Docker方式构建应用程序的时候了。我们从这种应用程序的层次结构的容器的底部开始，进行详细介绍。在这个层次上面是一个服务，它定义了容器在生产中的行为方式，如Part3部分所述。最后，在顶层的堆栈部分定义了Part5部分中涵盖的所有服务的交互。</p>
+<ul>
+<li>Stack （堆栈）</li>
+<li>Services （服务）</li>
+<li><strong>Container</strong>（容器，你在这里）</li>
+</ul>
+<h2 id="您的新开发环境"><a href="#您的新开发环境" class="headerlink" title="您的新开发环境"></a>您的新开发环境</h2><p>之前，如果您要开始编写Python应用程序，您第一个要做的事情就是在您的机器上安装Python运行环境。但是，这会造成您的计算机上的环境需要完美适合您的应用程序按预期运行，并且还需要与您的生产环境相匹配。</p>
+<p>使用Docker，您可以将一个可移植的Python运行环境作为一个镜像获取，无需安装。然后，您的构建可以将基础Python镜像与应用程序代码一起包括在内，确保您的应用程序，依赖项和运行环境都在一起。</p>
+<p>这些可移植的镜像是由称为<code>Dockerfile</code>的东西定义的。</p>
+<h2 id="通过Dockerfile定义一个容器"><a href="#通过Dockerfile定义一个容器" class="headerlink" title="通过Dockerfile定义一个容器"></a>通过<code>Dockerfile</code>定义一个容器</h2><p><code>Dockerfile</code>定义了容器内的环境发生的事情。像访问网络接口以及磁盘驱动器等资源是在此环境内虚拟化的，这与系统的其余部分是隔离开的，因此您需要将端口映射到外部世界，并明确指定要将哪些文件“复制”到该环境中。但是，在完成这些之后，您可以预期，在此<code>Dockerfile</code>中定义的应用程序构建在运行时的行为完全相同。</p>
+<h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a><code>Dockerfile</code></h3><p>创建一个空目录。改变目录(<code>cd</code>)到这个新的目录下，创建一个叫做<code>Dockerfile</code>的文件，将下面的内容复制粘贴到这个文件中，并保存。注意记下<code>Dockerfile</code>中的注释部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># Use an official Python runtime as a parent image</span><br><span class="line"># 使用一个官方的Python运行时环境作为父镜像</span><br><span class="line">FROM python:2.7-slim</span><br><span class="line"></span><br><span class="line"># Set the working directory to &#x2F;app</span><br><span class="line"># 设置工作目录到&#x2F;app目录下</span><br><span class="line">WORKDIR &#x2F;app</span><br><span class="line"></span><br><span class="line"># Copy the current directory contents into the container at &#x2F;app</span><br><span class="line"># 复制当前目录内容到容器的&#x2F;app目录下</span><br><span class="line">ADD . &#x2F;app</span><br><span class="line"></span><br><span class="line"># Install any needed packages specified in requirements.txt</span><br><span class="line"># 安装所有requirements.txt中指定的需要的包</span><br><span class="line">RUN pip install --trusted-host pypi.python.org -r requirements.txt</span><br><span class="line"></span><br><span class="line"># Make port 80 available to the world outside this container</span><br><span class="line"># 使得该容器的80端口对外可用</span><br><span class="line">EXPOSE 80</span><br><span class="line"></span><br><span class="line"># Define environment variable</span><br><span class="line"># 定义环境变量</span><br><span class="line">ENV NAME World</span><br><span class="line"></span><br><span class="line"># Run app.py when the container launches</span><br><span class="line"># 当容器加载时，运行app.py</span><br><span class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</span><br></pre></td></tr></table></figure>
+<p>这个<code>Dockerfile</code>提到了我们尚未创建的两个文件，名叫<code>app.py</code>和<code>requirements.txt</code>。接下来让我们来创建出来。</p>
+<h2 id="应用程序本身"><a href="#应用程序本身" class="headerlink" title="应用程序本身"></a>应用程序本身</h2><p>创建两个文件<code>requirements.txt</code>和<code>app.py</code>，并把他们放在和<code>Dockerfile</code>相同的目录下。这就完成了我们的应用程序，正如你看到的一样，非常简单。当上面的<code>Dockerfile</code>被内置到镜像中时，由于<code>Dockerfile</code>的<code>ADD</code>命令，<code>app.py</code>和<code>requirements.txt</code>存在，并且<code>app.py</code>的输出可以通过HTTP访问，这要归功于<code>EXPOSE</code>命令。</p>
+<h3 id="requirements-txt"><a href="#requirements-txt" class="headerlink" title="requirements.txt"></a><code>requirements.txt</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flask</span><br><span class="line">Redis</span><br></pre></td></tr></table></figure>
+<h3 id="app-py"><a href="#app-py" class="headerlink" title="app.py"></a><code>app.py</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">from redis import Redis, RedisError</span><br><span class="line">import os</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># Connect to Redis</span><br><span class="line">redis &#x3D; Redis(host&#x3D;&quot;redis&quot;, db&#x3D;0, socket_connect_timeout&#x3D;2, socket_timeout&#x3D;2)</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;&#x2F;&quot;)</span><br><span class="line">def hello():</span><br><span class="line">    try:</span><br><span class="line">        visits &#x3D; redis.incr(&quot;counter&quot;)</span><br><span class="line">    except RedisError:</span><br><span class="line">        visits &#x3D; &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;&#x2F;i&gt;&quot;</span><br><span class="line"></span><br><span class="line">    html &#x3D; &quot;&lt;h3&gt;Hello &#123;name&#125;!&lt;&#x2F;h3&gt;&quot; \</span><br><span class="line">           &quot;&lt;b&gt;Hostname:&lt;&#x2F;b&gt; &#123;hostname&#125;&lt;br&#x2F;&gt;&quot; \</span><br><span class="line">           &quot;&lt;b&gt;Visits:&lt;&#x2F;b&gt; &#123;visits&#125;&quot;</span><br><span class="line">    return html.format(name&#x3D;os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname&#x3D;socket.gethostname(), visits&#x3D;visits)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    app.run(host&#x3D;&#39;0.0.0.0&#39;, port&#x3D;80)</span><br></pre></td></tr></table></figure>
+<p>现在我们看到<code>pip install -r requirements.txt</code>命令安装了Python的Flask和Redis库，并且应用打印出了环境变量<code>NAME</code>，同时输出了方法<code>socket.gethostname()</code>输出的内容。最后，因为Redis没有运行（因为我们只安装了Python库，而不是Redis本身），所以这里应该会失败，并产生错误消息。</p>
+<blockquote>
+<p>注意：在容器内部访问主机的名称将检索容器ID，这与正在运行的可执行文件的进程ID相似。</p>
+</blockquote>
+<p>就是这样！你的系统上不需要Python或者任何<code>requirements.txt</code>文件，也不需要在你的系统上安装或运行此镜像。这看起来你并没有真正用Python和Flask建立一个运行环境，但事实上已经建立好了。</p>
+<h2 id="构建一个应用"><a href="#构建一个应用" class="headerlink" title="构建一个应用"></a>构建一个应用</h2><p>我们准备构建应用程序。确保您仍然处于新目录的顶层。以下是<code>ls</code>命令应该显示的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">Dockerfile		app.py			requirements.txt</span><br></pre></td></tr></table></figure>
+<p>现在运行build命令。这会创建一个Docker镜像，我们将使用<code>-t</code>标记它，这样可以给它指定一个友好的名称。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t friendlyhello .</span><br></pre></td></tr></table></figure>
+<p>你构建的镜像在哪里？它在你的机器的本地Docker镜像注册表中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br><span class="line"></span><br><span class="line">REPOSITORY            TAG                 IMAGE ID</span><br><span class="line">friendlyhello         latest   </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Linux用户的故障排除</p>
+<p><em>DNS设置</em></p>
+<p>代理服务器在启动并运行后可以阻止与您的网络应用程序的连接。如果您位于代理服务器的后面，请使用<code>ENV</code>命令为您的代理服务器指定主机和端口，将以下行添加到<code>Dockerfile</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Set proxy server, replace host:port with values for your servers</span><br><span class="line">ENV http_proxy host:port</span><br><span class="line">ENV https_proxy host:port</span><br></pre></td></tr></table></figure>
+<p><em>代理服务设置</em></p>
+<p>DNS错误配置可能会导致<code>pip</code>出现问题。您需要设置您自己的DNS服务器地址以使<code>pip</code>正常工作。您可能需要更改Docker守护程序的DNS设置。您可以按照以下方式来编辑（或者创建）带有<code>dns</code>信息的配置文件<code>/etc/docker/daemon.json</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;dns&quot;: [&quot;your_dns_address&quot;, &quot;8.8.8.8&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，列表的第一个元素是你的DNS服务器的地址。第二项是Google的DNS，当第一项不可用时可以使用它。</p>
+<p>在继续之前，保存`daemon.json并重新启动docker服务。</p>
+<p><code>sudo service docker restart</code></p>
+<p>修复后，重试运行<code>build</code>命令。</p>
+</blockquote>
+<h2 id="运行app"><a href="#运行app" class="headerlink" title="运行app"></a>运行app</h2><p>运行应用程序，使用<code>-p</code>将机器的端口4000映射到容器的已发布端口<code>80</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure>
+<p>你可以在<code>http://0.0.0.0:80</code>看到一条消息，Python正在为你的应用程序提供服务。但是，该消息来自容器内部，它不知道您将该容器的端口<code>80</code>映射到<code>4000</code>，从而制作正确的URL<code>http://localhost:4000</code>。</p>
+<p>在网络浏览器中转到该URL以查看网页上显示的显示内容。</p>
+<p><img src="/img/18_04_25/004.png"></p>
+<blockquote>
+<p>注意：如果你正在在Windows7上使用Docker Toolbox，使用Docker Machine IP来替代<code>localhost</code>。例如：<a target="_blank" rel="noopener" href="http://192.168.99.100:4000/%E3%80%82%E8%A6%81%E6%9F%A5%E6%89%BEIP%E5%9C%B0%E5%9D%80%EF%BC%8C%E8%AF%B7%E4%BD%BF%E7%94%A8%E8%AF%A5%E5%91%BD%E4%BB%A4%60docker-machine">http://192.168.99.100:4000/。要查找IP地址，请使用该命令`docker-machine</a> ip`。</p>
+</blockquote>
+<p>您也可以在shell中使用<code>curl</code>命令来查看相同的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl http:&#x2F;&#x2F;localhost:4000</span><br><span class="line"></span><br><span class="line">&lt;h3&gt;Hello World!&lt;&#x2F;h3&gt;&lt;b&gt;Hostname:&lt;&#x2F;b&gt; 8fc990912a14&lt;br&#x2F;&gt;&lt;b&gt;Visits:&lt;&#x2F;b&gt; &lt;i&gt;cannot connect to Redis, counter disabled&lt;&#x2F;i&gt;</span><br></pre></td></tr></table></figure>
+<p>这个<code>4000:80</code>的端口重映射是为了演示<code>Dockerfile</code>中的<code>EXPOSE</code>与使用<code>docker run -p</code>发布的内容之间的区别。在后面的步骤中，我们只需将主机上的端口80映射到容器中的端口80并使用<code>http://localhost</code>。</p>
+<p>在终端中点击<code>CTRL + C</code>退出。</p>
+<blockquote>
+<p><strong>在Windows下，显式的停止容器</strong></p>
+<p>在Windows系统下，<code>CTRL+C</code>不会停止容器。到目前为止，首先键入<code>CTRL+C</code>以获取提示（或打开另一个shell），然后输入<code>docker container ls</code>来列出运行中的容器，其次是<code>docker container stop &lt;Container NAME or ID&gt;</code>来停止容器。否则，你会在下一步重新运行容器时得到一个来自守护进程的错误消息。</p>
+</blockquote>
+<p>现在让我们以分离模式在后台运行应用程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure>
+<p>您可以获取应用的长容器ID，然后将其显示到终端。你的容器在后台运行。你也可以通过<code>docker container ls</code>来看到简短的容器ID（并且在运行命令时可以互换使用）。</p>
+<p>注意到<code>CONTAINER ID</code>与<code>http://localhost:4000</code>上的内容匹配。</p>
+<p>现在我们使用<code>docker container stop</code>来结束指定<code>CONTAINER ID</code><br>的进程，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container stop 1fa4ab2cf395</span><br></pre></td></tr></table></figure>
+<h2 id="分享你的image"><a href="#分享你的image" class="headerlink" title="分享你的image"></a>分享你的image</h2><p>为了演示我们刚才创建的可移植性，我们上传我们构建的镜像并在其他地方运行它。毕竟，当您想要将容器部署到生产环境时，您需要知道如何推送注册表。</p>
+<p>注册表是存储库的集合，而存储库是镜像的集合 - 有点像GitHub存储库，但不同的是这里代码已经创建。注册表上的帐户可以创建许多存储库。 <code>docker</code> CLI默认使用Docker的公共注册表。</p>
+<blockquote>
+<p>注意：我们在这里使用Docker的公共注册表仅仅是因为它是免费和预先配置的，但是有许多公共选项可供选择，您甚至可以使用<a target="_blank" rel="noopener" href="https://docs.docker.com/datacenter/dtr/2.2/guides/">Docker Trusted Registry</a>设置您自己的私有注册表。</p>
+</blockquote>
+<h3 id="登录你的Docker-ID"><a href="#登录你的Docker-ID" class="headerlink" title="登录你的Docker ID"></a>登录你的Docker ID</h3><p>如果你没有Docker账号，需要在<a href="cloud.docker.com">cloud.docker.com</a>上注册一个。记下你的用户名。</p>
+<p>登录到本地计算机上的Docker公共注册表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker login</span><br></pre></td></tr></table></figure>
+<h3 id="给镜像打标签"><a href="#给镜像打标签" class="headerlink" title="给镜像打标签"></a>给镜像打标签</h3><p>将本地镜像与注册表中的存储库相关联的符号是<code>username/repository:tag</code>。该tag是可选的，但建议使用，因为它是注册管理机构用于为Docker镜像提供版本的机制。为该上下文提供存储库并标记有意义的名称，例如<code>get-started:part2</code>。这将镜像置于启动存储库中，并将其标记为<code>part2</code>。</p>
+<p>现在，给镜像整体的打上标签。带入你的用户名、仓库名、和标签名运行<code>docker tag image</code>以便将镜像上传到你想要的地址。命令的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag image username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag friendlyhello john&#x2F;get-started:part2</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker image ls</code>来查看你的新的带有标签信息的镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br><span class="line"></span><br><span class="line">REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">friendlyhello            latest              d9e555c53008        3 minutes ago       195MB</span><br><span class="line">john&#x2F;get-started         part2               d9e555c53008        3 minutes ago       195MB</span><br><span class="line">python                   2.7-slim            1c7128a655f6        5 days ago          183MB</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="发布镜像"><a href="#发布镜像" class="headerlink" title="发布镜像"></a>发布镜像</h3><p>上传带有标签信息的镜像到仓库中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>完成后，此上传的结果将公开发布。如果你登录到<a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>，你会在那里看到带有pull命令的新的镜像文件。</p>
+<h3 id="从远程仓库中下拉并且运行镜像"><a href="#从远程仓库中下拉并且运行镜像" class="headerlink" title="从远程仓库中下拉并且运行镜像"></a>从远程仓库中下拉并且运行镜像</h3><p>截止到目前，你可以使用<code>docker run</code>命令来在任何机器上运行你的应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>如果镜像在本地机器上不可用，Docker会从远程仓库中下拉到本地。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -p 4000:80 john&#x2F;get-started:part2</span><br><span class="line">Unable to find image &#39;john&#x2F;get-started:part2&#39; locally</span><br><span class="line">part2: Pulling from john&#x2F;get-started</span><br><span class="line">10a267c67f42: Already exists</span><br><span class="line">f68a39a6a5e4: Already exists</span><br><span class="line">9beaffc0cf19: Already exists</span><br><span class="line">3c1fe835fb6b: Already exists</span><br><span class="line">4c9f1fa8fcb8: Already exists</span><br><span class="line">ee7d8f576a14: Already exists</span><br><span class="line">fbccdcced46e: Already exists</span><br><span class="line">Digest: sha256:0601c866aab2adcc6498200efd0f754037e909e5fd42069adeff72d1e2439068</span><br><span class="line">Status: Downloaded newer image for john&#x2F;get-started:part2</span><br><span class="line"> * Running on http:&#x2F;&#x2F;0.0.0.0:80&#x2F; (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+<p>不管<code>docker run</code>在哪里运行，它都会将你的镜像以及Python和<code>requirements.txt</code>中所有的依赖关系一起提取出来，并运行您的代码。它们都在一个整洁的小包中一起旅行，并且Docker不需要您在主机上安装任何东西来运行它。</p>
+<h2 id="Part2结论"><a href="#Part2结论" class="headerlink" title="Part2结论"></a>Part2结论</h2><p>这里列出了这个页面的基本Docker命令，以及一些相关的命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker build -t friendlyhello .  # Create image using this directory&#39;s Dockerfile</span><br><span class="line">docker run -p 4000:80 friendlyhello  # Run &quot;friendlyname&quot; mapping port 4000 to 80</span><br><span class="line">docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode</span><br><span class="line">docker container ls                                # List all running containers</span><br><span class="line">docker container ls -a             # List all containers, even those not running</span><br><span class="line">docker container stop &lt;hash&gt;           # Gracefully stop the specified container</span><br><span class="line">docker container kill &lt;hash&gt;         # Force shutdown of the specified container</span><br><span class="line">docker container rm &lt;hash&gt;        # Remove specified container from this machine</span><br><span class="line">docker container rm $(docker container ls -a -q)         # Remove all containers</span><br><span class="line">docker image ls -a                             # List all images on this machine</span><br><span class="line">docker image rm &lt;image id&gt;            # Remove specified image from this machine</span><br><span class="line">docker image rm $(docker image ls -a -q)   # Remove all images from this machine</span><br><span class="line">docker login             # Log in this CLI session using your Docker credentials</span><br><span class="line">docker tag &lt;image&gt; username&#x2F;repository:tag  # Tag &lt;image&gt; for upload to registry</span><br><span class="line">docker push username&#x2F;repository:tag            # Upload tagged image to registry</span><br><span class="line">docker run username&#x2F;repository:tag                   # Run image from a registry</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/" data-id="ckkwc434s0007pas9feyk51ty" data-title="Docker入门Part2-容器" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/26/Docker%E5%85%A5%E9%97%A8Part3-%E6%9C%8D%E5%8A%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker入门Part3-服务
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part1-%E5%AE%9A%E4%BD%8D%E5%92%8C%E8%AE%BE%E7%BD%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker入门Part1-定位和设置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

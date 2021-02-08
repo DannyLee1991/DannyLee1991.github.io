@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本教程将介绍如何在tf.contrib.learn中创建输入函数。您将对如何构造一个用于预处理并将数据反馈到你的模型的input_fn操作有一个大致的了解。然后，您将实现一个input_fn，它将训练，评估和预测数据提供给神经网络回归，并用于预测房屋数据的中位数值。 使用input_fn的自定义输入管道当通过使用tf.contrib.learn来训练一个神经网络时，可以将您的特征和目标数据直接传递">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数">
+<meta property="og:url" content="http://example.com/2017/03/06/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E9%80%9A%E8%BF%87tf.contrib.learn%E6%9D%A5%E6%9E%84%E5%BB%BA%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本教程将介绍如何在tf.contrib.learn中创建输入函数。您将对如何构造一个用于预处理并将数据反馈到你的模型的input_fn操作有一个大致的了解。然后，您将实现一个input_fn，它将训练，评估和预测数据提供给神经网络回归，并用于预测房屋数据的中位数值。 使用input_fn的自定义输入管道当通过使用tf.contrib.learn来训练一个神经网络时，可以将您的特征和目标数据直接传递">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-03-06T22:24:58.000Z">
+<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="Tensorflow">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/06/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E9%80%9A%E8%BF%87tf.contrib.learn%E6%9D%A5%E6%9E%84%E5%BB%BA%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0/" class="article-date">
+  <time class="dt-published" datetime="2017-03-06T22:24:58.000Z" itemprop="datePublished">2017-03-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>►<a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本教程将介绍如何在tf.contrib.learn中创建输入函数。您将对如何构造一个用于预处理并将数据反馈到你的模型的<code>input_fn</code>操作有一个大致的了解。然后，您将实现一个<code>input_fn</code>，它将训练，评估和预测数据提供给神经网络回归，并用于预测房屋数据的中位数值。</p>
+<h2 id="使用input-fn的自定义输入管道"><a href="#使用input-fn的自定义输入管道" class="headerlink" title="使用input_fn的自定义输入管道"></a>使用input_fn的自定义输入管道</h2><p>当通过使用tf.contrib.learn来训练一个神经网络时，可以将您的特征和目标数据直接传递到你的<code>fit</code>(拟合)、<code>evaluate</code>(评估)或<code>predict</code>(预测)操作中。下面是从<a href="/2017/03/05/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E3%80%90tf.contrib.learn%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E3%80%91/">tf.contrib.learn快速入门教程</a>中获取的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">training_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">    filename&#x3D;IRIS_TRAINING, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line">test_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">    filename&#x3D;IRIS_TEST, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">classifier.fit(x&#x3D;training_set.data,</span><br><span class="line">               y&#x3D;training_set.target,</span><br><span class="line">               steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>这种数据量不大的情况下，我们即使不处理数据源，也可好获得良好的效果。但是在需要更多特征工程的情况下，<code>tf.contrib.learn</code>支持使用自定义输入函数（<code>input_fn</code>），它可以将预处理和管道数据的逻辑封装到模型中。</p>
+<h3 id="input-fn的剖析"><a href="#input-fn的剖析" class="headerlink" title="input_fn的剖析"></a>input_fn的剖析</h3><p>以下代码说明了输入函数的基本框架：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def my_input_fn():</span><br><span class="line"></span><br><span class="line">    # Preprocess your data here...</span><br><span class="line"></span><br><span class="line">    # ...then return 1) a mapping of feature columns to Tensors with</span><br><span class="line">    # the corresponding feature data, and 2) a Tensor containing labels</span><br><span class="line">    return feature_cols, labels</span><br></pre></td></tr></table></figure>
+<p>输入函数的主体包含用于预处理输入数据的特定逻辑，例如<strong>擦除不良样本</strong>或**<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Feature_scaling">特征缩放</a>**。</p>
+<p>输入函数必须返回以下两个值，这两个值包含要输入到模型中的最终特征和标签数据（如上面的代码框架中所示）：</p>
+<p><code>feature_cols</code></p>
+<pre><code>包含将特征列名称映射到包含相应特征数据的`Tensor`（或`SparseTensor`）的键/值对的字典。
+</code></pre>
+<p><code>labels</code></p>
+<pre><code>包含您的标签（目标）值的`Tensor`：你的模型的值的目的是用于预测。
+</code></pre>
+<h3 id="将特征数据转换为Tensor"><a href="#将特征数据转换为Tensor" class="headerlink" title="将特征数据转换为Tensor"></a>将特征数据转换为Tensor</h3><p>如果你的特征/标签数据储存在<a target="_blank" rel="noopener" href="http://pandas.pydata.org/">pandas</a>数据帧中或<a target="_blank" rel="noopener" href="http://www.numpy.org/">numpy</a>数组中，那么你需要将其转换为<code>Tensor</code>，然后从您的<code>input_fn</code>中返回它。</p>
+<p>对于连续数据，可以使用<code>tf.constant</code>创建和填充<code>Tensor</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feature_column_data &#x3D; [1, 2.4, 0, 9.9, 3, 120]</span><br><span class="line">feature_tensor &#x3D; tf.constant(feature_column_data)</span><br></pre></td></tr></table></figure>
+<p>对于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sparse_matrix">稀疏分类数据</a>（大多数值为0的数据），您应该替换为填充一个<code>SparseTensor</code>，它使用三个参数来实例化：</p>
+<p><code>dense_shape</code></p>
+<pre><code>tensor的形状。获取一个列表，指示每个维度中元素的数量。例如：`dense_shape=[3,6]`指定了一个二维的3x6的tensor，`dense_shape=[2,3,4]`指定了一个三维的2x3x4的tensor，`dense_shape=[9]`指定了一个拥有9个元素的一维tensor。
+</code></pre>
+<p><code>indices</code></p>
+<pre><code>您的tensor中包含非零元素的索引。值为一个列表，其中每一项本身是包含非零元素的索引的列表。（元素是零索引的 - 即，`[0,0]`是二维张量中第一行的第一列中的元素的索引值）。例如：`indices=[[1,3], [2,4]]`指定了索引为`[1,3]`和`[2,4]`的元素具有非零值。
+</code></pre>
+<p><code>values</code></p>
+<pre><code>值为一维tensor。`values`的项`i`对应于`indices`中的项`i`，并且指定了它的值。例如，给定了`indices=[[1,3], [2,4]]`，那么参数`values=[18, 3.6]`就指定了tensor的元素`[1,3]`的值为18，元素`[2,4]`的值为3.6。
+</code></pre>
+<p>以下代码定义了一个具有3行和5列的二维<code>SparseTensor</code>。具有索引<code>[0,1]</code>的元素的值为6，并且索引为<code>[2,4]</code>的元素值为0.5（所有其他值为0）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sparse_tensor &#x3D; tf.SparseTensor(indices&#x3D;[[0,1], [2,4]],</span><br><span class="line">                                values&#x3D;[6, 0.5],</span><br><span class="line">                                dense_shape&#x3D;[3, 5])</span><br></pre></td></tr></table></figure>
+<p>这对应了下面的稠密tensor(dense tensor)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[0, 6, 0, 0, 0]</span><br><span class="line"> [0, 0, 0, 0, 0]</span><br><span class="line"> [0, 0, 0, 0, 0.5]]</span><br></pre></td></tr></table></figure>
+<p>更多关于<code>SparseTensor</code>的内容，请见<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/SparseTensor"><code>tf.SparseTensor</code></a></p>
+<h3 id="将input-fn数据传递给您的模型"><a href="#将input-fn数据传递给您的模型" class="headerlink" title="将input_fn数据传递给您的模型"></a>将input_fn数据传递给您的模型</h3><p>要将数据馈送到您的模型进行训练，您只需将创建的输入函数作为<code>input_fn</code>参数的值传递到<code>fit</code>运算即可，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;my_input_fn, steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>请注意，<code>input_fn</code>负责将特征和标签数据提供给模型，并在<code>fit</code>(拟合)中替换<code>x</code>和<code>y</code>参数。如果为<code>fit</code>提供了一个不为空的<code>input_fn</code>值与不为<code>None</code>的<code>x</code>或<code>y</code>结合，它将抛出一个<code>ValueError</code>。</p>
+<p>还要注意一点，<code>input_fn</code>参数必须接收一个函数对象（例如<code>input_fn = my_input_fn</code>），而不是函数调用的返回值（<code>input_fn = my_input_fn()</code>）。这意味着，如果您尝试在<code>fit</code>的调用中按照下面的方式，将参数传递给输入函数，则会导致TypeError：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;my_input_fn(training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>但是，如果你想要参数化你的输入函数，有一些其他的方法可以做到。您可以使用不带参数的包装函数作为<code>input_fn</code>，并使用它来调用具有所需参数的输入函数。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def my_input_function_training_set():</span><br><span class="line">  return my_input_function(training_set)</span><br><span class="line"></span><br><span class="line">classifier.fit(input_fn&#x3D;my_input_fn_training_set, steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>或者，你可以使用Python的<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/functools.html#functools.partial"><code>functools.partial</code></a>方法来构造一个新的所有参数值固定的方法对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;functools.partial(my_input_function,</span><br><span class="line">                                          data_set&#x3D;training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>第三种方式是将<code>input_fn</code>调用包装在<a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions"><code>lambda</code></a>中，并将其传递给<code>input_fn</code>参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;lambda: my_input_fn(training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>构建您的输入管道的一个很大的优势如上所示 – 可以接受数据集的参数 – 是你只需修改数据集的参数，就可以传递相同的<code>input_fn</code>到<code>evaluate</code>和<code>predict</code>操作上。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.evaluate(input_fn&#x3D;lambda: my_input_fn(test_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
+<p>这种方法增强了代码的可维护性：不需要针对每种类型的操作捕获单独变量（例如，<code>x_train</code>，<code>x_test</code>，<code>y_train</code>，<code>y_test</code>）中的<code>x</code>和<code>y</code>值。</p>
+<h3 id="一个用于波士顿房屋数据的神经网络"><a href="#一个用于波士顿房屋数据的神经网络" class="headerlink" title="一个用于波士顿房屋数据的神经网络"></a>一个用于波士顿房屋数据的神经网络</h3><p>在本教程的剩余部分，您将编写一个输入函数，用于预处理从<a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/datasets/Housing">UCI住宅数据集</a>中提取的一组波士顿房屋数据，并使用它来将数据馈送到神经网络回归器，以预测房屋中值。</p>
+<p>您将用于训练神经网络的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/input_fn#setup">波士顿CSV数据集</a>包含以下波士顿郊区的<a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names">特征数据</a>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">特征</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">CRIM</td>
+<td align="left">人均犯罪率</td>
+</tr>
+<tr>
+<td align="left">ZN</td>
+<td align="left">超过25,000+平方呎地段的住宅用地的部分</td>
+</tr>
+<tr>
+<td align="left">INDUS</td>
+<td align="left">非零售业的土地部分</td>
+</tr>
+<tr>
+<td align="left">NOX</td>
+<td align="left">一氧化氮浓度 以百万分之一为单位</td>
+</tr>
+<tr>
+<td align="left">RM</td>
+<td align="left">每个住宅平均房间数</td>
+</tr>
+<tr>
+<td align="left">AGE</td>
+<td align="left">在1940年之前建造的自用住宅的部分</td>
+</tr>
+<tr>
+<td align="left">DIS</td>
+<td align="left">到波士顿地区就业中心的距离</td>
+</tr>
+<tr>
+<td align="left">TAX</td>
+<td align="left">每$10,000的房产税税率</td>
+</tr>
+<tr>
+<td align="left">PTRATIO</td>
+<td align="left">学生 - 教师比例</td>
+</tr>
+</tbody></table>
+<p>你的模型预测的标签是MEDV，自用住宅的价格中值，以千美元计。</p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>下载以下数据集：<a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_train.csv">boston_train.csv</a>, <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_test.csv">boston_test.csv</a>, 和 <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_predict.csv">boston_predict.csv</a>。</p>
+<p>以下部分提供了如何创建输入函数的手把手的步骤，将这些数据集送入神经网络回归，训练和评估模型，并进行房屋价值预测。完整的最终代码在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/examples/tutorials/input_fn/boston.py">这里</a>。</p>
+<h3 id="输入房屋数据"><a href="#输入房屋数据" class="headerlink" title="输入房屋数据"></a>输入房屋数据</h3><p>要开始，请设置导入所需的库（包括<code>pandas</code>和<code>tensorflow</code>），并将<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/monitors#enabling_logging_with_tensorflow">日志级别设置</a>为<code>INFO</code>以获取更详细的日志输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from __future__ import absolute_import</span><br><span class="line">from __future__ import division</span><br><span class="line">from __future__ import print_function</span><br><span class="line"></span><br><span class="line">import itertools</span><br><span class="line"></span><br><span class="line">import pandas as pd</span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">tf.logging.set_verbosity(tf.logging.INFO)</span><br></pre></td></tr></table></figure>
+<p>在<code>COLUMNS</code>中定义数据集的列名称。要区分特征和标签，还需要定义<code>FEATURES</code>和<code>LABEL</code>。然后将三个CSV（<code>tf.train</code>，<code>tf.test</code>和<code>predict</code>）读入pandas <code>DataFrame</code>s：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">COLUMNS &#x3D; [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;, &quot;age&quot;,</span><br><span class="line">           &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;, &quot;medv&quot;]</span><br><span class="line">FEATURES &#x3D; [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;,</span><br><span class="line">            &quot;age&quot;, &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;]</span><br><span class="line">LABEL &#x3D; &quot;medv&quot;</span><br><span class="line"></span><br><span class="line">training_set &#x3D; pd.read_csv(&quot;boston_train.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                           skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br><span class="line">test_set &#x3D; pd.read_csv(&quot;boston_test.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                       skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br><span class="line">prediction_set &#x3D; pd.read_csv(&quot;boston_predict.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                             skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br></pre></td></tr></table></figure>
+<h3 id="定义特征列并创建回归"><a href="#定义特征列并创建回归" class="headerlink" title="定义特征列并创建回归"></a>定义特征列并创建回归</h3><p>接下来，为输入数据创建<code>FeatureColumn</code>list，正式指定要用于训练的特征集。由于房屋数据集中的所有特征都包含连续的值，因此可以使用<code>tf.contrib.layers.real_valued_column()</code>函数创建其<code>FeatureColumn</code>s：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feature_cols &#x3D; [tf.contrib.layers.real_valued_column(k)</span><br><span class="line">                  for k in FEATURES]</span><br></pre></td></tr></table></figure>
+<p>注意：有关特征列的更深入的内容，请参阅此<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/linear#feature_columns_and_transformations">简介</a>，以及说明如何为分类数据定义<code>FeatureColumns</code>的示例，请参阅线<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">性模型教程</a>。</p>
+<p>现在，为神经网络回归模型实例化一个<code>DNNRegressor</code>。这里你需要提供两个参数：<code>hidden_units</code>，指定每个隐藏层中的节点数量的超参数(hyperparameter)（这里，有两个隐藏层，每个隐藏层都具有10个节点），以及<code>feature_columns</code>，包含您刚定义的<code>FeatureColumns</code>list：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">regressor &#x3D; tf.contrib.learn.DNNRegressor(feature_columns&#x3D;feature_cols,</span><br><span class="line">                                          hidden_units&#x3D;[10, 10],</span><br><span class="line">                                          model_dir&#x3D;&quot;&#x2F;tmp&#x2F;boston_model&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="构建input-fn"><a href="#构建input-fn" class="headerlink" title="构建input_fn"></a>构建input_fn</h3><p>要将输入数据传递到<code>regressor</code>，请创建一个输入函数，它将接受一个pandas <code>Dataframe</code>并返回特征列和标签值作为<code>Tensor</code>s：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def input_fn(data_set):</span><br><span class="line">  feature_cols &#x3D; &#123;k: tf.constant(data_set[k].values)</span><br><span class="line">                  for k in FEATURES&#125;</span><br><span class="line">  labels &#x3D; tf.constant(data_set[LABEL].values)</span><br><span class="line">  return feature_cols, labels</span><br></pre></td></tr></table></figure>
+<p>请注意，输入数据被传递到<code>data_set</code>参数中的<code>input_fn</code>中，这意味着该函数可以处理您导入的任何<code>DataFrames</code>：<code>training_set</code>，<code>test_set</code>和<code>prediction_set</code>。</p>
+<h3 id="训练回归"><a href="#训练回归" class="headerlink" title="训练回归"></a>训练回归</h3><p>要训​​练神经网络回归，运行指定了包含有<code>training_set</code>的<code>input_fn </code>的<code>fit</code>函数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">regressor.fit(input_fn&#x3D;lambda: input_fn(training_set), steps&#x3D;5000)</span><br></pre></td></tr></table></figure>
+<p>您应该能看到类似于以下内容的日志输出，它会报告每100步的训练loss值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Step 1: loss &#x3D; 483.179</span><br><span class="line">INFO:tensorflow:Step 101: loss &#x3D; 81.2072</span><br><span class="line">INFO:tensorflow:Step 201: loss &#x3D; 72.4354</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Step 1801: loss &#x3D; 33.4454</span><br><span class="line">INFO:tensorflow:Step 1901: loss &#x3D; 32.3397</span><br><span class="line">INFO:tensorflow:Step 2001: loss &#x3D; 32.0053</span><br><span class="line">INFO:tensorflow:Step 4801: loss &#x3D; 27.2791</span><br><span class="line">INFO:tensorflow:Step 4901: loss &#x3D; 27.2251</span><br><span class="line">INFO:tensorflow:Saving checkpoints for 5000 into &#x2F;tmp&#x2F;boston_model&#x2F;model.ckpt.</span><br><span class="line">INFO:tensorflow:Loss for final step: 27.1674.</span><br></pre></td></tr></table></figure>
+<h3 id="评估模型"><a href="#评估模型" class="headerlink" title="评估模型"></a>评估模型</h3><p>接下来，看看训练模型如何针对测试数据集执行。运行<code>evaluate</code>，这次将<code>test_set</code>传递给<code>input_fn</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ev &#x3D; regressor.evaluate(input_fn&#x3D;lambda: input_fn(test_set), steps&#x3D;1)</span><br></pre></td></tr></table></figure>
+<p>从<code>ev</code>的结果中检索损失并将其打印到输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loss_score &#x3D; ev[&quot;loss&quot;]</span><br><span class="line">print(&quot;Loss: &#123;0:f&#125;&quot;.format(loss_score))</span><br></pre></td></tr></table></figure>
+<p>您应该会看到类似以下的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Eval steps [0,1) for training step 5000.</span><br><span class="line">INFO:tensorflow:Saving evaluation summary for 5000 step: loss &#x3D; 11.9221</span><br><span class="line">Loss: 11.922098</span><br></pre></td></tr></table></figure>
+<h3 id="进行预测"><a href="#进行预测" class="headerlink" title="进行预测"></a>进行预测</h3><p>最后，您可以使用模型预测<code>prediction_set</code>中的房屋中值，其中包含特征数据，但没有六个样本的标签：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">y &#x3D; regressor.predict(input_fn&#x3D;lambda: input_fn(prediction_set))</span><br><span class="line"># .predict() returns an iterator; convert to a list and print predictions</span><br><span class="line">predictions &#x3D; list(itertools.islice(y, 6))</span><br><span class="line">print (&quot;Predictions: &#123;&#125;&quot;.format(str(predictions)))</span><br></pre></td></tr></table></figure>
+<p>您的结果应包含以 $1000 计的六次房价预测，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979</span><br><span class="line">  19.58005714]</span><br></pre></td></tr></table></figure>
+<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p>本教程专注于为神经网络回归创建一个<code>input_fn</code>。要了解更多有关对其他类型模型使用<code>input_fn</code>的信息，请查看以下资源：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/linear">TensorFlow的大尺寸线性模型</a>：这种对TensorFlow中的线性模型的介绍提供了用于变换输入数据的特征列和技术的高级概述。</li>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">TensorFlow线性模型教程</a>：本教程包括为线性分类模型创建<code>FeatureColumn</code>s和<code>input_fn</code>，该模型根据人口普查数据预测收入范围。</li>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide_and_deep">TensorFlow宽＆深学习教程</a>：基于<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">TensorFlow线性模型教程</a>，本教程涵盖了使用<code>DNNLinearCombinedClassifier</code>组合线性模型和神经网络的“宽和深”模型的<code>FeatureColumn</code>和<code>input_fn</code>创建。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/03/06/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E9%80%9A%E8%BF%87tf.contrib.learn%E6%9D%A5%E6%9E%84%E5%BB%BA%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0/" data-id="ckkwc436s004ypas92l36epbf" data-title="【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【Tensorflow r1.0 文档翻译】TensorBoard:可视化学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/05/%E5%85%B3%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关于机器学习的一些思考</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
+          </li>
+        
+          <li>
+            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
