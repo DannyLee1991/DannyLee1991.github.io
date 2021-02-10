@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>【原创】不用一句深度学习术语来讲解神经网络运作原理 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="原创文章，转载请注明出处  神经网络&#x3D;&#x3D;多层级组织架构的公司假设有一家公司，这家公司的组织架构是下面这种多层级的结构：  公司每天接待一批固定数量的用户，这些用户会将自己的数据告诉给公司，公司做的事情就是通过每个用户上报的数据来推测当前用户群体整体所表现出来的状态。  公司中直接与用户打交道的只有基层业务员，小部门经理只与基层业务员打交道，大部门经理只与小部门经理打交道…依此类推，层层递进，直到">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【原创】不用一句深度学习术语来讲解神经网络运作原理">
 <meta property="og:url" content="http://example.com/2017/09/24/%E4%B8%8D%E7%94%A8%E4%B8%80%E5%8F%A5%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%AF%E8%AF%AD%E6%9D%A5%E8%AE%B2%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="原创文章，转载请注明出处  神经网络&#x3D;&#x3D;多层级组织架构的公司假设有一家公司，这家公司的组织架构是下面这种多层级的结构：  公司每天接待一批固定数量的用户，这些用户会将自己的数据告诉给公司，公司做的事情就是通过每个用户上报的数据来推测当前用户群体整体所表现出来的状态。  公司中直接与用户打交道的只有基层业务员，小部门经理只与基层业务员打交道，大部门经理只与小部门经理打交道…依此类推，层层递进，直到">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_09_24/001.png">
@@ -21,115 +35,237 @@
 <meta property="og:image" content="http://example.com/img/17_09_24/006.png">
 <meta property="og:image" content="http://example.com/img/17_09_24/007.png">
 <meta property="article:published_time" content="2017-09-24T01:11:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_09_24/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/09/24/%E4%B8%8D%E7%94%A8%E4%B8%80%E5%8F%A5%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%AF%E8%AF%AD%E6%9D%A5%E8%AE%B2%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>【原创】不用一句深度学习术语来讲解神经网络运作原理 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-不用一句深度学习术语来讲解神经网络运作原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/09/24/%E4%B8%8D%E7%94%A8%E4%B8%80%E5%8F%A5%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%AF%E8%AF%AD%E6%9D%A5%E8%AE%B2%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86/" class="article-date">
-  <time class="dt-published" datetime="2017-09-24T01:11:00.000Z" itemprop="datePublished">2017-09-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      【原创】不用一句深度学习术语来讲解神经网络运作原理
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/09/24/%E4%B8%8D%E7%94%A8%E4%B8%80%E5%8F%A5%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%AF%E8%AF%AD%E6%9D%A5%E8%AE%B2%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【原创】不用一句深度学习术语来讲解神经网络运作原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-24 01:11:00" itemprop="dateCreated datePublished" datetime="2017-09-24T01:11:00+00:00">2017-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <blockquote>
 <p>原创文章，转载请注明出处</p>
 </blockquote>
 <h2 id="神经网络-多层级组织架构的公司"><a href="#神经网络-多层级组织架构的公司" class="headerlink" title="神经网络==多层级组织架构的公司"></a>神经网络==多层级组织架构的公司</h2><p>假设有一家公司，这家公司的组织架构是下面这种多层级的结构：</p>
-<p><img src="/img/17_09_24/001.png"></p>
+<p><img src="/img/17_09_24/001.png" alt=""></p>
 <p>公司每天接待一批固定数量的用户，这些用户会将自己的数据告诉给公司，公司做的事情就是通过每个用户上报的数据来推测当前用户群体整体所表现出来的状态。</p>
-<p><img src="/img/17_09_24/002.png"></p>
+<p><img src="/img/17_09_24/002.png" alt=""></p>
 <p>公司中直接与用户打交道的只有基层业务员，小部门经理只与基层业务员打交道，大部门经理只与小部门经理打交道…依此类推，层层递进，直到CEO这一层。</p>
 <p>并且其中每一个基层业务员会了解每个用户的数据，每个小部门经理也会了解每个基层业务员输出的情况，…，依次类推，直到CEO。而CEO需要了解的是每个副总经理输出的情况。</p>
 <p>公司拿到一批用户的数据之后，首先交给基层业务员。每个基层业务员看到了每个用户的数据之后，都会针对每一个用户出一份数据分析报表（由于每个人的观点不同，所以每个人得出的报表都不一样）；然后每个小部门经理也会分别去看每个业务员输出的报表，然后自己再输出一个针对每一个基层业务员输出的数据的分析报表；同样，每个大部门经理也会去这样看每个小部门经理输出的报表，然后出一份针对每一个小部门经理输出的数据的分析报表；…；以此类推，最终CEO会输出一个针对每一个副总经理输出的数据的分析报表，这份报表里就是公司当前对用户状态的理解。</p>
-<p><img src="/img/17_09_24/003.png"></p>
+<p><img src="/img/17_09_24/003.png" alt=""></p>
 <p>那么公司对用户状态把握到底准确不准确呢？这需要一个衡量标准。</p>
 <p>所以我们需要对公司进行考核，将一部分已知状态的用户数据给到公司，看公司是否能足够准确的预测出这个状态。换句话说，就是CEO最后输出的这份报表，与用户的真实状态之间相差有多大。</p>
-<p><img src="/img/17_09_24/004.png"></p>
+<p><img src="/img/17_09_24/004.png" alt=""></p>
 <p>如果CEO发现自己的预测和真实情况偏差很大，它会带头思考自己工作上到底哪里做的不够好导致最终的判断失误，以及自己需要如何调整状态才能使公司表现更好，然后号召副总经理反思并调整状态。副总经理反思调整之后，会号召他的直属下级部门反思并调整状态。以此类推，直到基层业务员。但其实每个人都不能完全保证调整的状态是否可靠，所以大家就比较保守的<strong>稍微调整一下</strong>自己的工作状态。</p>
 <p>当全公司员工调整状态完成之后，在面对新的用户数据，看是否能更加准确的预测用户群体的状态。如果发现上面的调整确实有效，那么继续按照上面的方式调整：由CEO再次依次号召下面的员工来调整工作状态，调整之后继续面对新的用户。重复执行上面的操作若干次之后，直到公司的预测效果趋于稳定为止（和真实状态对比之后，差值基本不再变化了）。</p>
-<p><img src="/img/17_09_24/005.png"></p>
+<p><img src="/img/17_09_24/005.png" alt=""></p>
 <p>此时的公司就相当于经历了若干次碰壁，并且若干次全员反思、调整状态之后，各个员工都成为了精兵强将了，对于用户数据的把握也更加准确了。</p>
 <p>现在，我们回头看看公司接待的客户。假设公司每天共接待1024位用户，每个用户都举着一个纯色的卡片，卡片颜色是灰度值介于0到255之间的某个颜色。</p>
-<p><img src="/img/17_09_24/006.png"></p>
+<p><img src="/img/17_09_24/006.png" alt=""></p>
 <p>将这些用户按顺序排在32×32的平面上，每个用户占一格。当他们将手里的纯色卡片高举并拼凑起来之后，我们会看到一个写有数字的图片。</p>
-<p><img src="/img/17_09_24/007.png"></p>
+<p><img src="/img/17_09_24/007.png" alt=""></p>
 <p>公司做的事情就是每天接待这1024个用户，他们会告诉公司自己手里卡片的灰度值，但不会告诉公司卡片拼起来的图片是什么，然后公司经过层层分析来得出当前所有用户卡片拼起来的图像是什么。</p>
 <p>这就是一个用户识别手写数字的DNN模型的形象比喻。</p>
 <hr>
@@ -161,157 +297,231 @@
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>神经网络是一个灵活的结构，当带入图片像素值以及图片标签数据时，它训练的就是一个图片识别模型；当带入的数据是邮件特征数据，以及邮件是否为垃圾邮件的类别数据时，它可能就是一个垃圾邮件识别模型。</p>
 <p>这里的类比并不严谨，准确的定义还需要参考标准定义。不过通过形象化的类比，可以使我们对神经网络建立起系统化的认知。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/09/24/%E4%B8%8D%E7%94%A8%E4%B8%80%E5%8F%A5%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%AF%E8%AF%AD%E6%9D%A5%E8%AE%B2%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%90%E4%BD%9C%E5%8E%9F%E7%90%86/" data-id="ckkwc4378005wpas90eucff3z" data-title="【原创】不用一句深度学习术语来讲解神经网络运作原理" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/08/08/%E3%80%90Tensorflow%20r1.0%20%E7%A8%8B%E5%BA%8F%E5%91%98%E6%8C%87%E5%8D%97%E3%80%91-%E5%8F%98%E9%87%8F%EF%BC%9A%E5%88%9B%E5%BB%BA%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%8C%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BD/" rel="prev" title="【Tensorflow r1.0 程序员指南】-变量：创建，初始化，保存和加载">
+      <i class="fa fa-chevron-left"></i> 【Tensorflow r1.0 程序员指南】-变量：创建，初始化，保存和加载
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/11/30/10%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas/" rel="next" title="10分钟上手Pandas">
+      10分钟上手Pandas <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E5%A4%9A%E5%B1%82%E7%BA%A7%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84%E7%9A%84%E5%85%AC%E5%8F%B8"><span class="nav-number">1.</span> <span class="nav-text">神经网络&#x3D;&#x3D;多层级组织架构的公司</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98%E7%9A%84%E6%80%9D%E8%80%83"><span class="nav-number">1.1.</span> <span class="nav-text">几个问题的思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%8F%B8%E5%91%98%E5%B7%A5%E6%95%B0%E9%87%8F%E4%B8%80%E5%AE%9A%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84%E6%98%AF%E8%B6%8A%E6%89%81%E5%B9%B3%E8%B6%8A%E5%A5%BD%EF%BC%8C%E8%BF%98%E6%98%AF%E5%B1%82%E7%BA%A7%E8%B6%8A%E5%A4%9A%E8%B6%8A%E5%A5%BD%EF%BC%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">公司员工数量一定的情况下，组织架构是越扁平越好，还是层级越多越好？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%8F%E4%B8%AA%E5%91%98%E5%B7%A5%E6%98%AF%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%8A%A5%E8%A1%A8%E7%9A%84%EF%BC%9F"><span class="nav-number">1.1.2.</span> <span class="nav-text">每个员工是如何生成报表的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%8F%B8%E6%8B%9B%E8%81%98%E5%91%98%E5%B7%A5%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%BA%94%E8%AF%A5%E6%8B%9B%E8%81%98%E7%B1%BB%E4%BC%BC%E7%9A%84%E4%BA%BA%E7%BE%A4%EF%BC%8C%E8%BF%98%E6%98%AF%E6%8B%9B%E8%81%98%E5%B7%AE%E5%BC%82%E5%8C%96%E7%9A%84%E4%BA%BA%E7%BE%A4%EF%BC%9F"><span class="nav-number">1.1.3.</span> <span class="nav-text">公司招聘员工的时候，应该招聘类似的人群，还是招聘差异化的人群？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E5%85%A5%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.2.</span> <span class="nav-text">带入术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/11/30/10%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          10分钟上手Pandas
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/08/08/%E3%80%90Tensorflow%20r1.0%20%E7%A8%8B%E5%BA%8F%E5%91%98%E6%8C%87%E5%8D%97%E3%80%91-%E5%8F%98%E9%87%8F%EF%BC%9A%E5%88%9B%E5%BB%BA%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%8C%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BD/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【Tensorflow r1.0 程序员指南】-变量：创建，初始化，保存和加载</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : 'a582cf3cfe8cb4f5ec27d23f94052cc5',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 </body>
 </html>

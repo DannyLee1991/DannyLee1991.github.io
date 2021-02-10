@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第十周 (2)高级主题 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="在线学习视频地址  在本节，我将会讨论一种新的大规模的机器学习机制，叫做在线学习机制。在拥有连续一波数据或连续的数据流涌进来，而我们又需要一个算法来从中学习的时候来模型化问题时，我们就需要用到在线学习机制。  今天许多大型网站，或者许多大型网络公司，都在使用不同版本的在线学习机制算法从大批的涌入又离开网站的用户身上进行学习。 特别要提及的是，如果你有一个由连续的用户流引发的连续的数据流，用户流进入">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第十周 (2)高级主题">
 <meta property="og:url" content="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="在线学习视频地址  在本节，我将会讨论一种新的大规模的机器学习机制，叫做在线学习机制。在拥有连续一波数据或连续的数据流涌进来，而我们又需要一个算法来从中学习的时候来模型化问题时，我们就需要用到在线学习机制。  今天许多大型网站，或者许多大型网络公司，都在使用不同版本的在线学习机制算法从大批的涌入又离开网站的用户身上进行学习。 特别要提及的是，如果你有一个由连续的用户流引发的连续的数据流，用户流进入">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_06_03/001.png">
@@ -21,93 +35,215 @@
 <meta property="og:image" content="http://example.com/img/17_06_03/006.png">
 <meta property="og:image" content="http://example.com/img/17_06_03/007.png">
 <meta property="article:published_time" content="2017-06-03T12:19:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.005Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_06_03/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第十周 (2)高级主题 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第十周 (2)高级主题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" class="article-date">
-  <time class="dt-published" datetime="2017-06-03T12:19:00.000Z" itemprop="datePublished">2017-06-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第十周 (2)高级主题
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第十周 (2)高级主题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-03 12:19:00" itemprop="dateCreated datePublished" datetime="2017-06-03T12:19:00+00:00">2017-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="在线学习"><a href="#在线学习" class="headerlink" title="在线学习"></a>在线学习</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/ABO2q/online-learning">视频地址</a></p>
 <blockquote>
@@ -134,12 +270,13 @@
 <p>我们想要做的是拥有一个在线学习机制来帮助我们 找到在这100部手机中哪十部手机是我们真正应该反馈给用户的，而且这个返回的列表是对类似这样的用户搜索条目最佳的回应。</p>
 <p>接下来要说的是一种解决问题的思路。</p>
 <p>对于每一个手机以及一个给定的用户搜索命令，我们可以构建一个特征矢量$x$，那么这个特征矢量$x$可能会抓取手机的各种特点，它可能会抓取类似于用户搜索命令与这部电话的类似程度有多高这样的信息，我们获取类似于：这个用户搜索命令中有多少个词，可以与这部手机的名字相匹配；或者这个搜索命令中有多少词，与这部手机的描述相匹配。</p>
-<p>$$<br>x=手机的特征，\\用户的搜索词中有多少个词与手机名称匹配，\\用户的搜索词中有多少个词与手机的描述匹配，\\等等<br>$$</p>
-<p>所以特征矢量$x$获取手机的特点，并且它还会获取这部手机与搜索命令的结果在各个方面的匹配程度。我们想要做的就是估测一个概率，这个概率是指用户将会点进某一个特定的手机的链接的概率。因为我们想要给用户提供那些他们很可能在浏览器中点进去查看的手机，所以我定义$y=1$是指用户点击了手机的链接，而$y=0$是指用户没有点击链接。</p>
-<p>$$<br>y=1 （如果用户点击了链接） \\<br>y=0 （用户没有点击链接）<br>$$</p>
-<p>然后我们想要做的就是学习到用户将会点击某一个特定的手机的概率：</p>
-<p>$$<br>p(y=1|x;\theta)<br>$$</p>
-<p>你知道的，特征$x$获取了手机的特点以及搜索条目与手机的匹配程度。这类问题其实被称作<strong>预估点击率CTR</strong>，它仅仅代表这学习用户将点击某一个特定的、你提供给他们的链接的概率。所以<strong>CTR</strong>是**点击率(Click Through Rate)**的简称。</p>
+<script type="math/tex; mode=display">
+x=手机的特征，\\\\用户的搜索词中有多少个词与手机名称匹配，\\\\用户的搜索词中有多少个词与手机的描述匹配，\\\\等等</script><p>所以特征矢量$x$获取手机的特点，并且它还会获取这部手机与搜索命令的结果在各个方面的匹配程度。我们想要做的就是估测一个概率，这个概率是指用户将会点进某一个特定的手机的链接的概率。因为我们想要给用户提供那些他们很可能在浏览器中点进去查看的手机，所以我定义$y=1$是指用户点击了手机的链接，而$y=0$是指用户没有点击链接。</p>
+<script type="math/tex; mode=display">
+y=1 （如果用户点击了链接） \\\\
+y=0 （用户没有点击链接）</script><p>然后我们想要做的就是学习到用户将会点击某一个特定的手机的概率：</p>
+<script type="math/tex; mode=display">
+p(y=1|x;\theta)</script><p>你知道的，特征$x$获取了手机的特点以及搜索条目与手机的匹配程度。这类问题其实被称作<strong>预估点击率CTR</strong>，它仅仅代表这学习用户将点击某一个特定的、你提供给他们的链接的概率。所以<strong>CTR</strong>是<strong>点击率(Click Through Rate)</strong>的简称。</p>
 <p>如果你能够估计任意一个特定手机的点击率，我们可以做的就是利用这个来给用户展示十个他们最有可能点击的手机。因为从这一百个手机中，我们可以计算出每一部手机的可能的点击率，然后选择10部用户最有可能点击的手机，那么这就是一个非常合理的来决定要展示给用户的十个搜索结果的方法。</p>
 <p>更明确地说，假定每次用户进行一次搜索，我们回馈给用户十个结果。在线学习算法会真正地提供给我们十个$(x,y)$数据对样本。每当一个用户来到 我们网站时就给了我们十个样本，因为对于这十部我们选择要展示给用户的手机的每一个我们会得到 一个特征矢量x，而且对于这10部手机中的任何一个手机，我们还会得到$y$的取值。这些取值是根据用户有没有点击那个网页链接来决定的。这样运行此类网站的一种方法就是连续给用户展示你的十个最佳猜测，这十个推荐是指用户可能会喜欢的其他的手机，那么每次一个用户访问，你将会得到十个$(x,y)$样本数据对，然后利用一个在线学习 算法来更新你的参数。更新过程中会对这十个样本利用10步梯度下降法，然后你可以丢弃你的数据了。</p>
 <p>如果你真的拥有一个连续的用户流进入你的网站，这将会是一个非常合理的学习方法，来学习你的算法中的参数从而来给用户展示十部他们最有可能点击查看的手机。</p>
@@ -154,17 +291,22 @@
 <p>我们之所以在<strong>Map Reduce</strong>上花的时间比较少，只是因为它相对简单，容易解释。然而实际上相比于随机梯度下降方法，<strong>Map Reduce</strong>能够处理更大规模的问题。</p>
 </blockquote>
 <h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><p>假设我们要拟合一个线性回归模型，或者逻辑回归模型，或者其他的什么模型。让我们再次从随机梯度下降算法开始：</p>
-<p><img src="/img/17_06_03/001.png"></p>
+<p><img src="/img/17_06_03/001.png" alt=""></p>
 <p>假设我们有400个样本$m=400$（实际应用中会比这个数字大很多）：</p>
-<p>$$<br>(x^{(1)},y^{(1)}),…,<br>(x^{(400)},y^{(400)})<br>$$</p>
-<p>根据<strong>Map Reduce</strong>的思想，一种解决方案是将训练集划分成几个不同的子集，然后分别放在多台机器上并行的处理我们的训练数据（这里我们把数据集划分成四份，并且放在4台机器上并行处理）。</p>
+<script type="math/tex; mode=display">
+(x^{(1)},y^{(1)}),...,
+(x^{(400)},y^{(400)})</script><p>根据<strong>Map Reduce</strong>的思想，一种解决方案是将训练集划分成几个不同的子集，然后分别放在多台机器上并行的处理我们的训练数据（这里我们把数据集划分成四份，并且放在4台机器上并行处理）。</p>
 <p>每台机器内部都去计算对应的子集的求和运算：</p>
-<p><img src="/img/17_06_03/002.png"></p>
+<p><img src="/img/17_06_03/002.png" alt=""></p>
 <p>最后，当这些计算机全都完成了各自的工作，我们将这些临时变量收集到一起，送到一个中心计算服务器，这台服务器会将这些临时变量合并起来：</p>
-<p><img src="/img/17_06_03/003.png"></p>
+<p><img src="/img/17_06_03/003.png" alt=""></p>
 <p>图中右侧更新的公式如下：</p>
-<p>$$<br>\theta_j :=<br>\theta_j - \alpha\frac{1}{400}<br>(temp_j^{(1)} + temp_j^{(2)} + temp_j^{(3)} + temp_j^{(4)})<br>\\<br>(j = 0,…,n)<br>$$</p>
-<p>其实这个公式计算的数值和原先的梯度下降公式计算的数值是完全一样的。</p>
+<script type="math/tex; mode=display">
+\theta_j :=
+\theta_j - \alpha\frac{1}{400}
+(temp_j^{(1)} + temp_j^{(2)} + temp_j^{(3)} + temp_j^{(4)}) 
+\\\\
+(j = 0,...,n)</script><p>其实这个公式计算的数值和原先的梯度下降公式计算的数值是完全一样的。</p>
 <h3 id="Map-Reduce工作原理"><a href="#Map-Reduce工作原理" class="headerlink" title="Map Reduce工作原理"></a>Map Reduce工作原理</h3><blockquote>
 <p>这里值得说明的一点是<strong>Map Reduce</strong>基本思想来自于<strong>Jeffrey Dean</strong>和<strong>Sanjay Ghemawat</strong>这两位研究者。其中<strong>Jeffrey Dean</strong>是硅谷最为传奇的一位工程师，今天Google所有的服务所依赖的后台基础架构，有很大一部分是他创建的。</p>
 </blockquote>
@@ -174,181 +316,309 @@
 <li>将这4份训练样本的子集送给4台不同的计算机，每一台计算机对四分之一的训练数据进行求和运算</li>
 <li>最后这4个求和结果 被送到一台中心计算服务器负责对结果进行汇总。</li>
 </ul>
-<p><img src="/img/17_06_03/004.png"></p>
+<p><img src="/img/17_06_03/004.png" alt=""></p>
 <p>通过<strong>Map Reduce</strong>技术，我们相较于之前的方式提升了4倍的速度。</p>
 <p>特别的，如果没有网络延时也不考虑通过网络来回传输数据所消耗的时间，那么你可能可以得到4倍的加速。当然，在实际工作中，因为网络延时数据汇总额外消耗时间，以及其他的一些因素，你能得到的加速总是略小于4倍的。但是，不管怎么说，这Map Reduce算法确实让我们能够处理之前单台机器无法处理的大规模数据。</p>
 <h3 id="使用Map-Reduce的条件"><a href="#使用Map-Reduce的条件" class="headerlink" title="使用Map Reduce的条件"></a>使用Map Reduce的条件</h3><p>如果你打算将Map Reduce技术用于加速某个机器学习算法，也就是说你打算运用多台不同的计算机并行的进行计算，那么你需要问自己一个很关键的问题，那就是<strong>你的机器学习算法是否可以表示为训练样本的某种求和</strong>。</p>
 <p>事实证明，很多机器学习算法的确可以表示为关于训练样本的函数求和。而在处理大数据时，这些算法的主要运算量在于对大量训练数据求和。</p>
 <h3 id="Map-Reduce处理逻辑回归"><a href="#Map-Reduce处理逻辑回归" class="headerlink" title="Map Reduce处理逻辑回归"></a>Map Reduce处理逻辑回归</h3><p>对于某些使用<strong>逻辑回归</strong>的优化算法（比如说<strong>LBFGS算法</strong>，或者<strong>共轭梯度算法</strong>等等），我们需要计算两个值：</p>
 <h4 id="计算优化目标代价函数"><a href="#计算优化目标代价函数" class="headerlink" title="计算优化目标代价函数"></a>计算优化目标代价函数</h4><p>首先，我们需要提供一种方法用于计算优化目标的代价函数值。比如逻辑回归的代价函数计算如下：</p>
-<p><img src="/img/17_06_03/005.png"></p>
+<p><img src="/img/17_06_03/005.png" alt=""></p>
 <p>如果你想在10台计算机上并行计算，那么你需要将训练样本分给这10台计算机，让每台计算机计算10份之一训练数据。</p>
 <h4 id="计算梯度下降的偏导数项"><a href="#计算梯度下降的偏导数项" class="headerlink" title="计算梯度下降的偏导数项"></a>计算梯度下降的偏导数项</h4><p>另外，高级优化算法还需要提供某种偏导数的计算方法。对于逻辑回归，这些偏导数可以表示为训练数据的求和：</p>
-<p><img src="/img/17_06_03/006.png"></p>
+<p><img src="/img/17_06_03/006.png" alt=""></p>
 <p>因此，和之前的例子类似，你可以让每台计算机只计算部分训练数据上的求和。最后当这些求和计算完成之后，求和结果会被发送到一台中心计算服务器上，这台服务器将对结果进行再次求和。这等同于对临时变量$temp^{(i)}_j$进行求和。而这些临时标量是第$i$台计算机算出来的。</p>
 <p>中心计算服务器对这些临时变量求和得到了总的代价函数值，以及总的偏导数值，然后你可以将这两个值传给高级优化函数。</p>
 <p>因此更广义的来说，通过将机器学习算法表示为 求和的形式，或者是训练数据的函数求和形式，你就可以运用<strong>Map Reduce</strong>技术来将算法并行化，这样就可以处理大规模数据了。</p>
 <h3 id="单台设备运行Map-Reduce"><a href="#单台设备运行Map-Reduce" class="headerlink" title="单台设备运行Map Reduce"></a>单台设备运行Map Reduce</h3><p>目前我们只讨论了在多台计算机上运用<strong>Map Reduce</strong>技术实现并行计算。但实际上有时即使我们只有一台计算机，我们也可以运用这种技术。</p>
 <p>具体来说，现在的许多计算机都是多核的，你可以有多个CPU，而每个CPU又包括多个核。</p>
 <p>如果你有一个很大的训练样本，那么你可以使用一台四核的计算机，然后将训练样本分成4份，让每一个核处理其中一份子样本：</p>
-<p><img src="/img/17_06_03/007.png"></p>
+<p><img src="/img/17_06_03/007.png" alt=""></p>
 <p>这样，在单台计算机或者单个服务器上，你也可以实现利用Map Reduce技术来划分计算任务了。</p>
 <p>相对于多台计算机，这样在单台计算机上使用Map Reduce技术的一个优势在于：你不需要担心网络延时问题，因为所有的通讯所有的来回数据传输都发生在一台计算机上。</p>
 <h4 id="一个细节问题"><a href="#一个细节问题" class="headerlink" title="一个细节问题"></a>一个细节问题</h4><p>如果你的算法实现使用的是某种自动利用多核的线性代数运算库，那么你就没有必要去手动在单台机器上实现Map Reduce了。但并不是所有的库都会自动并行运算。</p>
 <h3 id="一个广告：Hadoop"><a href="#一个广告：Hadoop" class="headerlink" title="一个广告：Hadoop"></a>一个广告：Hadoop</h3><p>今天，网上有许多优秀的开源Map Reduce实现。</p>
 <p>实际上一个称为<strong>Hadoop</strong>的开源系统已经拥有了众多的用户。通过自己实现Map Reduce算法 或者使用别人的开源实现，你就可以利用Map Reduce技术来并行化机器学习算法。这样你的算法将能够处理单台计算机处理不了的大数据。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" data-id="ckkwc438z00anpas9c33sc7tr" data-title="斯坦福机器学习课程 第十周 (2)高级主题" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/01/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(1)%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" rel="prev" title="斯坦福机器学习课程 第十周 (1)大数据集梯度下降">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第十周 (1)大数据集梯度下降
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/" rel="next" title="斯坦福机器学习课程 第十一周 (1)照片OCR">
+      斯坦福机器学习课程 第十一周 (1)照片OCR <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">在线学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%88%B6%E4%B8%BE%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">在线学习机制举例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%BE%93%E6%9C%8D%E5%8A%A1%E5%AF%B9%E4%BA%8E%E5%AE%9A%E4%BB%B7%E7%9A%84%E9%A2%84%E6%B5%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">运输服务对于定价的预测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E4%B8%AD%E5%AF%B9%E4%BA%8E%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">1.1.2.</span> <span class="nav-text">搜索中对于搜索结果的优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map-Reduce-%E5%92%8C%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">Map Reduce 和数据并行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">举例说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Reduce%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">Map Reduce工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Map-Reduce%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">使用Map Reduce的条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Reduce%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="nav-number">2.4.</span> <span class="nav-text">Map Reduce处理逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E4%BC%98%E5%8C%96%E7%9B%AE%E6%A0%87%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.1.</span> <span class="nav-text">计算优化目标代价函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E5%81%8F%E5%AF%BC%E6%95%B0%E9%A1%B9"><span class="nav-number">2.4.2.</span> <span class="nav-text">计算梯度下降的偏导数项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%8F%B0%E8%AE%BE%E5%A4%87%E8%BF%90%E8%A1%8CMap-Reduce"><span class="nav-number">2.5.</span> <span class="nav-text">单台设备运行Map Reduce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.1.</span> <span class="nav-text">一个细节问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B9%BF%E5%91%8A%EF%BC%9AHadoop"><span class="nav-number">2.6.</span> <span class="nav-text">一个广告：Hadoop</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第十一周 (1)照片OCR
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/06/01/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(1)%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第十周 (1)大数据集梯度下降</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '890c931201cd406002e53f65eb75ea1b',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>【翻译】kaggle竞赛 房价预测 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="原文链接 概述如果你有一些R或者Python的经验，并且掌握一些基本的机器学习知识。对于完成机器学习在线课程的数据科学学生来说，这是一个很适合练手的比赛。 简介如果让一个想要买房的人来描述他们梦想中的住宅，他们可能不会从地下室天花板的高度或与东西方地铁的距离开始描述。但是这个游乐场比赛的数据集证明，购房者考虑的主要因素中，对价格谈判的影响远远超过卧室或白色栅栏的数量的影响。 有79个解释变量描述（">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【翻译】kaggle竞赛 房价预测">
 <meta property="og:url" content="http://example.com/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="原文链接 概述如果你有一些R或者Python的经验，并且掌握一些基本的机器学习知识。对于完成机器学习在线课程的数据科学学生来说，这是一个很适合练手的比赛。 简介如果让一个想要买房的人来描述他们梦想中的住宅，他们可能不会从地下室天花板的高度或与东西方地铁的距离开始描述。但是这个游乐场比赛的数据集证明，购房者考虑的主要因素中，对价格谈判的影响远远超过卧室或白色栅栏的数量的影响。 有79个解释变量描述（">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/18_03_11/001.png">
@@ -38,93 +52,215 @@
 <meta property="og:image" content="http://example.com/img/18_03_11/023.png">
 <meta property="og:image" content="http://example.com/img/18_03_11/024.png">
 <meta property="article:published_time" content="2018-03-09T22:08:55.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="kaggle">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/18_03_11/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>【翻译】kaggle竞赛 房价预测 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-【翻译】kaggle竞赛 房价预测" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/" class="article-date">
-  <time class="dt-published" datetime="2018-03-09T22:08:55.000Z" itemprop="datePublished">2018-03-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      【翻译】kaggle竞赛 房价预测
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【翻译】kaggle竞赛 房价预测
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-09 22:08:55" itemprop="dateCreated datePublished" datetime="2018-03-09T22:08:55+00:00">2018-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <p><a target="_blank" rel="noopener" href="https://www.kaggle.com/pmarcelino/comprehensive-data-exploration-with-python">原文链接</a></p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>如果你有一些R或者Python的经验，并且掌握一些基本的机器学习知识。对于完成机器学习在线课程的数据科学学生来说，这是一个很适合练手的比赛。</p>
@@ -142,415 +278,419 @@
 <li>sample_submission.csv - 来自销售年份和月份的线性回归的基准提交，批量平方英尺和卧室数量（a benchmark submission from a linear regression on year and month of sale, lot square footage, and number of bedrooms）</li>
 </ul>
 <h3 id="字段信息"><a href="#字段信息" class="headerlink" title="字段信息"></a>字段信息</h3><p>以下是您可以在数据描述文件中找到的简要版本。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">字段名</th>
-<th align="left">英文解释</th>
-<th align="left">中文解释</th>
+<th style="text-align:center">字段名</th>
+<th style="text-align:left">英文解释</th>
+<th style="text-align:left">中文解释</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">SalePrice</td>
-<td align="left">the property’s sale price in dollars. This is the target variable that you’re trying to predict.</td>
-<td align="left">房屋的销售价格以美元计价。这是你试图预测的目标变量。</td>
+<tbody>
+<tr>
+<td style="text-align:center">SalePrice</td>
+<td style="text-align:left">the property’s sale price in dollars. This is the target variable that you’re trying to predict.</td>
+<td style="text-align:left">房屋的销售价格以美元计价。这是你试图预测的目标变量。</td>
 </tr>
 <tr>
-<td align="center">MSSubClass</td>
-<td align="left">The building class</td>
-<td align="left">建筑类</td>
+<td style="text-align:center">MSSubClass</td>
+<td style="text-align:left">The building class</td>
+<td style="text-align:left">建筑类</td>
 </tr>
 <tr>
-<td align="center">MSZoning</td>
-<td align="left">The general zoning classification</td>
-<td align="left">一般分区分类</td>
+<td style="text-align:center">MSZoning</td>
+<td style="text-align:left">The general zoning classification</td>
+<td style="text-align:left">一般分区分类</td>
 </tr>
 <tr>
-<td align="center">LotFrontage</td>
-<td align="left">Linear feet of street connected to property</td>
-<td align="left">连接到财产的街道的线性脚</td>
+<td style="text-align:center">LotFrontage</td>
+<td style="text-align:left">Linear feet of street connected to property</td>
+<td style="text-align:left">连接到财产的街道的线性脚</td>
 </tr>
 <tr>
-<td align="center">LotArea</td>
-<td align="left">Lot size in square feet</td>
-<td align="left">地块面积（平方英尺）</td>
+<td style="text-align:center">LotArea</td>
+<td style="text-align:left">Lot size in square feet</td>
+<td style="text-align:left">地块面积（平方英尺）</td>
 </tr>
 <tr>
-<td align="center">Street</td>
-<td align="left">Type of road access</td>
-<td align="left">道路通行类型</td>
+<td style="text-align:center">Street</td>
+<td style="text-align:left">Type of road access</td>
+<td style="text-align:left">道路通行类型</td>
 </tr>
 <tr>
-<td align="center">Alley</td>
-<td align="left">Type of alley access</td>
-<td align="left">胡同通道的类型</td>
+<td style="text-align:center">Alley</td>
+<td style="text-align:left">Type of alley access</td>
+<td style="text-align:left">胡同通道的类型</td>
 </tr>
 <tr>
-<td align="center">LotShape</td>
-<td align="left">General shape of property</td>
-<td align="left">财产的一般形状</td>
+<td style="text-align:center">LotShape</td>
+<td style="text-align:left">General shape of property</td>
+<td style="text-align:left">财产的一般形状</td>
 </tr>
 <tr>
-<td align="center">LandContour</td>
-<td align="left">Flatness of the property</td>
-<td align="left">物业的平整度</td>
+<td style="text-align:center">LandContour</td>
+<td style="text-align:left">Flatness of the property</td>
+<td style="text-align:left">物业的平整度</td>
 </tr>
 <tr>
-<td align="center">Utilities</td>
-<td align="left">Type of utilities available</td>
-<td align="left">可用的实用程序类型</td>
+<td style="text-align:center">Utilities</td>
+<td style="text-align:left">Type of utilities available</td>
+<td style="text-align:left">可用的实用程序类型</td>
 </tr>
 <tr>
-<td align="center">LotConfig</td>
-<td align="left">Lot configuration</td>
-<td align="left">批量配置</td>
+<td style="text-align:center">LotConfig</td>
+<td style="text-align:left">Lot configuration</td>
+<td style="text-align:left">批量配置</td>
 </tr>
 <tr>
-<td align="center">LandSlope</td>
-<td align="left">Slope of property</td>
-<td align="left">财产的倾斜</td>
+<td style="text-align:center">LandSlope</td>
+<td style="text-align:left">Slope of property</td>
+<td style="text-align:left">财产的倾斜</td>
 </tr>
 <tr>
-<td align="center">Neighborhood</td>
-<td align="left">Physical locations within Ames city limits</td>
-<td align="left">Ames城市限制内的物理位置</td>
+<td style="text-align:center">Neighborhood</td>
+<td style="text-align:left">Physical locations within Ames city limits</td>
+<td style="text-align:left">Ames城市限制内的物理位置</td>
 </tr>
 <tr>
-<td align="center">Condition1</td>
-<td align="left">Proximity to main road or railroad</td>
-<td align="left">靠近主干道或铁路</td>
+<td style="text-align:center">Condition1</td>
+<td style="text-align:left">Proximity to main road or railroad</td>
+<td style="text-align:left">靠近主干道或铁路</td>
 </tr>
 <tr>
-<td align="center">Condition2</td>
-<td align="left">Proximity to main road or railroad (if a second is present)</td>
-<td align="left">靠近主要道路或铁路（如果存在第二个）</td>
+<td style="text-align:center">Condition2</td>
+<td style="text-align:left">Proximity to main road or railroad (if a second is present)</td>
+<td style="text-align:left">靠近主要道路或铁路（如果存在第二个）</td>
 </tr>
 <tr>
-<td align="center">BldgType</td>
-<td align="left">Type of dwelling</td>
-<td align="left">住宅类型</td>
+<td style="text-align:center">BldgType</td>
+<td style="text-align:left">Type of dwelling</td>
+<td style="text-align:left">住宅类型</td>
 </tr>
 <tr>
-<td align="center">HouseStyle</td>
-<td align="left">Style of dwelling</td>
-<td align="left">住宅风格</td>
+<td style="text-align:center">HouseStyle</td>
+<td style="text-align:left">Style of dwelling</td>
+<td style="text-align:left">住宅风格</td>
 </tr>
 <tr>
-<td align="center">OverallQual</td>
-<td align="left">Overall material and finish quality</td>
-<td align="left">总体材料和加工质量</td>
+<td style="text-align:center">OverallQual</td>
+<td style="text-align:left">Overall material and finish quality</td>
+<td style="text-align:left">总体材料和加工质量</td>
 </tr>
 <tr>
-<td align="center">OverallCond</td>
-<td align="left">Overall condition rating</td>
-<td align="left">总体状况的评价</td>
+<td style="text-align:center">OverallCond</td>
+<td style="text-align:left">Overall condition rating</td>
+<td style="text-align:left">总体状况的评价</td>
 </tr>
 <tr>
-<td align="center">YearBuilt</td>
-<td align="left">Original construction date</td>
-<td align="left">原始施工日期</td>
+<td style="text-align:center">YearBuilt</td>
+<td style="text-align:left">Original construction date</td>
+<td style="text-align:left">原始施工日期</td>
 </tr>
 <tr>
-<td align="center">YearRemodAdd</td>
-<td align="left">Remodel date</td>
-<td align="left">重构日期</td>
+<td style="text-align:center">YearRemodAdd</td>
+<td style="text-align:left">Remodel date</td>
+<td style="text-align:left">重构日期</td>
 </tr>
 <tr>
-<td align="center">RoofStyle</td>
-<td align="left">Type of roof</td>
-<td align="left">屋顶类型</td>
+<td style="text-align:center">RoofStyle</td>
+<td style="text-align:left">Type of roof</td>
+<td style="text-align:left">屋顶类型</td>
 </tr>
 <tr>
-<td align="center">RoofMatl</td>
-<td align="left">Roof material</td>
-<td align="left">屋顶材料</td>
+<td style="text-align:center">RoofMatl</td>
+<td style="text-align:left">Roof material</td>
+<td style="text-align:left">屋顶材料</td>
 </tr>
 <tr>
-<td align="center">Exterior1st</td>
-<td align="left">Exterior covering on house</td>
-<td align="left">房屋外墙</td>
+<td style="text-align:center">Exterior1st</td>
+<td style="text-align:left">Exterior covering on house</td>
+<td style="text-align:left">房屋外墙</td>
 </tr>
 <tr>
-<td align="center">Exterior2nd</td>
-<td align="left">Exterior covering on house (if more than one material)</td>
-<td align="left">房屋外墙（如果多于一种）</td>
+<td style="text-align:center">Exterior2nd</td>
+<td style="text-align:left">Exterior covering on house (if more than one material)</td>
+<td style="text-align:left">房屋外墙（如果多于一种）</td>
 </tr>
 <tr>
-<td align="center">MasVnrType</td>
-<td align="left">Masonry veneer type</td>
-<td align="left">Masonry贴面类型</td>
+<td style="text-align:center">MasVnrType</td>
+<td style="text-align:left">Masonry veneer type</td>
+<td style="text-align:left">Masonry贴面类型</td>
 </tr>
 <tr>
-<td align="center">MasVnrArea</td>
-<td align="left">Masonry veneer area in square feet</td>
-<td align="left">砖石面积平方英尺</td>
+<td style="text-align:center">MasVnrArea</td>
+<td style="text-align:left">Masonry veneer area in square feet</td>
+<td style="text-align:left">砖石面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">ExterQual</td>
-<td align="left">Exterior material quality</td>
-<td align="left">外部材料质量</td>
+<td style="text-align:center">ExterQual</td>
+<td style="text-align:left">Exterior material quality</td>
+<td style="text-align:left">外部材料质量</td>
 </tr>
 <tr>
-<td align="center">ExterCond</td>
-<td align="left">Present condition of the material on the exterior</td>
-<td align="left">外部材料的现状</td>
+<td style="text-align:center">ExterCond</td>
+<td style="text-align:left">Present condition of the material on the exterior</td>
+<td style="text-align:left">外部材料的现状</td>
 </tr>
 <tr>
-<td align="center">Foundation</td>
-<td align="left">Type of foundation</td>
-<td align="left">基础类型</td>
+<td style="text-align:center">Foundation</td>
+<td style="text-align:left">Type of foundation</td>
+<td style="text-align:left">基础类型</td>
 </tr>
 <tr>
-<td align="center">BsmtQual</td>
-<td align="left">Height of the basement</td>
-<td align="left">地下室的高度</td>
+<td style="text-align:center">BsmtQual</td>
+<td style="text-align:left">Height of the basement</td>
+<td style="text-align:left">地下室的高度</td>
 </tr>
 <tr>
-<td align="center">BsmtCond</td>
-<td align="left">General condition of the basement</td>
-<td align="left">地下室的一般状况</td>
+<td style="text-align:center">BsmtCond</td>
+<td style="text-align:left">General condition of the basement</td>
+<td style="text-align:left">地下室的一般状况</td>
 </tr>
 <tr>
-<td align="center">BsmtExposure</td>
-<td align="left">Walkout or garden level basement walls</td>
-<td align="left">罢工或花园级地下室的墙壁</td>
+<td style="text-align:center">BsmtExposure</td>
+<td style="text-align:left">Walkout or garden level basement walls</td>
+<td style="text-align:left">罢工或花园级地下室的墙壁</td>
 </tr>
 <tr>
-<td align="center">BsmtFinType1</td>
-<td align="left">Quality of basement finished area</td>
-<td align="left">地下室成品面积质量</td>
+<td style="text-align:center">BsmtFinType1</td>
+<td style="text-align:left">Quality of basement finished area</td>
+<td style="text-align:left">地下室成品面积质量</td>
 </tr>
 <tr>
-<td align="center">BsmtFinSF1</td>
-<td align="left">Type 1 finished square feet</td>
-<td align="left">1型方形脚</td>
+<td style="text-align:center">BsmtFinSF1</td>
+<td style="text-align:left">Type 1 finished square feet</td>
+<td style="text-align:left">1型方形脚</td>
 </tr>
 <tr>
-<td align="center">BsmtFinType2</td>
-<td align="left">Quality of second finished area (if present)</td>
-<td align="left">第二个完成区域的质量（如果存在）</td>
+<td style="text-align:center">BsmtFinType2</td>
+<td style="text-align:left">Quality of second finished area (if present)</td>
+<td style="text-align:left">第二个完成区域的质量（如果存在）</td>
 </tr>
 <tr>
-<td align="center">BsmtFinSF2</td>
-<td align="left">Type 2 finished square feet</td>
-<td align="left">2型完成的平方英尺</td>
+<td style="text-align:center">BsmtFinSF2</td>
+<td style="text-align:left">Type 2 finished square feet</td>
+<td style="text-align:left">2型完成的平方英尺</td>
 </tr>
 <tr>
-<td align="center">BsmtUnfSF</td>
-<td align="left">Unfinished square feet of basement area</td>
-<td align="left">未完成的地下室面积</td>
+<td style="text-align:center">BsmtUnfSF</td>
+<td style="text-align:left">Unfinished square feet of basement area</td>
+<td style="text-align:left">未完成的地下室面积</td>
 </tr>
 <tr>
-<td align="center">TotalBsmtSF</td>
-<td align="left">Total square feet of basement area</td>
-<td align="left">地下室面积的平方英尺</td>
+<td style="text-align:center">TotalBsmtSF</td>
+<td style="text-align:left">Total square feet of basement area</td>
+<td style="text-align:left">地下室面积的平方英尺</td>
 </tr>
 <tr>
-<td align="center">Heating</td>
-<td align="left">Type of heating</td>
-<td align="left">加热类型</td>
+<td style="text-align:center">Heating</td>
+<td style="text-align:left">Type of heating</td>
+<td style="text-align:left">加热类型</td>
 </tr>
 <tr>
-<td align="center">HeatingQC</td>
-<td align="left">Heating quality and condition</td>
-<td align="left">供热质量和条件</td>
+<td style="text-align:center">HeatingQC</td>
+<td style="text-align:left">Heating quality and condition</td>
+<td style="text-align:left">供热质量和条件</td>
 </tr>
 <tr>
-<td align="center">CentralAir</td>
-<td align="left">Central air conditioning</td>
-<td align="left">中央空调</td>
+<td style="text-align:center">CentralAir</td>
+<td style="text-align:left">Central air conditioning</td>
+<td style="text-align:left">中央空调</td>
 </tr>
 <tr>
-<td align="center">Electrical</td>
-<td align="left">Electrical system</td>
-<td align="left">电气系统</td>
+<td style="text-align:center">Electrical</td>
+<td style="text-align:left">Electrical system</td>
+<td style="text-align:left">电气系统</td>
 </tr>
 <tr>
-<td align="center">1stFlrSF</td>
-<td align="left">First Floor square feet</td>
-<td align="left">一楼平方英尺</td>
+<td style="text-align:center">1stFlrSF</td>
+<td style="text-align:left">First Floor square feet</td>
+<td style="text-align:left">一楼平方英尺</td>
 </tr>
 <tr>
-<td align="center">2ndFlrSF</td>
-<td align="left">Second floor square feet</td>
-<td align="left">二楼平方英尺</td>
+<td style="text-align:center">2ndFlrSF</td>
+<td style="text-align:left">Second floor square feet</td>
+<td style="text-align:left">二楼平方英尺</td>
 </tr>
 <tr>
-<td align="center">LowQualFinSF</td>
-<td align="left">Low quality finished square feet (all floors)</td>
-<td align="left">低质量成品平方英尺（所有楼层）</td>
+<td style="text-align:center">LowQualFinSF</td>
+<td style="text-align:left">Low quality finished square feet (all floors)</td>
+<td style="text-align:left">低质量成品平方英尺（所有楼层）</td>
 </tr>
 <tr>
-<td align="center">GrLivArea</td>
-<td align="left">Above grade (ground) living area square feet</td>
-<td align="left">以上（地面）生活区平方英尺</td>
+<td style="text-align:center">GrLivArea</td>
+<td style="text-align:left">Above grade (ground) living area square feet</td>
+<td style="text-align:left">以上（地面）生活区平方英尺</td>
 </tr>
 <tr>
-<td align="center">BsmtFullBath</td>
-<td align="left">Basement full bathrooms</td>
-<td align="left">地下室完整的浴室</td>
+<td style="text-align:center">BsmtFullBath</td>
+<td style="text-align:left">Basement full bathrooms</td>
+<td style="text-align:left">地下室完整的浴室</td>
 </tr>
 <tr>
-<td align="center">BsmtHalfBath</td>
-<td align="left">Basement half bathrooms</td>
-<td align="left">地下室半浴室</td>
+<td style="text-align:center">BsmtHalfBath</td>
+<td style="text-align:left">Basement half bathrooms</td>
+<td style="text-align:left">地下室半浴室</td>
 </tr>
 <tr>
-<td align="center">FullBath</td>
-<td align="left">Full bathrooms above grade</td>
-<td align="left">全年以上的浴室</td>
+<td style="text-align:center">FullBath</td>
+<td style="text-align:left">Full bathrooms above grade</td>
+<td style="text-align:left">全年以上的浴室</td>
 </tr>
 <tr>
-<td align="center">HalfBath</td>
-<td align="left">Half baths above grade</td>
-<td align="left">半浴半高</td>
+<td style="text-align:center">HalfBath</td>
+<td style="text-align:left">Half baths above grade</td>
+<td style="text-align:left">半浴半高</td>
 </tr>
 <tr>
-<td align="center">Bedroom</td>
-<td align="left">Number of bedrooms above basement level</td>
-<td align="left">地下室数量</td>
+<td style="text-align:center">Bedroom</td>
+<td style="text-align:left">Number of bedrooms above basement level</td>
+<td style="text-align:left">地下室数量</td>
 </tr>
 <tr>
-<td align="center">Kitchen</td>
-<td align="left">Number of kitchens</td>
-<td align="left">厨房数量</td>
+<td style="text-align:center">Kitchen</td>
+<td style="text-align:left">Number of kitchens</td>
+<td style="text-align:left">厨房数量</td>
 </tr>
 <tr>
-<td align="center">KitchenQual</td>
-<td align="left">Kitchen quality</td>
-<td align="left">厨房质量</td>
+<td style="text-align:center">KitchenQual</td>
+<td style="text-align:left">Kitchen quality</td>
+<td style="text-align:left">厨房质量</td>
 </tr>
 <tr>
-<td align="center">TotRmsAbvGrd</td>
-<td align="left">Total rooms above grade (does not include bathrooms)</td>
-<td align="left">房间总数（不含浴室）</td>
+<td style="text-align:center">TotRmsAbvGrd</td>
+<td style="text-align:left">Total rooms above grade (does not include bathrooms)</td>
+<td style="text-align:left">房间总数（不含浴室）</td>
 </tr>
 <tr>
-<td align="center">Functional</td>
-<td align="left">Home functionality rating</td>
-<td align="left">家庭功能评级</td>
+<td style="text-align:center">Functional</td>
+<td style="text-align:left">Home functionality rating</td>
+<td style="text-align:left">家庭功能评级</td>
 </tr>
 <tr>
-<td align="center">Fireplaces</td>
-<td align="left">Number of fireplaces</td>
-<td align="left">壁炉数量</td>
+<td style="text-align:center">Fireplaces</td>
+<td style="text-align:left">Number of fireplaces</td>
+<td style="text-align:left">壁炉数量</td>
 </tr>
 <tr>
-<td align="center">FireplaceQu</td>
-<td align="left">Fireplace quality</td>
-<td align="left">壁炉质量</td>
+<td style="text-align:center">FireplaceQu</td>
+<td style="text-align:left">Fireplace quality</td>
+<td style="text-align:left">壁炉质量</td>
 </tr>
 <tr>
-<td align="center">GarageType</td>
-<td align="left">Garage location</td>
-<td align="left">车库位置</td>
+<td style="text-align:center">GarageType</td>
+<td style="text-align:left">Garage location</td>
+<td style="text-align:left">车库位置</td>
 </tr>
 <tr>
-<td align="center">GarageYrBlt</td>
-<td align="left">Year garage was built</td>
-<td align="left">年建车库</td>
+<td style="text-align:center">GarageYrBlt</td>
+<td style="text-align:left">Year garage was built</td>
+<td style="text-align:left">年建车库</td>
 </tr>
 <tr>
-<td align="center">GarageFinish</td>
-<td align="left">Interior finish of the garage</td>
-<td align="left">车库内部装修</td>
+<td style="text-align:center">GarageFinish</td>
+<td style="text-align:left">Interior finish of the garage</td>
+<td style="text-align:left">车库内部装修</td>
 </tr>
 <tr>
-<td align="center">GarageCars</td>
-<td align="left">Size of garage in car capacity</td>
-<td align="left">车库的车库容量</td>
+<td style="text-align:center">GarageCars</td>
+<td style="text-align:left">Size of garage in car capacity</td>
+<td style="text-align:left">车库的车库容量</td>
 </tr>
 <tr>
-<td align="center">GarageArea</td>
-<td align="left">Size of garage in square feet</td>
-<td align="left">平方英尺车库大小</td>
+<td style="text-align:center">GarageArea</td>
+<td style="text-align:left">Size of garage in square feet</td>
+<td style="text-align:left">平方英尺车库大小</td>
 </tr>
 <tr>
-<td align="center">GarageQual</td>
-<td align="left">Garage quality</td>
-<td align="left">车库质量</td>
+<td style="text-align:center">GarageQual</td>
+<td style="text-align:left">Garage quality</td>
+<td style="text-align:left">车库质量</td>
 </tr>
 <tr>
-<td align="center">GarageCond</td>
-<td align="left">Garage condition</td>
-<td align="left">车库条件</td>
+<td style="text-align:center">GarageCond</td>
+<td style="text-align:left">Garage condition</td>
+<td style="text-align:left">车库条件</td>
 </tr>
 <tr>
-<td align="center">PavedDrive</td>
-<td align="left">Paved driveway</td>
-<td align="left">铺设的车道</td>
+<td style="text-align:center">PavedDrive</td>
+<td style="text-align:left">Paved driveway</td>
+<td style="text-align:left">铺设的车道</td>
 </tr>
 <tr>
-<td align="center">WoodDeckSF</td>
-<td align="left">Wood deck area in square feet</td>
-<td align="left">木甲板面积平方英尺</td>
+<td style="text-align:center">WoodDeckSF</td>
+<td style="text-align:left">Wood deck area in square feet</td>
+<td style="text-align:left">木甲板面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">OpenPorchSF</td>
-<td align="left">Open porch area in square feet</td>
-<td align="left">平方英尺开放门廊</td>
+<td style="text-align:center">OpenPorchSF</td>
+<td style="text-align:left">Open porch area in square feet</td>
+<td style="text-align:left">平方英尺开放门廊</td>
 </tr>
 <tr>
-<td align="center">EnclosedPorch</td>
-<td align="left">Enclosed porch area in square feet</td>
-<td align="left">封闭的门廊面积平方英尺</td>
+<td style="text-align:center">EnclosedPorch</td>
+<td style="text-align:left">Enclosed porch area in square feet</td>
+<td style="text-align:left">封闭的门廊面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">3SsnPorch</td>
-<td align="left">Three season porch area in square feet</td>
-<td align="left">三季门廊面积平方英尺</td>
+<td style="text-align:center">3SsnPorch</td>
+<td style="text-align:left">Three season porch area in square feet</td>
+<td style="text-align:left">三季门廊面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">ScreenPorch</td>
-<td align="left">Screen porch area in square feet</td>
-<td align="left">屏幕门廊面积平方英尺</td>
+<td style="text-align:center">ScreenPorch</td>
+<td style="text-align:left">Screen porch area in square feet</td>
+<td style="text-align:left">屏幕门廊面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">PoolArea</td>
-<td align="left">Pool area in square feet</td>
-<td align="left">游泳池面积平方英尺</td>
+<td style="text-align:center">PoolArea</td>
+<td style="text-align:left">Pool area in square feet</td>
+<td style="text-align:left">游泳池面积平方英尺</td>
 </tr>
 <tr>
-<td align="center">PoolQC</td>
-<td align="left">Pool quality</td>
-<td align="left">游泳池质量</td>
+<td style="text-align:center">PoolQC</td>
+<td style="text-align:left">Pool quality</td>
+<td style="text-align:left">游泳池质量</td>
 </tr>
 <tr>
-<td align="center">Fence</td>
-<td align="left">Fence quality</td>
-<td align="left">栅栏质量</td>
+<td style="text-align:center">Fence</td>
+<td style="text-align:left">Fence quality</td>
+<td style="text-align:left">栅栏质量</td>
 </tr>
 <tr>
-<td align="center">MiscFeature</td>
-<td align="left">Miscellaneous feature not covered in other categories</td>
-<td align="left">其他类别未涉及的其他功能</td>
+<td style="text-align:center">MiscFeature</td>
+<td style="text-align:left">Miscellaneous feature not covered in other categories</td>
+<td style="text-align:left">其他类别未涉及的其他功能</td>
 </tr>
 <tr>
-<td align="center">MiscVal</td>
-<td align="left">$Value of miscellaneous feature</td>
-<td align="left">$杂项功能的值</td>
+<td style="text-align:center">MiscVal</td>
+<td style="text-align:left">$Value of miscellaneous feature</td>
+<td style="text-align:left">$杂项功能的值</td>
 </tr>
 <tr>
-<td align="center">MoSold</td>
-<td align="left">Month Sold</td>
-<td align="left">月销售</td>
+<td style="text-align:center">MoSold</td>
+<td style="text-align:left">Month Sold</td>
+<td style="text-align:left">月销售</td>
 </tr>
 <tr>
-<td align="center">YrSold</td>
-<td align="left">Year Sold</td>
-<td align="left">年销售</td>
+<td style="text-align:center">YrSold</td>
+<td style="text-align:left">Year Sold</td>
+<td style="text-align:left">年销售</td>
 </tr>
 <tr>
-<td align="center">SaleType</td>
-<td align="left">Type of sale</td>
-<td align="left">销售类型</td>
+<td style="text-align:center">SaleType</td>
+<td style="text-align:left">Type of sale</td>
+<td style="text-align:left">销售类型</td>
 </tr>
 <tr>
-<td align="center">SaleCondition</td>
-<td align="left">Condition of sale</td>
-<td align="left">销售条件</td>
+<td style="text-align:center">SaleCondition</td>
+<td style="text-align:left">Condition of sale</td>
+<td style="text-align:left">销售条件</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="用Python进行全面的数据探索"><a href="#用Python进行全面的数据探索" class="headerlink" title="用Python进行全面的数据探索"></a>用Python进行全面的数据探索</h2><blockquote>
 <p>Pedro Marcelino 创建</p>
 </blockquote>
@@ -578,7 +718,7 @@
 <ul>
 <li><strong>变量名</strong> - 变量名称。</li>
 <li><strong>类型</strong> - 识别变量的类型。该字段有两种可能的值：’数值型’或’类别型’。“数值型”是指值为数字的变量，而“类别型”是指值为类别的变量。</li>
-<li><strong>细分</strong> - 识别变量的细分。我们可以定义三个可能的部分：building，space或location。当我们说“building”时，我们是指与建筑物的物理特性相关的变量（例如’OverallQual’&lt;总体材料和加工质量&gt;）。当我们说“space”时，我们是指报告房屋空间属性的变量（例如’TotalBsmtSF’&lt;地下室面积的平方英尺&gt;）。最后，当我们说’location’时，我们说的是指能提供有关房屋所在地的信息（例如’Neighborhood’&lt;Ames城市限制内的物理位置&gt;）的变量。</li>
+<li><strong>细分</strong> - 识别变量的细分。我们可以定义三个可能的部分：building，space或location。当我们说“building”时，我们是指与建筑物的物理特性相关的变量（例如’OverallQual’&lt;总体材料和加工质量&gt;）。当我们说“space”时，我们是指报告房屋空间属性的变量（例如’TotalBsmtSF’&lt;地下室面积的平方英尺&gt;）。最后，当我们说’location’时，我们说的是指能提供有关房屋所在地的信息（例如’Neighborhood’<Ames城市限制内的物理位置>）的变量。</li>
 <li><strong>期望</strong> - 我们对’SalePrice’中的可变影响力的期望。我们可以使用“高”，“中”和“低”作为可能值的分类比例。</li>
 <li><strong>结论</strong> - 在我们快速查看数据后，可以得出关于变量重要性的结论。我们可以保持与“期望”相同的分类尺度。</li>
 <li><strong>评论</strong> - 我们手动赋予的通用评论信息。</li>
@@ -600,14 +740,14 @@
 <p>我选择了两个’building’变量（’OverallQual’和’YearBuilt’）和两个’space’变量（’TotalBsmtSF’和’GrLivArea’）。这可能有点意外，因为它违背了房地产的核心，即在房地产中重要的影响因素是“位置”、“位置”和“位置”。对于类别变量，这种快速数据检查过程可能有点苛刻。例如，我预计’Neigborhood’变量更具相关性，但在数据检查之后，我最终排除了它。也许这与使用散点图而不是箱图有关，它更适合分类变量可视化。我们对数据进行可视化的方式通常会影响到我们的结论。</p>
 <p>但是，这个练习的要点是想一想我们的数据和期望值，所以我认为我们达到了目标。现在是’少一点谈话，多一点行动’的时候了。让我们开始吧！</p>
 <h3 id="2-首先要做的是分析’SalePrice’"><a href="#2-首先要做的是分析’SalePrice’" class="headerlink" title="2.首先要做的是分析’SalePrice’"></a>2.首先要做的是分析’SalePrice’</h3><p>‘SalePrice’是我们所追求的理由。就像我们要参加派对时一样。我们总是有一个理由去那里。比如，和女性交往也许就是我们去参加派对的原因。 （免责声明：根据您的喜好将其适应男性，跳舞或酒精）。</p>
-<p>让我们来构建一个使用女性来比喻‘SalePrice’的小故事 – ‘我们如何认识’SalePrice’’的故事。</p>
+<p>让我们来构建一个使用女性来比喻‘SalePrice’的小故事 — ‘我们如何认识’SalePrice’’的故事。</p>
 <p><em>这一切都始于我们的Kaggle派对。当我们在舞池里寻找一段时间舞伴之后，我们看到一个女孩在酒吧附近使用舞蹈鞋。这说明了她在那里跳舞。我们花了很多时间进行预测建模并参与分析竞赛，因此与女孩谈话并不是我们的主要能力之一。即便如此，我们试了一下：</em></p>
 <p><em>嗨，我是Kaggly！你呢？ ‘SalePrice’？多么美丽的名字！你知道’SalePrice’，你能给我提供一些关于你的数据吗？我刚刚开发了一个模型来计算两个人之间关系成功的可能性。我想在我们身上试一试！’</em></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 描述性统计数据汇总</span></span><br><span class="line">df_train[<span class="string">&#x27;SalePrice&#x27;</span>].describe()</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">count      1460.000000</span><br><span class="line">mean     180921.195890</span><br><span class="line">std       79442.502883</span><br><span class="line">min       34900.000000</span><br><span class="line">25%      129975.000000</span><br><span class="line">50%      163000.000000</span><br><span class="line">75%      214000.000000</span><br><span class="line">max      755000.000000</span><br><span class="line">Name: SalePrice, dtype: float64</span><br></pre></td></tr></table></figure>
 <p><em>很好……看起来你的最低价格大于零。很棒！你没有那些会毁掉我的模特的个人特质！你可以寄给我一些你的照片吗？……就像你在沙滩上……或者在健身房里自拍的那种一样？“</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 直方图</span><br><span class="line">sns.distplot(df_train[&#39;SalePrice&#39;]);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/001.png"></p>
+<p><img src="/img/18_03_11/001.png" alt=""></p>
 <p><em>啊!我看到你在出门的时候使用了seaborn化妆……太优雅了！我也看到你：</em></p>
 <ul>
 <li><strong><em>偏离正态分布。</em></strong></li>
@@ -623,18 +763,18 @@
 <p><em>为了充分利用我们的研究成果，我们将首先仔细研究我们的共同朋友的概况，然后我们将重点关注我们的共同利益。</em></p>
 <p><strong>与数值变量的关系</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘制 GrLivArea/SalePrice 的散点图</span></span><br><span class="line">var = <span class="string">&#x27;GrLivArea&#x27;</span></span><br><span class="line">data = pd.concat([df_train[<span class="string">&#x27;SalePrice&#x27;</span>], df_train[var]], axis=<span class="number">1</span>)</span><br><span class="line">data.plot.scatter(x=var, y=<span class="string">&#x27;SalePrice&#x27;</span>, ylim=(<span class="number">0</span>,<span class="number">800000</span>));</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/002.png"></p>
+<p><img src="/img/18_03_11/002.png" alt=""></p>
 <p><em>嗯……看起来’SalePrice’和’GrLivArea’是真正的老朋友，具有线性关系。</em></p>
 <p><em>那么’TotalBsmtSF’呢？</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 绘制 TotalBsmtSF&#x2F;SalePrice 的散点图</span><br><span class="line">var &#x3D; &#39;TotalBsmtSF&#39;</span><br><span class="line">data &#x3D; pd.concat([df_train[&#39;SalePrice&#39;], df_train[var]], axis&#x3D;1)</span><br><span class="line">data.plot.scatter(x&#x3D;var, y&#x3D;&#39;SalePrice&#39;, ylim&#x3D;(0,800000));</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/003.png"></p>
+<p><img src="/img/18_03_11/003.png" alt=""></p>
 <p><em>‘TotalBsmtSF’也是’SalePrice’的好朋友，但这似乎是一种更加情感化的关系！在一开始的时候，一切似乎都很顺利，突然间，他们的关系呈现出强烈的线性（指数？）反应，一切都在变化。此外，很明显，有时’TotalBsmtSF’本身就会关闭，并且对’SalePrice’给予零分。</em></p>
 <p><strong>与类别特征的关系</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 绘制 OverallQual&#x2F;SalePrice 的箱图</span><br><span class="line">var &#x3D; &#39;OverallQual&#39;</span><br><span class="line">data &#x3D; pd.concat([df_train[&#39;SalePrice&#39;], df_train[var]], axis&#x3D;1)</span><br><span class="line">f, ax &#x3D; plt.subplots(figsize&#x3D;(8, 6))</span><br><span class="line">fig &#x3D; sns.boxplot(x&#x3D;var, y&#x3D;&quot;SalePrice&quot;, data&#x3D;data)</span><br><span class="line">fig.axis(ymin&#x3D;0, ymax&#x3D;800000);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/004.png"></p>
+<p><img src="/img/18_03_11/004.png" alt=""></p>
 <p><em>像所有漂亮女孩一样，’SalePrice’很享受’OverallQual’。提醒自己：考虑麦当劳是否适合作为第一次约会的场所。</em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var &#x3D; &#39;YearBuilt&#39;</span><br><span class="line">data &#x3D; pd.concat([df_train[&#39;SalePrice&#39;], df_train[var]], axis&#x3D;1)</span><br><span class="line">f, ax &#x3D; plt.subplots(figsize&#x3D;(16, 8))</span><br><span class="line">fig &#x3D; sns.boxplot(x&#x3D;var, y&#x3D;&quot;SalePrice&quot;, data&#x3D;data)</span><br><span class="line">fig.axis(ymin&#x3D;0, ymax&#x3D;800000);</span><br><span class="line">plt.xticks(rotation&#x3D;90);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/005.png"></p>
+<p><img src="/img/18_03_11/005.png" alt=""></p>
 <p><em>虽然这不是一个强烈的趋势，但我认为相比旧的东西，’SalePrice’更喜欢在新的东西上花钱</em></p>
 <p><strong>注意：</strong>我们不知道’SalePrice’是否处于不变价格。不变的价格试图消除通货膨胀的影响。如果’SalePrice’价格不是固定的，那么它应该是这样的，因为多年来价格是可比的。</p>
 <p><strong>综上所述</strong>，我们可以得出以下结论：</p>
@@ -656,13 +796,13 @@
 </ul>
 <p><strong>相关矩阵（热图样式）</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#相关矩阵</span><br><span class="line">corrmat &#x3D; df_train.corr()</span><br><span class="line">f, ax &#x3D; plt.subplots(figsize&#x3D;(12, 9))</span><br><span class="line">sns.heatmap(corrmat, vmax&#x3D;.8, square&#x3D;True);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/006.png"></p>
+<p><img src="/img/18_03_11/006.png" alt=""></p>
 <p>在我看来，这张热图是快速了解我们的“等离子汤”及其关系的最佳方式。 （谢谢你@seaborn！）</p>
 <p>乍一看，有两个红色的正方形引起了我的注意。第一个引用’TotalBsmtSF’和’1stFlrSF’变量，第二个引用’GarageX’变量。两种情况都表明这些变量之间的相关性有多大。实际上，这种相关性非常强，可以表明多重共线性的情况。如果我们考察了这些变量，我们可以得出相同的结论。热图非常适合检测这种情况，并且在像我们这样的特征选择占主导地位的问题中，它们是必不可少的工具。</p>
 <p>另一件引起我注意的事情是’SalePrice’相关性。我们可以看到我们众所周知的’GrLivArea’，’TotalBsmtSF’和’OverallQual’这样明显的变量在向我们说“Hi！”，但我们也可以看到许多其他应该考虑的变量。这就是我们接下来要做的。</p>
 <p><strong>‘SalePrice’相关矩阵（放大热图样式）</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SalePrice相关矩阵</span></span><br><span class="line">k = <span class="number">10</span> <span class="comment">#热图的变量数</span></span><br><span class="line">cols = corrmat.nlargest(k, <span class="string">&#x27;SalePrice&#x27;</span>)[<span class="string">&#x27;SalePrice&#x27;</span>].index</span><br><span class="line">cm = np.corrcoef(df_train[cols].values.T)</span><br><span class="line">sns.<span class="built_in">set</span>(font_scale=<span class="number">1.25</span>)</span><br><span class="line">hm = sns.heatmap(cm, cbar=<span class="literal">True</span>, annot=<span class="literal">True</span>, square=<span class="literal">True</span>, fmt=<span class="string">&#x27;.2f&#x27;</span>, annot_kws=&#123;<span class="string">&#x27;size&#x27;</span>: <span class="number">10</span>&#125;, yticklabels=cols.values, xticklabels=cols.values)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/007.png"></p>
+<p><img src="/img/18_03_11/007.png" alt=""></p>
 <p>根据我们的水晶球显示，这些是与“SalePrice”最相关的变量。因此我得出以下结论：</p>
 <ul>
 <li>OverallQual’，’GrLivArea’和’TotalBsmtSF’与’SalePrice’密切相关。需要检查！</li>
@@ -677,7 +817,7 @@
 <p>前方高能！我第一次看到这些散点图的时候，我完全震惊了。</p>
 <p>在如此短的空间里有如此多的信息.​​…..这真是太神奇了。再一次谢谢@seaborn！你让我’move like Jagger’！</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘制散点图</span></span><br><span class="line">sns.<span class="built_in">set</span>()</span><br><span class="line">cols = [<span class="string">&#x27;SalePrice&#x27;</span>, <span class="string">&#x27;OverallQual&#x27;</span>, <span class="string">&#x27;GrLivArea&#x27;</span>, <span class="string">&#x27;GarageCars&#x27;</span>, <span class="string">&#x27;TotalBsmtSF&#x27;</span>, <span class="string">&#x27;FullBath&#x27;</span>, <span class="string">&#x27;YearBuilt&#x27;</span>]</span><br><span class="line">sns.pairplot(df_train[cols], size = <span class="number">2.5</span>)</span><br><span class="line">plt.show();</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/008.png"></p>
+<p><img src="/img/18_03_11/008.png" alt=""></p>
 <p>虽然我们已经知道一些主要的变量，但这个巨大的散点图给了我们关于变量关系的一个合理的解释。</p>
 <p>我们可能会对’TotalBsmtSF’和’GrLiveArea’组成的散点图感兴趣。在这个图中，我们可以看到许多点画出了一条线，几乎就像一个边界。这种结果是完全有道理的，并且大多数的点保持在该线以下。地下室的面积可以等于地面上的居住面积，但预计地下室面积不会超过地上居住面积（除非你想购买的是地堡）。</p>
 <p>关于’SalePrice’和’YearBuilt’的情况也可以让我们进一步思考。在“点云”的底部，我们看到一个看起来几乎是一个指数函数的曲线。我们也可以在’点云’的上限中看到同样的趋势。另外，请注意过去几年中的一系列点数是如何保持在这个极限之上的（我只是想说价格增速正在变快）。</p>
@@ -689,115 +829,119 @@
 </ul>
 <p>这些问题的答案很重要，因为缺少数据可能意味着样本量减少。这可能会使我们的分析工作无法进行。此外，从实质的角度来看，我们需要确保缺失的数据流程没有偏见，并确保没有将一些不易洞察的事实所隐藏。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 缺失数据</span></span><br><span class="line">total = df_train.isnull().<span class="built_in">sum</span>().sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line">percent = (df_train.isnull().<span class="built_in">sum</span>()/df_train.isnull().count()).sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line">missing_data = pd.concat([total, percent], axis=<span class="number">1</span>, keys=[<span class="string">&#x27;Total&#x27;</span>, <span class="string">&#x27;Percent&#x27;</span>])</span><br><span class="line">missing_data.head(<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"></th>
-<th align="left">Total</th>
-<th align="left">Percent</th>
+<th style="text-align:left"></th>
+<th style="text-align:left">Total</th>
+<th style="text-align:left">Percent</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">PoolQC</td>
-<td align="left">1453</td>
-<td align="left">0.995205</td>
+<tbody>
+<tr>
+<td style="text-align:left">PoolQC</td>
+<td style="text-align:left">1453</td>
+<td style="text-align:left">0.995205</td>
 </tr>
 <tr>
-<td align="left">MiscFeature</td>
-<td align="left">1406</td>
-<td align="left">0.963014</td>
+<td style="text-align:left">MiscFeature</td>
+<td style="text-align:left">1406</td>
+<td style="text-align:left">0.963014</td>
 </tr>
 <tr>
-<td align="left">Alley</td>
-<td align="left">1369</td>
-<td align="left">0.937671</td>
+<td style="text-align:left">Alley</td>
+<td style="text-align:left">1369</td>
+<td style="text-align:left">0.937671</td>
 </tr>
 <tr>
-<td align="left">Fence</td>
-<td align="left">1179</td>
-<td align="left">0.807534</td>
+<td style="text-align:left">Fence</td>
+<td style="text-align:left">1179</td>
+<td style="text-align:left">0.807534</td>
 </tr>
 <tr>
-<td align="left">FireplaceQu</td>
-<td align="left">690</td>
-<td align="left">0.472603</td>
+<td style="text-align:left">FireplaceQu</td>
+<td style="text-align:left">690</td>
+<td style="text-align:left">0.472603</td>
 </tr>
 <tr>
-<td align="left">LotFrontage</td>
-<td align="left">259</td>
-<td align="left">0.177397</td>
+<td style="text-align:left">LotFrontage</td>
+<td style="text-align:left">259</td>
+<td style="text-align:left">0.177397</td>
 </tr>
 <tr>
-<td align="left">GarageCond</td>
-<td align="left">81</td>
-<td align="left">0.055479</td>
+<td style="text-align:left">GarageCond</td>
+<td style="text-align:left">81</td>
+<td style="text-align:left">0.055479</td>
 </tr>
 <tr>
-<td align="left">GarageType</td>
-<td align="left">81</td>
-<td align="left">0.055479</td>
+<td style="text-align:left">GarageType</td>
+<td style="text-align:left">81</td>
+<td style="text-align:left">0.055479</td>
 </tr>
 <tr>
-<td align="left">GarageYrBlt</td>
-<td align="left">81</td>
-<td align="left">0.055479</td>
+<td style="text-align:left">GarageYrBlt</td>
+<td style="text-align:left">81</td>
+<td style="text-align:left">0.055479</td>
 </tr>
 <tr>
-<td align="left">GarageFinish</td>
-<td align="left">81</td>
-<td align="left">0.055479</td>
+<td style="text-align:left">GarageFinish</td>
+<td style="text-align:left">81</td>
+<td style="text-align:left">0.055479</td>
 </tr>
 <tr>
-<td align="left">GarageQual</td>
-<td align="left">81</td>
-<td align="left">0.055479</td>
+<td style="text-align:left">GarageQual</td>
+<td style="text-align:left">81</td>
+<td style="text-align:left">0.055479</td>
 </tr>
 <tr>
-<td align="left">BsmtExposure</td>
-<td align="left">38</td>
-<td align="left">0.026027</td>
+<td style="text-align:left">BsmtExposure</td>
+<td style="text-align:left">38</td>
+<td style="text-align:left">0.026027</td>
 </tr>
 <tr>
-<td align="left">BsmtFinType2</td>
-<td align="left">38</td>
-<td align="left">0.026027</td>
+<td style="text-align:left">BsmtFinType2</td>
+<td style="text-align:left">38</td>
+<td style="text-align:left">0.026027</td>
 </tr>
 <tr>
-<td align="left">BsmtFinType1</td>
-<td align="left">37</td>
-<td align="left">0.025342</td>
+<td style="text-align:left">BsmtFinType1</td>
+<td style="text-align:left">37</td>
+<td style="text-align:left">0.025342</td>
 </tr>
 <tr>
-<td align="left">BsmtCond</td>
-<td align="left">37</td>
-<td align="left">0.025342</td>
+<td style="text-align:left">BsmtCond</td>
+<td style="text-align:left">37</td>
+<td style="text-align:left">0.025342</td>
 </tr>
 <tr>
-<td align="left">BsmtQual</td>
-<td align="left">37</td>
-<td align="left">0.025342</td>
+<td style="text-align:left">BsmtQual</td>
+<td style="text-align:left">37</td>
+<td style="text-align:left">0.025342</td>
 </tr>
 <tr>
-<td align="left">MasVnrArea</td>
-<td align="left">8</td>
-<td align="left">0.005479</td>
+<td style="text-align:left">MasVnrArea</td>
+<td style="text-align:left">8</td>
+<td style="text-align:left">0.005479</td>
 </tr>
 <tr>
-<td align="left">MasVnrType</td>
-<td align="left">8</td>
-<td align="left">0.005479</td>
+<td style="text-align:left">MasVnrType</td>
+<td style="text-align:left">8</td>
+<td style="text-align:left">0.005479</td>
 </tr>
 <tr>
-<td align="left">Electrical</td>
-<td align="left">1</td>
-<td align="left">0.000685</td>
+<td style="text-align:left">Electrical</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">0.000685</td>
 </tr>
 <tr>
-<td align="left">Utilities</td>
-<td align="left">0</td>
-<td align="left">0.000000</td>
+<td style="text-align:left">Utilities</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">0.000000</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>让我们分析一下这个表里的信息，来理解如何处理丢失的数据。</p>
 <p>我们会考虑当超过15％的数据丢失时，删除相应的变量并假设它从来都不存在。这意味着在这些情况下，我们不会尝试填补缺失数据。按照这个逻辑，我们应该删除一组变量（例如’PoolQC’，’MiscFeature’，’Alley’等）。这么做的重点是：我们会错过这些数据吗？我不这么认为。这些变量中没有一个看起来很重要，因为其中大多数不是我们在购买房屋时考虑的方面（或许这就是这些数据会缺失的原因？）。此外，仔细观察变量，像’PoolQC’，’MiscFeature’和’FireplaceQu’这样的变量是异常值的强有力候选者，所以我们很乐意删除它们。</p>
 <p>在其余的案例中，我们可以看到“GarageX”系列的变量具有相同数量的缺失数据。我敢打赌，缺少的数据来自同一组观察结果（我不会检查它，缺失值只有5％的占比）。由于表示关于车库信息的最重要信息的字段是“GarageCars”，并且考虑到我们只是谈论了5％的缺失数据，所以我将删除提及的“GarageX”变量。同样的逻辑适用于’BsmtX’变量。</p>
@@ -821,7 +965,7 @@
 <p><strong>双变量分析</strong></p>
 <p>我们已经了解了以下散点图。但是，当我们从新的角度来看事物时，总会有一些东西需要发现。正如Alan Kay所说，“视角的改变相当于提高80点智商”。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 双变量分析SalePrice&#x2F;GrLivArea</span><br><span class="line">var &#x3D; &#39;GrLivArea&#39;</span><br><span class="line">data &#x3D; pd.concat([df_train[&#39;SalePrice&#39;], df_train[var]], axis&#x3D;1)</span><br><span class="line">data.plot.scatter(x&#x3D;var, y&#x3D;&#39;SalePrice&#39;, ylim&#x3D;(0,800000));</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/009.png"></p>
+<p><img src="/img/18_03_11/009.png" alt=""></p>
 <p>它所揭示的是：</p>
 <ul>
 <li>这两个变量中，更大的’GrLivArea’的数据看起来很奇怪，这些较大的’GrLivArea’离群了。我们可以推测为什么会发生这种情况。也许这些样本是农业领域的，这样想可以解释低价的原因。我不确定这一点，但我确信这两点并不代表典型案例。因此，我们将它们定义为异常值并删除它们。</li>
@@ -829,7 +973,7 @@
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">＃ 删除点</span><br><span class="line">df_train.sort_values(by = <span class="string">&#x27;GrLivArea&#x27;</span>, ascending = <span class="literal">False</span>)[:<span class="number">2</span>]</span><br><span class="line">df_train = df_train.drop(df_train[df_train[<span class="string">&#x27;Id&#x27;</span>] == <span class="number">1299</span>].index)</span><br><span class="line">df_train = df_train.drop(df_train[df_train[<span class="string">&#x27;Id&#x27;</span>] == <span class="number">524</span>].index)</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 双变量分析SalePrice/GrLivArea</span></span><br><span class="line">var = <span class="string">&#x27;TotalBsmtSF&#x27;</span></span><br><span class="line">data = pd.concat([df_train[<span class="string">&#x27;SalePrice&#x27;</span>], df_train[var]], axis=<span class="number">1</span>)</span><br><span class="line">data.plot.scatter(x=var, y=<span class="string">&#x27;SalePrice&#x27;</span>, ylim=(<span class="number">0</span>,<span class="number">800000</span>));</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/010.png"></p>
+<p><img src="/img/18_03_11/010.png" alt=""></p>
 <p>我们可以想象消除一些观察结果（例如TotalBsmtSF&gt; 3000的结果），但我认为这么做不值得。我们可以接受这些值，所以我们不会做任何事情。</p>
 <h3 id="5-硬核部分"><a href="#5-硬核部分" class="headerlink" title="5.硬核部分"></a>5.硬核部分</h3><p>在Ayn Rand的小说“阿特拉斯耸耸肩”中，有一个经常重复的问题：John Galt是谁？本书很大一部分是关于寻求发现这个问题的答案。</p>
 <p>我现在体会到了Rand的感受，’SalePrice’是谁呢？</p>
@@ -851,27 +995,27 @@
 <li><strong>正态概率图</strong> - 数据分布应该紧跟代表正态分布的对角线。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 直方图和正态概率图</span><br><span class="line">sns.distplot(df_train[&#39;SalePrice&#39;], fit&#x3D;norm);</span><br><span class="line">fig &#x3D; plt.figure()</span><br><span class="line">res &#x3D; stats.probplot(df_train[&#39;SalePrice&#39;], plot&#x3D;plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/011.png"></p>
-<p><img src="/img/18_03_11/012.png"></p>
+<p><img src="/img/18_03_11/011.png" alt=""></p>
+<p><img src="/img/18_03_11/012.png" alt=""></p>
 <p>好吧，’SalePrice’不服从正态分布。它显示’顶峰’呈现出正偏斜状态，并且不遵循对角线。</p>
 <p>但一切都没有丢失。简单的数据转换可以解决问题。这是您可以在统计书籍中学到的很棒的东西之一：如果是正偏态，使用log函数转换通常效果不错。当我发现这一点时，我感觉自己就像一个霍格沃茨的学生发现了一个新的咒语一样。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">＃ 应用log函数转换</span><br><span class="line">df_train[<span class="string">&#x27;SalePrice&#x27;</span>] = np.log(df_train[<span class="string">&#x27;SalePrice&#x27;</span>])</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转换的直方图和正态概率分布图</span></span><br><span class="line">sns.distplot(df_train[<span class="string">&#x27;SalePrice&#x27;</span>], fit=norm);</span><br><span class="line">fig = plt.figure()</span><br><span class="line">res = stats.probplot(df_train[<span class="string">&#x27;SalePrice&#x27;</span>], plot=plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/013.png"></p>
-<p><img src="/img/18_03_11/014.png"></p>
+<p><img src="/img/18_03_11/013.png" alt=""></p>
+<p><img src="/img/18_03_11/014.png" alt=""></p>
 <p>完成！让我们来看看’GrLivArea’的情况。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">＃ 直方图和正态概率分布图</span><br><span class="line">sns.distplot(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>], fit=norm);</span><br><span class="line">fig = plt.figure()</span><br><span class="line">res = stats.probplot(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>], plot=plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/015.png"></p>
-<p><img src="/img/18_03_11/016.png"></p>
+<p><img src="/img/18_03_11/015.png" alt=""></p>
+<p><img src="/img/18_03_11/016.png" alt=""></p>
 <p>看起来有点歪…</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据转换</span></span><br><span class="line">df_train[<span class="string">&#x27;GrLivArea&#x27;</span>] = np.log(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>])</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转换的直方图和正态概率分布图</span></span><br><span class="line">sns.distplot(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>], fit=norm);</span><br><span class="line">fig = plt.figure()</span><br><span class="line">res = stats.probplot(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>], plot=plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/017.png"></p>
-<p><img src="/img/18_03_11/018.png"></p>
+<p><img src="/img/18_03_11/017.png" alt=""></p>
+<p><img src="/img/18_03_11/018.png" alt=""></p>
 <p>下一个…</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直方图和正态概率分布图</span></span><br><span class="line">sns.distplot(df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>], fit=norm);</span><br><span class="line">fig = plt.figure()</span><br><span class="line">res = stats.probplot(df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>], plot=plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/019.png"></p>
-<p><img src="/img/18_03_11/020.png"></p>
+<p><img src="/img/18_03_11/019.png" alt=""></p>
+<p><img src="/img/18_03_11/020.png" alt=""></p>
 <p>好的，现在我们要处理几个大麻烦了：</p>
 <ul>
 <li>总体来说，数据分布呈现偏斜状态。</li>
@@ -883,17 +1027,17 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为新变量创建列（一个足够了，因为它是一个二进制分类特征）</span></span><br><span class="line"><span class="comment"># 如果 area&gt;0 值为1，否则 值为0</span></span><br><span class="line">df_train[<span class="string">&#x27;HasBsmt&#x27;</span>] = pd.Series(<span class="built_in">len</span>(df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]), index=df_train.index)</span><br><span class="line">df_train[<span class="string">&#x27;HasBsmt&#x27;</span>] = <span class="number">0</span> </span><br><span class="line">df_train.loc[df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]&gt;<span class="number">0</span>,<span class="string">&#x27;HasBsmt&#x27;</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据转换</span></span><br><span class="line">df_train.loc[df_train[<span class="string">&#x27;HasBsmt&#x27;</span>]==<span class="number">1</span>,<span class="string">&#x27;TotalBsmtSF&#x27;</span>] = np.log(df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>])</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直方图和正态概率分布图</span></span><br><span class="line">sns.distplot(df_train[df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]&gt;<span class="number">0</span>][<span class="string">&#x27;TotalBsmtSF&#x27;</span>], fit=norm);</span><br><span class="line">fig = plt.figure()</span><br><span class="line">res = stats.probplot(df_train[df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]&gt;<span class="number">0</span>][<span class="string">&#x27;TotalBsmtSF&#x27;</span>], plot=plt)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/021.png"></p>
-<p><img src="/img/18_03_11/022.png"></p>
+<p><img src="/img/18_03_11/021.png" alt=""></p>
+<p><img src="/img/18_03_11/022.png" alt=""></p>
 <p><strong>在第一次尝试中寻找“方差齐性”</strong></p>
 <p>测试两个度量变量的同方差性的最佳方法是图形化。对不同特征使用相同的分布方式，生成锥形（样本在一侧分布的少，另一侧分布的多）或钻石（大量点分布在中心区域）等形状的分布情况。</p>
 <p>绘制SalePrice’和’GrLivArea’的分布：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">＃散点图</span><br><span class="line">plt.scatter(df_train[<span class="string">&#x27;GrLivArea&#x27;</span>], df_train[<span class="string">&#x27;SalePrice&#x27;</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/023.png"></p>
+<p><img src="/img/18_03_11/023.png" alt=""></p>
 <p>此散点图的旧版本（在对数转换之前）具有圆锥形状（返回并检查’SalePrice’和相关变量之间的散点图（move like Jagger style））。如您所见，当前的散点图不再具有圆锥形状。这是正态化的力量！只要确保一些变量的正态性，我们解决了同方差问题。</p>
 <p>我们继续检查’SalePrice’和’TotalBsmtSF’。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">＃散点图</span><br><span class="line">plt.scatter(df_train[df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]&gt;<span class="number">0</span>][<span class="string">&#x27;TotalBsmtSF&#x27;</span>], df_train[df_train[<span class="string">&#x27;TotalBsmtSF&#x27;</span>]&gt;<span class="number">0</span>][<span class="string">&#x27;SalePrice&#x27;</span>]);</span><br></pre></td></tr></table></figure>
-<p><img src="/img/18_03_11/024.png"></p>
+<p><img src="/img/18_03_11/024.png" alt=""></p>
 <p>总的来说，’SalePrice’在’TotalBsmtSF’范围内表现出相等的变化水平。Cool!</p>
 <h3 id="Last-but-not-the-least-虚拟变量"><a href="#Last-but-not-the-least-虚拟变量" class="headerlink" title="Last but not the least, 虚拟变量"></a>Last but not the least, 虚拟变量</h3><p>简单模式。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">＃ 虚拟变量转换</span><br><span class="line">df_train = pd.get_dummies(df_train)</span><br></pre></td></tr></table></figure>
@@ -905,157 +1049,285 @@
 <p><a target="_blank" rel="noopener" href="https://www.amazon.com/Multivariate-Data-Analysis-Joseph-Hair/dp/0138132631">Hair等人，2013，多变量数据分析，第7版</a></p>
 <h2 id="致谢-1"><a href="#致谢-1" class="headerlink" title="致谢"></a>致谢</h2><p>感谢JoãoRico的审阅。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/" data-id="ckkwc4375005ppas9deg0b40j" data-title="【翻译】kaggle竞赛 房价预测" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/kaggle/" rel="tag"># kaggle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/20/%E3%80%90%E5%8E%9F%E5%88%9B%E3%80%91AI-QI%E9%87%8F%E5%8C%96%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E7%88%AC%E5%9D%91%E7%AC%94%E8%AE%B0-%E5%B0%8F%E5%BF%83%E5%81%8F%E6%96%9C%E7%B1%BB%E9%97%AE%E9%A2%98/" rel="prev" title="【原创】AI-QI量化平台搭建爬坑笔记-小心偏斜类问题">
+      <i class="fa fa-chevron-left"></i> 【原创】AI-QI量化平台搭建爬坑笔记-小心偏斜类问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part1-%E5%AE%9A%E4%BD%8D%E5%92%8C%E8%AE%BE%E7%BD%AE/" rel="next" title="Docker入门Part1-定位和设置">
+      Docker入门Part1-定位和设置 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E6%8A%80%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">实践技能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%B4%E8%B0%A2"><span class="nav-number">1.3.</span> <span class="nav-text">致谢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">2.</span> <span class="nav-text">数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">文件描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF"><span class="nav-number">2.2.</span> <span class="nav-text">字段信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%85%A8%E9%9D%A2%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8E%A2%E7%B4%A2"><span class="nav-number">3.</span> <span class="nav-text">用Python进行全面的数据探索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%82%A3%E4%B9%88%EF%BC%8C%E6%88%91%E4%BB%AC%E8%83%BD%E5%BE%97%E5%88%B0%E4%BB%80%E4%B9%88%E5%91%A2%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">1.那么，我们能得到什么呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%A6%96%E5%85%88%E8%A6%81%E5%81%9A%E7%9A%84%E6%98%AF%E5%88%86%E6%9E%90%E2%80%99SalePrice%E2%80%99"><span class="nav-number">3.2.</span> <span class="nav-text">2.首先要做的是分析’SalePrice’</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%98SalePrice%E2%80%99%EF%BC%8C%E5%A5%B9%E7%9A%84%E5%A5%BD%E5%8F%8B%E5%92%8C%E5%A5%B9%E7%9A%84%E5%85%B4%E8%B6%A3"><span class="nav-number">3.2.1.</span> <span class="nav-text">‘SalePrice’，她的好友和她的兴趣</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BF%9D%E6%8C%81%E5%AE%A2%E8%A7%82%EF%BC%8C%E7%90%86%E6%80%A7%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.3.</span> <span class="nav-text">3.保持客观，理性工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BC%BA%E5%A4%B1%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">3.4.</span> <span class="nav-text">4.缺失的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%BB%E7%BE%A4%E5%80%BC%EF%BC%81"><span class="nav-number">3.5.</span> <span class="nav-text">离群值！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%A1%AC%E6%A0%B8%E9%83%A8%E5%88%86"><span class="nav-number">3.6.</span> <span class="nav-text">5.硬核部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Last-but-not-the-least-%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F"><span class="nav-number">3.7.</span> <span class="nav-text">Last but not the least, 虚拟变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">3.8.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B4%E8%B0%A2-1"><span class="nav-number">5.</span> <span class="nav-text">致谢</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part1-%E5%AE%9A%E4%BD%8D%E5%92%8C%E8%AE%BE%E7%BD%AE/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Docker入门Part1-定位和设置
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/12/20/%E3%80%90%E5%8E%9F%E5%88%9B%E3%80%91AI-QI%E9%87%8F%E5%8C%96%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%E7%88%AC%E5%9D%91%E7%AC%94%E8%AE%B0-%E5%B0%8F%E5%BF%83%E5%81%8F%E6%96%9C%E7%B1%BB%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【原创】AI-QI量化平台搭建爬坑笔记-小心偏斜类问题</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '9c790089e9d44ae7fc88192dbc5cebeb',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

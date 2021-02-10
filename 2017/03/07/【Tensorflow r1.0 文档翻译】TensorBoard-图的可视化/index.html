@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="TensorFlow计算图是强大而复杂的。图形可视化可以帮助您理解和调试它们。这里有一个可视化工作的例子。  TensorFlow图的可视化。 如有想查看你的图，你需要运行TensorBoard并将其指向你的作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保您记录所有必要信息的深入信息，请参阅TensorBoard：可视化学习。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化">
 <meta property="og:url" content="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="TensorFlow计算图是强大而复杂的。图形可视化可以帮助您理解和调试它们。这里有一个可视化工作的例子。  TensorFlow图的可视化。 如有想查看你的图，你需要运行TensorBoard并将其指向你的作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保您记录所有必要信息的深入信息，请参阅TensorBoard：可视化学习。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_03_07/007.gif">
@@ -38,98 +52,224 @@
 <meta property="og:image" content="http://example.com/img/17_03_07/029.png">
 <meta property="og:image" content="http://example.com/img/17_03_07/030.png">
 <meta property="article:published_time" content="2017-03-07T22:07:58.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:39.997Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="Tensorflow">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_03_07/007.gif">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-【Tensorflow r1.0 文档翻译】TensorBoard-图的可视化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2017-03-07T22:07:58.000Z" itemprop="datePublished">2017-03-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>►<a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-07 22:07:58" itemprop="dateCreated datePublished" datetime="2017-03-07T22:07:58+00:00">2017-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:39" itemprop="dateModified" datetime="2021-02-10T16:11:39+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/" itemprop="url" rel="index"><span itemprop="name">Tensorflow</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <p>TensorFlow计算图是强大而复杂的。图形可视化可以帮助您理解和调试它们。这里有一个可视化工作的例子。</p>
-<p><img src="/img/17_03_07/007.gif"></p>
+<p><img src="/img/17_03_07/007.gif" alt=""></p>
 <p><em>TensorFlow图的可视化。</em></p>
-<p>如有想查看你的图，你需要运行TensorBoard并将其指向你的作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保您记录所有必要信息的深入信息，请参阅<a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/">TensorBoard：可视化学习</a>。</p>
+<p>如有想查看你的图，你需要运行TensorBoard并将其指向你的作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保您记录所有必要信息的深入信息，请参阅<a href="/2017/03/07/【Tensorflow%20r1.0%20文档翻译】TensorBoard-可视化学习/">TensorBoard：可视化学习</a>。</p>
 <h2 id="名称作用域和节点"><a href="#名称作用域和节点" class="headerlink" title="名称作用域和节点"></a>名称作用域和节点</h2><p>典型的TensorFlow图可以有成千上万的节点 - 这个展示量太大了，以至于即使使用标准图工具来布局也太大了。为了简化显示，我们通过变量名指定其对应的作用域，通过使用这些信息来定义图中节点图层的可视化。默认情况下，只显示此层次结构的顶部部分。下面是一个使用<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/name_scope"><code>tf.name_scope</code></a>在隐藏名称范围下定义三个操作的示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">with tf.name_scope(&#39;hidden&#39;) as scope:</span><br><span class="line">  a &#x3D; tf.constant(5, name&#x3D;&#39;alpha&#39;)</span><br><span class="line">  W &#x3D; tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0), name&#x3D;&#39;weights&#39;)</span><br><span class="line">  b &#x3D; tf.Variable(tf.zeros([1]), name&#x3D;&#39;biases&#39;)</span><br></pre></td></tr></table></figure>
 <p>这将产生以下三个操作名称：</p>
@@ -140,106 +280,126 @@
 </ul>
 <p>默认情况下，可视化将这三个操作压缩到标记为<code>hidden</code>的节点中。额外的细节不会丢失。您可以双击或单击右上角的橙色<code>+</code>号来展开节点，然后您将看到三个子节点的<code>alpha</code>，<code>weights</code>和<code>biases</code>。</p>
 <p>这是一个在初始化和展开状态更复杂的真实例子：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/008.png"></th>
-<th align="left"><img src="/img/17_03_07/009.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/008.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/009.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">顶层名称作用域<strong>pool_1</strong>的初始化视图。单击右上角的橙色<code>+</code>按钮或双击节点本身将会展开它。</td>
-<td align="left"><strong>pool_1</strong>名称作用域的展开视图。单击右上角的橙色按钮或双击节点本身将折叠名称作用域。</td>
+<tbody>
+<tr>
+<td style="text-align:left">顶层名称作用域<strong>pool_1</strong>的初始化视图。单击右上角的橙色<code>+</code>按钮或双击节点本身将会展开它。</td>
+<td style="text-align:left"><strong>pool_1</strong>名称作用域的展开视图。单击右上角的橙色按钮或双击节点本身将折叠名称作用域。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>按名称范围对节点分组对于创建清晰的图表至关重要。如果您正在构建模型，名称作用域可以控制生成的可视化。<strong>你的名字的作用域越好，可视化效果越好。</strong></p>
 <p>上图说明了可视化的第二个方面。TensorFlow图有两种连接：数据依赖和控制依赖。数据依赖显示了两个操作之间的tensor流，并且示为实箭头，而控制依赖使用虚线。在扩展视图（上图右侧）中，所有连接都是数据依赖关系，但连接<code>CheckNumerics</code>和<code>control_dependency</code>的虚线除外。</p>
 <p>还有第二种简化布局的小技巧。大多数TensorFlow图都存在几个与其他节点有很多连接的节点。例如，许多节点可能对初始化步骤具有控制依赖性。绘制<code>init</code>节点以及其依赖项之间的所有边将创建一个非常混乱的视图。</p>
-<p>为了减少杂乱程度，可视化将所有高度节点分离到右侧的辅助区域，并且不绘制代表它们边缘的线。相对于用线来表示边缘来讲，这里我们绘制小节点图标以指示连接关系。分离出辅助节点通常不会移除关键信息，因为这些节点通常与记录方法相关。有关如何在主图和辅助区域之间移动节点，请参阅<a href="#%E4%BA%A4%E4%BA%92">交互</a>部分。</p>
+<p>为了减少杂乱程度，可视化将所有高度节点分离到右侧的辅助区域，并且不绘制代表它们边缘的线。相对于用线来表示边缘来讲，这里我们绘制小节点图标以指示连接关系。分离出辅助节点通常不会移除关键信息，因为这些节点通常与记录方法相关。有关如何在主图和辅助区域之间移动节点，请参阅<a href="#交互">交互</a>部分。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/010.png"></th>
-<th align="left"><img src="/img/17_03_07/011.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/010.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/011.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">节点<strong>conv_1</strong>已被连接到<strong>save</strong>。注意它右边的小<strong>save</strong>节点图标。</td>
-<td align="left"><strong>save</strong>有高度，并且将作为辅助节点出现。与<strong>conv_1</strong>的连接在其左侧显示为节点图标。为了进一步减少杂乱程度，由于<strong>save</strong>有很多连接，我们显示到第5个，其他缩写为**… 12 more**。</td>
+<tbody>
+<tr>
+<td style="text-align:left">节点<strong>conv_1</strong>已被连接到<strong>save</strong>。注意它右边的小<strong>save</strong>节点图标。</td>
+<td style="text-align:left"><strong>save</strong>有高度，并且将作为辅助节点出现。与<strong>conv_1</strong>的连接在其左侧显示为节点图标。为了进一步减少杂乱程度，由于<strong>save</strong>有很多连接，我们显示到第5个，其他缩写为<strong>… 12 more</strong>。</td>
 </tr>
-</tbody></table>
-<p>最后一个结构简化是series collapsing(系列折叠)。有顺序的图案 - 也就是说，其名称与末尾的数字不同并且具有相同构结构的节点被折叠为单个节点堆叠，如下所示。对于具有长序列的网络，这极大地简化了视图的显示。与分层节点一样，双击也可以展开。有关如何为特定节点集禁用/启用系列折叠，请参阅<a href="#%E4%BA%A4%E4%BA%92">交互</a>。</p>
+</tbody>
+</table>
+</div>
+<p>最后一个结构简化是series collapsing(系列折叠)。有顺序的图案 - 也就是说，其名称与末尾的数字不同并且具有相同构结构的节点被折叠为单个节点堆叠，如下所示。对于具有长序列的网络，这极大地简化了视图的显示。与分层节点一样，双击也可以展开。有关如何为特定节点集禁用/启用系列折叠，请参阅<a href="#交互">交互</a>。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/012.png"></th>
-<th align="left"><img src="/img/17_03_07/013.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/012.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/013.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">节点序列的折叠视图。</td>
-<td align="left">双击后的一个小块的展开视图。</td>
+<tbody>
+<tr>
+<td style="text-align:left">节点序列的折叠视图。</td>
+<td style="text-align:left">双击后的一个小块的展开视图。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>最后，作为可读性的最后一个辅助部分，可视化对常量和摘要节点使用一些特定的图标来。下面是一个节点符号对照表：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">符号</th>
-<th align="left">含义</th>
+<th style="text-align:left">符号</th>
+<th style="text-align:left">含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><img src="/img/17_03_07/014.png"></td>
-<td align="left">高级节点，代表名称作用域。双击展开高级节点。</td>
+<tbody>
+<tr>
+<td style="text-align:left"><img src="/img/17_03_07/014.png" alt=""></td>
+<td style="text-align:left">高级节点，代表名称作用域。双击展开高级节点。</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/015.png"></td>
-<td align="left">编号节点序列，它们彼此没有连接</td>
+<td style="text-align:left"><img src="/img/17_03_07/015.png" alt=""></td>
+<td style="text-align:left">编号节点序列，它们彼此没有连接</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/016.png"></td>
-<td align="left">编号节点序列，它们是彼此连接的</td>
+<td style="text-align:left"><img src="/img/17_03_07/016.png" alt=""></td>
+<td style="text-align:left">编号节点序列，它们是彼此连接的</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/017.png"></td>
-<td align="left">单个操作节点。</td>
+<td style="text-align:left"><img src="/img/17_03_07/017.png" alt=""></td>
+<td style="text-align:left">单个操作节点。</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/018.png"></td>
-<td align="left">常数</td>
+<td style="text-align:left"><img src="/img/17_03_07/018.png" alt=""></td>
+<td style="text-align:left">常数</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/019.png"></td>
-<td align="left">摘要节点。</td>
+<td style="text-align:left"><img src="/img/17_03_07/019.png" alt=""></td>
+<td style="text-align:left">摘要节点。</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/020.png"></td>
-<td align="left">边缘显示操作之间的数据流。</td>
+<td style="text-align:left"><img src="/img/17_03_07/020.png" alt=""></td>
+<td style="text-align:left">边缘显示操作之间的数据流。</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/021.png"></td>
-<td align="left">边缘显示操作之间的控制依赖性。</td>
+<td style="text-align:left"><img src="/img/17_03_07/021.png" alt=""></td>
+<td style="text-align:left">边缘显示操作之间的控制依赖性。</td>
 </tr>
 <tr>
-<td align="left"><img src="/img/17_03_07/022.png"></td>
-<td align="left">表示输出操作节点可以变为输入张量的参考边。</td>
+<td style="text-align:left"><img src="/img/17_03_07/022.png" alt=""></td>
+<td style="text-align:left">表示输出操作节点可以变为输入张量的参考边。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><p>通过平移和缩放导航图。点击并拖动即可平移，并使用滚动手势进行缩放。双击一个节点，或单击其<code>+</code>按钮，可以展开一个表示一组操作的名称作用域。为了在缩放和平移时轻松跟踪当前视点，右下角有一个小地图。</p>
 <p>要关闭打开的节点，请再次双击它，或单击它的 <code>-</code> 按钮。您也可以单击来选择某个节点。它将变成更暗的颜色，并且它的详细信息和它连接的节点将出现在可视化界面的右上角的信息卡中。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/023.png"></th>
-<th align="left"><img src="/img/17_03_07/024.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/023.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/024.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">显示<strong>conv2</strong>名称作用域的详细信息的信息卡。输入和输出从名称作用域内的操作节点的输入和输出组合。对于名称作用域，不显示属性。</td>
-<td align="left">显示<code>DecodeRaw</code>操作节点的详细信息的信息卡。除了输入和输出之外，它还显示了设备和与当前操作相关的属性。</td>
+<tbody>
+<tr>
+<td style="text-align:left">显示<strong>conv2</strong>名称作用域的详细信息的信息卡。输入和输出从名称作用域内的操作节点的输入和输出组合。对于名称作用域，不显示属性。</td>
+<td style="text-align:left">显示<code>DecodeRaw</code>操作节点的详细信息的信息卡。除了输入和输出之外，它还显示了设备和与当前操作相关的属性。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>TensorBoard提供了几种方法来更改图形的视觉布局。这些方法不改变图的计算语义，但它可以为网络的结构带来一些清晰度。通过右键单击节点或按下该节点信息卡底部的按钮，可以对其布局进行以下更改：</p>
 <ul>
 <li>节点可以在主图和辅助区域之间移动。</li>
@@ -249,199 +409,286 @@
 <p>单击信息卡中的节点名称将选择它。如果需要，视点将自动平移，以便节点可见。</p>
 <p>最后，您可以使用图例上方的颜色菜单为图形选择两种颜色方案。默认结构视图显示结构：当两个高级节点具有相同的结构时，它们以彩虹的相同颜色显示。唯一结构化的节点是灰色的。还有一个显示了运行不同操作的设备第二个视图。名称作用域的颜色与其内部操作的设备分数成比例。</p>
 <p>下面的图片给出了一幅实际场景中的插图。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/025.png"></th>
-<th align="left"><img src="/img/17_03_07/026.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/025.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/026.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">结构视图：灰色节点具有独特的结构。橙色<strong>conv1</strong>和<strong>conv2</strong>节点具有相同的结构，并且类似地用于具有其它颜色的节点。</td>
-<td align="left">设备视图：名称范围与其中的操作节点的设备分数成比例地着色。这里，紫色表示GPU，绿色表示CPU。</td>
+<tbody>
+<tr>
+<td style="text-align:left">结构视图：灰色节点具有独特的结构。橙色<strong>conv1</strong>和<strong>conv2</strong>节点具有相同的结构，并且类似地用于具有其它颜色的节点。</td>
+<td style="text-align:left">设备视图：名称范围与其中的操作节点的设备分数成比例地着色。这里，紫色表示GPU，绿色表示CPU。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="Tensor形状信息"><a href="#Tensor形状信息" class="headerlink" title="Tensor形状信息"></a>Tensor形状信息</h2><p>当序列化<code>GraphDef</code>引入tensor形状时，图形可视化器标记具有tensor维度的边缘，并且边缘厚度反映总张量大小。在<code>GraphDef</code>中引入tensor形状，将序列化图形时的实际图形对象（如<code>sess.graph</code>中所示）传递给<code>SummaryWriter</code>。下图显示了带有张量形状信息的CIFAR-10模型：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/027.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/027.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">CIFAR-10模型与张量形状信息。</td>
+<tbody>
+<tr>
+<td style="text-align:left">CIFAR-10模型与张量形状信息。</td>
 </tr>
-</tbody></table>
-<h2 id="运行时统计"><a href="#运行时统计" class="headerlink" title="运行时统计"></a>运行时统计</h2><p>通常，收集运行的运行时元数据是有用的，例如节点的总内存使用，总计算时间和tensor形状。下面的代码示例是来自<a href="/2017/02/22/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84HelloWorld%20--%20MNIST%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/">简单MNIST教程</a>中的经过修改的训练和测试部分的代码片段，其中我们记录了摘要和运行时统计信息。有关如何记录摘要的详细信息，请参阅<a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%AD%A6%E4%B9%A0/">摘要教程</a>。全部源代码在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/examples/tutorials/mnist/mnist_with_summaries.py">这里</a>。</p>
+</tbody>
+</table>
+</div>
+<h2 id="运行时统计"><a href="#运行时统计" class="headerlink" title="运行时统计"></a>运行时统计</h2><p>通常，收集运行的运行时元数据是有用的，例如节点的总内存使用，总计算时间和tensor形状。下面的代码示例是来自<a href="/2017/02/22/【Tensorflow%20r1.0%20文档翻译】机器学习的HelloWorld%20--%20MNIST手写数字识别/">简单MNIST教程</a>中的经过修改的训练和测试部分的代码片段，其中我们记录了摘要和运行时统计信息。有关如何记录摘要的详细信息，请参阅<a href="/2017/03/07/【Tensorflow%20r1.0%20文档翻译】TensorBoard-可视化学习/">摘要教程</a>。全部源代码在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/examples/tutorials/mnist/mnist_with_summaries.py">这里</a>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"># Train the model, and also write summaries.</span><br><span class="line"># Every 10th step, measure test-set accuracy, and write test summaries</span><br><span class="line"># All other steps, run train_step on training data, &amp; add training summaries</span><br><span class="line"></span><br><span class="line">def feed_dict(train):</span><br><span class="line">  &quot;&quot;&quot;Make a TensorFlow feed_dict: maps data onto Tensor placeholders.&quot;&quot;&quot;</span><br><span class="line">  if train or FLAGS.fake_data:</span><br><span class="line">    xs, ys &#x3D; mnist.train.next_batch(100, fake_data&#x3D;FLAGS.fake_data)</span><br><span class="line">    k &#x3D; FLAGS.dropout</span><br><span class="line">  else:</span><br><span class="line">    xs, ys &#x3D; mnist.test.images, mnist.test.labels</span><br><span class="line">    k &#x3D; 1.0</span><br><span class="line">  return &#123;x: xs, y_: ys, keep_prob: k&#125;</span><br><span class="line"></span><br><span class="line">for i in range(FLAGS.max_steps):</span><br><span class="line">  if i % 10 &#x3D;&#x3D; 0:  # Record summaries and test-set accuracy</span><br><span class="line">    summary, acc &#x3D; sess.run([merged, accuracy], feed_dict&#x3D;feed_dict(False))</span><br><span class="line">    test_writer.add_summary(summary, i)</span><br><span class="line">    print(&#39;Accuracy at step %s: %s&#39; % (i, acc))</span><br><span class="line">  else:  # Record train set summaries, and train</span><br><span class="line">    if i % 100 &#x3D;&#x3D; 99:  # Record execution stats</span><br><span class="line">      run_options &#x3D; tf.RunOptions(trace_level&#x3D;tf.RunOptions.FULL_TRACE)</span><br><span class="line">      run_metadata &#x3D; tf.RunMetadata()</span><br><span class="line">      summary, _ &#x3D; sess.run([merged, train_step],</span><br><span class="line">                            feed_dict&#x3D;feed_dict(True),</span><br><span class="line">                            options&#x3D;run_options,</span><br><span class="line">                            run_metadata&#x3D;run_metadata)</span><br><span class="line">      train_writer.add_run_metadata(run_metadata, &#39;step%d&#39; % i)</span><br><span class="line">      train_writer.add_summary(summary, i)</span><br><span class="line">      print(&#39;Adding run metadata for&#39;, i)</span><br><span class="line">    else:  # Record a summary</span><br><span class="line">      summary, _ &#x3D; sess.run([merged, train_step], feed_dict&#x3D;feed_dict(True))</span><br><span class="line">      train_writer.add_summary(summary, i)</span><br></pre></td></tr></table></figure>
 <p>此代码将从步骤99开始每隔100步发出运行时统计信息。</p>
 <p>当您启动tensorboard并转到图表选项卡，您现在将看到“Session runs”下的选项对应于添加运行元数据的步骤。选择其中一个运行将显示该步骤的网络快照，淡出未使用的节点。在左侧的控件中，您可以按总内存或总计算时间对节点进行着色。此外，单击节点将显示确切的总内存，计算时间和张量输出大小。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left"><img src="/img/17_03_07/028.png"></th>
-<th align="left"><img src="/img/17_03_07/029.png"></th>
-<th align="left"><img src="/img/17_03_07/030.png"></th>
+<th style="text-align:left"><img src="/img/17_03_07/028.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/029.png" alt=""></th>
+<th style="text-align:left"><img src="/img/17_03_07/030.png" alt=""></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%9B%BE%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96/" data-id="ckkwc436f0042pas92wt4h6i4" data-title="【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/Tensorflow/" rel="tag"># Tensorflow</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%B5%8C%E5%85%A5%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="prev" title="【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化">
+      <i class="fa fa-chevron-left"></i> 【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" rel="next" title="【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识">
+      【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E7%A7%B0%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">名称作用域和节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92"><span class="nav-number">2.</span> <span class="nav-text">交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tensor%E5%BD%A2%E7%8A%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">Tensor形状信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BB%9F%E8%AE%A1"><span class="nav-number">4.</span> <span class="nav-text">运行时统计</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/03/09/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E4%BD%BF%E7%94%A8tf.contrib.learn%E8%AE%B0%E5%BD%95%E5%92%8C%E7%9B%91%E8%A7%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          【Tensorflow r1.0 文档翻译】使用tf.contrib.learn记录和监视的基本知识
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/03/07/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91TensorBoard-%E5%B5%8C%E5%85%A5%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【Tensorflow r1.0 文档翻译】TensorBoard:嵌入可视化</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : 'e702c3f67d2b30d90ff4540a648ff1c7',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 </body>
 </html>

@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第五周 (1)训练神经网络 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="代价函数视频地址  在本节课中和后面的几节课中，我将开始讲述一种在给定训练集下为神经网络拟合参数的学习算法。正如我们讨论大多数学习算法一样，我们准备从拟合神经网络参数的代价函数开始讲起。  以神经网络在分类问题中的应用为例：   假设我们有一个如上图所示的神经网络结构，然后假设我们有一个这样的训练集： $$\begin{aligned}(x^{(1)},y^{(1)}),(x^{(2)},y^{(">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="代价函数视频地址  在本节课中和后面的几节课中，我将开始讲述一种在给定训练集下为神经网络拟合参数的学习算法。正如我们讨论大多数学习算法一样，我们准备从拟合神经网络参数的代价函数开始讲起。  以神经网络在分类问题中的应用为例：   假设我们有一个如上图所示的神经网络结构，然后假设我们有一个这样的训练集：  \begin{aligned} (x^{(1)},y^{(1)}),(x^{(2)},y^{(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第五周 (1)训练神经网络">
 <meta property="og:url" content="http://example.com/2016/09/14/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(1)%E8%AE%AD%E7%BB%83%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="代价函数视频地址  在本节课中和后面的几节课中，我将开始讲述一种在给定训练集下为神经网络拟合参数的学习算法。正如我们讨论大多数学习算法一样，我们准备从拟合神经网络参数的代价函数开始讲起。  以神经网络在分类问题中的应用为例：   假设我们有一个如上图所示的神经网络结构，然后假设我们有一个这样的训练集： $$\begin{aligned}(x^{(1)},y^{(1)}),(x^{(2)},y^{(">
+<meta property="og:site_name" content="圣巢">
+<meta property="og:description" content="代价函数视频地址  在本节课中和后面的几节课中，我将开始讲述一种在给定训练集下为神经网络拟合参数的学习算法。正如我们讨论大多数学习算法一样，我们准备从拟合神经网络参数的代价函数开始讲起。  以神经网络在分类问题中的应用为例：   假设我们有一个如上图所示的神经网络结构，然后假设我们有一个这样的训练集：  \begin{aligned} (x^{(1)},y^{(1)}),(x^{(2)},y^{(">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/16_09_18/001.png">
 <meta property="og:image" content="http://example.com/img/16_09_18/002.png">
@@ -30,110 +44,234 @@
 <meta property="og:image" content="http://example.com/img/16_09_18/016.png">
 <meta property="og:image" content="http://example.com/img/16_09_18/017.png">
 <meta property="article:published_time" content="2016-09-14T01:14:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta property="article:tag" content="神经网络">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/16_09_18/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2016/09/14/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(1)%E8%AE%AD%E7%BB%83%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第五周 (1)训练神经网络 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第五周 (1)训练神经网络" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/09/14/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(1)%E8%AE%AD%E7%BB%83%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="article-date">
-  <time class="dt-published" datetime="2016-09-14T01:14:00.000Z" itemprop="datePublished">2016-09-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第五周 (1)训练神经网络
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/09/14/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(1)%E8%AE%AD%E7%BB%83%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第五周 (1)训练神经网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-09-14 01:14:00" itemprop="dateCreated datePublished" datetime="2016-09-14T01:14:00+00:00">2016-09-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/na28E/cost-function">视频地址</a></p>
 <blockquote>
 <p>在本节课中和后面的几节课中，我将开始讲述一种在给定训练集下为神经网络拟合参数的学习算法。正如我们讨论大多数学习算法一样，我们准备从拟合神经网络参数的代价函数开始讲起。</p>
 </blockquote>
 <p>以神经网络在分类问题中的应用为例：</p>
-<p><img src="/img/16_09_18/001.png"> </p>
+<p><img src="/img/16_09_18/001.png" alt=""> </p>
 <p>假设我们有一个如上图所示的神经网络结构，然后假设我们有一个这样的训练集：</p>
-<p>$$<br>\begin{aligned}<br>(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),…,(x^{(m)},y^{(m)})<br>\end{aligned}<br>$$</p>
-<p>一共有m个训练样本$(x^{(i)},y^{(i)})$。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})
+\end{aligned}</script><p>一共有m个训练样本$(x^{(i)},y^{(i)})$。</p>
 <p>用大写字母$L$表示这个神经网络结构的总层数：</p>
-<p>$$<br>L = total\ no.\ of\ layers\ in\ network(神经网络总层数)<br>$$</p>
-<p>所以，对于左边的网络结构，我们得到$L=4$。</p>
+<script type="math/tex; mode=display">
+L = total\ no.\ of\ layers\ in\ network(神经网络总层数)</script><p>所以，对于左边的网络结构，我们得到$L=4$。</p>
 <p>然后，我们准备用$S_{l}$表示第$l$层的神经元的数量，<strong>这其中不包括L层的偏置单元</strong>：</p>
-<p>$$<br>S_{l}= no.\ of\ units(not\ counting\ bias\ unit)\ in\ layer\ l<br>$$</p>
-<p>比如说：</p>
+<script type="math/tex; mode=display">
+S\_{l}= no.\ of\ units(not\ counting\ bias\ unit)\ in\ layer\ l</script><p>比如说：</p>
 <ul>
 <li>$S_{1}=3$(也就是输入层)</li>
 <li>$S_{2}=5$</li>
@@ -142,32 +280,55 @@
 </ul>
 <p>我们接下来讨论两种分类问题，分别是<strong>二元分类</strong>和<strong>多类别分类</strong>。</p>
 <h3 id="二元分类-Binary-classification"><a href="#二元分类-Binary-classification" class="headerlink" title="二元分类(Binary classification)"></a>二元分类(Binary classification)</h3><p>在二元分类中$y$只能是0或者1：</p>
-<p>$$<br>y= 0\ or\ 1<br>$$</p>
-<p>在这个例子中，我们有一个输出单元（不同于上面的神经网络有4个输出单元）。神经网络的输出会是一个实数：</p>
-<p>$$<br>h_{Θ}(x)\in \mathbb{R}<br>$$</p>
-<p>输出单元的个数:</p>
-<p>$$<br>S_{L} = 1<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+y= 0\ or\ 1</script><p>在这个例子中，我们有一个输出单元（不同于上面的神经网络有4个输出单元）。神经网络的输出会是一个实数：</p>
+<script type="math/tex; mode=display">
+h\_{Θ}(x)\in \mathbb{R}</script><p>输出单元的个数:</p>
+<script type="math/tex; mode=display">
+S\_{L} = 1</script><blockquote>
 <p>在这类问题里，为了简化记法，我会把$K$设为1，这样<strong>你可以把$K$看作输出层的单元数目</strong>。</p>
 </blockquote>
 <h3 id="多类别分类（Multi-class-classification）"><a href="#多类别分类（Multi-class-classification）" class="headerlink" title="多类别分类（Multi-class classification）"></a>多类别分类（Multi-class classification）</h3><p>在多类别分类问题中，会有$K$个不同的类，比如说如果我们有四类的话，我们就用下面这种表达形式来代表$y$。在这类问题里，我们就会有$K$个输出单元。</p>
-<p><img src="/img/16_09_18/002.png"> </p>
+<p><img src="/img/16_09_18/002.png" alt=""> </p>
 <p>我们的输出假设就是一个$K$维向量：</p>
-<p>$$<br>h_{Θ}(x)\in \mathbb{R}^{K}<br>$$</p>
-<p>输出单元的个数就是$K$：</p>
-<p>$$<br>S_{L} = K<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+h\_{Θ}(x)\in \mathbb{R}^{K}</script><p>输出单元的个数就是$K$：</p>
+<script type="math/tex; mode=display">
+S\_{L} = K</script><blockquote>
 <p>通常这类问题中，我们都有$K\ge3$，因为如果我们只有两类的话，我们直接使用二元分类法就可以了。因此只有在$K\ge3$的情况下，我们才会使用这种<strong>多类别分类</strong>。</p>
 </blockquote>
 <h3 id="定义代价函数"><a href="#定义代价函数" class="headerlink" title="定义代价函数"></a>定义代价函数</h3><p>我们在神经网络里，使用的代价函数，应该是逻辑回归里使用的代价函数的一般形式。</p>
 <p><strong>逻辑回归的代价函数:</strong></p>
-<p>$$<br>\begin{equation*}<br>J(\theta)=-\frac{1}{m}<br>[<br>\sum_{i=1}^m<br>y^{(i)}logh_{\theta}(x^{(i)})<br>+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))<br>]+<br>\frac{\lambda}{2m}<br>\sum_{j=1}^n<br>\theta^{2}_{j}<br>\end{equation*}<br>$$</p>
-<p>其中$\begin{equation*}<br>\frac{\lambda}{2m}<br>\sum_{j=1}^n<br>\theta^{2}_{j}<br>\end{equation*}$这一项是个额外的正则化项，是一个$j$从1到$n$的求和形式。因为我们并没有把偏置项0正则化。</p>
+<script type="math/tex; mode=display">
+\begin{equation\*}
+J(\theta)=-\frac{1}{m}
+[
+\sum\_{i=1}^m
+y^{(i)}logh\_{\theta}(x^{(i)})
++(1-y^{(i)})log(1-h\_{\theta}(x^{(i)}))
+]+
+\frac{\lambda}{2m}
+\sum\_{j=1}^n
+\theta^{2}\_{j}
+\end{equation*}</script><p>其中$\begin{equation*}<br>\frac{\lambda}{2m}<br>\sum_{j=1}^n<br>\theta^{2}_{j}<br>\end{equation*}$这一项是个额外的正则化项，是一个$j$从1到$n$的求和形式。因为我们并没有把偏置项0正则化。</p>
 <p>对于神经网络，我们使用的代价函数是这个式子的一般化形式。</p>
-<p>$$<br>\begin{equation*}<br>J(Θ)=-\frac{1}{m}<br>[<br>\sum_{i=1}^m<br>\sum_{k=1}^K<br>y^{(i)}_{k}log(h_{Θ}(x^{(i)}))_{k}<br>+(1-y^{(i)})_{k})log(1-(h_{Θ}(x^{(i)}))_{k})<br>]+<br>\frac{\lambda}{2m}<br>\sum_{l=1}^{L-1}<br>\sum_{i=1}^{S_{l}}<br>\sum_{j=1}^{S_{l+1}}<br>(Θ^{(l)}_{ji})^{2}<br>\end{equation*}<br>$$</p>
-<p>神经网络现在输出了在$K$维的向量$h_{Θ}(x)$：</p>
-<p>$$<br>h_{Θ}(x)\in \mathbb{R}^{K}<br>$$</p>
-<p>用$(h_{Θ}(x))_{i}$来表示第$i$个输出。</p>
+<script type="math/tex; mode=display">
+\begin{equation\*}
+J(Θ)=-\frac{1}{m}
+[
+\sum\_{i=1}^m
+\sum\_{k=1}^K
+y^{(i)}\_{k}log(h\_{Θ}(x^{(i)}))\_{k}
++(1-y^{(i)})\_{k})log(1-(h\_{Θ}(x^{(i)}))\_{k})
+]+
+\frac{\lambda}{2m}
+\sum\_{l=1}^{L-1}
+\sum\_{i=1}^{S\_{l}}
+\sum\_{j=1}^{S\_{l+1}}
+(Θ^{(l)}\_{ji})^{2}
+\end{equation*}</script><p>神经网络现在输出了在$K$维的向量$h_{Θ}(x)$：</p>
+<script type="math/tex; mode=display">
+h\_{Θ}(x)\in \mathbb{R}^{K}</script><p>用$(h_{Θ}(x))_{i}$来表示第$i$个输出。</p>
 <p>其中$\begin{equation*}\sum_{k=1}^K\end{equation*}$这个求和项是$K$个输出单元的求和，比如你有4个输出单元在神经网络的最后一层，那么这个求和项就是$k$从1到4所对应的每一个逻辑回归算法的代价函数之和。</p>
 <p>最后式子中的这一项$\begin{equation*}<br>\frac{\lambda}{2m}<br>\sum_{l=1}^{L-1}<br>\sum_{i=1}^{S_{l}}<br>\sum_{j=1}^{S_{l+1}}<br>(Θ^{(l)}_{ji})^{2}<br>\end{equation*}$类似于我们在逻辑回归里所用的正则化项，这个求和项看起来确实非常复杂，它所做的就是把这些项全部加起来，也就是对所有的$Θ_{ji}^{(l)}$的值都相加。正如我们在逻辑回归里的一样，这里要除去那些对应于偏差值的项。具体来说，我们不把$Θ_{j0}^{(l)}$这些项加进去，这是因为当我们计算神经元的激励值时，我们会有这些项。这些带0的项，类似于偏置单元的项。类比于我们在做逻辑回归的时候，我们就不应该把这些项加入到正规化项里去，因为我们并不想正规化这些项，并把这些项设定为0。 （这里我表示没看懂）</p>
 <p>即使我们真的把他们加进去了，也就是说$i$从0加到$S_{l}$依然成立，并且不会有大的差异，但是这个“不把偏差项正规化”的规定可能只是会更常见一些。</p>
@@ -176,75 +337,76 @@
 <p>这个视频中，我们来讨论一下让代价函数最小化的算法，具体来说，我们将主要讲解<strong>反向传播算法（BP算法）</strong></p>
 </blockquote>
 <p>下面是我们上一节写好的代价函数：</p>
-<p><img src="/img/16_09_18/003.png"> </p>
+<p><img src="/img/16_09_18/003.png" alt=""> </p>
 <p>我们要做的就是试图找到使得代价函数$J(Θ)$最小的$Θ$值：</p>
-<p><img src="/img/16_09_18/004.png"> </p>
+<p><img src="/img/16_09_18/004.png" alt=""> </p>
 <p>为了使用梯度下降法，我们需要做的就是写好一个通过输入参数$Θ$，然后计算：</p>
-<p><img src="/img/16_09_18/005.png"> </p>
+<p><img src="/img/16_09_18/005.png" alt=""> </p>
 <p>这一节的大部分内容也都是在讲解如何计算真两项的。</p>
 <hr>
 <p><strong>梯度下降计算</strong></p>
-<p><img src="/img/16_09_18/006.png"> </p>
+<p><img src="/img/16_09_18/006.png" alt=""> </p>
 <p>首先，我们从只有一个训练样本的情况说起，假设我们整个训练集只包含一个训练样本：</p>
-<p>$$<br>(x,y)<br>$$</p>
-<p>让我们粗看一下，使用这样一个训练样本来计算的顺序。</p>
+<script type="math/tex; mode=display">
+(x,y)</script><p>让我们粗看一下，使用这样一个训练样本来计算的顺序。</p>
 <p>首先我们用向前传播方法来计算一下在给定输入的时候，假设函数的输出结果：</p>
-<p>$$<br>a^{(1)} = x<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+a^{(1)} = x</script><blockquote>
 <p>$a^{(1)}$就是第一层的激励值，也就是输入层</p>
 </blockquote>
-<p>$$<br>z^{(2)} = Θ^{(1)}a^{(1)}<br>$$</p>
-<p>$$<br>a^{(2)} = g(z^{(2)})<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+z^{(2)} = Θ^{(1)}a^{(1)}</script><script type="math/tex; mode=display">
+a^{(2)} = g(z^{(2)})</script><blockquote>
 <p>这里记得添加偏差项$a_{0}^{(2)}$</p>
 </blockquote>
-<p>$$<br>z^{(3)} = Θ^{(2)}a^{(2)}<br>$$</p>
-<p>$$<br>a^{(3)} = g(z^{(3)})<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+z^{(3)} = Θ^{(2)}a^{(2)}</script><script type="math/tex; mode=display">
+a^{(3)} = g(z^{(3)})</script><blockquote>
 <p>这里记得添加偏差项$a_{0}^{(3)}$</p>
 </blockquote>
-<p>$$<br>z^{(4)} = Θ^{(3)}a^{(3)}<br>$$</p>
-<p>$$<br>a^{(4)} = h_{Θ}(x) = g(z^{(4)})<br>$$</p>
-<p>通过上面的步骤计算，我们就可以得出假设函数的输出结果了：</p>
-<p><img src="/img/16_09_18/007.png"> </p>
-<p>接下来，为了计算导数项，我们将采用一种叫做**反向传播(Backpropagation)**的算法。</p>
+<script type="math/tex; mode=display">
+z^{(4)} = Θ^{(3)}a^{(3)}</script><script type="math/tex; mode=display">
+a^{(4)} = h\_{Θ}(x) = g(z^{(4)})</script><p>通过上面的步骤计算，我们就可以得出假设函数的输出结果了：</p>
+<p><img src="/img/16_09_18/007.png" alt=""> </p>
+<p>接下来，为了计算导数项，我们将采用一种叫做<strong>反向传播(Backpropagation)</strong>的算法。</p>
 <p>反向传播算法从直观上说就是对每一个节点求下面这一个误差项:</p>
-<p><img src="/img/16_09_18/008.png"> </p>
+<p><img src="/img/16_09_18/008.png" alt=""> </p>
 <blockquote>
 <p>$δ_{j}^{(l)}$这种形式代表了第$l$层的第$j$个结点的<strong>误差</strong></p>
 <p>我们还记得我们使用$a_{j}^{(l)}$来表示第$l$层的第$j$个结点的<strong>激励值</strong>，所以这个$δ$项，在某种程度上就捕捉到了我们在这个神经结点的激励值的误差。所以我们可能希望这个结点的激励值稍微不一样。</p>
 </blockquote>
 <p>具体来讲，我们用上面的那个四层的神经网络结构做例子：</p>
 <p>每一项的输出单元(layer L = 4)</p>
-<p>$$<br>δ_{j}^{(4)} = a_{j}^{(4)} - y_j<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+δ\_{j}^{(4)} = a\_{j}^{(4)} - y\_j</script><blockquote>
 <p>对于每一个输出单元，我们准备计算$δ$项，所以第四层的第$j$个单元的$δ$就等于<strong>这个单元的激励值减去训练样本里的真实值</strong>。所以$a_{j}^{(4)}$这一项同样可以写成$h_{Θ}(x)_{j}$：</p>
 </blockquote>
-<p>$$<br>δ_{j}^{(4)} = h_{Θ}(x)_{j} - y_j<br>$$</p>
-<p>顺便说一下，如果你把$δ$、$a$和$y$这三项都看作向量的话，那么上面的式子你也可以写出向量化的实现：</p>
-<p>$$<br>δ^{(4)} = a^{(4)} - y<br>$$</p>
-<p>这里的$δ^{(4)}$、$a^{(4)}$和$y$都是一个向量，并且向量维数等于输出单元的数目。</p>
+<script type="math/tex; mode=display">
+δ\_{j}^{(4)} = h\_{Θ}(x)\_{j} - y\_j</script><p>顺便说一下，如果你把$δ$、$a$和$y$这三项都看作向量的话，那么上面的式子你也可以写出向量化的实现：</p>
+<script type="math/tex; mode=display">
+δ^{(4)} = a^{(4)} - y</script><p>这里的$δ^{(4)}$、$a^{(4)}$和$y$都是一个向量，并且向量维数等于输出单元的数目。</p>
 <p>所以现在我们计算出网络结构的误差项$δ^{(4)}$，我们下一步就是计算网络中前面几层的误差项$δ$。</p>
 <p>这就是$δ^{(3)}$的计算公式：</p>
-<p>$$<br>δ^{(3)} = (Θ^{(3)})^{T}δ^{(4)}.*g’(z^{(3)})<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+δ^{(3)} = (Θ^{(3)})^{T}δ^{(4)}.*g'(z^{(3)})</script><blockquote>
 <p>这里的点乘$.*$是我们从MATLAB里知道的对y元素的乘法操作，指的是两个向量中元素间对应相乘。</p>
 </blockquote>
 <p>其中$g’(z^{(3)})$这一项其实是对激励函数$g$在输入值为$z(3)$的时候所求的导数。</p>
 <p>如果你稍微会一些微积分的知识，你可以很容易的求得$g’(z^{(3)})$这一项的值是：</p>
-<p>$$<br>a^{(3)}.*(1-a^{(3)})<br>$$</p>
-<p>这里的$1$是元素都为1的向量。</p>
+<script type="math/tex; mode=display">
+a^{(3)}.*(1-a^{(3)})</script><p>这里的$1$是元素都为1的向量。</p>
 <p>接下来，你可以应用一个相似的公式来求得$δ^{(2)}$:</p>
-<p>$$<br>δ^{(2)} = (Θ^{(2)})^{T}δ^{(3)}.*g’(z^{(2)})<br>$$</p>
-<p>值得注意的是，这里我们没有$δ^{(1)}$项，因为第一层是输入层，不存在误差。所以这个例子中，我们的$δ$项就只有第2层和第3层。</p>
+<script type="math/tex; mode=display">
+δ^{(2)} = (Θ^{(2)})^{T}δ^{(3)}.*g'(z^{(2)})</script><p>值得注意的是，这里我们没有$δ^{(1)}$项，因为第一层是输入层，不存在误差。所以这个例子中，我们的$δ$项就只有第2层和第3层。</p>
 <hr>
 <p>反向传播法这个名字源于我们从输出层开始计算$δ$项，然后我们返回到上一层计算第三隐藏层的$δ$项，接着我们再往前一步来计算$δ^{(2)}$。</p>
 <p>所以说我们是类似于把输出层的误差反向传播给了第3层，然后再传到第二层。这就是反向传播的意思。</p>
 <p>最后，这个推导过程是出奇的复杂，但是如果你按照这样几个步骤来计算，就有可能简单直接地完成复杂的数学证明。</p>
 <p>如果你忽略标准化所产生的项，我们可以证明我们想要的偏导项，恰好就是下面这个表达式：</p>
-<p>$$<br>\frac{\partial}{\partial Θ_{ij}^{(l)}}J(Θ)=<br>a_{j}^{(l)}δ_{i}^{(l+1)}<br>$$</p>
-<p>$$<br>(ignore\ λ; if\ λ = 0)<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial Θ\_{ij}^{(l)}}J(Θ)=
+a\_{j}^{(l)}δ\_{i}^{(l+1)}</script><script type="math/tex; mode=display">
+(ignore\ λ; if\ λ = 0)</script><blockquote>
 <p>这里我们忽略了$λ$，我们将在之后完善这一个关于正则化项。</p>
 </blockquote>
 <p>所以到现在，我们通过反向传播计算这些$δ$项，可以非常快速的计算出所有参数的偏导数项。</p>
@@ -254,232 +416,364 @@
 <p>假设我们有m个样本的训练集：</p>
 <p>$Training\ set\ {(x^{(1)},y^{(1)}),…,(x^{(m)},y^{(m)})}$</p>
 <p>我们要做的第一件事就是设置这些值：</p>
-<p><img src="/img/16_09_18/009.png"> </p>
+<p><img src="/img/16_09_18/009.png" alt=""> </p>
 <blockquote>
 <p>这里的$△$其实是大写的$δ$，实际上这些$△_{ij}^{(l)}$将被用来计算偏导数项$\frac{\partial}{\partial Θ_{ij}^{(l)}}J(Θ)$</p>
 <p>所以，正如我们接下来看到的，这些$△_{ij}^{(l)}$将被作为累加项，慢慢地增加，以算出这些偏导数。</p>
 </blockquote>
 <p>下图是我们接下来要执行的一些操作：</p>
-<p><img src="/img/16_09_18/010.png"> </p>
+<p><img src="/img/16_09_18/010.png" alt=""> </p>
 <p>在这里我们将遍历我们的训练集。</p>
 <p>我们要做的第一件事就是设定$a^{(1)}$，也就是输入层的激励函数：$a^{(1)} = x^{(i)}$</p>
 <p>接下来我们运用正向传播，来计算第2，3，4，…，L层的激励值$a^{l}$。</p>
 <p>接下来，我们将用$y^{(i)}$来计算$δ^{(L)}=a^{(L)}-y^{(i)}$</p>
 <p>接下来，我们使用反向传播算法来计算$δ^{(L-1)},δ^{(L-2)},…,δ^{(2)}$</p>
 <p>最终，我们将用$△{ij}^{(l)}$来积累我们在前面写好的偏导数项：</p>
-<p>$$<br>△{ij}^{(l)}:=△{ij}^{(l)} + a_{j}^{(l)}δ_{i}^{(l+1)}<br>$$</p>
-<p>如果你再看一下上面这个表达式，你可以把它写成向量形式：</p>
+<script type="math/tex; mode=display">
+△\{ij}^{(l)}:=△\{ij}^{(l)} + a\_{j}^{(l)}δ\_{i}^{(l+1)}</script><p>如果你再看一下上面这个表达式，你可以把它写成向量形式：</p>
 <p>具体来说，如果你把$△$看做一个矩阵，$ij$代表矩阵中的位置，那么上面的式子我们就可以写成：</p>
-<p>$$<br>△^{(l)}:=△^{(l)} + δ^{(l+1)}(a^{(l)})^{T}<br>$$</p>
-<p>最后，执行这个for循环体之后我们挑出这个for循环，然后计算下面这些式子：</p>
-<p>$$<br>D_{ij}^{(l)} := \frac{1}{m}△{ij}^{(l)} + λΘ_{ij}^{(l)}<br>\ \ \ \ if\ j ≠ 0<br>$$</p>
-<p>$$<br>D_{ij}^{(l)} := \frac{1}{m}△{ij}^{(l)}<br>\ \ \ \ if\ j = 0<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+△^{(l)}:=△^{(l)} + δ^{(l+1)}(a^{(l)})^{T}</script><p>最后，执行这个for循环体之后我们挑出这个for循环，然后计算下面这些式子：</p>
+<script type="math/tex; mode=display">
+D\_{ij}^{(l)} := \frac{1}{m}△\{ij}^{(l)} + λΘ\_{ij}^{(l)}    
+\ \ \ \ if\ j ≠ 0</script><script type="math/tex; mode=display">
+D\_{ij}^{(l)} := \frac{1}{m}△\{ij}^{(l)}
+\ \ \ \ if\ j = 0</script><blockquote>
 <p>这里我们对$j ≠ 0$ 和 $j = 0$分两种情况来讨论，在$j=0$的情况下对应的是偏差项，所以这也是为什么在$j=0$的情况下没有写额外的标准化项的原因。</p>
 </blockquote>
 <p>最后，尽管严格的证明对于你来说太复杂，你现在可以说明的是一旦你计算出来了这些，这就正好是代价函数关于每一个参数的偏导数：</p>
-<p>$$<br>\frac{\partial}{\partial Θ_{ij}^{(l)}}J(Θ)<br>= D_{ij}^{(l)}<br>$$</p>
-<p>所以，你可以把它用在梯度下降算法，或者其他更高级的算法中。</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial Θ\_{ij}^{(l)}}J(Θ)
+= D\_{ij}^{(l)}</script><p>所以，你可以把它用在梯度下降算法，或者其他更高级的算法中。</p>
 <h2 id="反向传播算法的直观介绍"><a href="#反向传播算法的直观介绍" class="headerlink" title="反向传播算法的直观介绍"></a>反向传播算法的直观介绍</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/du981/backpropagation-intuition">视频地址</a></p>
 <blockquote>
 <p>这一节中，将要更加深入的讨论一下反向传播算法的这些复杂的步骤，并且希望给你一个更加直观的感受，理解这些步骤究竟是在做什么。也希望通过这一节，你能理解它至少还是一个合理的算法。</p>
 <p>但可能你即使看了这段视频你还是觉得反向传播依然很复杂，这也没关系，其实即使是我（吴恩达）接触了反向传播这么多年了，有时候任然觉得这是一个难以理解的算法，但还是希望这段视频能有些许帮助。</p>
 </blockquote>
 <h3 id="距离说明神经网络计算过程"><a href="#距离说明神经网络计算过程" class="headerlink" title="距离说明神经网络计算过程"></a>距离说明神经网络计算过程</h3><p>为了更好地理解反向传播算法，我们再来仔细研究一下向前传播的原理。</p>
-<p><img src="/img/16_09_18/011.png"></p>
+<p><img src="/img/16_09_18/011.png" alt=""></p>
 <p>这里有一个包含两个输入单元（不包括偏差单元）的神经网络，在第二层有两个隐藏单元（不包括偏差单元），第三层也有两个隐藏单元（不包括偏差单元），最后的输出层有一个输出单元。</p>
 <h3 id="向前传播"><a href="#向前传播" class="headerlink" title="向前传播"></a>向前传播</h3><p>为了更清楚的展示向前传播，下图展示了这个神经网络的<strong>向前传播</strong>的运算过程：</p>
-<p><img src="/img/16_09_18/012.png"></p>
+<p><img src="/img/16_09_18/012.png" alt=""></p>
 <p>事实上，<strong>反向传播</strong>算法的运算过程非常类似于此，只有计算的方向不同而已。</p>
 <h3 id="代价函数-1"><a href="#代价函数-1" class="headerlink" title="代价函数"></a>代价函数</h3><p>为了更好的理解反向传播算法的原理，我们把目光转向代价函数：</p>
-<p><img src="/img/16_09_18/013.png"></p>
+<p><img src="/img/16_09_18/013.png" alt=""></p>
 <p>这个代价函数对应的情况是只有一个输出单元，如果我们有不止一个输出单元的话，只需要对所有的输出单元进行一次求和运算。</p>
 <p>请注意这组训练样本$x^{(i)}$,$y^{(i)}$，注意这种只有一个输出单元的情况，如果不考虑正则化即$λ=0$，因此最后的正则化项就没有了。</p>
-<p><img src="/img/16_09_18/014.png"></p>
+<p><img src="/img/16_09_18/014.png" alt=""></p>
 <p>这个求和运算括号里面与第i个训练样本对应的代价项，也就是说$(x^{(i)},y^{(i)})$对应的代价项，将有下面这个式子决定：</p>
-<p>$$<br>cost(i) = y^{(i)}log h_{Θ}(x^{(i)}) + (1 - y^{(i)})logh_{Θ}(x^{(i)})<br>$$</p>
-<p>而这个代价函数所扮演的角色可以看做是平方误差，当然，如果你愿意，你可以把$cost(i)$想象成：</p>
-<p>$$<br>cost(i)≈(h_{Θ}(x^{(i)})-y^{(i)})^{2}<br>$$</p>
-<p>因此，这里的$cost(i)$表征了该神经网络是否能准确地预测样本i的值，也就是输出值，和实际观测值$y^{(i)}$的接近程度。</p>
+<script type="math/tex; mode=display">
+cost(i) = y^{(i)}log h\_{Θ}(x^{(i)}) + (1 - y^{(i)})logh\_{Θ}(x^{(i)})</script><p>而这个代价函数所扮演的角色可以看做是平方误差，当然，如果你愿意，你可以把$cost(i)$想象成：</p>
+<script type="math/tex; mode=display">
+cost(i)≈(h\_{Θ}(x^{(i)})-y^{(i)})^{2}</script><p>因此，这里的$cost(i)$表征了该神经网络是否能准确地预测样本i的值，也就是输出值，和实际观测值$y^{(i)}$的接近程度。</p>
 <h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>现在我们来看看反向传播是怎么做的。</p>
 <p>一种直观的理解是反向传播算法就是在计算所有这些$δ$项：</p>
-<p>$$<br>δ_{j}^{(l)} = “error” \ of \ cost \ for \ a_{j}^{(l)} \ (unit \ j \ in \ layer \ l).<br>$$</p>
-<p>并且我们可以把它们看作是这些激励值的“<strong>误差</strong>”(注意这些激励值是第l层中的第j项)。</p>
+<script type="math/tex; mode=display">
+δ\_{j}^{(l)} = "error" \ of \ cost \ for \ a\_{j}^{(l)} \ (unit \ j \ in \ layer \ l).</script><p>并且我们可以把它们看作是这些激励值的“<strong>误差</strong>”(注意这些激励值是第l层中的第j项)。</p>
 <p>更正式一点的说法是$δ$项实际上是关于$z_{j}^{(l)}$的偏微分，也就是cost函数关于我们计算出的输入项的加权和，也就是$z$项的偏微分:</p>
-<p>$$<br>δ_{j}^{(l)} = \frac{\partial}{\partial z_{j}^{(l)}}cost(i) \ \ \ \ (for \ j \ge 0 )<br>$$</p>
-<p>其中：</p>
-<p>$$<br>cost(i) = y^{(i)}log h_{Θ}(x^{(i)}) + (1 - y^{(i)})logh_{Θ}(x^{(i)})<br>$$</p>
-<p>如果我们观察该神经网络内部的话，把这些$z_{j}^{(l)}$项稍微改一点点，那就将影响到神经网络的输出，并且最终会改变代价函数的值。</p>
+<script type="math/tex; mode=display">
+δ\_{j}^{(l)} = \frac{\partial}{\partial z\_{j}^{(l)}}cost(i) \ \ \ \ (for \ j \ge 0 )</script><p>其中：</p>
+<script type="math/tex; mode=display">
+cost(i) = y^{(i)}log h\_{Θ}(x^{(i)}) + (1 - y^{(i)})logh\_{Θ}(x^{(i)})</script><p>如果我们观察该神经网络内部的话，把这些$z_{j}^{(l)}$项稍微改一点点，那就将影响到神经网络的输出，并且最终会改变代价函数的值。</p>
 <p>因此，它们度量着我们对神经网络的权值做多少的改变，对中间的计算量影响是多少，进一步对整个神经网络的输出$h(x)$影响多少，以及对整个的代价影响多少。</p>
 <p>可能刚才讲的偏微分的这种理解不太容易理解，没关系，不用偏微分的思想，我们同样也可以理解。</p>
 <p>我们再深入一点，研究一下反向传播的过程，对于输入层，如果我们设置$δ$项，假设我们进行第i个训练样本，那么：</p>
-<p>$$<br>δ_{1}^{(4)}=y^{(i)}-a^{(4)}_{1}<br>$$</p>
-<p>接下来我们要对这些值进行反向传播，算出$δ_{1}^{(3)}$、$δ_{2}^{(3)}$，然后同样的再进行下一层的反向传播，算出$δ_{1}^{(2)}$、$δ_{2}^{(2)}$。</p>
+<script type="math/tex; mode=display">
+δ\_{1}^{(4)}=y^{(i)}-a^{(4)}\_{1}</script><p>接下来我们要对这些值进行反向传播，算出$δ_{1}^{(3)}$、$δ_{2}^{(3)}$，然后同样的再进行下一层的反向传播，算出$δ_{1}^{(2)}$、$δ_{2}^{(2)}$。</p>
 <p>举个例子:</p>
 <p>接下来，我们来看看如何计算$δ_{2}^{(2)}$。</p>
 <p>我要对一些权值进行标记:</p>
-<p><img src="/img/16_09_18/016.png"> </p>
+<p><img src="/img/16_09_18/016.png" alt=""> </p>
 <p>实际上，我们要做的是我们要用下一层的$δ$值和权值相乘，然后加上另一个$δ$值和权值相乘的结果。也就是说，它其实是$δ$值的加权和。权值是这些对应边的强度。</p>
-<p><img src="/img/16_09_18/017.png"> </p>
+<p><img src="/img/16_09_18/017.png" alt=""> </p>
 <p>计算过程是：</p>
-<p>$$<br>δ_{2}^{(2)}=Θ_{12}^{(2)}δ_{1}^{(3)} + Θ_{22}^{(2)}δ_{2}^{(3)}<br>$$</p>
-<p>再看看另一个例子：</p>
+<script type="math/tex; mode=display">
+δ\_{2}^{(2)}=Θ\_{12}^{(2)}δ\_{1}^{(3)} + Θ\_{22}^{(2)}δ\_{2}^{(3)}</script><p>再看看另一个例子：</p>
 <p>如果想要计算$δ_{2}^{(3)}$的值，计算过程也是类似的：</p>
-<p>$$<br>δ_{2}^{(3)}=Θ_{12}^{(3)}δ_{1}^{(4)}<br>$$</p>
-<p>另外顺便提一下，目前为止我写的$δ$值仅仅是隐藏层中的没有包括偏差单元:”+1”的。包不包括偏差单元取决于你如何实现这个反向传播算法，你也可以对这些偏差单元计算$δ$的值，这些偏差单元总是取为”+1”的值。</p>
+<script type="math/tex; mode=display">
+δ\_{2}^{(3)}=Θ\_{12}^{(3)}δ\_{1}^{(4)}</script><p>另外顺便提一下，目前为止我写的$δ$值仅仅是隐藏层中的没有包括偏差单元:”+1”的。包不包括偏差单元取决于你如何实现这个反向传播算法，你也可以对这些偏差单元计算$δ$的值，这些偏差单元总是取为”+1”的值。</p>
 <p>通常来说，我在执行反向传播的时候，我是算出了这些偏差单元的$δ$值，但我通常忽略掉它们，而不是把它们带入计算，因为它们其实并不是计算那些微积分的必要部分，</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/09/14/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(1)%E8%AE%AD%E7%BB%83%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" data-id="ckkwc438g009epas97c9p19z1" data-title="斯坦福机器学习课程 第五周 (1)训练神经网络" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/09/11/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%9B%9B%E5%91%A8%20(3)%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B/" rel="prev" title="斯坦福机器学习课程 第四周 (3)神经网络应用实例">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第四周 (3)神经网络应用实例
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/10/13/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(2)BP%E7%AE%97%E6%B3%95%E7%BB%83%E4%B9%A0/" rel="next" title="斯坦福机器学习课程 第五周 (2)BP算法练习">
+      斯坦福机器学习课程 第五周 (2)BP算法练习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">代价函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E5%88%86%E7%B1%BB-Binary-classification"><span class="nav-number">1.1.</span> <span class="nav-text">二元分类(Binary classification)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB%EF%BC%88Multi-class-classification%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">多类别分类（Multi-class classification）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">定义代价函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD-B-P"><span class="nav-number">2.</span> <span class="nav-text">反向传播(B-P)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E7%9A%84%E7%9B%B4%E8%A7%82%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">反向传播算法的直观介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E8%AF%B4%E6%98%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">距离说明神经网络计算过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E5%89%8D%E4%BC%A0%E6%92%AD"><span class="nav-number">3.2.</span> <span class="nav-text">向前传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0-1"><span class="nav-number">3.3.</span> <span class="nav-text">代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="nav-number">3.4.</span> <span class="nav-text">反向传播</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/10/13/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(2)BP%E7%AE%97%E6%B3%95%E7%BB%83%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第五周 (2)BP算法练习
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/09/11/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%9B%9B%E5%91%A8%20(3)%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第四周 (3)神经网络应用实例</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '14606a5bf1a87ab752c1f84cf4e5a2f5',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

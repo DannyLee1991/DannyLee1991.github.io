@@ -1,285 +1,618 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="愿你的努力终取得成果">
+<meta property="og:type" content="website">
+<meta property="og:title" content="圣巢">
 <meta property="og:url" content="http://example.com/page/13/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
+<meta property="og:description" content="愿你的努力终取得成果">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="DannyLee">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/page/13/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-线性代数03-矩阵法求解方程组" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/" class="article-date">
-  <time class="dt-published" datetime="2015-11-29T22:01:55.000Z" itemprop="datePublished">2015-11-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
   </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/">线性代数03-矩阵法求解方程组</a>
-    </h1>
-  
+</div>
+    </header>
 
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/" class="post-title-link" itemprop="url">线性代数03-矩阵法求解方程组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-29 22:01:55" itemprop="dateCreated datePublished" datetime="2015-11-29T22:01:55+00:00">2015-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>矩阵是一种思考问题的方式，我们可以用它来解决我们遇到的一些问题：</p>
-<h2 id="求解二元一次方程组"><a href="#求解二元一次方程组" class="headerlink" title="求解二元一次方程组"></a>求解二元一次方程组</h2><p>$$<br>3x + 2y = 7<br>$$</p>
-<p>$$<br>-6x + 6y = 6<br>$$</p>
-<p>通过矩阵来求解，可以转换成如下格式：</p>
-<p>$$<br> \begin{bmatrix}<br>   3 &amp; 2 \<br>   -6 &amp; 6<br>  \end{bmatrix}<br>  <br>  \begin{bmatrix}<br>   x \<br>   y<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   7 \<br>   6<br>  \end{bmatrix}<br>$$</p>
-<p>相当于：</p>
-<p>$$<br>A \cdot x=B<br>$$</p>
-<p>为了求解出未知数x，我们需要在等式两边乘以矩阵A的逆矩阵：</p>
-<p>$$<br>A^{-1} \cdot A \cdot x=A^{-1} \cdot B<br>$$</p>
-<p>$$<br>I \cdot x=A^{-1} \cdot B<br>$$</p>
-<p>$$<br>x=A^{-1} \cdot B<br>$$</p>
-<p>解得：</p>
-<p>$$<br> A^{-1}=<br> \dfrac{1}{30}<br> \begin{bmatrix}<br>   6 &amp; -2 \<br>   -6 &amp; 3<br>  \end{bmatrix}<br>$$</p>
-<p>$$<br>\begin{bmatrix}<br>   x \<br>   y<br>  \end{bmatrix}<br>  =<br>  \dfrac{1}{30}<br>  \begin{bmatrix}<br>   6 &amp; -2 \<br>   -6 &amp; 3<br>  \end{bmatrix}<br>  \begin{bmatrix}<br>   7 \<br>   6<br>  \end{bmatrix}<br>  =<br>  \begin{bmatrix}<br>   1 \<br>   2<br>  \end{bmatrix}<br>$$</p>
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>矩阵是一种思考问题的方式，我们可以用它来解决我们遇到的一些问题：</p>
+<h2 id="求解二元一次方程组"><a href="#求解二元一次方程组" class="headerlink" title="求解二元一次方程组"></a>求解二元一次方程组</h2><script type="math/tex; mode=display">
+3x + 2y = 7</script><script type="math/tex; mode=display">
+-6x + 6y = 6</script><p>通过矩阵来求解，可以转换成如下格式：</p>
+<script type="math/tex; mode=display">
+ \begin{bmatrix}
+   3 & 2 \\\
+   -6 & 6 
+  \end{bmatrix}
+  \
+  \begin{bmatrix}
+   x \\\
+   y
+  \end{bmatrix}
+  \{=}
+  \begin{bmatrix}
+   7 \\\
+   6
+  \end{bmatrix}</script><p>相当于：</p>
+<script type="math/tex; mode=display">
+A \cdot x=B</script><p>为了求解出未知数x，我们需要在等式两边乘以矩阵A的逆矩阵：</p>
+<script type="math/tex; mode=display">
+A^{-1} \cdot A \cdot x=A^{-1} \cdot B</script><script type="math/tex; mode=display">
+I \cdot x=A^{-1} \cdot B</script><script type="math/tex; mode=display">
+x=A^{-1} \cdot B</script><p>解得：</p>
+<script type="math/tex; mode=display">
+ A^{-1}=
+ \dfrac{1}{30}
+ \begin{bmatrix}
+   6 & -2 \\\
+   -6 & 3 
+  \end{bmatrix}</script><script type="math/tex; mode=display">
+\begin{bmatrix}
+   x \\\
+   y
+  \end{bmatrix}
+  =
+  \dfrac{1}{30}
+  \begin{bmatrix}
+   6 & -2 \\\
+   -6 & 3 
+  \end{bmatrix}
+  \begin{bmatrix}
+   7 \\\
+   6
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+   1 \\\
+   2
+  \end{bmatrix}</script>
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B003-%E7%9F%A9%E9%98%B5%E6%B3%95%E6%B1%82%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84/" data-id="ckkwc439g00bupas96fo4fnrq" data-title="线性代数03-矩阵法求解方程组" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-线性代数02-矩阵的逆" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/" class="article-date">
-  <time class="dt-published" datetime="2015-11-29T19:01:55.000Z" itemprop="datePublished">2015-11-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">线性代数02-矩阵的逆</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/" class="post-title-link" itemprop="url">线性代数02-矩阵的逆</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-29 19:01:55" itemprop="dateCreated datePublished" datetime="2015-11-29T19:01:55+00:00">2015-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="单位向量"><a href="#单位向量" class="headerlink" title="单位向量"></a>单位向量</h2><p>如果有一个矩阵I,对于以下两种情况都成立：</p>
-<p>$$<br>I \cdot A = A<br>$$</p>
-<p>$$<br>A \cdot I = A<br>$$</p>
-<p>那么I被称为单位矩阵。</p>
+          <h2 id="单位向量"><a href="#单位向量" class="headerlink" title="单位向量"></a>单位向量</h2><p>如果有一个矩阵I,对于以下两种情况都成立：</p>
+<script type="math/tex; mode=display">
+I \cdot A = A</script><script type="math/tex; mode=display">
+A \cdot I = A</script><p>那么I被称为单位矩阵。</p>
 <p>单位矩阵是行列数相同，第i行i列为1，其他为0的矩阵。</p>
 <p>例如：</p>
-<p>$$<br> \begin{bmatrix}<br>   1 &amp; 0 &amp; 0 \<br>   0 &amp; 1 &amp; 0 \<br>   0 &amp; 0 &amp; 1<br>  \end{bmatrix}<br> $$</p>
-<h2 id="矩阵的逆"><a href="#矩阵的逆" class="headerlink" title="矩阵的逆"></a>矩阵的逆</h2><p>如果矩阵I是单位矩阵</p>
-<p>$$<br>A \cdot A^{-1} = I<br>$$</p>
-<p>$$<br>A^{-1} \cdot A = I<br>$$</p>
-<p>那么$$A^{-1}$$就是矩阵A的逆矩阵。</p>
-<h2 id="对2x2的矩阵求逆"><a href="#对2x2的矩阵求逆" class="headerlink" title="对2x2的矩阵求逆"></a>对2x2的矩阵求逆</h2><p>$$<br>A<br>{=}<br>\begin{bmatrix}<br>   a &amp; b \<br>   c &amp; d<br>  \end{bmatrix}<br>$$</p>
-<p>$$<br>A^{-1}<br>{=}<br>\dfrac{1}{ad-bc}\begin{bmatrix}<br>   d &amp; -b \<br>   -c &amp; a<br>  \end{bmatrix}<br>$$</p>
-<h2 id="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"><a href="#通过高思消元法（增广矩阵）求任意矩阵的逆矩阵" class="headerlink" title="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"></a>通过高思消元法（增广矩阵）求任意矩阵的逆矩阵</h2><p>对增广矩阵进行一系列<strong>初等行变换</strong> 使得左边的矩阵变成右边的单位矩阵</p>
+<script type="math/tex; mode=display">
+ \begin{bmatrix}
+   1 & 0 & 0 \\\
+   0 & 1 & 0 \\\
+   0 & 0 & 1
+  \end{bmatrix}</script><h2 id="矩阵的逆"><a href="#矩阵的逆" class="headerlink" title="矩阵的逆"></a>矩阵的逆</h2><p>如果矩阵I是单位矩阵</p>
+<script type="math/tex; mode=display">
+A \cdot A^{-1} = I</script><script type="math/tex; mode=display">
+A^{-1} \cdot A = I</script><p>那么<script type="math/tex">A^{-1}</script>就是矩阵A的逆矩阵。</p>
+<h2 id="对2x2的矩阵求逆"><a href="#对2x2的矩阵求逆" class="headerlink" title="对2x2的矩阵求逆"></a>对2x2的矩阵求逆</h2><script type="math/tex; mode=display">
+A
+\{=}
+\begin{bmatrix}
+   a & b \\\
+   c & d 
+  \end{bmatrix}</script><script type="math/tex; mode=display">
+A^{-1}
+\{=}
+\dfrac{1}{ad-bc}\begin{bmatrix}
+   d & -b \\\
+   -c & a
+  \end{bmatrix}</script><h2 id="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"><a href="#通过高思消元法（增广矩阵）求任意矩阵的逆矩阵" class="headerlink" title="通过高思消元法（增广矩阵）求任意矩阵的逆矩阵"></a>通过高思消元法（增广矩阵）求任意矩阵的逆矩阵</h2><p>对增广矩阵进行一系列<strong>初等行变换</strong> 使得左边的矩阵变成右边的单位矩阵</p>
 <p>所谓初等行变换 就是某一行与其他任意行进行加减或者成倍的加减 或者替换 操作</p>
 <p>举例：</p>
-<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0\<br>      1 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1<br>    \end{array}<br>\right]\tag{0}<br>$$</p>
-<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1<br>    \end{array}<br>\right]\tag{1}<br>$$</p>
-<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 2 &amp; 1 &amp; 0 &amp; 1 &amp; 0<br>    \end{array}<br>\right]\tag{2}<br>$$</p>
-<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 &amp; -2<br>    \end{array}<br>\right]\tag{3}<br>$$</p>
-<p>$$<br>\left[<br>    \begin{array}{ccc|ccc}<br>      1 &amp; 0 &amp; 0 &amp; -1 &amp; -1 &amp; 2\<br>      0 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 1\<br>      0 &amp; 0 &amp; 1 &amp; 2 &amp; 1 &amp; -2<br>    \end{array}<br>\right]\tag{3}<br>$$</p>
-<p>经过一系列初等变化，左侧矩阵变为了单位矩阵，右侧矩阵变为了原左侧矩阵的逆矩阵。</p>
+<script type="math/tex; mode=display">
+\left[
+    \begin{array}{ccc|ccc}
+      1 & 0 & 1 & 1 & 0 & 0\\\
+      0 & 2 & 1 & 0 & 1 & 0\\\
+      1 & 1 & 1 & 0 & 0 & 1
+    \end{array}
+\right]\tag{0}</script><script type="math/tex; mode=display">
+\left[
+    \begin{array}{ccc|ccc}
+      1 & 0 & 1 & 1 & 0 & 0\\\
+      0 & 2 & 1 & 0 & 1 & 0\\\
+      0 & 1 & 0 & -1 & 0 & 1
+    \end{array}
+\right]\tag{1}</script><script type="math/tex; mode=display">
+\left[
+    \begin{array}{ccc|ccc}
+      1 & 0 & 1 & 1 & 0 & 0\\\
+      0 & 1 & 0 & -1 & 0 & 1\\\
+      0 & 2 & 1 & 0 & 1 & 0
+    \end{array}
+\right]\tag{2}</script><script type="math/tex; mode=display">
+\left[
+    \begin{array}{ccc|ccc}
+      1 & 0 & 1 & 1 & 0 & 0\\\
+      0 & 1 & 0 & -1 & 0 & 1\\\
+      0 & 0 & 1 & 2 & 1 & -2
+    \end{array}
+\right]\tag{3}</script><script type="math/tex; mode=display">
+\left[
+    \begin{array}{ccc|ccc}
+      1 & 0 & 0 & -1 & -1 & 2\\\
+      0 & 1 & 0 & -1 & 0 & 1\\\
+      0 & 0 & 1 & 2 & 1 & -2
+    \end{array}
+\right]\tag{3}</script><p>经过一系列初等变化，左侧矩阵变为了单位矩阵，右侧矩阵变为了原左侧矩阵的逆矩阵。</p>
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B002-%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/" data-id="ckkwc439e00bqpas98lnvats9" data-title="线性代数02-矩阵的逆" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-线性代数01-矩阵乘法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2015-11-29T18:01:55.000Z" itemprop="datePublished">2015-11-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">线性代数01-矩阵乘法</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" class="post-title-link" itemprop="url">线性代数01-矩阵乘法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-29 18:01:55" itemprop="dateCreated datePublished" datetime="2015-11-29T18:01:55+00:00">2015-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="矩阵的乘法："><a href="#矩阵的乘法：" class="headerlink" title="矩阵的乘法："></a>矩阵的乘法：</h2><p>矩阵A与矩阵B相乘，运算方式是矩阵A的行的每一项 去乘B矩阵的每一列 并且加起来 构成相乘之后的矩阵</p>
-<p>$$<br> \begin{bmatrix}<br>   a &amp; b \<br>   c &amp; d<br>  \end{bmatrix}<br>  {*}<br>  \begin{bmatrix}<br>   e &amp; f \<br>   g &amp; h<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   (ae + bg) &amp; (af + bh) \<br>   (ce + dg) &amp; (cf + dh)<br>  \end{bmatrix}<br>$$</p>
-<h2 id="关于交换律："><a href="#关于交换律：" class="headerlink" title="关于交换律："></a>关于交换律：</h2><p>矩阵乘法是不满足交换律的：</p>
-<p>$$<br>AB != BA<br>$$</p>
-<h2 id="行列不相同的矩阵相乘："><a href="#行列不相同的矩阵相乘：" class="headerlink" title="行列不相同的矩阵相乘："></a>行列不相同的矩阵相乘：</h2><p>一个3x2的矩阵与一个2x3的矩阵相乘，得到的是一个2x2的矩阵：</p>
-<p>$$<br> \begin{bmatrix}<br>   3 &amp; 1 &amp; 2 \<br>   -2 &amp; 0 &amp; 5<br>  \end{bmatrix}<br>  {+}<br>  \begin{bmatrix}<br>   1 &amp; 3 \<br>   0 &amp; 5 \<br>   2 &amp; 5<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   (3\cdot(-1) + 1\cdot0 + 2\cdot2) &amp; (3\cdot3 + 1\cdot5 + 2\cdot5) \<br>   ((-2)\cdot1 + 0\cdot0 + 5\cdot2) &amp; ((-2)\cdot3 + 0\cdot5 + 5\cdot5)<br>  \end{bmatrix}<br>  {=}<br>  \begin{bmatrix}<br>   1 &amp; 24 \<br>   8 &amp; 19<br>  \end{bmatrix}<br>$$</p>
-<p>只有<strong>第一个矩阵到列数和第二个矩阵的行数相同</strong>，才能做矩阵乘法运算：</p>
+          <h2 id="矩阵的乘法："><a href="#矩阵的乘法：" class="headerlink" title="矩阵的乘法："></a>矩阵的乘法：</h2><p>矩阵A与矩阵B相乘，运算方式是矩阵A的行的每一项 去乘B矩阵的每一列 并且加起来 构成相乘之后的矩阵</p>
+<script type="math/tex; mode=display">
+ \begin{bmatrix}
+   a & b \\\
+   c & d 
+  \end{bmatrix}
+  \{*}
+  \begin{bmatrix}
+   e & f \\\
+   g & h
+  \end{bmatrix}
+  \{=}
+  \begin{bmatrix}
+   (ae + bg) & (af + bh) \\\
+   (ce + dg) & (cf + dh) 
+  \end{bmatrix}</script><h2 id="关于交换律："><a href="#关于交换律：" class="headerlink" title="关于交换律："></a>关于交换律：</h2><p>矩阵乘法是不满足交换律的：</p>
+<script type="math/tex; mode=display">
+AB != BA</script><h2 id="行列不相同的矩阵相乘："><a href="#行列不相同的矩阵相乘：" class="headerlink" title="行列不相同的矩阵相乘："></a>行列不相同的矩阵相乘：</h2><p>一个3x2的矩阵与一个2x3的矩阵相乘，得到的是一个2x2的矩阵：</p>
+<script type="math/tex; mode=display">
+ \begin{bmatrix}
+   3 & 1 & 2 \\\
+   -2 & 0 & 5
+  \end{bmatrix}
+  \{+}
+  \begin{bmatrix}
+   1 & 3 \\\
+   0 & 5 \\\
+   2 & 5
+  \end{bmatrix}
+  \{=}
+  \begin{bmatrix}
+   (3\cdot(-1) + 1\cdot0 + 2\cdot2) & (3\cdot3 + 1\cdot5 + 2\cdot5) \\\
+   ((-2)\cdot1 + 0\cdot0 + 5\cdot2) & ((-2)\cdot3 + 0\cdot5 + 5\cdot5) 
+  \end{bmatrix}
+  \{=}
+  \begin{bmatrix}
+   1 & 24 \\\
+   8 & 19 
+  \end{bmatrix}</script><p>只有<strong>第一个矩阵到列数和第二个矩阵的行数相同</strong>，才能做矩阵乘法运算：</p>
 <p>A[m:n] 和 B[n:p] 向量是可以相乘的，结果是C[m:p] </p>
 <p>A[m:n] 和 B[p:q] 向量是不可以做乘法运算的</p>
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/29/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B001-%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" data-id="ckkwc439d00bmpas98kw31xqz" data-title="线性代数01-矩阵乘法" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-自定义注解优化Android图片内存回收" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/" class="article-date">
-  <time class="dt-published" datetime="2015-11-26T13:50:55.000Z" itemprop="datePublished">2015-11-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/">自定义注解优化Android图片内存回收</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/" class="post-title-link" itemprop="url">自定义注解优化Android图片内存回收</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-26 13:50:55" itemprop="dateCreated datePublished" datetime="2015-11-26T13:50:55+00:00">2015-11-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>java提供了垃圾回收机制，我们不用像C++一样手动去处理垃圾内存。虽然省事，但是为了对垃圾回收器友好，我们应该引导gc，告诉它什么东西是垃圾内存。简单来说，就是不再使用的对象要置空，该回收的资源要回收。</p>
+          <p>java提供了垃圾回收机制，我们不用像C++一样手动去处理垃圾内存。虽然省事，但是为了对垃圾回收器友好，我们应该引导gc，告诉它什么东西是垃圾内存。简单来说，就是不再使用的对象要置空，该回收的资源要回收。</p>
 <p>android下老生常谈的异常OOM,主要产生的原因就是加载了过多的资源到内存，导致内存溢出。而在android界面中，图片一直是吃内存的大户。一个1024x800的png图片，打开ARGB通道，占用的内存总量如下：</p>
 <blockquote>
 <p>   1024 x 800 x 8 x 4 / 8 = 3276800byte = 3200kb = 3.125mb</p>
-</blockquote>
-<blockquote>
 <p>   (内存=图片长度<em>图片宽度</em>单位像素占用的字节数)</p>
 </blockquote>
 <p>而系统分配给每个应用的内存总量是一定的，通常情况下不会超过128mb,因机型而异。除非将largeHeap选项开启，会获得大幅度的内存上限提升。但不是系统有多少内存就可以申请多少，而是由dalvik.vm.heapsize限制。Android官方给的建议是，作为程序员的我们应该努力减少内存的使用，想回收和复用的方法，而不是想方设法增大内存。当内存很大的时候，每次gc的时间也会长一些，性能会下降呦。</p>
@@ -292,51 +625,79 @@
 <p>为了方便实用，我封装了一个工具:<a target="_blank" rel="noopener" href="https://github.com/DannyLee1991/AnnoRecycleImage">AnnoRecycleImage</a>，具体用法如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes</span>	<span class="comment">//对需要回收资源的控件添加注解</span></span><br><span class="line">    <span class="keyword">private</span> View root;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes(isCustom = true)</span>	<span class="comment">//自定义控件 isCustom = true</span></span><br><span class="line">    <span class="keyword">private</span> CustomView cv;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RecycleViewBGRes</span></span><br><span class="line">    <span class="keyword">private</span> ImageView iv;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_test);</span><br><span class="line">        root = findViewById(R.id.root);</span><br><span class="line">        cv = (CustomView) findViewById(R.id.cv);</span><br><span class="line">        iv = (ImageView) findViewById(R.id.iv);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        <span class="comment">//在onDestroy中 调用回收方法 处理标注有注解的对象</span></span><br><span class="line">        RecycleUtils.doRecycle(TestActivity.<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/26/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E4%BC%98%E5%8C%96Android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6/" data-id="ckkwc439m00cdpas90ocyb6v7" data-title="自定义注解优化Android图片内存回收" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-android图片内存优化" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" class="article-date">
-  <time class="dt-published" datetime="2015-11-19T13:50:55.000Z" itemprop="datePublished">2015-11-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">Android图片内存优化</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Android图片内存优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-19 13:50:55" itemprop="dateCreated datePublished" datetime="2015-11-19T13:50:55+00:00">2015-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:39" itemprop="dateModified" datetime="2021-02-10T16:11:39+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>首先，关于android的内存管理机制，建议阅读这篇文章：</p>
+          <p>首先，关于android的内存管理机制，建议阅读这篇文章：</p>
 <p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/killmyday/archive/2013/06/12/3132518.html">android垃圾回收算法</a></p>
 <p>如果在布局文件中，设置了背景图，要在界面onDestroy()的时候，将图片回收。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;recycle backgroundBitmap </span><br><span class="line">View v &#x3D; findViewById(id);</span><br><span class="line">BitmapDrawable bd &#x3D; (BitmapDrawable) v.getBackground();</span><br><span class="line">if (bd !&#x3D; null)&#123;</span><br><span class="line">    bd.getBitmap().recycle();</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 将资源id清空</span><br><span class="line">v.setBackgroundResource(0);</span><br></pre></td></tr></table></figure>
@@ -348,48 +709,77 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/19/android%E5%9B%BE%E7%89%87%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" data-id="ckkwc435b001dpas996xv2uqk" data-title="Android图片内存优化" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tensorFlow运行android demo" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/" class="article-date">
-  <time class="dt-published" datetime="2015-11-17T09:59:55.000Z" itemprop="datePublished">2015-11-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/">tensorFlow运行android demo</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/" class="post-title-link" itemprop="url">tensorFlow运行android demo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-17 09:59:55" itemprop="dateCreated datePublished" datetime="2015-11-17T09:59:55+00:00">2015-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:39" itemprop="dateModified" datetime="2021-02-10T16:11:39+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>本月初，google开源了第二代深度机器学习系统tensorFlow。</p>
+          <p>本月初，google开源了第二代深度机器学习系统tensorFlow。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow">https://github.com/tensorflow/tensorflow</a></p>
 <p>代码中提供了一个android的example，下面我们就来一步步把它运行起来。</p>
 <hr>
@@ -425,48 +815,77 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/11/17/tensorFlow%E8%BF%90%E8%A1%8Candroid%20demo/" data-id="ckkwc435m002apas97cr8ec7j" data-title="tensorFlow运行android demo" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-闭开原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" class="article-date">
-  <time class="dt-published" datetime="2015-10-04T10:46:55.000Z" itemprop="datePublished">2015-10-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/">设计模式六大原则之 闭开原则</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 闭开原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-04 10:46:55" itemprop="dateCreated datePublished" datetime="2015-10-04T10:46:55+00:00">2015-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
 <p>Software entities like classes,modules and functions should be open for extension but closed for modifications.(一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。)</p>
 </blockquote>
 <p>开闭原则是java世界的最基础的设计原则，它指导我们如何建立一个稳定的、灵活的系统。</p>
@@ -487,48 +906,77 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" data-id="ckkwc439t00cxpas962fj6pjq" data-title="设计模式六大原则之 闭开原则" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-迪米特法则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" class="article-date">
-  <time class="dt-published" datetime="2015-09-18T14:06:55.000Z" itemprop="datePublished">2015-09-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/">设计模式六大原则之 迪米特法则</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 迪米特法则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-09-18 14:06:55" itemprop="dateCreated datePublished" datetime="2015-09-18T14:06:55+00:00">2015-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>迪米特原则（<strong>Law of Demeter, LoD</strong>）也称为最少知识原则(<strong>Least Knowledge Principle, LKP</strong>)，虽然名字不同，但描述的是同一个规则：一个对象应该对其他对象有做少的了解。</p>
+          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>迪米特原则（<strong>Law of Demeter, LoD</strong>）也称为最少知识原则(<strong>Least Knowledge Principle, LKP</strong>)，虽然名字不同，但描述的是同一个规则：一个对象应该对其他对象有做少的了解。</p>
 <p>通俗的讲，一个类应该对自己需要耦合或调用的类知道的最少，你（被耦合或调用的类）的内部是如何复杂都和我没关系，那是你的事情，我就知道你提供的这么多public方法，我就调用这么多，其他的我一概不关心。</p>
 <h2 id="进一步解释"><a href="#进一步解释" class="headerlink" title="进一步解释"></a>进一步解释</h2><h3 id="1-只和朋友交流"><a href="#1-只和朋友交流" class="headerlink" title="1.只和朋友交流"></a>1.只和朋友交流</h3><p>迪米特法则还有一个英文释义是：Only talk to your immediate friends(只与直接的朋友通信。)每个对象都必然会与其他对象有耦合关系，两个对象之间的耦合就成为朋友关系，这种关系的类型有很多，例如组合、聚合、依赖等。</p>
 <h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>老师命令班长清点一下班级里所有女生的数量</p>
@@ -565,48 +1013,77 @@
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" data-id="ckkwc439o00cipas99v1pfgvb" data-title="设计模式六大原则之 迪米特法则" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-接口隔离原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/" class="article-date">
-  <time class="dt-published" datetime="2015-09-17T09:53:55.000Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/">设计模式六大原则之 接口隔离原则</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 接口隔离原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-09-17 09:53:55" itemprop="dateCreated datePublished" datetime="2015-09-17T09:53:55+00:00">2015-09-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>接口隔离原则其定义有两种：</p>
+          <h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>接口隔离原则其定义有两种：</p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
 <p>Clients should not be forced to depend upon interfaces that they don’t use.<br>(客户端不应该依赖它不需要的接口。)</p>
 <p>The dependency of one class to another one should depend on the smallest possible interface.<br>(类间的依赖关系应该建立在最小的接口上。)</p>
@@ -619,8 +1096,7 @@
 <p>单一职责强调的是类和接口职责要单一，强调的是<strong>职责</strong>,而某些情况下，相同职责下的方法可能很多，例如一个接口的职责包含了10个方法，这十个方法提供给多个模块使用，不同模块下根据各自的权限来访问，这在单一职责的角度来看是允许的，但按照接口隔离的角度来看，可能就不合理了，因为它要求“尽量使用多个专门的接口”。专门的接口指的是什么？就是指提供给每个模块的单一接口，提供给几个模块就应该有几个接口，而不是建立一个庞大的臃肿的接口，容纳所有的客户端访问。</p>
 <h2 id="对接口规范的约束"><a href="#对接口规范的约束" class="headerlink" title="对接口规范的约束"></a>对接口规范的约束</h2><p>1.接口要尽量小</p>
 <pre><code>但前提要求是要满足单一职责原则
-</code></pre>
-<p>2.接口要高内聚</p>
+</code></pre><p>2.接口要高内聚</p>
 <p>3.定制服务</p>
 <pre><code>例如一个图书管理系统的查询接口
 
@@ -641,56 +1117,83 @@ ISimpleBookSearcher
 
 IComplexBookSearcher
 + void complexSearch(Map map)
-</code></pre>
-<p>4.接口设计是有限度的</p>
+</code></pre><p>4.接口设计是有限度的</p>
 <pre><code>接口的设计颗粒度越小，系统越灵活，但是，灵活的同时带来了结构的复杂化，开发难度增加，可维护性降低，
 所以接口设计一定要注意适度，这个“度”通常是根据经验和常识来判断，没有一个固化或可测量的标准。
 </code></pre>
-
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/" data-id="ckkwc437l006vpas9cs494q1y" data-title="设计模式六大原则之 接口隔离原则" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-依赖倒置原则" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/" class="article-date">
-  <time class="dt-published" datetime="2015-09-16T22:01:55.000Z" itemprop="datePublished">2015-09-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/">设计模式六大原则之 依赖倒置原则</a>
-    </h1>
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 依赖倒置原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-09-16 22:01:55" itemprop="dateCreated datePublished" datetime="2015-09-16T22:01:55+00:00">2015-09-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>依赖倒置原则（<strong>Dependence Inversion Principle,DIP</strong>） 它的原始定义是这样的：</p>
+          <h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>依赖倒置原则（<strong>Dependence Inversion Principle,DIP</strong>） 它的原始定义是这样的：</p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
 <p>High level modules should not depend upon low level modules.Both should depend upon abstractions.Abstractions should not depend upon details.Details should depend upon abstractions.</p>
 </blockquote>
@@ -708,7 +1211,7 @@ IComplexBookSearcher
 </blockquote>
 <p>更加精简的定义就是：</p>
 <blockquote>
-<p>面向接口编程 – OOD(Object-Oriented Design, 面向对象设计)的精髓之一.</p>
+<p>面向接口编程 — OOD(Object-Oriented Design, 面向对象设计)的精髓之一.</p>
 </blockquote>
 <h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p>中国象棋 </p>
 <p>每个棋子都拥有<strong>“移动（move）”</strong>的动作，但每个棋子的这个方法又有不同，比如<strong>“马走日，象走田”</strong>就是体现了移动的不同。</p>
@@ -738,143 +1241,249 @@ IComplexBookSearcher
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2015/09/16/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99/" data-id="ckkwc437b0063pas91pz74lvj" data-title="设计模式六大原则之 依赖倒置原则" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-  <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
-</section>
-        
-          <aside id="sidebar">
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
       </ul>
-    </div>
-  </div>
 
-  
-</aside>
-        
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
-    <nav id="mobile-nav">
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
   
-</nav>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

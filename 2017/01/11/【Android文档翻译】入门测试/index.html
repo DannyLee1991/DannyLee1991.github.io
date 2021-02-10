@@ -1,106 +1,242 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>【Android文档翻译】入门测试 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="Android的测试是基于JUnit的，你可以以一个本地单元测试的模式在JVM上运行，也可以在Android设备上运行它们。这个页面提供了一个关于构建android测试的概念和工具的介绍。  测试类型当使用Android Studio来写测试的时候，你的测试代码必须放置在两个不同的代码目录下。对于你项目中的每个模块，Android Studio包含两个代码集合，对应以下的测试类型：  本地单元测">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Android文档翻译】入门测试">
 <meta property="og:url" content="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="Android的测试是基于JUnit的，你可以以一个本地单元测试的模式在JVM上运行，也可以在Android设备上运行它们。这个页面提供了一个关于构建android测试的概念和工具的介绍。  测试类型当使用Android Studio来写测试的时候，你的测试代码必须放置在两个不同的代码目录下。对于你项目中的每个模块，Android Studio包含两个代码集合，对应以下的测试类型：  本地单元测">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_01_11/001.png">
 <meta property="article:published_time" content="2017-01-11T22:21:58.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.853Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:39.997Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="Android">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_01_11/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>【Android文档翻译】入门测试 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-【Android文档翻译】入门测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/" class="article-date">
-  <time class="dt-published" datetime="2017-01-11T22:21:58.000Z" itemprop="datePublished">2017-01-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Android/">Android</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      【Android文档翻译】入门测试
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Android文档翻译】入门测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-11 22:21:58" itemprop="dateCreated datePublished" datetime="2017-01-11T22:21:58+00:00">2017-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:39" itemprop="dateModified" datetime="2021-02-10T16:11:39+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <blockquote>
 <p>Android的测试是基于<a target="_blank" rel="noopener" href="http://junit.org/">JUnit</a>的，你可以以一个本地单元测试的模式在JVM上运行，也可以在Android设备上运行它们。这个页面提供了一个关于构建android测试的概念和工具的介绍。</p>
@@ -111,7 +247,7 @@
 </ul>
 <p>放置在<code>module-name/src/test/java/</code>目录下。</p>
 <p>这些测试运行在本地的JVM上，并且没有访问Android 框架的API的权限。</p>
-<p>开始请看：<a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">构建本地单元测试</a></p>
+<p>开始请看：<a href="/2017/01/11/【Android文档翻译】构建本地单元测试/">构建本地单元测试</a></p>
 <ul>
 <li><strong>仪表化测试</strong></li>
 </ul>
@@ -120,41 +256,45 @@
 <p>仪表化测试是内置在APK中的依附于你的APP的运行在设备上的测试。系统运行你的测试APK，并且与你的app运行在同一进程中，因此你的测试能调用app中的方法并且改变app中的字段，并且自动化的运行你的UI界面。</p>
 <p>有关如何创建仪表化测试，请参阅以下的主题：</p>
 <ul>
-<li><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">构建仪表化单元测试</a>：通过Android依赖来构建复杂的单元测试，对于mock对象来说是不安全的。</li>
-<li><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/">自动化UI测试</a>：创建测试，在单个应用程序和多个应用程序之间的交互，来确认你的UI的交互行为是否准确。</li>
-<li><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91APP%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6%E9%9B%86%E6%88%90/">APP测试组件集成</a>：验证那些用户不直接与之交互的组件的行为，例如一个Service或者一个Content Provider。</li>
+<li><a href="/2017/01/11/【Android文档翻译】构建仪表化单元测试/">构建仪表化单元测试</a>：通过Android依赖来构建复杂的单元测试，对于mock对象来说是不安全的。</li>
+<li><a href="/2017/01/11/【Android文档翻译】自动化UI测试/">自动化UI测试</a>：创建测试，在单个应用程序和多个应用程序之间的交互，来确认你的UI的交互行为是否准确。</li>
+<li><a href="/2017/01/11/【Android文档翻译】APP测试组件集成/">APP测试组件集成</a>：验证那些用户不直接与之交互的组件的行为，例如一个Service或者一个Content Provider。</li>
 </ul>
-<p><img src="/img/17_01_11/001.png"></p>
+<p><img src="/img/17_01_11/001.png" alt=""></p>
 <p>然而，<em>本地单元测试</em>和<em>仪表化测试</em>只是用于区分在本地JVM上运行的测试和在Android平台上(在硬件设备或者模拟器上)运行的测试的术语。在构建完整测试体系的时候应该理解的真正的测试类型见下表的描述：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">类型</th>
-<th align="center">子类型</th>
-<th align="center">描述</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">子类型</th>
+<th style="text-align:center">描述</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">单元测试</td>
-<td align="center">本地单元测试</td>
-<td align="center">运行在本地JVM的单元测试。当你的测试没有Android框架依赖或者当你能模拟Android框架依赖时，你可以使用这些测试来最小化执行时间。</td>
+<tbody>
+<tr>
+<td style="text-align:center">单元测试</td>
+<td style="text-align:center">本地单元测试</td>
+<td style="text-align:center">运行在本地JVM的单元测试。当你的测试没有Android框架依赖或者当你能模拟Android框架依赖时，你可以使用这些测试来最小化执行时间。</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center">仪表化测试</td>
-<td align="center">单元测试可以运行在一个Android设备或者模拟器上。这些测试可以访问仪表信息，例如你正在测试的App的Context。当你的测试有Android依赖时，摸你对象不能满足时，可以使用这些测试。</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">仪表化测试</td>
+<td style="text-align:center">单元测试可以运行在一个Android设备或者模拟器上。这些测试可以访问仪表信息，例如你正在测试的App的Context。当你的测试有Android依赖时，摸你对象不能满足时，可以使用这些测试。</td>
 </tr>
 <tr>
-<td align="center">集成测试</td>
-<td align="center">仅仅在你App内部的原件</td>
-<td align="center">这个类型的测试可以在一个用户执行一个特殊的事件或者在它的activity中传入了一个特殊的输入时，用来验证目标的app行为与期望的是否相同。例如，它允许你检查目标app返回的正确的UI输出，响应到app的Activity的交互界面。UI测试框架，像Espresso允许你程序化模拟用户操作，并测试复杂的应用内的用户交互。</td>
+<td style="text-align:center">集成测试</td>
+<td style="text-align:center">仅仅在你App内部的原件</td>
+<td style="text-align:center">这个类型的测试可以在一个用户执行一个特殊的事件或者在它的activity中传入了一个特殊的输入时，用来验证目标的app行为与期望的是否相同。例如，它允许你检查目标app返回的正确的UI输出，响应到app的Activity的交互界面。UI测试框架，像Espresso允许你程序化模拟用户操作，并测试复杂的应用内的用户交互。</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center">跨应用组件</td>
-<td align="center">这个类型的测试用于验证不同用户应用程序之间或用户应用程序和系统应用程序之间的交互的正确行为。例如，当你在Android的菜单中执行一个事件，也许想测试你的app行为的正确性。UI测试框架支持跨应用互动，例如UIAutomator，允许你为这种情况创建测试。</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">跨应用组件</td>
+<td style="text-align:center">这个类型的测试用于验证不同用户应用程序之间或用户应用程序和系统应用程序之间的交互的正确行为。例如，当你在Android的菜单中执行一个事件，也许想测试你的app行为的正确性。UI测试框架支持跨应用互动，例如UIAutomator，允许你为这种情况创建测试。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="测试API"><a href="#测试API" class="headerlink" title="测试API"></a>测试API</h2><p>接下来的通用API用于在Android上测试app。</p>
 <h3 id="JUnit"><a href="#JUnit" class="headerlink" title="JUnit"></a>JUnit</h3><p>你应该写你自己的单元测试或者集成测试类，正如JUnit4测试类。框架提供了一个方便的方法来在测试中执行通用的设置，拆卸以及断言操作。</p>
 <p>一个基本的JUnit测试类是一个包含一个或多个测试模块的Java类。测试方法以<code>@Test</code>注解开头，包含练习和验证要测试的组件中的单个功能（即逻辑单元）的代码。</p>
@@ -174,190 +314,254 @@
 <h3 id="Android测试支持库"><a href="#Android测试支持库" class="headerlink" title="Android测试支持库"></a>Android测试支持库</h3><p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html">Android测试支持库</a>提供一个允许你快速构建并执行关于你app的测试代码的API接口，包括JUnit4和UI功能测试。这个库包括以下基于工具的API，当你想要自动化测试时，这些API非常有用：</p>
 <p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html#AndroidJUnitRunner">AndroidJUnitRunner</a>:</p>
 <pre><code>一个适用于Android的JUnit4兼容测试运行器。
-</code></pre>
-<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html#Espresso">Espresso</a>:</p>
+</code></pre><p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html#Espresso">Espresso</a>:</p>
 <pre><code>一个UI测试框架；适合在应用程序内的功能UI测试。
-</code></pre>
-<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html#UIAutomator">UI Automator</a>:</p>
+</code></pre><p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/testing-support-library/index.html#UIAutomator">UI Automator</a>:</p>
 <pre><code>适用于系统和已安装应用程序之间跨应用程序功能UI测试的UI测试框架。
-</code></pre>
-<h3 id="断言类"><a href="#断言类" class="headerlink" title="断言类"></a>断言类</h3><p>由于Android测试支持库继承自JUnit，因此你可以使用断言方法来展示测试结果。断言方法将测试返回的实际值与预期值进行比较，如果比较测试失败，则抛出AssertionException。使用断言比记录更方便，并提供更好的测试性能。</p>
+</code></pre><h3 id="断言类"><a href="#断言类" class="headerlink" title="断言类"></a>断言类</h3><p>由于Android测试支持库继承自JUnit，因此你可以使用断言方法来展示测试结果。断言方法将测试返回的实际值与预期值进行比较，如果比较测试失败，则抛出AssertionException。使用断言比记录更方便，并提供更好的测试性能。</p>
 <p>为了简化测试开发，你应该使用<a target="_blank" rel="noopener" href="https://github.com/hamcrest">Hamcrest library</a>,它可以使用Hamcrest匹配器的API创建更灵活的测试。</p>
 <h3 id="Monkey和monkeyrunner"><a href="#Monkey和monkeyrunner" class="headerlink" title="Monkey和monkeyrunner"></a>Monkey和monkeyrunner</h3><p>Android SDK包含两个功能级别的测试工具:</p>
 <p>Monkey</p>
 <pre><code>这是一个命令行工具，用于向设备发送按键，触摸和手势的伪随机流。你使用Android Debug Bridge(adb)工具运行它，并使用它来压力测试您的应用程序，报告所遇到的错误，或通过使用相同的随机数种子多次运行该工具来重复事件流。
-</code></pre>
-<p>monkeyrunner</p>
+</code></pre><p>monkeyrunner</p>
 <pre><code>这个工具是python写的测试程序的API和执行环境。API包括用于连接到设备，安装和卸载软件包，截屏，比较两个图像以及针对应用程序运行测试包的功能。使用API，你可以编写大量，强大和复杂的测试。您使用monkeyrunner命令行工具运行使用API的程序。
-</code></pre>
-<h3 id="构建Android测试的指南"><a href="#构建Android测试的指南" class="headerlink" title="构建Android测试的指南"></a>构建Android测试的指南</h3><p>以下文档提供了有关如何构建和运行各种测试类型的更多详细信息：</p>
-<p><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">构建本地单元测试</a></p>
+</code></pre><h3 id="构建Android测试的指南"><a href="#构建Android测试的指南" class="headerlink" title="构建Android测试的指南"></a>构建Android测试的指南</h3><p>以下文档提供了有关如何构建和运行各种测试类型的更多详细信息：</p>
+<p><a href="/2017/01/11/【Android文档翻译】构建本地单元测试/">构建本地单元测试</a></p>
 <pre><code>构建没有依赖或只有简单的依赖的单元测试，你可以mock，它运行在本地JVM上。
-</code></pre>
-<p><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">构建仪表化单元测试</a></p>
+</code></pre><p><a href="/2017/01/11/【Android文档翻译】构建仪表化单元测试/">构建仪表化单元测试</a></p>
 <pre><code>使用Android依赖项构建复杂的单元测试，这对于在硬件设备或模拟器上运行的模拟对象无法满足。
-</code></pre>
-<p><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/">自动化UI测试</a></p>
+</code></pre><p><a href="/2017/01/11/【Android文档翻译】自动化UI测试/">自动化UI测试</a></p>
 <pre><code>创建测试以验证用户界面在单个应用程序内的用户交互或多个应用程序之间的交互正确运行。
-</code></pre>
-<p><a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91APP%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6%E9%9B%86%E6%88%90/">测试应用程序集成</a></p>
+</code></pre><p><a href="/2017/01/11/【Android文档翻译】APP测试组件集成/">测试应用程序集成</a></p>
 <pre><code>验证用户不直接与之交互的组件（例如服务或内容提供者）的行为
-</code></pre>
-<p><a href="/2017/01/14/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%B5%8B%E8%AF%95%E6%80%A7%E8%83%BD%E5%B1%95%E7%A4%BA/">测试性能展示</a></p>
+</code></pre><p><a href="/2017/01/14/【Android文档翻译】测试性能展示/">测试性能展示</a></p>
 <pre><code>编写测试应用程序UI性能的测试，以确保持续流畅的用户体验
 </code></pre>
-
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E5%85%A5%E9%97%A8%E6%B5%8B%E8%AF%95/" data-id="ckkwc435q002mpas9bzmnd34a" data-title="【Android文档翻译】入门测试" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91APP%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6%E9%9B%86%E6%88%90/" rel="prev" title="【Android文档翻译】APP测试组件集成">
+      <i class="fa fa-chevron-left"></i> 【Android文档翻译】APP测试组件集成
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="next" title="【Android文档翻译】构建本地单元测试">
+      【Android文档翻译】构建本地单元测试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">测试类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95API"><span class="nav-number">2.</span> <span class="nav-text">测试API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JUnit"><span class="nav-number">2.1.</span> <span class="nav-text">JUnit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android%E6%B5%8B%E8%AF%95%E6%94%AF%E6%8C%81%E5%BA%93"><span class="nav-number">2.2.</span> <span class="nav-text">Android测试支持库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%AD%E8%A8%80%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">断言类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Monkey%E5%92%8Cmonkeyrunner"><span class="nav-number">2.4.</span> <span class="nav-text">Monkey和monkeyrunner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAAndroid%E6%B5%8B%E8%AF%95%E7%9A%84%E6%8C%87%E5%8D%97"><span class="nav-number">2.5.</span> <span class="nav-text">构建Android测试的指南</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          【Android文档翻译】构建本地单元测试
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91APP%E6%B5%8B%E8%AF%95%E7%BB%84%E4%BB%B6%E9%9B%86%E6%88%90/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【Android文档翻译】APP测试组件集成</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '7f6b4bab91493daab4d9dc8ec1c4a7e6',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 </body>
 </html>

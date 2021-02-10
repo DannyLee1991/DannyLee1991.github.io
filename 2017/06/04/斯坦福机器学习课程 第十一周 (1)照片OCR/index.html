@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第十一周 (1)照片OCR | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="问题描述和流水线（Pipeline）视频地址  在这一段和下几段视频中，我想向你介绍一种 机器学习的应用实例：照片OCR技术。我想介绍这部分内容的原因主要有以下三个:  第一，我想向你展示一个复杂的机器学习系统是如何被组合起来的。  第二，我想介绍一下机器学习流水线（machine learning pipeline）的有关概念以及在决定下一步做什么时如何分配资源。  最后，我也想通过介绍照片OC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第十一周 (1)照片OCR">
 <meta property="og:url" content="http://example.com/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="问题描述和流水线（Pipeline）视频地址  在这一段和下几段视频中，我想向你介绍一种 机器学习的应用实例：照片OCR技术。我想介绍这部分内容的原因主要有以下三个:  第一，我想向你展示一个复杂的机器学习系统是如何被组合起来的。  第二，我想介绍一下机器学习流水线（machine learning pipeline）的有关概念以及在决定下一步做什么时如何分配资源。  最后，我也想通过介绍照片OC">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_06_04/001.png">
@@ -59,93 +73,215 @@
 <meta property="og:image" content="http://example.com/img/17_06_04/042.png">
 <meta property="og:image" content="http://example.com/img/17_06_04/043.png">
 <meta property="article:published_time" content="2017-06-04T19:40:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.005Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_06_04/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第十一周 (1)照片OCR | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第十一周 (1)照片OCR" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/" class="article-date">
-  <time class="dt-published" datetime="2017-06-04T19:40:00.000Z" itemprop="datePublished">2017-06-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第十一周 (1)照片OCR
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第十一周 (1)照片OCR
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-04 19:40:00" itemprop="dateCreated datePublished" datetime="2017-06-04T19:40:00+00:00">2017-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="问题描述和流水线（Pipeline）"><a href="#问题描述和流水线（Pipeline）" class="headerlink" title="问题描述和流水线（Pipeline）"></a>问题描述和流水线（Pipeline）</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/iDBMm/problem-description-and-pipeline">视频地址</a></p>
 <blockquote>
@@ -162,8 +298,7 @@
 <p><strong>照片OCR</strong>是指<strong>照片光学字符识别（photo optical character recognition）</strong>。</p>
 <p>随着数码摄影的日益流行，以及近年来手机中拍照功能的逐渐成熟，我们现在很容易就会有一大堆从各地拍摄的数码照片。吸引众多开发人员的其中一个应用是如何让计算机更好地理解这些照片的内容。这种照片OCR技术主要解决的问题是让计算机读出照片中拍到的文字信息。</p>
 <p>照片OCR技术的一个应用场景是方便照片的搜索。例如你找出下面这张照片时，你只需要输入图片中的文字“LULA B’s ANTIQUE MALL”即可把照片找出来：</p>
- <img src="/img/17_06_04/001.png" width = "500" height = "500" align=center />
-
+<p> <img src="/img/17_06_04/001.png" width = "500" height = "500" align=center /></p>
 <blockquote>
 <p>虽然现在OCR对扫描的文档来说已经是一个比较简单的问题了，但对于数码照片来说现在还是一个比较困难的机器学习问题。研究这个的目的不仅仅是因为这可以让计算机更好地理解我们的户外图像，更重要的是它衍生了很多应用。比如在帮助盲人方面，假如你能为盲人提供一种照相机，这种相机可以“看见”他们前面有什么东西，可以告诉他们面前的路牌上写的是什么字。现在也有研究人员将照片OCR技术应用到汽车导航系统中，想象一下你的车能读出街道的标识，并且将你导航至目的地。</p>
 </blockquote>
@@ -172,20 +307,18 @@
 <li>1.<strong>文字识别技术（Text detection）</strong></li>
 </ul>
 <p>首先使用<strong>文字识别技术（Text detection）</strong>将给定的图片扫描一遍，找出这张图片中哪里有文字信息：</p>
- <img src="/img/17_06_04/002.png" width = "500" height = "500" align=center />
-
+<p> <img src="/img/17_06_04/002.png" width = "500" height = "500" align=center /></p>
 <ul>
 <li>2.字符切分</li>
 </ul>
 <p>接下来就是重点关注这些文字区域，对这些文字区域的矩形轮廓进行字符切分。</p>
- <img src="/img/17_06_04/003.png" width = "500" height = "500" align=center />
-
-<p><img src="/img/17_06_04/004.gif"></p>
+<p> <img src="/img/17_06_04/003.png" width = "500" height = "500" align=center /></p>
+<p><img src="/img/17_06_04/004.gif" alt=""></p>
 <ul>
 <li>3.字符分类</li>
 </ul>
 <p>当文字被分割成独立的字符之后，我们可以尝试运行一个分类器，输入这些可识别的字符，然后试着识别出上面的字符。</p>
-<p><img src="/img/17_06_04/005.png"></p>
+<p><img src="/img/17_06_04/005.png" alt=""></p>
 <p>因此通过完成所有这些工作，按理说你就能识别出 这个字段写的是“LULAB’s ANTIQUE MALL”，然后图片中其他有文字的地方也是类似的方法进行处理。</p>
 <hr>
 <blockquote>
@@ -195,13 +328,13 @@
 </blockquote>
 <h3 id="机器学习流水线（machine-learning-pipeline）"><a href="#机器学习流水线（machine-learning-pipeline）" class="headerlink" title="机器学习流水线（machine learning pipeline）"></a>机器学习流水线（machine learning pipeline）</h3><p>像上面这样的一个系统，我们把它称之为<strong>机器学习流水线（machine learning pipeline）</strong>。</p>
 <p>下面是OCR的流水线：</p>
-<p><img src="/img/17_06_04/006.png"></p>
+<p><img src="/img/17_06_04/006.png" alt=""></p>
 <p>具体来说，这幅图表示的就是照片OCR的流水线。</p>
 <p>我们有一幅图像，然后传给文字检测系统，识别出文字以后，我们将字段分割为独立的字符，最后我们对单个的字母进行识别。</p>
 <p>在很多复杂的机器学习系统中，这种流水线形式都非常普遍。在流水线中会有多个不同的模块，比如在本例中我们有文字检测、字符分割和字母识别，其中每个模块都可能是一个机器学习组件。</p>
 <p>如果你要设计一个机器学习系统，其中你需要作出的最重要的决定，就是你要怎样组织好这个流水线。换句话说，在这个照片OCR问题中，你应该如何将这个问题分成一系列不同的模块。你需要设计这个流程，以及你的流水线中的每一个模块，这通常会影响到你最终的算法的表现。</p>
 <p>如果你有一个工程师的团队在完成同样类似的任务，那么通常你可以让不同的人来完成不同的模块。我可以假设文字检测这个模块需要大概1到5个人、字符分割部分需要另外1到5个人、字母识别部分还需要另外1到5个人：</p>
-<p><img src="/img/17_06_04/007.png"></p>
+<p><img src="/img/17_06_04/007.png" alt=""></p>
 <p>因此使用流水线的方式通常提供了一个很好的办法来将整个工作分给不同的组员去完成。（当然所有这些工作都可以由一个人来完成，如果你希望这样做的话。）</p>
 <p>在复杂的机器学习系统中，流水线的概念已经渗透到各种应用中。你刚才看到的只是一种照片OCR流水线的运作过程。在接下来的几段视频中，我还将继续向你介绍更多的一些关于流水线的内容。我们还将使用这个例子来展示机器学习中其他一些非常重要的概念。</p>
 <h2 id="滑动窗体"><a href="#滑动窗体" class="headerlink" title="滑动窗体"></a>滑动窗体</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/bQhq3/sliding-windows">视频地址</a></p>
@@ -209,17 +342,17 @@
 <p>在上一节我们谈到了照片OCR流水线以及其工作原理。我们讲到可以照一张照片然后将其通过一系列机器学习组件来尝试读出图片中的文字信息。</p>
 <p>在本节，我想再多介绍一些照片OCR流水线中的组件是如何工作的。</p>
 </blockquote>
-<p>本节我们介绍一下<strong>滑动窗体(sliding windows)**的分类器。在照片OCR中，我们可以使用</strong>滑动窗体(sliding windows)**分类器来识别图片中的文字。</p>
+<p>本节我们介绍一下<strong>滑动窗体(sliding windows)</strong>的分类器。在照片OCR中，我们可以使用<strong>滑动窗体(sliding windows)</strong>分类器来识别图片中的文字。</p>
 <h3 id="滑动窗体步骤"><a href="#滑动窗体步骤" class="headerlink" title="滑动窗体步骤"></a>滑动窗体步骤</h3><ul>
 <li>1.文字检测</li>
 </ul>
-<p>滑动窗的第一个步骤是**文字检测(text detection)**。</p>
+<p>滑动窗的第一个步骤是<strong>文字检测(text detection)</strong>。</p>
 <p>对于OCR问题，我们想要达到下面这种从图片中识别文字的功能：</p>
-<p><img src="/img/17_06_04/008.gif"></p>
+<p><img src="/img/17_06_04/008.gif" alt=""></p>
 <p>文字识别是计算机视觉中的一个非同寻常的问题，因为取决于你想要找到的文字的长度。这些长方形区域会呈现不同的宽高比。</p>
 <h4 id="例子：行人检测问题"><a href="#例子：行人检测问题" class="headerlink" title="例子：行人检测问题"></a>例子：行人检测问题</h4><p>为了更好地介绍图像检测，我们从一个简单一点的行人探测的例子开始。</p>
 <p>假设我们想要实现一个从图中识别出行人的应用：</p>
-<p><img src="/img/17_06_04/009.gif"></p>
+<p><img src="/img/17_06_04/009.gif" alt=""></p>
 <p>这个问题似乎比文字检测的问题更简单，因为大部分的行人都比较相似。因此可以使用一个固定宽高比的矩形（就是上图中的红色矩形）来分离出你希望找到的行人。但在文字检测中，文字区域的宽高比就无法固定了。</p>
 <p>虽然在行人检测的问题中，行人可能会与相机处于不同的距离位置，因此这些矩形的高度也取决于他们离相机的距离远近，但这个矩形的宽高比应该是一样的。</p>
 <p>为了建立一个行人检测系统，以下是具体步骤：</p>
@@ -231,18 +364,22 @@
 <p>  接下来我们要做的就是到街上去收集一大堆正负训练样本。</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">正样本$(y=1)$</th>
-<th align="center">负样本$(y=0)$</th>
+<th style="text-align:center">正样本$(y=1)$</th>
+<th style="text-align:center">负样本$(y=0)$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><img src="/img/17_06_04/010.png"></td>
-<td align="center"><img src="/img/17_06_04/011.png"></td>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_06_04/010.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_06_04/011.png" alt=""></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <blockquote>
 <p>在典型的行人识别应用中，我们可以有1000个到10000个训练样本不等，甚至更多。</p>
 </blockquote>
@@ -254,92 +391,87 @@
 </ul>
 <hr>
 <p>现在假如我们获得一张新的测试样本图像：</p>
- <img src="/img/17_06_04/012.png" width = "500" height = "500" align=center />
-
+<p> <img src="/img/17_06_04/012.png" width = "500" height = "500" align=center /></p>
 <p>我们如果想要从这张图中找到行人，首先要做的是对这个图像取一小块长方形（$82×36$）：</p>
- <img src="/img/17_06_04/013.png" width = "500" height = "500" align=center />
-
+<p> <img src="/img/17_06_04/013.png" width = "500" height = "500" align=center /></p>
 <p>我们将这个图像块通过我们训练得到的分类器来确定这个图像块中是不是有行人。</p>
 <p>然后我们把这个绿色的长方形图片滑动一点点：</p>
- <img src="/img/17_06_04/014.png" width = "500" height = "500" align=center />
-
+<p> <img src="/img/17_06_04/014.png" width = "500" height = "500" align=center /></p>
 <p>得到一个新的图像块，并同样把它传入我们的分类器 看看这里面有没有行人。</p>
 <p>完成这一步之后，我们再向右滑动一点窗口，同样地把图像块传入分类器。</p>
-<p>你每次滑动窗口的大小是一个参数，通常被称为<strong>步长(step size)**，有时也称为</strong>步幅参数(stride parameter)**。步长为1代表每次移动一个像素，这样通常表现得最好但可能计算量比较大，因此通常使用4个像素、或者8个像素、或者更多像素作为步长值。</p>
+<p>你每次滑动窗口的大小是一个参数，通常被称为<strong>步长(step size)</strong>，有时也称为<strong>步幅参数(stride parameter)</strong>。步长为1代表每次移动一个像素，这样通常表现得最好但可能计算量比较大，因此通常使用4个像素、或者8个像素、或者更多像素作为步长值。</p>
 <p>通过固定步长，你的窗体去逐步扫描完整个图，并在每一步扫描过程中，将窗体扫描到的图片代入之前训练的行人识别的分类器中，直到窗体滑过图片中所有不同的位置：</p>
-<p><img src="/img/17_06_04/015.gif"></p>
+<p><img src="/img/17_06_04/015.gif" alt=""></p>
 <p>但这个矩形是非常小的，只能探测到某种尺寸的行人。接下来我们要做的是看看更大的图像块。因此我们用更大矩形来滑过图片，传入分类器运行：</p>
-<p><img src="/img/17_06_04/016.gif"></p>
+<p><img src="/img/17_06_04/016.gif" alt=""></p>
 <blockquote>
-<p>顺便说一下，**”用更大一些的图像块”**的意思是当你用这样的图像块时，我们需要将扫描得到的图片重新压缩到分类器可以识别的尺寸($82×36$像素)。</p>
+<p>顺便说一下，<strong>“用更大一些的图像块”</strong>的意思是当你用这样的图像块时，我们需要将扫描得到的图片重新压缩到分类器可以识别的尺寸($82×36$像素)。</p>
 </blockquote>
 <p>以此类推，接下来你可以用一个更大的矩形，以同样的方式滑动窗口。直到完成最后的扫描过程之后，你的算法应该就能检测出图像中是否出现行人了。</p>
 <p>因此整个步骤就是：训练一个分类器，然后用一个滑动窗分类器来找出图像中出现的行人。</p>
 <hr>
 <h4 id="OCR文字检测"><a href="#OCR文字检测" class="headerlink" title="OCR文字检测"></a>OCR文字检测</h4><p>接下来我们转向文字识别的例子，对于照片OCR流水线中，要检测出文字需要的步骤如下：</p>
 <h5 id="训练分类器"><a href="#训练分类器" class="headerlink" title="训练分类器"></a>训练分类器</h5><p>跟行人检测类似你也可以先收集一些带标签的训练集：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">正样本：出现文字的区域$(y=1)$</th>
-<th align="center">负样本：没有出现文字的区域$(y=0)$</th>
+<th style="text-align:center">正样本：出现文字的区域$(y=1)$</th>
+<th style="text-align:center">负样本：没有出现文字的区域$(y=0)$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><img src="/img/17_06_04/017.png"></td>
-<td align="center"><img src="/img/17_06_04/018.png"></td>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_06_04/017.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_06_04/018.png" alt=""></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>通过使用这些训练集来训练识别文字的分类器。</p>
 <h5 id="滑动窗体，识别文字区域"><a href="#滑动窗体，识别文字区域" class="headerlink" title="滑动窗体，识别文字区域"></a>滑动窗体，识别文字区域</h5><p>训练完了以后，我们就可以把它应用到测试集图片中了。我们以这幅图片为例：</p>
-<img src="/img/17_06_04/001.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/001.png" width = "500" height = "500" align=center /></p>
 <p>这里我们用一个固定的比例的矩形作为窗体来运行滑动窗体。如果我这样做的话，最终得到的结果是这样的：</p>
-<img src="/img/17_06_04/019.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/019.png" width = "500" height = "500" align=center /></p>
 <p>白色区域代表找到了文字的区域，黑色区域代表没有找到文字。不同的灰度表示分类器给出的输出结果的概率值，所以比如有些灰色的阴影表示分类器在这片区域似乎发现了文字，但并不十分确信；而比较白亮的区域则表示分类器预测这个区域有文字 的概率比较大。</p>
-<h5 id="代入“展开器”-expansion-operator"><a href="#代入“展开器”-expansion-operator" class="headerlink" title="代入“展开器”(expansion operator)"></a>代入“展开器”(expansion operator)</h5><p>现在我们还没完成文字检测呢，因为我们实际上想做的是在图像中有文字的各区域都画上矩形窗，所以我们还需要完成一步。我们取出分类器的输出，然后输入到一个被称为**”展开器”(expansion operator)**的东西。</p>
+<h5 id="代入“展开器”-expansion-operator"><a href="#代入“展开器”-expansion-operator" class="headerlink" title="代入“展开器”(expansion operator)"></a>代入“展开器”(expansion operator)</h5><p>现在我们还没完成文字检测呢，因为我们实际上想做的是在图像中有文字的各区域都画上矩形窗，所以我们还需要完成一步。我们取出分类器的输出，然后输入到一个被称为<strong>“展开器”(expansion operator)</strong>的东西。</p>
 <p>展开器的作用就是取过这张图片，对每一个白色的小点都扩展为一块白色的区域。</p>
-<img src="/img/17_06_04/020.png" width = "800" height = "500" align=center />
-
+<p><img src="/img/17_06_04/020.png" width = "800" height = "500" align=center /></p>
 <p>从数学上来讲，对于每一个像素，我们都考察一下它是不是在左边这幅图中的某个白色像素的范围之内。比如说，某一个像素点在最左边那幅图中白色像素点的五或十个像素范围中，那么我们将把右边那幅图的相同像素设为白色。</p>
 <p>这样做的效果就是，我们把左边图中的所有的白色小点都扩展了一下，让它们都变大了一些。现在我们可以根据右边的这张图锁定那些连接部分（也就是这些连续的白色区域）然后围绕着它们画个框就行了。</p>
 <p>具体来讲，如果我们分析这些白色区域，我们可以简单地凭直觉来判断哪些区域是比较奇怪的，因为我们知道有文字的区域应该不是很高的，而是比较宽的。所以我们忽略那些又高又瘦的白块，这两个：</p>
-<img src="/img/17_06_04/021.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/021.png" width = "500" height = "500" align=center /></p>
 <p>然后对剩下的那些，从比例上来看比较像正常的文字区域的白块画上矩形窗：</p>
-<img src="/img/17_06_04/022.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/022.png" width = "500" height = "500" align=center /></p>
 <p>这个例子中漏掉了一些字，因为这些字的宽高比看起来不正常，以及写在玻璃上的文字比较难读出来，但整体来讲，检测效果还不错。</p>
 <p>这就是使用滑动窗来进行文字检测。</p>
 <p>找到这些有文字的长方形以后，我们现在就能够剪下这些图像区域，然后应用流水线的后面步骤对文字进行识别。</p>
 <h5 id="字符分割"><a href="#字符分割" class="headerlink" title="字符分割"></a>字符分割</h5><p>如果你还记得的话，你应该知道流水线的第二步是字符分割。所以给出下面这样的图像我们应该怎样分割出图像中的单个字符呢？</p>
-<img src="/img/17_06_04/023.png" width = "500" height = "200" align=center />
-
+<p><img src="/img/17_06_04/023.png" width = "500" height = "200" align=center /></p>
 <p>同样地，我们还是使用一种监督学习算法，用一些是否存在<strong>字符之间的分割区域</strong>的正样本和一些负样本来训练一个分类器。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">正样本：存在字符间分各区域$(y=1)$</th>
-<th align="center">负样本：不存在字符间分割区域$(y=0)$</th>
+<th style="text-align:center">正样本：存在字符间分各区域$(y=1)$</th>
+<th style="text-align:center">负样本：不存在字符间分割区域$(y=0)$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><img src="/img/17_06_04/024.png" width = "300" height = "200" align=center /></td>
-<td align="center"><img src="/img/17_06_04/025.png" width = "300" height = "200" align=center /></td>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_06_04/024.png" width = "300" height = "200" align=center /></td>
+<td style="text-align:center"><img src="/img/17_06_04/025.png" width = "300" height = "200" align=center /></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>因此我们要做的就是使用神经网络或者其他的学习算法来训练一个分类器，试着对这些正负样本进行分类。训练好这个分类器以后，我们就要把这个分类器应用到我们文字中。</p>
 <p>使用同样的<strong>窗体滑动</strong>方式（只不过使用的分类器不同），扫描文字检测系统输出的文字区域图像：</p>
-<img src="/img/17_06_04/026.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_06_04/026.png" width = "300" height = "200" align=center /></p>
 <p>分类器告诉我们$y=1$时，就意味着我们需要在中间画一条线，分开两个字符，否则就跳过。如果正常的话，分类器会告诉我们应该在什么地方来将图像分割为独立的字符。</p>
-<img src="/img/17_06_04/027.png" width = "300" height = "200" align=center />
-
-<img src="/img/17_06_04/028.png" width = "300" height = "200" align=center />
-
-<img src="/img/17_06_04/029.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_06_04/027.png" width = "300" height = "200" align=center /></p>
+<p><img src="/img/17_06_04/028.png" width = "300" height = "200" align=center /></p>
+<p><img src="/img/17_06_04/029.png" width = "300" height = "200" align=center /></p>
 <h2 id="获取大量数据和人工数据"><a href="#获取大量数据和人工数据" class="headerlink" title="获取大量数据和人工数据"></a>获取大量数据和人工数据</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/K0XQT/getting-lots-of-data-and-artificial-data">视频地址</a></p>
 <blockquote>
 <p>想要获得一个高效的机器学习系统，我们通常需要在低偏差的算法中代入大量的训练数据。但是我们如何获取大量的训练数据呢？</p>
@@ -353,18 +485,15 @@
 <p>这节课中我们将对这两种方法进行介绍。</p>
 <h3 id="创造新样本"><a href="#创造新样本" class="headerlink" title="创造新样本"></a>创造新样本</h3><p>为了介绍人工数据合成的概念，让我们还是用之前用过的照片OCR流水线中的字母识别问题来举例。 </p>
 <p>假如我们可以在别处收集到一大堆标签数据：</p>
-<img src="/img/17_06_04/030.png" width = "300" height = "300" align=center />
-
+<p><img src="/img/17_06_04/030.png" width = "300" height = "300" align=center /></p>
 <p>我们的目标就是对任意一个图像块，我们能够识别出图像中心的那个字符。</p>
 <p>同时，为了方便，我把这些图像都视为灰度图像而不是彩色图像（实际上用彩色的图像对这个问题的解决也起不了多大作用）。</p>
 <p>我们有了这些原始数据，那么我们怎样才能获得一个更大的训练集呢？</p>
 <p>众所周知，现代计算机中通常都有一个很大的字体库，我们也可以下载到很多免费的字体样式：</p>
-<img src="/img/17_06_04/031.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_06_04/031.png" width = "300" height = "200" align=center /></p>
 <p>所以如果你想要获得更多的训练样本，其中一种方法是你可以采集同一个字符的不同种字体，然后将这些字符加上不同的随机背景来创造训练样本。</p>
 <p>通过这样的操作之后，你可以得到这样一个合成之后的训练集：</p>
-<img src="/img/17_06_04/032.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_06_04/032.png" width = "300" height = "200" align=center /></p>
 <blockquote>
 <p>在生成模拟数据的时候，需要考虑对模拟的样本进行模糊、变形、旋转等操作，因为这样创造出来的样本比较真实。如果你草率的生成一些样本，那么最终训练出来的算法可能效果不是很好。</p>
 </blockquote>
@@ -372,22 +501,18 @@
 <h3 id="通过已有的样本创造新样本"><a href="#通过已有的样本创造新样本" class="headerlink" title="通过已有的样本创造新样本"></a>通过已有的样本创造新样本</h3><p>人工数据合成的第二种方法是使用你已经有的样本。</p>
 <p>我们选取一个真实的样本，然后通过添加别的数据来扩大你的训练集。</p>
 <p>比如下图中字母A，来自于一个真实的图像（不是一个合成的图像）：</p>
-<img src="/img/17_06_04/033.png" width = "100" height = "100" align=center />
-
+<p><img src="/img/17_06_04/033.png" width = "100" height = "100" align=center /></p>
 <p>为了方便描述，我在图像上加了一些灰色的网格。实际上是没有这些格子的。你要做的就是取出这个图像，进行人工扭曲，或者人工变形：</p>
-<img src="/img/17_06_04/034.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/034.png" width = "500" height = "500" align=center /></p>
 <p>这样从一个图像A就能生成16种新的样本。</p>
 <p>所以用这种方法，你可以把一个很小的带标签训练集突然一下扩大，得到更多的训练样本。</p>
 <p>同样地，要把这个概念投入应用，还是需要仔细考虑的。比如要考虑什么样的变形是合理的。</p>
 <h4 id="引入形变方法的注意事项"><a href="#引入形变方法的注意事项" class="headerlink" title="引入形变方法的注意事项"></a>引入形变方法的注意事项</h4><p>如果你想要通过对原始数据形变产生新数据，那么在选择要引入的干扰或变形要能代表你可能会在 测试集中看到的噪音源或干扰项。</p>
 <p>比如对于字符识别这个例子，这种扭曲的方法事实上还是很合理的：</p>
-<img src="/img/17_06_04/035.png" width = "500" height = "300" align=center />
-
+<p><img src="/img/17_06_04/035.png" width = "500" height = "300" align=center /></p>
 <p>因为这种程度的扭曲，在测试集中是会遇到的。</p>
 <p>相对而言，为你的数据添加一些纯随机的噪声，通常来讲是没什么用的。我不确定你从这里能否看出下图中对样本的变形：</p>
-<img src="/img/17_06_04/036.png" width = "500" height = "300" align=center />
-
+<p><img src="/img/17_06_04/036.png" width = "500" height = "300" align=center /></p>
 <p>这里我们队这四幅图像中每一个图像的每一个像素都加了一些随机高斯噪声。这其实是完全没有意义的。除非你觉得在你的测试集中会遇到这些像素的噪声，否则的话这些随机的噪声是无意义的，起不到多大作用。</p>
 <hr>
 <p>人工数据合成的过程并没有什么技巧可言，有时候你只能一遍遍地尝试，然后观察效果。</p>
@@ -399,7 +524,7 @@
 <h4 id="尝试和你的团队沟通，头脑风暴"><a href="#尝试和你的团队沟通，头脑风暴" class="headerlink" title="尝试和你的团队沟通，头脑风暴"></a>尝试和你的团队沟通，头脑风暴</h4><p>第二，当我在解决机器学习问题时，通常我会问我的团队或者我的学生：“我们要付出多少工作量来获得10倍于我们现有的数据量？”</p>
 <p>但让我经常感到有一点吃惊的是，他们的回答都是：“这并不是什么难事，最多花上几天时间，我们就能给一个机器学习问题获得十倍于我们现有数据量的数据。”而且通常来说，如果你能得到10倍的数据量，那么你一般都能让你的学习算法表现更好。</p>
 <p>因此，如果你加入某个产品设计小组，要设计某个机器学习的应用产品，可以问问你的团队这个问题。说不定几分钟的头脑风暴以后，你的团队就会想出一种方法，真的一下子能获得10倍的数据量。</p>
-<h4 id="“众包”-crowd-sourcing-–人工标记样本"><a href="#“众包”-crowd-sourcing-–人工标记样本" class="headerlink" title="“众包” (crowd sourcing)–人工标记样本"></a>“众包” (crowd sourcing)–人工标记样本</h4><p>另一种很好的办法，我们称之为**”众包” (crowd sourcing)**的办法。</p>
+<h4 id="“众包”-crowd-sourcing-—人工标记样本"><a href="#“众包”-crowd-sourcing-—人工标记样本" class="headerlink" title="“众包” (crowd sourcing)—人工标记样本"></a>“众包” (crowd sourcing)—人工标记样本</h4><p>另一种很好的办法，我们称之为<strong>“众包” (crowd sourcing)</strong>的办法。</p>
 <p>现在已经有一些网站，或者一些服务机构能让你通过网络雇一些人替你完成标记大量训练数据的工作。通常都很廉价。</p>
 <p>很明显这种方法，就像学术文献一样，它也是很复杂的，同时取决于标记人的可靠性。</p>
 <p>可能<strong>“亚马逊土耳其机器人”（Amazon Mechanical Turk）</strong>就是当前最流行的一个众包选择。</p>
@@ -408,158 +533,171 @@
 <p>在前面的课程中，我不止一次地说过<strong>在你开发机器学习系统时，你最宝贵的资源就是你的时间</strong>。</p>
 <p>作为一个开发者，你需要正确选择下一步的工作。或者也许你有一个开发团队共同开发一个机器学习系统，同样最宝贵的还是开发系统所花费的时间。</p>
 <p>你需要尽量避免的你和你的团队花费了大量时间 在某一个模块上，在几周甚至几个月的努力以后才意识到所有这些付出的劳动，都对你最终系统的表现并没有太大的帮助。</p>
-<p>在这本节，我将介绍一下关于**上限分析(ceiling analysis)**的内容。这种方式通常能提供一种很有价值的信号，告诉你流水线中的哪个部分最值得你花时间。</p>
+<p>在这本节，我将介绍一下关于<strong>上限分析(ceiling analysis)</strong>的内容。这种方式通常能提供一种很有价值的信号，告诉你流水线中的哪个部分最值得你花时间。</p>
 </blockquote>
 <h3 id="上限分析主要思想"><a href="#上限分析主要思想" class="headerlink" title="上限分析主要思想"></a>上限分析主要思想</h3><p>依然以<strong>照片OCR流水线</strong>为例：</p>
-<img src="/img/17_06_04/006.png" width = "500" height = "300" align=center />
-
+<p><img src="/img/17_06_04/006.png" width = "500" height = "300" align=center /></p>
 <p>当我们面对这样一个流水线时，你应该怎样分配资源呢？哪一个方框最值得你投入精力，投入时间去改善效果呢？</p>
 <p>为了回答这个问题，我们可以对学习系统使用一个<strong>数值评价量度</strong>。</p>
 <p>假如我们用字符准确度作为这个量度，给定一个 测试样本图像，这个数值就表示我们对测试图像中的文字识别正确的比例。</p>
 <p>我们假设整个系统的估计准确率为72%（对测试集上的图像分别运行流水线上的每一个模块操作之后，整个测试集的准确率是72%）：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">模块</th>
-<th align="center">准确率</th>
+<th style="text-align:center">模块</th>
+<th style="text-align:center">准确率</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">整个系统</td>
-<td align="center">72%</td>
+<tbody>
+<tr>
+<td style="text-align:center">整个系统</td>
+<td style="text-align:center">72%</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>下面是<strong>上限分析</strong>的主要思想：</p>
 <p>首先，我们要模拟在<strong>文字检测</strong>准确率100%的情况下，得出当前系统的准确率。（我们可以通过人工的方式找出这种样本）</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">模块</th>
-<th align="center">准确率</th>
+<th style="text-align:center">模块</th>
+<th style="text-align:center">准确率</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">整个系统</td>
-<td align="center">72%</td>
+<tbody>
+<tr>
+<td style="text-align:center">整个系统</td>
+<td style="text-align:center">72%</td>
 </tr>
 <tr>
-<td align="center"><strong>文字检测</strong></td>
-<td align="center"><strong>89%</strong></td>
+<td style="text-align:center"><strong>文字检测</strong></td>
+<td style="text-align:center"><strong>89%</strong></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>然后以同样的方式，得出在<strong>文字检测</strong>，以及<strong>字符切分</strong>准确率100%的情况下，当前系统的准确率。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">模块</th>
-<th align="center">准确率</th>
+<th style="text-align:center">模块</th>
+<th style="text-align:center">准确率</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">整个系统</td>
-<td align="center">72%</td>
+<tbody>
+<tr>
+<td style="text-align:center">整个系统</td>
+<td style="text-align:center">72%</td>
 </tr>
 <tr>
-<td align="center">文字检测</td>
-<td align="center">89%</td>
+<td style="text-align:center">文字检测</td>
+<td style="text-align:center">89%</td>
 </tr>
 <tr>
-<td align="center"><strong>字符切分</strong></td>
-<td align="center"><strong>90%</strong></td>
+<td style="text-align:center"><strong>字符切分</strong></td>
+<td style="text-align:center"><strong>90%</strong></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>最后，我们也要写出在<strong>文字检测</strong>、<strong>字符切分</strong>以及<strong>字符识别</strong>准确率100%的情况下，当前系统的准确率（当然是100%）。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">模块</th>
-<th align="center">准确率</th>
+<th style="text-align:center">模块</th>
+<th style="text-align:center">准确率</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">整个系统</td>
-<td align="center">72%</td>
+<tbody>
+<tr>
+<td style="text-align:center">整个系统</td>
+<td style="text-align:center">72%</td>
 </tr>
 <tr>
-<td align="center">文字检测</td>
-<td align="center">89%</td>
+<td style="text-align:center">文字检测</td>
+<td style="text-align:center">89%</td>
 </tr>
 <tr>
-<td align="center">字符切分</td>
-<td align="center">90%</td>
+<td style="text-align:center">字符切分</td>
+<td style="text-align:center">90%</td>
 </tr>
 <tr>
-<td align="center"><strong>字符识别</strong></td>
-<td align="center"><strong>100%</strong></td>
+<td style="text-align:center"><strong>字符识别</strong></td>
+<td style="text-align:center"><strong>100%</strong></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>有了这些数据，我们就知道了每一个模块进行改善它们各自的上升空间是多大。</p>
 <p>我们可以看到，如果我们拥有完美的文字检测模块，那么整个系统的表现将会从准确率72%上升到89%，因此效果的增益是17%。这就意味着，如果你在现有系统的基础上花费时间和精力改善文字检测模块的效果，那么系统的表现可能会提高17%。</p>
 <p>而相对来讲，如果我们取得完美的字符分割模块，那么最终系统表现只提升了1%。这给我们提供了一个很重要的信息，那就是不管我们投入多大精力在字符分割上，系统效果的潜在上升空间也都是很小很小。所以你就不会让一个比较大的工程师团队花时间忙于字符分割模块，因为通过上限分析我们知道了即使你把字符分割模块做得再好，再怎么完美，你的系统表现最多也只能提升1%。</p>
 <p>最后，如果我们取得完美的字符识别模块，那么整个系统的表现将提高10%。所以，同样你也可以分析10%的效果提升值得投入多少工作量。</p>
 <h3 id="上限分析的原理"><a href="#上限分析的原理" class="headerlink" title="上限分析的原理"></a>上限分析的原理</h3><p>下面我换一个复杂一点的例子再来演绎一下上限分析的原理。</p>
 <p>假如说你想对这张图像进行人脸识别：</p>
-<img src="/img/17_06_04/037.png" width = "300" height = "500" align=center />
-
+<p><img src="/img/17_06_04/037.png" width = "300" height = "500" align=center /></p>
 <blockquote>
 <p>这是一个偏人工智能的例子，当然这并不是现实中的人脸识别技术，但我想通过这个例子来向你展示一个流水线，并且给你另一个关于上限分析的实例。</p>
 </blockquote>
 <p>假设我们有如下流水线：</p>
-<img src="/img/17_06_04/038.png" width = "500" height = "500" align=center />
-
+<p><img src="/img/17_06_04/038.png" width = "500" height = "500" align=center /></p>
 <p>其中具体步骤对应的操作如下：</p>
 <p><strong>预处理（移除背景图）:</strong></p>
-<p><img src="/img/17_06_04/039.gif"></p>
+<p><img src="/img/17_06_04/039.gif" alt=""></p>
 <p><strong>检测人脸:</strong></p>
-<img src="/img/17_06_04/040.png" width = "300" height = "500" align=center />
-
+<p><img src="/img/17_06_04/040.png" width = "300" height = "500" align=center /></p>
 <p><strong>眼睛分割:</strong></p>
-<img src="/img/17_06_04/041.png" width = "300" height = "500" align=center />
-
+<p><img src="/img/17_06_04/041.png" width = "300" height = "500" align=center /></p>
 <p><strong>鼻子分割:</strong></p>
-<img src="/img/17_06_04/042.png" width = "300" height = "500" align=center />
-
+<p><img src="/img/17_06_04/042.png" width = "300" height = "500" align=center /></p>
 <p><strong>嘴分割:</strong></p>
-<img src="/img/17_06_04/043.png" width = "300" height = "500" align=center />
-
+<p><img src="/img/17_06_04/043.png" width = "300" height = "500" align=center /></p>
 <p>那么对这个流水线怎么进行上限分析呢？</p>
 <p>我们同样需要每次关注一个步骤，来计算整体的准确率：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">模块</th>
-<th align="center">准确率</th>
+<th style="text-align:center">模块</th>
+<th style="text-align:center">准确率</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">整个系统</td>
-<td align="center">85%</td>
+<tbody>
+<tr>
+<td style="text-align:center">整个系统</td>
+<td style="text-align:center">85%</td>
 </tr>
 <tr>
-<td align="center">预处理（移除背景图）</td>
-<td align="center">85.1%</td>
+<td style="text-align:center">预处理（移除背景图）</td>
+<td style="text-align:center">85.1%</td>
 </tr>
 <tr>
-<td align="center">检测人脸</td>
-<td align="center">91%</td>
+<td style="text-align:center">检测人脸</td>
+<td style="text-align:center">91%</td>
 </tr>
 <tr>
-<td align="center">眼睛分割</td>
-<td align="center">95%</td>
+<td style="text-align:center">眼睛分割</td>
+<td style="text-align:center">95%</td>
 </tr>
 <tr>
-<td align="center">鼻子分割</td>
-<td align="center">96%</td>
+<td style="text-align:center">鼻子分割</td>
+<td style="text-align:center">96%</td>
 </tr>
 <tr>
-<td align="center">嘴分割</td>
-<td align="center">97%</td>
+<td style="text-align:center">嘴分割</td>
+<td style="text-align:center">97%</td>
 </tr>
 <tr>
-<td align="center">逻辑回归</td>
-<td align="center">100%</td>
+<td style="text-align:center">逻辑回归</td>
+<td style="text-align:center">100%</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>从数据中，我们可以很明显的看出来，预处理阶，准确率提高了0.1%。这是个很明显的信号，它告诉我们即便把背景分割做得很好，但整个系统的表现也并不会提高多少。所以似乎并不值得花太多精力在预处理或者背景移除上。</p>
 <p>在每次通过这个系统的时候，随着使用有正确标签的测试集的模块越来越多，整个系统的表现逐步上升，这样你就能很清楚地看到通过不同的步骤，系统的表现增加了多少（比如有了完美的脸部识别，整个系统的表现似乎提高了5.9%，这告诉你也许在脸部检测上多做点努力是有意义的）。</p>
 <p>因此，通过<strong>上限分析</strong>，很清楚地指出了哪一个模块是最值得花精力去完善的。</p>
@@ -571,157 +709,285 @@
 <h3 id="一些建议"><a href="#一些建议" class="headerlink" title="一些建议"></a>一些建议</h3><p>经过这么多年在机器学习中的摸爬滚打，我已经学会了<strong>不要凭自己的直觉来判断应该改进哪个模块</strong>，相反地如果要解决某个机器学习问题，最好能把问题分成多个模块，然后做一下上限分析。</p>
 <p>这通常它可以告诉你一个更可靠的，关于该把劲儿往哪儿使的方法。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/" data-id="ckkwc438x00ahpas9059k1q3a" data-title="斯坦福机器学习课程 第十一周 (1)照片OCR" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" rel="prev" title="斯坦福机器学习课程 第十周 (2)高级主题">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第十周 (2)高级主题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" rel="next" title="斯坦福机器学习课程汇总">
+      斯坦福机器学习课程汇总 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%E5%92%8C%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%88Pipeline%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">问题描述和流水线（Pipeline）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OCR%E7%9A%84%E5%A4%A7%E6%A6%82%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.</span> <span class="nav-text">OCR的大概步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%88machine-learning-pipeline%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">机器学习流水线（machine learning pipeline）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E4%BD%93"><span class="nav-number">2.</span> <span class="nav-text">滑动窗体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.1.</span> <span class="nav-text">滑动窗体步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E8%A1%8C%E4%BA%BA%E6%A3%80%E6%B5%8B%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.1.</span> <span class="nav-text">例子：行人检测问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OCR%E6%96%87%E5%AD%97%E6%A3%80%E6%B5%8B"><span class="nav-number">2.1.2.</span> <span class="nav-text">OCR文字检测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">训练分类器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E4%BD%93%EF%BC%8C%E8%AF%86%E5%88%AB%E6%96%87%E5%AD%97%E5%8C%BA%E5%9F%9F"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">滑动窗体，识别文字区域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E5%85%A5%E2%80%9C%E5%B1%95%E5%BC%80%E5%99%A8%E2%80%9D-expansion-operator"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">代入“展开器”(expansion operator)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E5%88%86%E5%89%B2"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">字符分割</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%92%8C%E4%BA%BA%E5%B7%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">3.</span> <span class="nav-text">获取大量数据和人工数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E9%80%A0%E6%96%B0%E6%A0%B7%E6%9C%AC"><span class="nav-number">3.1.</span> <span class="nav-text">创造新样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%B7%B2%E6%9C%89%E7%9A%84%E6%A0%B7%E6%9C%AC%E5%88%9B%E9%80%A0%E6%96%B0%E6%A0%B7%E6%9C%AC"><span class="nav-number">3.2.</span> <span class="nav-text">通过已有的样本创造新样本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E5%BD%A2%E5%8F%98%E6%96%B9%E6%B3%95%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.2.1.</span> <span class="nav-text">引入形变方法的注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E8%8E%B7%E5%8F%96%E6%9B%B4%E5%A4%9A%E6%95%B0%E6%8D%AE%E4%B9%8B%E5%89%8D%EF%BC%8C%E5%85%88%E4%BC%98%E5%8C%96%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">3.3.1.</span> <span class="nav-text">尝试获取更多数据之前，先优化好你的分类器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95%E5%92%8C%E4%BD%A0%E7%9A%84%E5%9B%A2%E9%98%9F%E6%B2%9F%E9%80%9A%EF%BC%8C%E5%A4%B4%E8%84%91%E9%A3%8E%E6%9A%B4"><span class="nav-number">3.3.2.</span> <span class="nav-text">尝试和你的团队沟通，头脑风暴</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%9C%E4%BC%97%E5%8C%85%E2%80%9D-crowd-sourcing-%E2%80%94%E4%BA%BA%E5%B7%A5%E6%A0%87%E8%AE%B0%E6%A0%B7%E6%9C%AC"><span class="nav-number">3.3.3.</span> <span class="nav-text">“众包” (crowd sourcing)—人工标记样本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E9%99%90%E5%88%86%E6%9E%90%EF%BC%9A%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8A%E7%9A%84%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%B7%A5%E4%BD%9C%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">4.</span> <span class="nav-text">上限分析：流水线上的下一步工作是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E9%99%90%E5%88%86%E6%9E%90%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">4.1.</span> <span class="nav-text">上限分析主要思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E9%99%90%E5%88%86%E6%9E%90%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">上限分析的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.3.</span> <span class="nav-text">一些建议</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程汇总
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/06/03/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E5%91%A8%20(2)%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第十周 (2)高级主题</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '974bbf225fb5262d17911879c3fb589d',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

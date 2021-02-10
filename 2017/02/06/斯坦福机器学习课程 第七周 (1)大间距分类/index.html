@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第七周 (1)大间距分类 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="优化目标视频地址  到目前为止，你已经见过一系列不同的学习算法。在监督学习中许多学习算法的性能都非常类似，因此重要的不是你该选择使用学习算法A还是学习算法B，而更重要的是应用这些算法时所创建的大量数据。 在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为**支持向量">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="优化目标视频地址  到目前为止，你已经见过一系列不同的学习算法。在监督学习中许多学习算法的性能都非常类似，因此重要的不是你该选择使用学习算法A还是学习算法B，而更重要的是应用这些算法时所创建的大量数据。 在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为支持向量机(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第七周 (1)大间距分类">
 <meta property="og:url" content="http://example.com/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="优化目标视频地址  到目前为止，你已经见过一系列不同的学习算法。在监督学习中许多学习算法的性能都非常类似，因此重要的不是你该选择使用学习算法A还是学习算法B，而更重要的是应用这些算法时所创建的大量数据。 在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为**支持向量">
+<meta property="og:site_name" content="圣巢">
+<meta property="og:description" content="优化目标视频地址  到目前为止，你已经见过一系列不同的学习算法。在监督学习中许多学习算法的性能都非常类似，因此重要的不是你该选择使用学习算法A还是学习算法B，而更重要的是应用这些算法时所创建的大量数据。 在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为支持向量机(">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_02_06/001.png">
 <meta property="og:image" content="http://example.com/img/17_02_06/002.png">
@@ -52,107 +66,228 @@
 <meta property="og:image" content="http://example.com/img/17_02_06/033.png">
 <meta property="og:image" content="http://example.com/img/17_02_06/034.png">
 <meta property="article:published_time" content="2017-02-06T00:42:58.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_02_06/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第七周 (1)大间距分类 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第七周 (1)大间距分类" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/" class="article-date">
-  <time class="dt-published" datetime="2017-02-06T00:42:58.000Z" itemprop="datePublished">2017-02-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第七周 (1)大间距分类
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第七周 (1)大间距分类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-02-06 00:42:58" itemprop="dateCreated datePublished" datetime="2017-02-06T00:42:58+00:00">2017-02-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/sHfVT/optimization-objective">视频地址</a></p>
 <blockquote>
 <p>到目前为止，你已经见过一系列不同的学习算法。在监督学习中许多学习算法的性能都非常类似，因此重要的不是你该选择使用学习算法A还是学习算法B，而更重要的是应用这些算法时所创建的大量数据。</p>
-<p>在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为**支持向量机(Support Vector Machine)**。</p>
+<p>在应用这些算法时，表现情况通常依赖于你的水平。比如你为学习算法所设计的 特征量的选择，以及如何选择正则化参数，诸如此类的事。还有一个更加强大的算法，广泛的应用于工业界和学术界，它被称为<strong>支持向量机(Support Vector Machine)</strong>。</p>
 <p>与逻辑回归和神经网络相比，<strong>支持向量机</strong>或者简称<strong>SVM</strong>在学习复杂的非线性方程时提供了一种更为清晰，更加强大的方式。</p>
 <p>因此，在接下来的视频中我会探讨这一算法，在稍后的课程中，我也会对监督学习算法进行简要的总结。当然，仅仅是作简要描述。但对于<strong>支持向量机</strong>，鉴于该算法的强大和受欢迎度，在本课中我会花许多时间来讲解它，它也是我们所介绍的最后一个监督学习算法。</p>
 </blockquote>
 <h3 id="支持向量机引入"><a href="#支持向量机引入" class="headerlink" title="支持向量机引入"></a>支持向量机引入</h3><p>为了描述<strong>支持向量机</strong>，我将会从逻辑回归开始，展示我们如何一点一点修改，来得到本质上的支持向量机。</p>
 <p>在逻辑回归中，我们已经熟悉了它的假设函数形式：</p>
-<p>$$<br>h_{\theta}(x)=\frac{1}{1+\mathrm{e}^{-\theta^{T}x}}<br>$$</p>
-<p>和S型激励函数：</p>
-<img src="/img/17_02_06/001.png" width = "300" height = "200" align=center />
-
+<script type="math/tex; mode=display">
+h\_{\theta}(x)=\frac{1}{1+\mathrm{e}^{-\theta^{T}x}}</script><p>和S型激励函数：</p>
+<p><img src="/img/17_02_06/001.png" width = "300" height = "200" align=center /></p>
 <p>现在让我们一起来考虑下，我们想要逻辑回归做什么？</p>
 <ul>
 <li><p>如果有一个样本为$y=1$，那么我们希望假设函数$h(x)≈1$，即$\theta^{T}&gt;&gt;0$。你不难发现，此时逻辑回归的输出将趋近于1。</p>
@@ -162,54 +297,49 @@
 </ul>
 <hr>
 <p>如果你进一步观察逻辑回归的代价函数，你会发现每个样本(x, y)都会为总代价函数增加这样的一项：</p>
-<p>$$<br>-(ylogh_{\theta}(x) + (1-y)log(1-h_{\theta}(x)))<br>= -ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})<br>$$</p>
-<p>在逻辑回归中，这里的这一项就是表示一个训练样本所对应的表达式。</p>
+<script type="math/tex; mode=display">
+-(ylogh\_{\theta}(x) + (1-y)log(1-h\_{\theta}(x))) 
+= -ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})</script><p>在逻辑回归中，这里的这一项就是表示一个训练样本所对应的表达式。</p>
 <p>现在一起来考虑<strong>y=1</strong>和<strong>y=0</strong>的两种情况：</p>
 <ul>
 <li><strong>y=1的情况下（即$\theta^{T}x&gt;&gt;0$）</strong>：</li>
 </ul>
 <p>对于</p>
-<p>$$<br>-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})<br>$$</p>
-<p>由于$(1-y)=0$，所以我们只需考虑前半部分：</p>
-<p>$$<br>-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}}<br>$$</p>
-<p>如果画出代价函数关于$z$的图，你会看到下图：</p>
-<img src="/img/17_02_06/002.png" width = "300" height = "200" align=center />
-
+<script type="math/tex; mode=display">
+-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})</script><p>由于$(1-y)=0$，所以我们只需考虑前半部分：</p>
+<script type="math/tex; mode=display">
+-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}}</script><p>如果画出代价函数关于$z$的图，你会看到下图：</p>
+<p><img src="/img/17_02_06/002.png" width = "300" height = "200" align=center /></p>
 <p>我们可以看到，当$z$增大时(即$\theta^{T}x$增大时)，$z$对应的值会变得非常小，对整个代价函数而言，影响也非常小。</p>
 <p>现在开始建立<strong>支持向量机</strong>，我们会从这个代价函数$-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}}$开始，一点点的修改：</p>
 <p>我们画出一个非常接近于逻辑回归函数的折线，这个折线经由$z=1$的一点的两条线段组成：</p>
-<img src="/img/17_02_06/003.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/003.png" width = "300" height = "200" align=center /></p>
 <p>到这里已经非常接近逻辑回归中使用的代价函数了，只是这里是由两条线段组成。先不要考虑线段的斜率，这并不重要，重要的是我们将在$y=1$的前提下使用新的代价函数。</p>
 <ul>
 <li><strong>y=0的情况下（即$\theta^{T}x&lt;&lt;0$）</strong>：</li>
 </ul>
 <p>对于</p>
-<p>$$<br>-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})<br>$$</p>
-<p>由于$y=0$，所以我们只需考虑后半部分：</p>
-<p>$$<br>(1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})<br>$$</p>
-<p>如果画出代价函数关于$z$的图，你会看到下图：</p>
-<img src="/img/17_02_06/004.png" width = "300" height = "200" align=center />
-
+<script type="math/tex; mode=display">
+-ylog\frac{1}{1+\mathrm{e}^{-\theta^{T}x}} - (1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})</script><p>由于$y=0$，所以我们只需考虑后半部分：</p>
+<script type="math/tex; mode=display">
+(1-y)log(1-\frac{1}{1+\mathrm{e}^{-\theta^{T}x}})</script><p>如果画出代价函数关于$z$的图，你会看到下图：</p>
+<p><img src="/img/17_02_06/004.png" width = "300" height = "200" align=center /></p>
 <p>用相似的方法，我们开始建立<strong>支持向量机</strong>：</p>
-<img src="/img/17_02_06/005.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/005.png" width = "300" height = "200" align=center /></p>
 <p>我们将在$y=0$的前提下使用新的代价函数。</p>
 <hr>
 <p>那么现在我们来给这两个方程命名：</p>
 <p>对于这个函数：</p>
-<img src="/img/17_02_06/003.png" width = "300" height = "200" align=center />
-
-<p>我们命名为**$cost_{1}(z)$**。</p>
+<p><img src="/img/17_02_06/003.png" width = "300" height = "200" align=center /></p>
+<p>我们命名为<strong>$cost_{1}(z)$</strong>。</p>
 <p>对于第二个函数：</p>
-<img src="/img/17_02_06/005.png" width = "300" height = "200" align=center />
-
-<p>我们命名为**$cost_{0}(z)$**。</p>
+<p><img src="/img/17_02_06/005.png" width = "300" height = "200" align=center /></p>
+<p>我们命名为<strong>$cost_{0}(z)$</strong>。</p>
 <p>这里的下标指的是在函数中对应的$y=1$和$y=0$的情况。</p>
 <hr>
 <h3 id="构建支持向量机"><a href="#构建支持向量机" class="headerlink" title="构建支持向量机"></a>构建支持向量机</h3><p>拥有了这些定义之后，现在我们就开始构建<strong>支持向量机</strong>。</p>
 <h4 id="1-替换逻辑回归函数"><a href="#1-替换逻辑回归函数" class="headerlink" title="1.替换逻辑回归函数"></a>1.替换逻辑回归函数</h4><p>这就是我们在逻辑回归中使用的代价函数$J(\theta)$：</p>
-<p><img src="/img/17_02_06/006.png"></p>
+<p><img src="/img/17_02_06/006.png" alt=""></p>
 <p>对于支持向量机而言，实际上，我们要将</p>
 <ul>
 <li><p>上面式子中的这一项：$(-logh_{\theta}(x^{(i)}))$替换为：$cost_{1}(z)$，即:$cost_{1}(\theta^{T}x^{(i)})$</p>
@@ -219,51 +349,97 @@
 </ul>
 <p>这里替换之后的$cost_{1}(z)$和$cost_{0}(z)$就是上面提到的那两条靠近逻辑回归函数的折线。</p>
 <p>所以对于<strong>支持向量机</strong>的最小化代价函数问题，代价函数的形式如下：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\frac{1}{m}[<br>\sum_{i=1}^{m}<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]+<br>\frac{\lambda}{2m}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<h4 id="2-去除多余的常数项-frac-1-m"><a href="#2-去除多余的常数项-frac-1-m" class="headerlink" title="2.去除多余的常数项 $\frac{1}{m}$"></a>2.去除多余的常数项 $\frac{1}{m}$</h4><p>现在按照<strong>支持向量机</strong>的惯例，我们去除$\frac{1}{m}$这一项，因为这一项是个常数项，即使去掉我们也可以得出相同的$\theta$最优值：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\sum_{i=1}^{m}<br>[<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]+<br>\frac{\lambda}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<h4 id="3-正则化项系数的处理"><a href="#3-正则化项系数的处理" class="headerlink" title="3.正则化项系数的处理"></a>3.正则化项系数的处理</h4><p>在逻辑回归的目标函数中，我们有两项表达式：</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ} 
+\frac{1}{m}[
+\sum\_{i=1}^{m}
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]+
+\frac{\lambda}{2m}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><h4 id="2-去除多余的常数项-frac-1-m"><a href="#2-去除多余的常数项-frac-1-m" class="headerlink" title="2.去除多余的常数项 $\frac{1}{m}$"></a>2.去除多余的常数项 $\frac{1}{m}$</h4><p>现在按照<strong>支持向量机</strong>的惯例，我们去除$\frac{1}{m}$这一项，因为这一项是个常数项，即使去掉我们也可以得出相同的$\theta$最优值：</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ} 
+\sum\_{i=1}^{m}
+[
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]+
+\frac{\lambda}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><h4 id="3-正则化项系数的处理"><a href="#3-正则化项系数的处理" class="headerlink" title="3.正则化项系数的处理"></a>3.正则化项系数的处理</h4><p>在逻辑回归的目标函数中，我们有两项表达式：</p>
 <ul>
 <li>来自于训练样本的代价函数:</li>
 </ul>
-<p>$$<br>\frac{1}{m}[<br>\sum_{i=1}^{m}<br>y^{(i)}<br>(-logh_{\theta}(x^{(i)}))+<br>(1-y^{(i)})<br>((-log(1-h_{\theta}(x^{(i)}))))<br>]<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+\frac{1}{m}[
+\sum\_{i=1}^{m}
+y^{(i)}
+(-logh\_{\theta}(x^{(i)}))+
+(1-y^{(i)})
+((-log(1-h\_{\theta}(x^{(i)}))))
+]</script><ul>
 <li>正则化项：</li>
 </ul>
-<p>$$<br>\frac{\lambda}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<p>我们不得不使用正则化项来平衡我们的代价函数。这就相当于：</p>
-<p>$$<br>A + \lambda B<br>$$</p>
-<p>其中A相当于上面的第一项，B相当于第二项。</p>
+<script type="math/tex; mode=display">
+\frac{\lambda}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><p>我们不得不使用正则化项来平衡我们的代价函数。这就相当于：</p>
+<script type="math/tex; mode=display">
+A + \lambda B</script><p>其中A相当于上面的第一项，B相当于第二项。</p>
 <p>我们通过修改不同的正则化参数$\lambda$来达到优化目的，这样我们就能够使得训练样本拟合的更好。</p>
 <p>但对于<strong>支持向量机</strong>，按照惯例我们将使用一个不同的参数来替换这里使用的$\lambda$来实现权衡这两项的目的。这个参数我们称为<strong>C</strong>。同时将优化目标改为:</p>
-<p>$$<br>CA + B<br>$$</p>
-<p>因此，在逻辑回归中，如果给$\lambda$一个很大的值，那么就意味着给与$B$了一个很大的权重，而在<strong>支持向量机</strong>中，就相当于对$C$设定了一个非常小的值，这样一来就相当于对$B$给了比$A$更大的权重。</p>
+<script type="math/tex; mode=display">
+CA + B</script><p>因此，在逻辑回归中，如果给$\lambda$一个很大的值，那么就意味着给与$B$了一个很大的权重，而在<strong>支持向量机</strong>中，就相当于对$C$设定了一个非常小的值，这样一来就相当于对$B$给了比$A$更大的权重。</p>
 <p>因此，这只是一种来控制这种权衡关系的不同的方式。当然你也可以把这里的$C$当做$farc{1}{\lambda}$来使用。</p>
 <p>因此，这样就得到了在<strong>支持向量机</strong>中的我们的整个优化目标函数：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>C<br>\sum_{i=1}^{m}[<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]+<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+C
+\sum\_{i=1}^{m}[
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]+
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><hr>
 <p>最后有别于<strong>逻辑回归</strong>的一点，对于<strong>支持向量机</strong>假设函数的形式如下：</p>
-<p>$$<br>h_{\theta}(x) = 1 \ \ \ if \ \theta^Tx \ge 0<br>$$</p>
-<p>$$<br>h_{\theta}(x) = 0 \ \ \ if \ \theta^Tx \lt 0<br>$$</p>
-<p>而不是<strong>逻辑回归</strong>中的S型曲线：</p>
-<p>$$<br>h_{\theta}(x)=\frac{1}{1+e^{-x}}<br>$$</p>
-<h2 id="大间距的直觉"><a href="#大间距的直觉" class="headerlink" title="大间距的直觉"></a>大间距的直觉</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/wrjaS/large-margin-intuition">视频地址</a></p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = 1 \ \ \ if \ \theta^Tx \ge 0</script><script type="math/tex; mode=display">
+h\_{\theta}(x) = 0 \ \ \ if \ \theta^Tx \lt 0</script><p>而不是<strong>逻辑回归</strong>中的S型曲线：</p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x)=\frac{1}{1+e^{-x}}</script><h2 id="大间距的直觉"><a href="#大间距的直觉" class="headerlink" title="大间距的直觉"></a>大间距的直觉</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/wrjaS/large-margin-intuition">视频地址</a></p>
 <blockquote>
 <p>人们有时将<strong>支持向量机</strong>看做是<strong>大间距分类器</strong>。在这一部分，我将介绍其中的含义，这有助于我们直观地理解SVM模型的假设是什么样的。</p>
 </blockquote>
 <p>这是我的支持向量机模型的代价函数：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>C<br>\sum_{i=1}^{m}[<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]+<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+C
+\sum\_{i=1}^{m}[
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]+
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><ul>
 <li>如果你有一个正样本，即$y=1$时，那么代价函数$cost_{1}(z)$的图像如下：</li>
 </ul>
-<img src="/img/17_02_06/007.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/007.png" width = "300" height = "200" align=center /></p>
 <p>可以看出，<strong>只有在$z\ge1$(即$\theta^{T}x\ge1$)时(不仅仅是$\ge0$)，代价函数$cost_{1}(z)$的值才等于0</strong>。</p>
 <ul>
 <li>反之，如果你有一个负样本，即$y=0$时，那么代价函数$cost_{0}(z)$的图像如下：</li>
 </ul>
-<img src="/img/17_02_06/008.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/008.png" width = "300" height = "200" align=center /></p>
 <p>可以看出，<strong>只有在$z\le-1$(即$\theta^{T}x\le-1$)时(不仅仅是$\lt0$)，代价函数$cost_{0}(z)$的值才等于0</strong>。</p>
 <p>这是<strong>支持向量机</strong>的一个有趣的性质。</p>
 <h3 id="安全距离因子"><a href="#安全距离因子" class="headerlink" title="安全距离因子"></a>安全距离因子</h3><p>事实上，在逻辑回归中：</p>
@@ -278,64 +454,74 @@
 <p>这就相当于在<strong>支持向量机</strong>中嵌入了一个额外的安全因子（或者说是安全距离因子）。接下来让我们来看看这个因子会导致什么结果：</p>
 <p>具体而言，我接下来会将代价函数中的常数项$C$设置成一个非常大的值，比如100000或者其他非常大的数，然后再来观察支持向量机会给出什么结果。</p>
 <p>当代价函数中</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>C<br>\sum_{i=1}^{m}[<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]+<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<p>$C$的值非常大时，则最小化代价函数的时候，我们会很希望找到一个使第一项：</p>
-<p>$$<br>\sum_{i=1}^{m}[<br>y^{(i)}<br>cost_{1}(\theta^{T}x^{(i)})+<br>(1-y^{(i)})<br>cost_{0}(\theta^{T}x^{(i)})<br>]<br>$$</p>
-<p>为0的最优解。</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+C
+\sum\_{i=1}^{m}[
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]+
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><p>$C$的值非常大时，则最小化代价函数的时候，我们会很希望找到一个使第一项：</p>
+<script type="math/tex; mode=display">
+\sum\_{i=1}^{m}[
+y^{(i)}
+cost\_{1}(\theta^{T}x^{(i)})+
+(1-y^{(i)})
+cost\_{0}(\theta^{T}x^{(i)})
+]</script><p>为0的最优解。</p>
 <p>可以看到当输入一个正样本$y^{(i)}=1$时，我们想令上面这一项为0，从图中可以得出</p>
-<img src="/img/17_02_06/007.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/007.png" width = "300" height = "200" align=center /></p>
 <p>对于代价函数$cost_{1}(z)$我们需要使得$\theta^{T}x^{(i)}\ge1$。</p>
 <p>类似地，对于一个负训练样本$y^{(i)}=0$时，我们想令上面这一项为0，从图中可以得出</p>
-<img src="/img/17_02_06/008.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/008.png" width = "300" height = "200" align=center /></p>
 <p>对于代价函数$cost_{0}(z)$我们需要使得$\theta^{T}x^{(i)}\le-1$。</p>
 <hr>
 <p>这样一来会产生下面这种优化问题：</p>
 <p>因为我们将选择参数使第一项为0，因此这个函数的第一项为0，因此是：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>C0+<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<p>我们知道是$C0$的结果是0，因此可以删掉，所以最终得到的结果是：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<p>其中：</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+C0+
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><p>我们知道是$C0$的结果是0，因此可以删掉，所以最终得到的结果是：</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><p>其中：</p>
 <ul>
 <li>若$y^{(i)}=1$时，则$\theta^{T}x^{(i)}\ge1$</li>
 <li>若$y^{(i)}=0$时，则$\theta^{T}x^{(i)}\le-1$</li>
 </ul>
 <p>这样我们就得到了一个非常有趣的决策边界。</p>
 <h3 id="SVM决策边界：线性分割案例"><a href="#SVM决策边界：线性分割案例" class="headerlink" title="SVM决策边界：线性分割案例"></a>SVM决策边界：线性分割案例</h3><p>具体而言，如果你仔细观察下面这个既有正样本又有负样本的数据集</p>
-<img src="/img/17_02_06/009.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/009.png" width = "300" height = "200" align=center /></p>
 <p>不难看出，这个数据集是线性可分的（即存在一条直线把正负样本分开）。可以看出有很多直线都可以把正负样本区分开，比如下面这两条看起来不太自然的直线：</p>
-<img src="/img/17_02_06/010.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/010.png" width = "300" height = "200" align=center /></p>
 <p>支持向量机会选择黑色的这一条直线：</p>
-<img src="/img/17_02_06/011.png" width = "300" height = "200" align=center />
-
-<p>这条直线看起来好很多，因为它看起来更加稳健。在数学上来讲就是这条直线拥有相对于训练数据更大的最短距离，这个所谓的距离就是指**间距(margin)**：</p>
-<img src="/img/17_02_06/012.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/011.png" width = "300" height = "200" align=center /></p>
+<p>这条直线看起来好很多，因为它看起来更加稳健。在数学上来讲就是这条直线拥有相对于训练数据更大的最短距离，这个所谓的距离就是指<strong>间距(margin)</strong>：</p>
+<p><img src="/img/17_02_06/012.png" width = "300" height = "200" align=center /></p>
 <p>而之前两条粉线和蓝线距离训练样本非常近，在分离样本时就会表现的比黑线差。</p>
 <p>这就是<strong>支持向量机</strong>拥有<a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=My7Y1mL_9uj-XdR2DC2kyGLop-AaPdzSgdNmgRmaJVYV77puxNs-_A7ERwLv3uWih02JCu6esljRn90mc3EkMwKXBckm_6wSqU42EX06vC4ouxQhinIZco7crxr7HetC">鲁棒性</a>的原因。因为它一直努力用一个最大间距来分离样本。因此支持向量机分类器有时又被称为<strong>大间距分类器</strong>。</p>
 <p>也许你想知道支持向量机是如何做到产生这个大间距分类器的，目前我还没解释这一点，在下一节中我会直观的来解释这一点。目前这个例子只是用于理解<strong>支持向量机模型</strong>的做法，即努力将正负样本用最大的间距区分开。</p>
 <h3 id="大间距分类器中的异常值"><a href="#大间距分类器中的异常值" class="headerlink" title="大间距分类器中的异常值"></a>大间距分类器中的异常值</h3><p>最后要讲的一点是对于支持向量机中的异常数据的处理。在下面这组训练集中：</p>
-<img src="/img/17_02_06/013.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/013.png" width = "300" height = "200" align=center /></p>
 <p>我们通过使用支持向量机来进行分类，会得到这条黑色的决策边界，从而最大间距的区分这两种数据：</p>
-<img src="/img/17_02_06/014.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/014.png" width = "300" height = "200" align=center /></p>
 <p>当有一个异常值产生时：</p>
-<img src="/img/17_02_06/015.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/015.png" width = "300" height = "200" align=center /></p>
 <p>我们的算法会受到异常值的影响。这时我们将支持向量机中的正则化因子$C$设置的非常大，那么我们会得到类似这样一条粉色的决策边界：</p>
-<img src="/img/17_02_06/016.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/016.png" width = "300" height = "200" align=center /></p>
 <p>那么我们仅仅通过一个异常值，就将我们的决策边界旋转了这么大的角度，实在是不明智的。</p>
-<img src="/img/17_02_06/017.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/017.png" width = "300" height = "200" align=center /></p>
 <p>当我们的正则化因子$C$的值非常大时，支持向量机确实会如此处理，但如果我们适当的减小$C$的值，你最终还是会得到那条黑色的决策边界的。</p>
 <p>如果数据是线性不可分的话，像这样：</p>
-<img src="/img/17_02_06/018.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/018.png" width = "300" height = "200" align=center /></p>
 <p>支持向量机也可以恰当的将它们分开。</p>
 <p>值得提醒的是$C$的作用其实等同于$\frac{1}{\lambda}$，$\lambda$就是我们之前用到的正则化参数。在支持向量机中，$C$不是很大的时候，可以对包含异常数据、以及线性不可分的数据有比较好的处理效果。</p>
 <p>稍后我们还会介绍支持向量机的偏差和方差，希望到那时候关于如何处理参数的这种平衡会变得更加清晰。</p>
@@ -346,47 +532,73 @@
 </blockquote>
 <h3 id="向量内积"><a href="#向量内积" class="headerlink" title="向量内积"></a>向量内积</h3><p>首先，带大家复习一下<strong>向量内积</strong>的知识。</p>
 <p>假设我们有两个二维向量：</p>
-<p>$$<br>u=<br> \begin{bmatrix}<br>   u_1 \<br>    u_2<br> \end{bmatrix}<br> \<br> v=<br> \begin{bmatrix}<br>   v_1 \<br>   v_2<br> \end{bmatrix}<br>$$</p>
-<p>我们把</p>
-<p>$$<br>u^{T}v<br>$$</p>
-<p>的计算结果称作向量$u$和$v$之间的<strong>内积</strong>。</p>
+<script type="math/tex; mode=display">
+u=
+ \begin{bmatrix}
+   u\_1 \\\
+    u\_2
+ \end{bmatrix}
+ \\
+ v=
+ \begin{bmatrix}
+   v\_1 \\\
+   v\_2
+ \end{bmatrix}</script><p>我们把</p>
+<script type="math/tex; mode=display">
+u^{T}v</script><p>的计算结果称作向量$u$和$v$之间的<strong>内积</strong>。</p>
 <p>由于这里我们用的是二维向量，因此我们可以把这两个向量绘制在同一坐标系内，向量$u$和$v$如下：</p>
-<img src="/img/17_02_06/019.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/019.png" width = "300" height = "200" align=center /></p>
 <p>其中我们用$||u||$来表示$u$的<strong>范数</strong>（即$u$的长度），因此$||u||$的计算公式如下：</p>
-<p>$$<br>||u||=\sqrt{u_1^2+u_2^2}<br>$$</p>
-<p>下面我们来看看<strong>向量内积</strong>具体是如何计算的：</p>
+<script type="math/tex; mode=display">
+||u||=\sqrt{u\_1^2+u\_2^2}</script><p>下面我们来看看<strong>向量内积</strong>具体是如何计算的：</p>
 <p>将向量$v$投影到向量$u$上，如下图我们对向量$v$做一个相对于向量$u$的直角投影：</p>
-<img src="/img/17_02_06/020.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/020.png" width = "300" height = "200" align=center /></p>
 <p>投影之后的长度就是图中红线$p$的长度：</p>
-<p>$$<br>p = 向量v投影到向量u上的长度<br>$$</p>
-<p>同时也有另外一种计算内积的方式：</p>
-<p>$$<br>u^Tv=p·||u||<br>$$</p>
-<p>通过这种方式计算出来的内积，答案和之前也是一样的。</p>
+<script type="math/tex; mode=display">
+p = 向量v投影到向量u上的长度</script><p>同时也有另外一种计算内积的方式：</p>
+<script type="math/tex; mode=display">
+u^Tv=p·||u||</script><p>通过这种方式计算出来的内积，答案和之前也是一样的。</p>
 <p>事实上，如果你想要使用将$u$投影到$v$上来用这种方式来计算内积，得到的答案也是相同的。</p>
 <p>要注意的一点是，这里的$p$是有符号的，如果两个向量的夹角大于90°，像下图中这种情形，如果将$v$投影到$u$上会得到这样一种投影：</p>
-<img src="/img/17_02_06/021.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/021.png" width = "300" height = "200" align=center /></p>
 <p>此时的$p$就是一个负数。</p>
 <blockquote>
 <p>在向量的内积问题中，如果两个向量的夹角小于90°，那么$p$的符号就是为正；如果两个向量的夹角大于90°，那么$p$的符号就为负。</p>
 </blockquote>
 <p>这就是<strong>向量内积</strong>的知识，接下来我们尝试使用它来理解支持向量机中的目标函数。</p>
 <h3 id="SVM决策边界"><a href="#SVM决策边界" class="headerlink" title="SVM决策边界"></a>SVM决策边界</h3><p>下面是我们在支持向量机中的目标函数:</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>$$</p>
-<p>其中</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2</script><p>其中</p>
 <ul>
 <li>若$y^{(i)}=1$时，则$\theta^{T}x^{(i)}\ge1$</li>
 <li>若$y^{(i)}=0$时，则$\theta^{T}x^{(i)}\le-1$</li>
 </ul>
 <p>接下来为了让目标函数更容易被分析，我们来忽略掉截距的影响，令$\theta_0=0$，这样更容易绘制示意图。并且我们将特征数$n$设置为2，因此我们仅有两个特征$x_1$和$x_2$：</p>
-<p>$$<br>\begin{align*}<br>\mathop{min}\limits_{θ}<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>&amp;=<br>\frac{1}{2}<br>(\theta_1^2+\theta_2^2)<br>\\&amp;=<br>\frac{1}{2}<br>(\sqrt{\theta_1^2+\theta_2^2})^2<br>\end{align*}<br>$$</p>
-<p>其中</p>
-<p>$$<br>\sqrt{\theta_1^2+\theta_2^2} = ||\theta||<br>$$</p>
-<p>因此可以得出：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>=<br>\frac{1}{2}||\theta||^2<br>$$</p>
-<p>可见，<strong>支持向量机所做的事情，其实就是在极小化参数向量$\theta$范数的平方（或者说是长度的平方）</strong>。</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+\mathop{min}\limits\_{θ}
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2
+&=
+\frac{1}{2}
+(\theta\_1^2+\theta\_2^2)
+\\\\&=
+\frac{1}{2}
+(\sqrt{\theta\_1^2+\theta\_2^2})^2
+\end{align\*}</script><p>其中</p>
+<script type="math/tex; mode=display">
+\sqrt{\theta\_1^2+\theta\_2^2} = ||\theta||</script><p>因此可以得出：</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2
+=
+\frac{1}{2}||\theta||^2</script><p>可见，<strong>支持向量机所做的事情，其实就是在极小化参数向量$\theta$范数的平方（或者说是长度的平方）</strong>。</p>
 <hr>
 <p>现在让我们来看看这两行的含义：</p>
 <ul>
@@ -396,20 +608,21 @@
 <p>想一想$\theta^{T}x^{(i)}$这一项等于什么呢？</p>
 <p>在前面我们画出了$u^Tv$的示意图，这里$\theta^T$就相当于$u^T$、$x^{(i)}$就相当于$v$。让我们来看一下示意图：</p>
 <p>我们考虑一个单一的样本$x^{(i)}$，其坐标为$(x^{(i)}_1,x^{(i)}_2)$</p>
-<img src="/img/17_02_06/022.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/022.png" width = "300" height = "200" align=center /></p>
 <p>这个训练样本点其实可以表示为一个训练样本向量：</p>
-<img src="/img/17_02_06/023.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/023.png" width = "300" height = "200" align=center /></p>
 <p>现在，我们有一个参数向量：</p>
-<img src="/img/17_02_06/024.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/024.png" width = "300" height = "200" align=center /></p>
 <p>那么我们向量内积的计算方式，通过使用之前的方法可以得出。训练样本向量投影到参数向量上的长度$p^{(i)}$，表示第i个训练样本在参数向量$\theta$上的投影：</p>
-<img src="/img/17_02_06/025.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/025.png" width = "300" height = "200" align=center /></p>
 <p>根据之前我们所学到的，我们可以知道：</p>
-<p>$$<br>\begin{align*}<br>\theta^Tx^{(i)}<br>&amp;=p^{(i)}·||\theta||<br>\\<br>&amp;=\theta_1x_1^{(i)}+\theta_2x_2^{(i)}<br>\end{align*}<br>$$</p>
-<p>那么，这告诉我们了什么呢？这说明：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+\theta^Tx^{(i)}
+&=p^{(i)}·||\theta||
+\\\\
+&=\theta\_1x\_1^{(i)}+\theta\_2x\_2^{(i)}
+\end{align\*}</script><p>那么，这告诉我们了什么呢？这说明：</p>
 <ul>
 <li>若$y^{(i)}=1$时，则$\theta^{T}x^{(i)}\ge1$</li>
 <li>若$y^{(i)}=0$时，则$\theta^{T}x^{(i)}\le-1$</li>
@@ -420,210 +633,334 @@
 <li>若$y^{(i)}=0$时，则$p^{(i)}·||\theta||\le-1$</li>
 </ul>
 <p>因此，将其写入我们的优化目标后，<strong>完整的目标函数</strong>为：</p>
-<p>$$<br>\mathop{min}\limits_{θ}<br>\frac{1}{2}<br>\sum_{j=1}^{n}<br>\theta_{j}^2<br>=<br>\frac{1}{2}||\theta||^2<br>$$</p>
-<p>其中</p>
+<script type="math/tex; mode=display">
+\mathop{min}\limits\_{θ}
+\frac{1}{2}
+\sum\_{j=1}^{n}
+\theta\_{j}^2
+=
+\frac{1}{2}||\theta||^2</script><p>其中</p>
 <ul>
 <li>若$y^{(i)}=1$时，则$p^{(i)}·||\theta||\ge1$</li>
 <li>若$y^{(i)}=0$时，则$p^{(i)}·||\theta||\le-1$</li>
 </ul>
 <hr>
 <h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>现在让我们考虑下面这里的训练样本：</p>
-<img src="/img/17_02_06/026.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/026.png" width = "300" height = "200" align=center /></p>
 <p>其中假设截距依然为0，即$\theta_0=0$，我们来看一下支持向量机会选择什么样的决策边界。</p>
 <p>假设有这样一条决策边界：</p>
-<img src="/img/17_02_06/027.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/027.png" width = "300" height = "200" align=center /></p>
 <p>很明显，这不是一个好的决策边界，因为这个决策边界离训练样本很近，我们来看一下为什么支持向量机不会选择它。</p>
 <p>由于<strong>决策边界和参数向量是正交的(斜率相乘结果为-1)</strong>(<a target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/1992397864989257747.html">为什么决策边界和参数向量是正交的</a>)，我们可以绘制出对应的参数向量$\theta$：</p>
-<img src="/img/17_02_06/028.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/028.png" width = "300" height = "200" align=center /></p>
 <blockquote>
 <p>这里由于我们指定了$\theta_0=0$，也就意味着决策边界是过原点的。</p>
 </blockquote>
 <p>假设我们以这一点为第一个训练样本：</p>
-<img src="/img/17_02_06/029.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/029.png" width = "300" height = "200" align=center /></p>
 <p>我们可以画出这个样本向量到$\theta$的投影$p^{(1)}$：</p>
-<img src="/img/17_02_06/030.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/030.png" width = "300" height = "200" align=center /></p>
 <p>类似的，我们也可以画出第二个样本向量到$\theta$的投影$p^{(2)}$：</p>
-<img src="/img/17_02_06/031.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/031.png" width = "300" height = "200" align=center /></p>
 <p>我们会发现，这些$p^{(i)}$将会是一些非常小的数。因此当我们考察优化目标函数的时候：</p>
 <ul>
-<li><p>对于**正样本($y^{(i)}=1$，即图中的”x”样本)**而言，我们需要$p^{(i)}·||\theta||\ge1$，由于$p^{(i)}$非常小，也就意味着$||\theta||$需要非常大。</p>
+<li><p>对于<strong>正样本($y^{(i)}=1$，即图中的”x”样本)</strong>而言，我们需要$p^{(i)}·||\theta||\ge1$，由于$p^{(i)}$非常小，也就意味着$||\theta||$需要非常大。</p>
 </li>
-<li><p>对于**负样本($y^{(i)}=-1$，即图中的”o”样本)**而言，我们需要$p^{(i)}·||\theta||\le-1$，由于$p^{(i)}$非常小，也就意味着$||\theta||$需要非常大。</p>
+<li><p>对于<strong>负样本($y^{(i)}=-1$，即图中的”o”样本)</strong>而言，我们需要$p^{(i)}·||\theta||\le-1$，由于$p^{(i)}$非常小，也就意味着$||\theta||$需要非常大。</p>
 </li>
 </ul>
 <p>但我们的实际目标是希望找到一个参数$\theta$，使得它的范数$||\theta||$是尽可能小的，因此这并不是一个好的决策边界，因为我们的$||\theta||$比较大。</p>
 <hr>
 <p>对于下面这个决策边界来说，情况就会有很大的不同：</p>
-<img src="/img/17_02_06/032.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/032.png" width = "300" height = "200" align=center /></p>
 <p>这里，我们以纵坐标作为决策边界，那么我们的参数向量的方向就是垂直于它的方向：</p>
-<img src="/img/17_02_06/033.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/033.png" width = "300" height = "200" align=center /></p>
 <p>如果我们现在再来绘制出样本向量在参数向量上的投影$p^{(1)}$和$p^{(2)}$的话，你会发现这些投影的长度比之前长多了：</p>
-<img src="/img/17_02_06/034.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/17_02_06/034.png" width = "300" height = "200" align=center /></p>
 <p>因为投影$p$的长度变大了，随之$\theta$的范数$||\theta||$也相应的变小了。这就意味着通过选择第二种远离样本的决策边界，支持向量机可以使参数$\theta$的范数$||\theta||$变小很多。</p>
 <p>这就是<strong>为什么支持向量机可以产生大间距分类的原因</strong>。</p>
 <hr>
 <p>最后一点，我们的推导自始至终都使用了<strong>截距为0（即$\theta_0=0$）</strong>这个简化假设。这样做的作用就是可以使得决策边界始终是通过原点的，如果你的决策边界不过原点，那么$\theta_0\ne0$，但支持向量机会产生大间距分类器的结论依然成立（具体推导过程不再叙述，和这里很类似）。但是可以说明的是，即便$\theta_0\ne0$，支持向量机仍然会找到正样本和负样本之间的大间距分隔。总之 我们解释了为什么支持向量机是一个大间距分类器。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/02/06/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(1)%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB/" data-id="ckkwc437u007rpas9carj37a8" data-title="斯坦福机器学习课程 第七周 (1)大间距分类" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/02/04/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC3%E7%AB%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%92%8C%E6%A8%A1%E5%9D%97/" rel="prev" title="【Python3教程 第3章】方法和模块">
+      <i class="fa fa-chevron-left"></i> 【Python3教程 第3章】方法和模块
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/02/09/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(2)%E6%A0%B8%E5%87%BD%E6%95%B0/" rel="next" title="斯坦福机器学习课程 第七周 (2)核函数">
+      斯坦福机器学习课程 第七周 (2)核函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%9B%AE%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">优化目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E5%BC%95%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">支持向量机引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">构建支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%9B%BF%E6%8D%A2%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.替换逻辑回归函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8E%BB%E9%99%A4%E5%A4%9A%E4%BD%99%E7%9A%84%E5%B8%B8%E6%95%B0%E9%A1%B9-frac-1-m"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.去除多余的常数项 $\frac{1}{m}$</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%AD%A3%E5%88%99%E5%8C%96%E9%A1%B9%E7%B3%BB%E6%95%B0%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.正则化项系数的处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E9%97%B4%E8%B7%9D%E7%9A%84%E7%9B%B4%E8%A7%89"><span class="nav-number">2.</span> <span class="nav-text">大间距的直觉</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%B7%9D%E7%A6%BB%E5%9B%A0%E5%AD%90"><span class="nav-number">2.1.</span> <span class="nav-text">安全距离因子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM%E5%86%B3%E7%AD%96%E8%BE%B9%E7%95%8C%EF%BC%9A%E7%BA%BF%E6%80%A7%E5%88%86%E5%89%B2%E6%A1%88%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">SVM决策边界：线性分割案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8%E5%80%BC"><span class="nav-number">2.3.</span> <span class="nav-text">大间距分类器中的异常值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E9%97%B4%E8%B7%9D%E5%88%86%E7%B1%BB%E5%99%A8%E8%83%8C%E5%90%8E%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-%E9%80%89%E5%AD%A6"><span class="nav-number">3.</span> <span class="nav-text">大间距分类器背后的数学原理(选学)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%86%85%E7%A7%AF"><span class="nav-number">3.1.</span> <span class="nav-text">向量内积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM%E5%86%B3%E7%AD%96%E8%BE%B9%E7%95%8C"><span class="nav-number">3.2.</span> <span class="nav-text">SVM决策边界</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.2.1.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/02/09/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%83%E5%91%A8%20(2)%E6%A0%B8%E5%87%BD%E6%95%B0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第七周 (2)核函数
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/02/04/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC3%E7%AB%A0%E3%80%91%E6%96%B9%E6%B3%95%E5%92%8C%E6%A8%A1%E5%9D%97/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【Python3教程 第3章】方法和模块</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '4d99e0ffa4bb2a6f36a6ba92c2c2dfe8',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

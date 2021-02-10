@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第九周 (2)构建一个异常检测系统 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="异常检测系统的开发与评估视频地址  在上一节中，我们推导了异常检测算法。在本节，我想介绍一下如何开发一个异常检测的应用来解决一个实际问题。  在之前，我们已经提到了使用实数评估法的重要性。这样做的想法是，当你在用某个学习算法来开发一个具体的机器学习应用时，你常常需要做出很多决定，比如说选择用什么样的特征等等。而如果你找到某种评估算法的方式，比如直接返回一个数字，来告诉你算法的好坏，那么你做这些决定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第九周 (2)构建一个异常检测系统">
 <meta property="og:url" content="http://example.com/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="异常检测系统的开发与评估视频地址  在上一节中，我们推导了异常检测算法。在本节，我想介绍一下如何开发一个异常检测的应用来解决一个实际问题。  在之前，我们已经提到了使用实数评估法的重要性。这样做的想法是，当你在用某个学习算法来开发一个具体的机器学习应用时，你常常需要做出很多决定，比如说选择用什么样的特征等等。而如果你找到某种评估算法的方式，比如直接返回一个数字，来告诉你算法的好坏，那么你做这些决定">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_05_25/001.png">
@@ -29,93 +43,215 @@
 <meta property="og:image" content="http://example.com/img/17_05_25/013.png">
 <meta property="og:image" content="http://example.com/img/17_05_25/014.png">
 <meta property="article:published_time" content="2017-05-25T21:14:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_05_25/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第九周 (2)构建一个异常检测系统 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第九周 (2)构建一个异常检测系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" class="article-date">
-  <time class="dt-published" datetime="2017-05-25T21:14:00.000Z" itemprop="datePublished">2017-05-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第九周 (2)构建一个异常检测系统
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第九周 (2)构建一个异常检测系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-05-25 21:14:00" itemprop="dateCreated datePublished" datetime="2017-05-25T21:14:00+00:00">2017-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="异常检测系统的开发与评估"><a href="#异常检测系统的开发与评估" class="headerlink" title="异常检测系统的开发与评估"></a>异常检测系统的开发与评估</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/Mwrni/developing-and-evaluating-an-anomaly-detection-system">视频地址</a></p>
 <blockquote>
@@ -132,19 +268,19 @@
 <h3 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h3><ul>
 <li>我们先考虑训练样本。对于训练集，我们还是需要把数据看成是无标签的，通常来讲我们把这些样本都看成<strong>正常</strong>的，但可能有一些异常的也被分到你的训练集里，这也没关系（毕竟异常的是少数）：</li>
 </ul>
-<p>$$<br>x^{(1)},x^{(2)},…,x^{(m)}<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+x^{(1)},x^{(2)},...,x^{(m)}</script><ul>
 <li>接下来我们要定义交叉验证集和测试集。通过这两个集合我们将得到异常检测算法。</li>
 </ul>
-<p>$$<br>交叉验证集：(x^{(1)}_{cv},y^{(1)}_{cv}),…,(x^{(m)}_{cv},y^{(m)}_{cv})<br>$$</p>
-<p>$$<br>测试集：(x^{(1)}_{test},y^{(1)}_{test}),…,(x^{(m)}_{test},y^{(m)}_{test})<br>$$</p>
-<p>继续回到我们的例子中：</p>
+<script type="math/tex; mode=display">
+交叉验证集：(x^{(1)}\_{cv},y^{(1)}\_{cv}),...,(x^{(m)}\_{cv},y^{(m)}\_{cv})</script><script type="math/tex; mode=display">
+测试集：(x^{(1)}\_{test},y^{(1)}\_{test}),...,(x^{(m)}\_{test},y^{(m)}\_{test})</script><p>继续回到我们的例子中：</p>
 <p>假如说我们有10000制造的引擎作为样本。就我们所知，这些样本都是正常没有问题的飞机引擎。同样地，如果有一小部分有问题的引擎也被混入了这10000个样本，别担心，没有关系，我们假设这10000个样本中大多数都是没有问题的引擎。而且实际上从过去的经验来看，无论是制造了多少年引擎的工厂，在10000个引擎中都会得到大概20个有问题的引擎。对于异常检测的典型应用来说，异常样本的个数(也就是$y=1$的样本)，基本上很多都是20到50个，并且通常我们的正常样本的数量要大得多。</p>
 <p>有了这组数据，把数据分为训练集、交叉验证集和测试集的一种典型的分法如下：</p>
 <p>我们把这10000个正常的引擎放6000个到无标签的<strong>训练集</strong>中，我叫它“无标签训练集”，但其实所有这些样本都对应$y=0$的情况。</p>
 <p>我们要用这6000个训练样本来拟合$p(x)$。</p>
-<p>$$<br>p(x)=p(x_1;μ_1, σ_1^2)…p(x_n;μ_n, σ_n^2)<br>$$</p>
-<p>因此我们就是要用这6000个样本来计算参数$μ_1,σ_1^2…μ_n,σ_n^2$。</p>
+<script type="math/tex; mode=display">
+p(x)=p(x\_1;μ\_1, σ\_1^2)...p(x\_n;μ\_n, σ\_n^2)</script><p>因此我们就是要用这6000个样本来计算参数$μ_1,σ_1^2…μ_n,σ_n^2$。</p>
 <p>然后我们将剩余的4000个样本一半放入<strong>交叉验证集</strong>，另一半放入<strong>测试集</strong>中。同时我们还有20个异常的发动机样本，同样也把它们进行一个分割：放10个到验证集中，剩下10个放入测试集中。</p>
 <blockquote>
 <p>注意：不要把交叉验证集和测试集混在一起使用，这样效果并不好。</p>
@@ -155,7 +291,7 @@
 <p>这里其实我们可以把异常检测算法想象成是对交叉验证集和测试集中的$y$进行预测，这与监督学习有些类似，因为我们在对有标签的数据进行预测。所以我们可以通过对标签预测正确的次数来评价算法的好坏。</p>
 <p>当然这些标签会比较偏斜，因为$y=0$(也就是正常的样本)肯定是比出现$y=1$(也就是异常样本)的情况更多。这跟我们在监督学习中用到的评价度量方法非常接近。</p>
 <p>那么用什么评价度量好呢？</p>
-<p>因为数据是非常偏斜的，所以通过分类准确度来衡量算法并不是一个好的度量法。我们**<a target="_blank" rel="noopener" href="http://t.cn/RSh83NE">之前的课程</a>**中也有提到过，如果你有一个比较偏斜的数据集，那么总是预测$y=0$它的分类准确度自然会很高。</p>
+<p>因为数据是非常偏斜的，所以通过分类准确度来衡量算法并不是一个好的度量法。我们<strong><a target="_blank" rel="noopener" href="http://t.cn/RSh83NE">之前的课程</a></strong>中也有提到过，如果你有一个比较偏斜的数据集，那么总是预测$y=0$它的分类准确度自然会很高。</p>
 <p>因此我们应该算出以下数据来更科学的衡量算法的好坏：</p>
 <ul>
 <li>我们应该算出<strong>真阳性</strong>、<strong>假阳性</strong>、<strong>假阴性</strong>和<strong>真阴性</strong>的比率来作为评价度量值</li>
@@ -174,22 +310,26 @@
 <p>这一节，就来介绍一下什么时候应该用异常检测算法，什么时候用监督学习算法是更有成效的。</p>
 </blockquote>
 <p>下面这张表格对比了什么时候应该用什么算法：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">异常检测</th>
-<th align="center">监督学习</th>
+<th style="text-align:center">异常检测</th>
+<th style="text-align:center">监督学习</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">负样本量很少(通常是在0到20个之间),正样本很多的时候</td>
-<td align="center">正负样本都很多的时候</td>
+<tbody>
+<tr>
+<td style="text-align:center">负样本量很少(通常是在0到20个之间),正样本很多的时候</td>
+<td style="text-align:center">正负样本都很多的时候</td>
 </tr>
 <tr>
-<td align="center">有多种不同的异常类型时（因为对任何算法来说，从大量正样本中去学习到异常具体是什么，都是困难的）；未知的异常与我们已知的异常完全不一样时。</td>
-<td align="center">有足够多的正样本来让你的算法学习到对应的特征，并且在未知的正样本中，也和已知的样本是类似的。</td>
+<td style="text-align:center">有多种不同的异常类型时（因为对任何算法来说，从大量正样本中去学习到异常具体是什么，都是困难的）；未知的异常与我们已知的异常完全不一样时。</td>
+<td style="text-align:center">有足够多的正样本来让你的算法学习到对应的特征，并且在未知的正样本中，也和已知的样本是类似的。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>这就是在遇到具体情况时，要选择异常检查还是监督学习的方式。</p>
 <p>其实关键区别就是<strong>在异常检测算法中我们只有一小撮正样本</strong>，因此监督学习算法不能从这些样本中学到太多东西。</p>
 <hr>
@@ -202,49 +342,59 @@
 <p>事实上当你应用异常检测时，对它的效率影响最大的因素之一，是你使用什么特征变量。那么在本节，我将给出一些关于如何设计或选择异常检测算法的特征变量建议。</p>
 </blockquote>
 <h3 id="对不服从高斯分布的数据进行转换"><a href="#对不服从高斯分布的数据进行转换" class="headerlink" title="对不服从高斯分布的数据进行转换"></a>对不服从高斯分布的数据进行转换</h3><p>在我们的异常检测算法中，我们做的事情之一就是使用正态(高斯)分布来对特征向量建模。通常情况下，我们都需要用直方图来可视化这些数据，如下图：</p>
-<p><img src="/img/17_05_25/001.png"></p>
+<p><img src="/img/17_05_25/001.png" alt=""></p>
 <p>这么做的原因是为了在使用算法之前，确保我们的数据看起来是服从高斯分布的（当然即使你的数据并不是高斯分布，它也基本上可以良好地运行，但最好转换成高斯分布的样式之后在带入计算）。</p>
 <p>如果你的样本的某个特征展示效果完全不像一个正态分布的形状：</p>
-<p><img src="/img/17_05_25/002.png"></p>
+<p><img src="/img/17_05_25/002.png" alt=""></p>
 <p>那么我们就需要对数据进行一些转换，来确保这些数据能看起来更像高斯分布。这样你的算法才能效果更好。</p>
 <p>一般情况下，我们都会对原始数据尝试求对数或者开根号操作进行转换，下图是通过对数来转换的：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">$x$</th>
-<th align="center">$log(x)$</th>
+<th style="text-align:center">$x$</th>
+<th style="text-align:center">$log(x)$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><img src="/img/17_05_25/002.png"></td>
-<td align="center"><img src="/img/17_05_25/003.png"></td>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_05_25/002.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/003.png" alt=""></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>你也可以尝试使用以下的方式来带入：</p>
-<p>$$<br>x←log(x)  \\<br>x←log(x + c) \\<br>x←\sqrt x<br>$$</p>
-<p>选择哪一个都可以，唯一的原则就是保证转换后的分布看起来更像高斯分布(正态分布)一些。</p>
+<script type="math/tex; mode=display">
+x←log(x)  \\\\
+x←log(x + c) \\\\
+x←\sqrt x</script><p>选择哪一个都可以，唯一的原则就是保证转换后的分布看起来更像高斯分布(正态分布)一些。</p>
 <hr>
 <p>下面是对于一个不服从高斯分布的数据进行转换的过程：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">原始数据</th>
-<th align="center">$x^{0.5}$</th>
-<th align="center">$x^{0.2}$</th>
-<th align="center">$x^{0.1}$</th>
-<th align="center">$x^{0.05}$</th>
-<th align="center">$log(x)$</th>
+<th style="text-align:center">原始数据</th>
+<th style="text-align:center">$x^{0.5}$</th>
+<th style="text-align:center">$x^{0.2}$</th>
+<th style="text-align:center">$x^{0.1}$</th>
+<th style="text-align:center">$x^{0.05}$</th>
+<th style="text-align:center">$log(x)$</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"><img src="/img/17_05_25/004.png"></td>
-<td align="center"><img src="/img/17_05_25/005.png"></td>
-<td align="center"><img src="/img/17_05_25/006.png"></td>
-<td align="center"><img src="/img/17_05_25/007.png"></td>
-<td align="center"><img src="/img/17_05_25/008.png"></td>
-<td align="center"><img src="/img/17_05_25/009.png"></td>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_05_25/004.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/005.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/006.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/007.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/008.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_25/009.png" alt=""></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>我们对原始数据尝试了不同的转换之后，图像最终趋于了正太分布的样式。在Octive中实现的过程如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hist(x,50)</span><br><span class="line">hist(x.^0.5,50)</span><br><span class="line">hist(x.^0.2,50)</span><br><span class="line">hist(x.^0.1,50)</span><br><span class="line">hist(x.^0.05,50)</span><br><span class="line">hist(log(x),50)</span><br><span class="line">xNew &#x3D; log(x);</span><br></pre></td></tr></table></figure>
 <p>最终我们选择了$log(x)$来代替原来的$x$。</p>
@@ -258,182 +408,313 @@
 <h4 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h4><p>我们用一个具体的例子来说明上面的过程：</p>
 <p>在异常检测中，我们希望$p(x)$的值对正常样本来说是比较大的，而对异常样本来说，值是很小的。但一个很常见的问题是$p(x)$是具有可比性的（即对于两者都很大）。</p>
 <p>这是我的一组无标签数据：</p>
-<p><img src="/img/17_05_25/010.png"></p>
+<p><img src="/img/17_05_25/010.png" alt=""></p>
 <p>这里我只有一个特征变量$x_1$，我要用高斯分布来拟合它。</p>
 <p>假设我们绘制出它的高斯分布，如下图所示：</p>
-<p><img src="/img/17_05_25/011.png"></p>
+<p><img src="/img/17_05_25/011.png" alt=""></p>
 <p>假设我们遇到了一个有异常的样本：</p>
-<p><img src="/img/17_05_25/012.png"></p>
+<p><img src="/img/17_05_25/012.png" alt=""></p>
 <p>但是，从图中我们能看出这个样本在这一特征下的$p(x_1)$并不低，我们无法从这一特征下区分出这一异常样本。</p>
 <p>如果我们引入另一个特征$x_2$，图像如下：</p>
-<p><img src="/img/17_05_25/013.png"></p>
+<p><img src="/img/17_05_25/013.png" alt=""></p>
 <p>再来看看我们的异常样本，出现在了这两个特征所分布的区域的外侧：</p>
-<p><img src="/img/17_05_25/014.png"></p>
+<p><img src="/img/17_05_25/014.png" alt=""></p>
 <p>这个时候，我们的异常检测算法就会给出很小的值来验证这一点代表的样本属于异常样本。</p>
 <blockquote>
 <p><strong>总结</strong>:选择异常检测需要考虑的特征时，先找出异常样本，然后尝试通过引入新的特征来验证对异常样本的识别的准确性。如果有所提高，就可以考虑引入这个特征。</p>
 </blockquote>
 <h4 id="关于特征选择的思考"><a href="#关于特征选择的思考" class="headerlink" title="关于特征选择的思考"></a>关于特征选择的思考</h4><p>最后我想与你分享一些我平时在为异常检查算法选择特征变量时的一些思考。</p>
 <p>通常，我会选择那些既不是特别大也不是特别小的特征变量。以数据中心异常计算机的监测的例子为例，我们有以下四个特征：</p>
-<p>$$<br>x_1=机器内存使用  \\<br>x_2=硬盘资源使用  \\<br>x_3=CPU使用  \\<br>x_4=网络情况<br>$$</p>
-<p>我假设CPU使用情况和网络情况呈线性关系，正常情况下如果其中一个服务器正在运行时，CPU负载和流量都很大。</p>
+<script type="math/tex; mode=display">
+x\_1=机器内存使用  \\\\
+x\_2=硬盘资源使用  \\\\
+x\_3=CPU使用  \\\\
+x\_4=网络情况</script><p>我假设CPU使用情况和网络情况呈线性关系，正常情况下如果其中一个服务器正在运行时，CPU负载和流量都很大。</p>
 <p>现在，假设有一种异常情况，就是流量消耗很小，但CPU负载却很高，因为可能是机器遇到了某个死循环导致CPU负载飙升，因此我们可以定义一个新的特征变量来更好的说明这一情况：</p>
-<p>$$<br>x_5=\frac{CPU 负载}{流量消耗}<br>$$</p>
-<p>同样，你也可以尝试使用下面这种特征变量：</p>
-<p>$$<br>x_6=\frac{(CPU 负载)^2}{流量消耗}<br>$$</p>
-<p>其实，解决这类问题的思路就是尝试组合新的特征，从而能更好的检测异常情况。</p>
+<script type="math/tex; mode=display">
+x\_5=\frac{CPU 负载}{流量消耗}</script><p>同样，你也可以尝试使用下面这种特征变量：</p>
+<script type="math/tex; mode=display">
+x\_6=\frac{(CPU 负载)^2}{流量消耗}</script><p>其实，解决这类问题的思路就是尝试组合新的特征，从而能更好的检测异常情况。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/05/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(2)%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" data-id="ckkwc4385008npas91dot5yao" data-title="斯坦福机器学习课程 第九周 (2)构建一个异常检测系统" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" rel="prev" title="斯坦福机器学习课程 第九周 (1)密度估计">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第九周 (1)密度估计
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/26/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(3)%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88%E9%80%89%E5%AD%A6%EF%BC%89/" rel="next" title="斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）">
+      斯坦福机器学习课程 第九周 (3)多元高斯分布（选学） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BC%80%E5%8F%91%E4%B8%8E%E8%AF%84%E4%BC%B0"><span class="nav-number">1.</span> <span class="nav-text">异常检测系统的开发与评估</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%92%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">数据集划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95%E7%9A%84%E6%8E%A8%E5%AF%BC%E5%92%8C%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">异常检测算法的推导和评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%CE%B5%E6%98%AF%E6%80%8E%E4%B9%88%E5%BE%97%E5%88%B0%E7%9A%84%E5%91%A2%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">ε是怎么得到的呢？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B-VS-%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">异常检测 VS 监督学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E7%89%B9%E5%BE%81"><span class="nav-number">3.</span> <span class="nav-text">选择使用什么特征</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%B8%8D%E6%9C%8D%E4%BB%8E%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">对不服从高斯分布的数据进行转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95%E7%9A%84%E7%89%B9%E5%BE%81%E5%8F%98%E9%87%8F%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">3.2.</span> <span class="nav-text">异常检测算法的特征变量的获取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.1.</span> <span class="nav-text">举例说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%9A%84%E6%80%9D%E8%80%83"><span class="nav-number">3.2.2.</span> <span class="nav-text">关于特征选择的思考</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/05/26/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(3)%E5%A4%9A%E5%85%83%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88%E9%80%89%E5%AD%A6%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第九周 (3)多元高斯分布（选学）
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第九周 (1)密度估计</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : 'd258d2c29ab2553e7e49034018cb9837',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

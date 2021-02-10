@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="梯度下降梯度下降算法视频地址 我们已经定义了代价函数$J$，而在这段视频中，我想向你们介绍梯度下降算法。这种算法可以将代价函数$J$最小化。梯度下降是很常用的算法，它不仅被用在线性回归上，它实际上被广泛的应用于机器学习领域中的众多领域。在后面课程中，为了解决其他线性回归问题，我们也将使用梯度下降法最小化其他函数，而不仅仅是只用在本节课的代价函数$J$。 下面是问题概述：  在这里我们有一个函数$J">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法">
 <meta property="og:url" content="http://example.com/2016/07/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(5)%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="梯度下降梯度下降算法视频地址 我们已经定义了代价函数$J$，而在这段视频中，我想向你们介绍梯度下降算法。这种算法可以将代价函数$J$最小化。梯度下降是很常用的算法，它不仅被用在线性回归上，它实际上被广泛的应用于机器学习领域中的众多领域。在后面课程中，为了解决其他线性回归问题，我们也将使用梯度下降法最小化其他函数，而不仅仅是只用在本节课的代价函数$J$。 下面是问题概述：  在这里我们有一个函数$J">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/16_07_24/001.png">
@@ -39,130 +53,252 @@
 <meta property="og:image" content="http://example.com/img/16_07_24/023.png">
 <meta property="og:image" content="http://example.com/img/16_07_24/024.gif">
 <meta property="article:published_time" content="2016-07-24T17:37:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/16_07_24/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2016/07/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(5)%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第一周 (5)参数学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/07/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(5)%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/" class="article-date">
-  <time class="dt-published" datetime="2016-07-24T17:37:00.000Z" itemprop="datePublished">2016-07-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(5)%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-24 17:37:00" itemprop="dateCreated datePublished" datetime="2016-07-24T17:37:00+00:00">2016-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><h3 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/8SpIM/gradient-descent">视频地址</a></p>
 <p>我们已经定义了代价函数$J$，而在这段视频中，我想向你们介绍梯度下降算法。这种算法可以将代价函数$J$最小化。梯度下降是很常用的算法，它不仅被用在线性回归上，它实际上被广泛的应用于机器学习领域中的众多领域。在后面课程中，为了解决其他线性回归问题，我们也将使用梯度下降法最小化其他函数，而不仅仅是只用在本节课的代价函数$J$。</p>
 <p>下面是问题概述：</p>
-<p><img src="/img/16_07_24/001.png"></p>
+<p><img src="/img/16_07_24/001.png" alt=""></p>
 <p>在这里我们有一个函数$J(θ_{0}, θ_{1})$，也许这是一个线性回归的代价函数，也许是一些其他函数。我们需要用一个算法，来最小化函数$J(θ_{0}, θ_{1})$，就像刚才说的：事实证明，梯度下降算法可应用于多种多样的函数求解，所以想象一下如果你有一个函数$J(θ_{0}, θ_{1}, θ_{2}, …,θ_{n})$，你希望可以通过最小化$θ_{0}$到$θ_{n}$来最小化此代价函数$J(θ_{0}, θ_{1}, θ_{2}, …,θ_{n})$。用n个θ是为了证明梯度下降算法可以解决更一般的问题，但为了简洁起见，为了简化符号，在接下来的视频中我只用两个参数。</p>
 <p>下面就是关于梯度下降的构想：</p>
-<p><img src="/img/16_07_24/002.png"></p>
+<p><img src="/img/16_07_24/002.png" alt=""></p>
 <p>我们要做的是我们要开始对$θ_{0}$和$θ_{0}$进行一些初步猜测。它们到底是什么其实并不重要，但通常的选择是将$θ_{0}$设为0将$θ_{1}$也设为0，将它们都初始化为0。我们在梯度下降算法中要做的就是不停地一点点地改变 $θ_{0}$和$θ_{1}$，试图通过这种改变使得$J(θ_{0}, θ_{1})$变小，直到我们找到$J$的最小值，或许是局部最小值。</p>
 <p>让我们通过一些图片来看看梯度下降法是如何工作的：</p>
-<p><img src="/img/16_07_24/003.png"></p>
+<p><img src="/img/16_07_24/003.png" alt=""></p>
 <p>我在试图让这个函数值最小，注意坐标轴$θ_{0}$和$θ_{1}$在水平轴上，而函数$J$在垂直坐标轴上。图形表面高度则是$J$的值，我们希望最小化这个函数，所以我们从$θ_{0}$和$θ_{1}$的某个值出发，所以想象一下，对$θ_{0}$和$θ_{1}$赋以某个初值，也就是对应于从这个函数表面上的某个起始点出发。所以不管$θ_{0}$和$θ_{1}$的取值是多少，我将它们初始化为0，但有时你也可把它初始化为其他值。</p>
 <p>现在我希望大家把这个图像想象为一座山，想像类似这样的景色：公园中有两座山，想象一下你正站立在山的这一点上，站立在你想象的公园这座红色山上。在梯度下降算法中我们要做的就是旋转360度，看看我们的周围，并问自己我要在某个方向上用小碎步尽快下山，如果我想要尽快走下山，这些小碎步需要朝什么方向? </p>
 <p>如果我们站在山坡上的这一点，你看一下周围，你会发现最佳的下山方向大约是那个方向。好的现在你在山上的新起点上：</p>
-<p><img src="/img/16_07_24/004.png"></p>
+<p><img src="/img/16_07_24/004.png" alt=""></p>
 <p>你再看看周围，然后再一次想想我应该从什么方向迈着小碎步下山?然后你按照自己的判断又迈出一步，往那个方向走了一步，然后重复上面的步骤，从这个新的点，你环顾四周并决定从什么方向将会最快下山，然后又迈进了一小步，又是一小步，并依此类推……直到局部最低点的位置。</p>
-<p><img src="/img/16_07_24/005.gif"></p>
+<p><img src="/img/16_07_24/005.gif" alt=""></p>
 <p>此外这种下降有一个有趣的特点，第一次我们是从这个点开始进行梯度下降算法的，在这一点上从这里开始。现在想象一下我们在刚才的右边一些的位置，开始使用梯度下降。如果你重复上述步骤停留在该点并环顾四周，往下降最快的方向迈出一小步，然后环顾四周，又迈出一步然后如此往复，如果你从右边不远处开始，梯度下降算法将会带你来到这个右边的第二个局部最优处：</p>
-<p><img src="/img/16_07_24/006.png"></p>
+<p><img src="/img/16_07_24/006.png" alt=""></p>
 <p>如果从刚才的第一个点出发，你会得到第一个局部最优解，但如果你的起始点偏移了一些，你会得到一个非常不同的局部最优解。这就是梯度下降算法的一个特点。我们会在之后继续探讨这个问题。</p>
 <p>看看这个图，这是梯度下降算法的定义：</p>
-<p><img src="/img/16_07_24/007.png"></p>
+<p><img src="/img/16_07_24/007.png" alt=""></p>
 <p>我们将会反复做这些直到收敛。我们要更新参数$θ_{j}$，方法是反复执行$θ_{j} - α\frac{∂}{∂θ_{j}}J(θ_{0},θ_{1})$。</p>
 <p>让我们来看看这个公式有很多细节问题，我来详细讲解一下。</p>
 <p>首先，注意这个符号$:=$，我们使用$:=$表示<strong>赋值</strong>。这是一个赋值运算符。具体地说，如果我写$a:= b$在计算机专业内，这意味着不管$a$的值是什么，取$b$的值并将其赋给$a$这意味着我们让$a$等于$b$的值 这就是赋值。我也可以这样写 $a:= a+1$这意味着取出$a$值并将其增加1。与此不同的是如果我写$a=b$就是在断言$a$的值是等于$b$的值。</p>
-<p>其次，这里的$α$是一个数字，被称为<strong>学习速率(learn )**。什么是$α$呢?在</strong>梯度下降算法中它控制了我们下山时会迈出多大的步子**。因此如果$α$值很大，那么相应的梯度下降过程中，我们会试图用大步子下山；如果$α$值很小，那么我们会迈着很小的小碎步下山。关于如何设置$α$的值等内容，在之后的课程中我会回到这里并且详细说明。</p>
+<p>其次，这里的$α$是一个数字，被称为<strong>学习速率(learn )</strong>。什么是$α$呢?在<strong>梯度下降算法中它控制了我们下山时会迈出多大的步子</strong>。因此如果$α$值很大，那么相应的梯度下降过程中，我们会试图用大步子下山；如果$α$值很小，那么我们会迈着很小的小碎步下山。关于如何设置$α$的值等内容，在之后的课程中我会回到这里并且详细说明。</p>
 <p>最后，是公式的这一部分：$\frac{∂}{∂θ_{j}}J(θ_{0},θ_{1})$这是一个微分项。我现在不想谈论它，但我会推导出这个微分项，并告诉你到底这要如何计算。你们中有人大概比较熟悉微积分，但即使你不熟悉微积分也不用担心，我会告诉你对这一项你最后需要做什么。</p>
 <p>现在，在梯度下降算法中还有一个更微妙的问题：在梯度下降中，当$j=0$和$j=1$时，更新$θ_{0}$和$θ_{1}$的值，等式产生更新。实现梯度下降算法的微妙之处是，在这个表达式中如果你要更新这个等式，你需要同时更新$θ_{0}$和$θ_{1}$。我的意思是在这个等式中我们要这样更新</p>
-<p>$$<br>θ_{0} := θ_{0} - 一些东西<br>$$</p>
-<p>并更新 </p>
-<p>$$<br>θ_{1} := θ_{1} - 一些东西<br>$$</p>
-<p>实现方法是你应该计算公式右边的部分，通过那一部分计算出$θ_{0}$和$θ_{1}$的值，然后同时更新$θ_{0}$和$θ_{1}$。</p>
+<script type="math/tex; mode=display">
+θ\_{0} := θ\_{0} - 一些东西</script><p>并更新 </p>
+<script type="math/tex; mode=display">
+θ\_{1} := θ\_{1} - 一些东西</script><p>实现方法是你应该计算公式右边的部分，通过那一部分计算出$θ_{0}$和$θ_{1}$的值，然后同时更新$θ_{0}$和$θ_{1}$。</p>
 <p>让我进一步阐述这个过程。在梯度下降算法中，这是正确实现同时更新的方法：</p>
-<p><img src="/img/16_07_24/008.png"></p>
+<p><img src="/img/16_07_24/008.png" alt=""></p>
 <p>我要先设temp0和temp1变量，并且为它们付初值。然后同时更新$θ_{0}$和$θ_{1}$。这才是正确的实现方法。</p>
 <p>与此相反，下面是不正确的实现方法：</p>
-<p><img src="/img/16_07_24/009.png"></p>
+<p><img src="/img/16_07_24/009.png" alt=""></p>
 <p>因为它没有做到同步更新。在这种不正确的实现方法中，我们计算 temp0然后更新$θ_{0}$，然后我们计算temp1，然后我们将 temp1赋给$θ_{1}$。这种方法和上面的方法的区别是，在计算temp1之前你已经更新了$θ_{0}$，那么你会使用$θ_{0}$的新的值来计算这个微分项，那么这会产生一个与上边不同的temp1的值。所以这并不是正确地实现梯度下降的做法。</p>
 <p>同时更新是梯度下降中的一种常用方法。我们之后会讲到，实际上<strong>同步更新</strong>是更自然的实现方法。<strong>当人们谈到梯度下降时，他们的意思就是同步更新。</strong>如果用非同步更新去实现算法，代码可能也会正确工作，但是上边那种不正确的方法并不是人们所指的那个梯度下降算法，而是具有不同性质的其他算法。由于各种原因，这其中会表现出微小的差别。你应该做的是在梯度下降中真正实现同时更新，这些就是梯度下降算法的梗概。</p>
 <p>在接下来的视频中，我们要进入这个微分项的细节之中。我已经写了出来但没有真正定义。如果你已经修过微积分课程，如果你熟悉偏导数和导数，这其实就是这个微分项。如果你不熟悉微积分，不用担心。即使你之前没有看过微积分，或者没有接触过偏导数，在接下来的视频中你会得到一切你需要知道的如何计算这个微分项的知识。下一个视频中希望我们能够给出实现梯度下降算法的所有知识。</p>
@@ -171,35 +307,35 @@
 <p>在之前的视频中，我们给出了一个数学上关于梯度下降的定义。本次视频我们更深入研究一下，更直观地感受一下这个算法是做什么的，以及梯度下降算法的更新过程有什么意义。</p>
 </blockquote>
 <p>这是我们上次视频中看到的梯度下降算法：</p>
-<p><img src="/img/16_07_24/007.png"></p>
+<p><img src="/img/16_07_24/007.png" alt=""></p>
 <p>提醒一下，这个参数$α$术语称为<strong>学习速率</strong>。它控制我们以多大的幅度更新这个参数$θ_{j}$。第二部分是导数项。而我在这个视频中要做的就是给你一个更直观的认识，这两部分有什么用，以及为什么当把这两部分放一起时，整个更新过程是有意义的。为了更好地让你明白我要做是用一个稍微简单的例子：比如我们想最小化的那个函数只有一个参数的情形，所以假如我们有一个代价函数$J$只有一个参数$θ_{1}$，那么我们可以画出一维的曲线：</p>
-<p><img src="/img/16_07_24/010.png"></p>
+<p><img src="/img/16_07_24/010.png" alt=""></p>
 <p>假如这是关于$θ_{1}$的函数$J$，其中$θ_{1}$是一个实数。现在我们已经对这个点上用于梯度下降法的$θ_{1}$进行了初始化。想象一下在我的函数图像上从这个点出发，那么梯度下降要做的事情是不断更新$θ_{j} - α\frac{∂}{∂θ_{j}}J(θ_{0},θ_{1})$这个项。我们要计算这个导数，我不确定之前你是否在微积分中学过导数，但对于这个问题，基本上可以说取这一点的切线，这条切线的斜率，其实这就是导数：</p>
-<p><img src="/img/16_07_24/011.png"></p>
+<p><img src="/img/16_07_24/011.png" alt=""></p>
 <p>现在这条线有一个正斜率，也就是说它有正导数。因此我得到的新的θ是：</p>
-<p>$$<br>θ_{1} := θ_{1} - α(positive num)<br>$$</p>
-<p>其中$positive num$就是一个为整数的斜率。$α$也就是学习速率也是一个正数，所以我要使$θ_{1}$减去一个东西，所以相当于我将$θ_{1}$向左移，使$θ_{1}$变小了。实际上我往这个方向移动，确实让我更接近那边的最低点：</p>
-<p><img src="/img/16_07_24/012.png"></p>
+<script type="math/tex; mode=display">
+θ\_{1} := θ\_{1} - α(positive num)</script><p>其中$positive num$就是一个为整数的斜率。$α$也就是学习速率也是一个正数，所以我要使$θ_{1}$减去一个东西，所以相当于我将$θ_{1}$向左移，使$θ_{1}$变小了。实际上我往这个方向移动，确实让我更接近那边的最低点：</p>
+<p><img src="/img/16_07_24/012.png" alt=""></p>
 <p>所以梯度下降到目前为止似乎是在做正确的事。</p>
 <p>让我们来看看另一个例子。我们用同样的函数$J$，同样再画出函数$J(θ_{1})$的图像。而这次我们把参数初始化到左边这点：</p>
-<p><img src="/img/16_07_24/013.png"></p>
+<p><img src="/img/16_07_24/013.png" alt=""></p>
 <p>现在这一点切线的斜率，就是这个点的导数。但是这条线向下倾斜，所以这个点的导数是负数。因此，这个导数项小于等于零。所以当我更新$θ$时$θ$被更新为：</p>
-<p>$$<br>θ_{1} := θ_{1} - α(negative num)<br>$$</p>
-<p>这意味着我实际上是在增加$θ_{1}$，因为这是减去一个负数，意味着给$θ$加上一个正数。因此，我们将增加$θ_{1}$的值，这也让我更接近最小值了。</p>
+<script type="math/tex; mode=display">
+θ\_{1} := θ\_{1} - α(negative num)</script><p>这意味着我实际上是在增加$θ_{1}$，因为这是减去一个负数，意味着给$θ$加上一个正数。因此，我们将增加$θ_{1}$的值，这也让我更接近最小值了。</p>
 <p>让我们接下来再看一看学习速率$α$：如果$α$太小或$α$太大，会出现什么情况。</p>
 <p>这第一个例子:$α$太小会发生什么呢?</p>
-<p><img src="/img/16_07_24/014.png"></p>
+<p><img src="/img/16_07_24/014.png" alt=""></p>
 <p>如果α太小了，那么我要做的是要去用一个比较小的数乘以更新的值。 所以如果我的学习速率太小，结果就是只能这样像小宝宝一样一点点地挪动，去努力接近最低点。所以如果$α$太小的话，可能会很慢。因为它需要很多步才能到达全局最低点。</p>
 <p>那么如果$α$太大又会怎样呢?</p>
 <p>如果$α$太大，那么梯度下降法可能会越过最低点，甚至可能无法收敛。比如我们从一个已经接近最低点的点开始，由于导数是负数，因此指向右侧。但如果$α$太大的话，我会迈出很大一步。我的代价函数可能会离这个最低点越来越远。</p>
-<p><img src="/img/16_07_24/015.png"></p>
+<p><img src="/img/16_07_24/015.png" alt=""></p>
 <p>现在我的导数指向左侧，实际上在减小$θ$，但是你看如果我的学习速率过大，我会移动一大步，从这点一下子又到那点了。如果我的学习率太大，下一次迭代又移动了一大步，越过一次又越过一次，一次次越过最低点。直到你发现实际上离最低点越来越远，所以如果$α$太大，它会导致无法收敛，甚至发散。</p>
-<p><img src="/img/16_07_24/016.png"></p>
+<p><img src="/img/16_07_24/016.png" alt=""></p>
 <p>现在我还有一个问题，这问题挺狡猾的。当我第一次学习这个地方时 我花了很长一段时间才理解这个问题。如果我们预先把$θ_{1}$放在一个局部的最低点，你认为下一步梯度下降法会怎样工作？ </p>
-<p><img src="/img/16_07_24/017.png"></p>
+<p><img src="/img/16_07_24/017.png" alt=""></p>
 <p>其实，如果你将$θ_{1}$初始化在局部最优点，那么这一点的导数将等于0，因为那一点的切线是与x轴平行的，斜率为0。因此，在你的梯度下降更新过程中，所以$θ_{1}$的变化过程为：$θ_{1} := θ_{1} - α * 0$，所以这意味着你已经在局部最优点，它使得$θ_{1}$不再改变。因此，如果你的参数已经处于局部最低点，那么梯度下降法更新其实什么都没做。它不会改变参数的值。这也正是你想要的，因为它使你的解始终保持在局部最优点。</p>
 <p>局部最优点也解释了为什么即使学习速率$α$保持不变时，梯度下降也可以收敛到局部最低点。我们来看一个例子：</p>
-<p><img src="/img/16_07_24/018.png"></p>
+<p><img src="/img/16_07_24/018.png" alt=""></p>
 <p>这是代价函数$J(θ)$，我想找到它的最小值。首先在那个品红色的点初始化我的梯度下降算法，如果我更新一步梯度下降，它会带我到这个绿色的点，因为这个点的导数是相当陡的。现在，在这个绿色的点，再更新一步，你会发现我的导数(即斜率)相对于在品红色点是没那么陡的，对吧？因为<strong>随着我接近最低点，我的导数越来越接近零</strong>。所以，梯度下降一步后，新的导数会变小一点点。然后我想再梯度下降一步，在这个绿点我会用一个更小的一步到达新的红色点，这时更接近全局最低点了。因此这点的导数会比在绿点时更小。所以我再进行一步梯度下降时，我的导数项是更小的，$θ_{1}$更新的幅度就会更小，所以你会移动更小的一步。<strong>随着梯度下降法的运行，你移动的幅度会自动变得越来越小，直到最终移动幅度非常小，你会发现已经收敛到局部极小值。</strong>所以回顾一下，在梯度下降法中，当我们接近局部最低点时 梯度下降法会自动采取更小的幅度，这是因为当我们接近局部最低点时，很显然在局部最低时导数等于零。所以当我们，接近局部最低时，导数值会自动变得越来越小，所以梯度下降将自动采取较小的幅度。<strong>所以实际上没有必要再另外减小α</strong>。</p>
 <p>这就是梯度下降算法，你可以用它来最小化任何代价函数$J$。不只是线性回归中的代价函数$J$。在接下来的视频中，我们要用代价函数$J$回到它的本质：线性回归中的代价函数(也就是我们前面得出的平方误差函数)结合梯度下降法以及平方代价函数，我们会得出第一个机器学习算法即线性回归算法。</p>
 <h3 id="线性回归中的梯度下降"><a href="#线性回归中的梯度下降" class="headerlink" title="线性回归中的梯度下降"></a>线性回归中的梯度下降</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/kCvQc/gradient-descent-for-linear-regression">视频地址</a></p>
@@ -207,189 +343,353 @@
 <p>在以前的视频中我们谈到关于梯度下降算法。梯度下降是很常用的算法 它不仅被用在线性回归上和线性回归模型、平方误差代价函数。在这段视频中，我们要<strong>将梯度下降和代价函数结合</strong>，在后面的视频中我们将用到此算法，并将其应用于具体的拟合直线的线性回归算法里。</p>
 </blockquote>
 <p>这就是我们在之前的课程里所做的工作：</p>
-<p><img src="/img/16_07_24/019.png"></p>
+<p><img src="/img/16_07_24/019.png" alt=""></p>
 <p>左侧梯度下降法，这个算法你应该很熟悉。右侧是线性回归模型，还有线性假设和平方误差代价函数。我们将要做的就是：用梯度下降的方法 来最小化平方误差代价函数。为了达到梯度下降，我们需要的关键项 是这里这个微分项 ：</p>
-<p>$$<br>\frac{∂}{∂θ_{j}}J(θ_{0},θ_{1})<br>$$</p>
-<p>通过之前学习的公式，带入之后，可以得出：</p>
-<p>$$<br>\begin{align*}<br>\frac{∂}{∂θ_{j}}J(θ_{0},θ_{1})<br>&amp;=<br>\frac{∂}{∂θ_{j}}<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br>&amp;=<br>\frac{∂}{∂θ_{j}}<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(θ_{0} + θ_{1}(x^{(i)}) - y^{(i)})^{2}\\<br>\end{align*}<br>$$</p>
-<p>实际上我们需要弄清楚这两个偏导数项是什么：</p>
-<p>$$<br>j = 0 时: \frac{∂}{∂θ_{0}}J(θ_{0},θ_{1}) = ?<br>\\<br>j = 1 时: \frac{∂}{∂θ_{1}}J(θ_{0},θ_{1}) = ?<br>$$</p>
-<p>其实根据上面的推导，我们很容易就能得出结果：</p>
-<p>$$<br>\begin{align*}<br>j = 0 时: \frac{∂}{∂θ_{0}}J(θ_{0},θ_{1})<br>&amp;=<br>\frac{∂}{∂θ_{0}}<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br>&amp;=<br>\frac{1}{m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})<br>\\<br>j = 1 时: \frac{∂}{∂θ_{1}}J(θ_{0},θ_{1})<br>&amp;=<br>\frac{∂}{∂θ_{1}}<br>\frac{1}{2m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})^{2}\\<br>&amp;=<br>\frac{1}{m}<br>\sum_{i=1}^{m}<br>(h_{θ}(x^{(i)}) - y^{(i)})·x^{i}<br>\end{align*}<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+\frac{∂}{∂θ\_{j}}J(θ\_{0},θ\_{1})</script><p>通过之前学习的公式，带入之后，可以得出：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+\frac{∂}{∂θ\_{j}}J(θ\_{0},θ\_{1})
+&=
+\frac{∂}{∂θ\_{j}}
+\frac{1}{2m}
+\sum\_{i=1}^{m}
+(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
+&=
+\frac{∂}{∂θ\_{j}}
+\frac{1}{2m}
+\sum\_{i=1}^{m}
+(θ\_{0} + θ\_{1}(x^{(i)}) - y^{(i)})^{2}\\\\
+\end{align\*}</script><p>实际上我们需要弄清楚这两个偏导数项是什么：</p>
+<script type="math/tex; mode=display">
+j = 0 时: \frac{∂}{∂θ\_{0}}J(θ\_{0},θ\_{1}) = ?
+\\\\
+j = 1 时: \frac{∂}{∂θ\_{1}}J(θ\_{0},θ\_{1}) = ?</script><p>其实根据上面的推导，我们很容易就能得出结果：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+j = 0 时: \frac{∂}{∂θ\_{0}}J(θ\_{0},θ\_{1}) 
+&= 
+\frac{∂}{∂θ\_{0}}
+\frac{1}{2m}
+\sum\_{i=1}^{m}
+(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
+&=
+\frac{1}{m}
+\sum\_{i=1}^{m}
+(h\_{θ}(x^{(i)}) - y^{(i)})
+\\\\
+j = 1 时: \frac{∂}{∂θ\_{1}}J(θ\_{0},θ\_{1})
+&=
+\frac{∂}{∂θ\_{1}}
+\frac{1}{2m}
+\sum\_{i=1}^{m}
+(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
+&=
+\frac{1}{m}
+\sum\_{i=1}^{m}
+(h\_{θ}(x^{(i)}) - y^{(i)})·x^{i}
+\end{align\*}</script><blockquote>
 <p>计算这些偏导数项需要一些多元微积分，如果你掌握了微积分你可以随便自己推导这些。但如果你不太熟悉微积分，别担心，你可以直接用这些已经算出来的结果。你不需要掌握微积分或者别的东西来完成作业，你只需要会用梯度下降就可以。</p>
 </blockquote>
 <p>在我们算出这些微分项以后 这些微分项实际上就是代价函数$J$的斜率。现在可以将它们放回我们的梯度下降算法中：</p>
-<p><img src="/img/16_07_24/020.png"></p>
+<p><img src="/img/16_07_24/020.png" alt=""></p>
 <p>所以这就是专用于线性回归的梯度下降。反复执行括号中的式子直到收敛。$θ_{0}$和$θ_{1}$不断被更新。</p>
 <p><strong>提醒一下：执行梯度下降时有一个细节要注意，就是必须要同时更新$θ_{0}$和$θ_{1}$。</strong></p>
 <p>所以让我们来看看梯度下降是如何工作的。我们用梯度下降解决问题的 一个原因是它更容易得到局部最优值。当我第一次解释梯度下降时，我展示过这幅图：</p>
-<p><img src="/img/16_07_24/021.png"></p>
+<p><img src="/img/16_07_24/021.png" alt=""></p>
 <p>我们知道根据你的初始化的不同，你会得到不同的局部最优解。但是 事实证明，用于线性回归的代价函数，总是这样一个弓形的样子：</p>
-<p><img src="/img/16_07_24/022.png"></p>
-<p>这个函数的专业术语是：**凸函数(convex function)**。</p>
+<p><img src="/img/16_07_24/022.png" alt=""></p>
+<p>这个函数的专业术语是：<strong>凸函数(convex function)</strong>。</p>
 <p>我不打算在这门课中给出凸函数的定义，但不正式的说法是它就是一个弓形的函数。<strong>因此这个函数，没有任何局部最优解，只有一个全局最优解。</strong>并且无论什么时候，你对这种代价函数使用线性回归，梯度下降法得到的结果，总是收敛到全局最优值。因为没有全局最优以外的其他局部最优点。</p>
 <p>现在让我们来看看这个算法的执行过程：</p>
 <p>像往常一样这是假设函数的图，还有代价函数$J$的图：</p>
-<p><img src="/img/16_07_24/023.png"></p>
+<p><img src="/img/16_07_24/023.png" alt=""></p>
 <p>为了展示需要，在这个梯度下降的实现中，我们把$θ_{0}$初始化为900，$θ_{1}$初始化为-0.1。这对应的假设就应该是这样$h(x)= 900 - 0.1x$。</p>
 <p>现在如果我们进行梯度下降，在之前点的基础上向左下方移动了一小步，这就得到了第二个点。而且你注意到这条线改变了一点点，然后我再继续一步步进行梯度下降，左边这条线就会越来越拟合所有的点，直到它渐渐的收敛于全局最小值。这个全局最小值对应的假设函数给出了最拟合数据的解，这就是梯度下降法。</p>
-<p><img src="/img/16_07_24/024.gif"></p>
+<p><img src="/img/16_07_24/024.gif" alt=""></p>
 <p>我们最终得到了房价数据的最好拟合结果，现在你可以用它来预测。假如你有个朋友，他有一套房子面积1250平方英尺(约116平米)。现在你可以通过这个数据，然后告诉他们，也许他的房子可以卖到35万美元。</p>
-<p>实际上我们刚刚使用的算法，有时也称为**批量梯度下降(Batch Gradient Descent)**。”批量梯度下降”指的是在梯度下降的每一步中，我们都用到了所有的训​​练样本。在梯度下降中，在计算微分求导项时，我们需要进行求和运算。所以在每一个单独的梯度下降中，我们最终都要计算这样一个东西，这个项需要对所有$m$个训练样本求和。因此，“批量梯度下降法”这个名字说明了我们需要考虑所有这一”批”训练样本。事实上有时也有其他类型的“梯度下降法”不是这种”批量”型的，不考虑整个的训练集而是每次只关注训练集中的一些小的子集。在后面的课程中我们也将介绍这些方法。但就目前而言，应用刚刚学到的算法，你应该已经掌握了批量梯度算法并且能把它应用到线性回归中了。</p>
-<p>这就是用于线性回归的梯度下降法。如果你之前学过线性代数，你应该知道有一种计算代价函数$J$最小值的数值解法，不需要梯度下降这种迭代算法。在后面的课程中，我们也会谈到这个方法。它可以在不需要 多步梯度下降的情况下也能解出代价函数$J$的最小值，这是另一种称为<strong>正规方程(normal equations)**的方法。可能你之前已经听说过这种方法，但实际上在数据量较大的情况下，梯度下降法比正规方程要更适用一些。现在我们已经掌握了梯度下降，我们可以在不同的环境中使用梯度下降法。我们还将在不同的机器学习问题中大量地使用它。所以祝贺大家成功学会你的第一个机器学习算法！希望大家能让这些算法真正地为你工作。但在此之前，我还想先在下一组视频中告诉你</strong>“泛化的梯度下降算法”**，这将使梯度下降更加强大。在下一段视频中我将介绍这一问题。</p>
+<p>实际上我们刚刚使用的算法，有时也称为<strong>批量梯度下降(Batch Gradient Descent)</strong>。”批量梯度下降”指的是在梯度下降的每一步中，我们都用到了所有的训​​练样本。在梯度下降中，在计算微分求导项时，我们需要进行求和运算。所以在每一个单独的梯度下降中，我们最终都要计算这样一个东西，这个项需要对所有$m$个训练样本求和。因此，“批量梯度下降法”这个名字说明了我们需要考虑所有这一”批”训练样本。事实上有时也有其他类型的“梯度下降法”不是这种”批量”型的，不考虑整个的训练集而是每次只关注训练集中的一些小的子集。在后面的课程中我们也将介绍这些方法。但就目前而言，应用刚刚学到的算法，你应该已经掌握了批量梯度算法并且能把它应用到线性回归中了。</p>
+<p>这就是用于线性回归的梯度下降法。如果你之前学过线性代数，你应该知道有一种计算代价函数$J$最小值的数值解法，不需要梯度下降这种迭代算法。在后面的课程中，我们也会谈到这个方法。它可以在不需要 多步梯度下降的情况下也能解出代价函数$J$的最小值，这是另一种称为<strong>正规方程(normal equations)</strong>的方法。可能你之前已经听说过这种方法，但实际上在数据量较大的情况下，梯度下降法比正规方程要更适用一些。现在我们已经掌握了梯度下降，我们可以在不同的环境中使用梯度下降法。我们还将在不同的机器学习问题中大量地使用它。所以祝贺大家成功学会你的第一个机器学习算法！希望大家能让这些算法真正地为你工作。但在此之前，我还想先在下一组视频中告诉你<strong>“泛化的梯度下降算法”</strong>，这将使梯度下降更加强大。在下一段视频中我将介绍这一问题。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/07/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(5)%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0/" data-id="ckkwc437s007jpas9h0j0aqbz" data-title="斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/07/22/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/" rel="prev" title="gradle学习笔记-使用gradle图形界面">
+      <i class="fa fa-chevron-left"></i> gradle学习笔记-使用gradle图形界面
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/07/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(6)%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0/" rel="next" title="斯坦福机器学习课程 第一周 (6)线性代数复习">
+      斯坦福机器学习课程 第一周 (6)线性代数复习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="nav-number">1.</span> <span class="nav-text">梯度下降</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">梯度下降算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">深入研究梯度下降算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%AD%E7%9A%84%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="nav-number">1.3.</span> <span class="nav-text">线性回归中的梯度下降</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/07/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(6)%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%A4%8D%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第一周 (6)线性代数复习
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/07/22/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">gradle学习笔记-使用gradle图形界面</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '0a9efc9ad0ffcd18370c5ac2daa6056d',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

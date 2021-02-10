@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第六周 (2)偏差VS方差 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="偏差 VS 方差视频地址  当你运行一个学习算法时，如果这个算法的表现不理想，那么多半是出现两种情况：要么是偏差比较大、要么是方差比较大。换句话说，出现的情况要么是欠拟合、要么是过拟合问题。 对于这两种情况，哪个和偏差有关，哪个和方差有关，或者是不是和两个都有关，搞清楚这一点非常重要。因为这两种情况其实是一个很有效的指示器，指示着改进算法最有效的方法和途径。 在这一节中，我将更深入地探讨一下有关偏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第六周 (2)偏差VS方差">
 <meta property="og:url" content="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="偏差 VS 方差视频地址  当你运行一个学习算法时，如果这个算法的表现不理想，那么多半是出现两种情况：要么是偏差比较大、要么是方差比较大。换句话说，出现的情况要么是欠拟合、要么是过拟合问题。 对于这两种情况，哪个和偏差有关，哪个和方差有关，或者是不是和两个都有关，搞清楚这一点非常重要。因为这两种情况其实是一个很有效的指示器，指示着改进算法最有效的方法和途径。 在这一节中，我将更深入地探讨一下有关偏">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/16_10_24/014.png">
@@ -57,93 +71,215 @@
 <meta property="og:image" content="http://example.com/img/16_10_24/055.png">
 <meta property="og:image" content="http://example.com/img/16_10_24/056.png">
 <meta property="article:published_time" content="2016-10-24T22:28:58.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.005Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/16_10_24/014.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第六周 (2)偏差VS方差 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第六周 (2)偏差VS方差" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/" class="article-date">
-  <time class="dt-published" datetime="2016-10-24T22:28:58.000Z" itemprop="datePublished">2016-10-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第六周 (2)偏差VS方差
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第六周 (2)偏差VS方差
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-24 22:28:58" itemprop="dateCreated datePublished" datetime="2016-10-24T22:28:58+00:00">2016-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="偏差-VS-方差"><a href="#偏差-VS-方差" class="headerlink" title="偏差 VS 方差"></a>偏差 VS 方差</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/yCAup/diagnosing-bias-vs-variance">视频地址</a></p>
 <blockquote>
@@ -152,36 +288,36 @@
 <p>在这一节中，我将更深入地探讨一下有关偏差和方差的问题，希望你能对它们有一个更深入的理解，并且也能弄清楚怎样评价一个学习算法，能够判断一个算法是偏差还是方差有问题。</p>
 </blockquote>
 <p>下面这几幅图，可能你已经见过很多次了：</p>
-<p><img src="/img/16_10_24/014.png"></p>
+<p><img src="/img/16_10_24/014.png" alt=""></p>
 <p>如果你用两个很简单的假设来拟合数据，那么不足以拟合这组数据（欠拟合）：</p>
-<p><img src="/img/16_10_24/015.png"></p>
+<p><img src="/img/16_10_24/015.png" alt=""></p>
 <p>而如果你用两个很复杂的假设来拟合时，那么对训练集来说，则会拟合的很好，但又过于完美（过拟合）：</p>
-<p><img src="/img/16_10_24/016.png"></p>
+<p><img src="/img/16_10_24/016.png" alt=""></p>
 <p>而像这样的中等复杂度的假设，对数据拟合得刚刚好：</p>
-<p><img src="/img/16_10_24/017.png"></p>
+<p><img src="/img/16_10_24/017.png" alt=""></p>
 <p>此时对应的泛华误差，也是三种情况中最小的。</p>
 <p>现在我们已经掌握了“训练集”、“验证集”和“测试集”的概念，我们就能更好地理解偏差和方差的问题。</p>
 <p>具体来说，我们沿用之前所使用的训练集误差和验证集误差的定义（也就是平方误差）即对训练集或验证集数据进行预测，所产生的平均平方误差。</p>
 <p>下面我们来画出如下这个示意图，其中横坐标代表多项式的次数，纵坐标表示训练误差。其中<strong>蓝色线表示训练集误差的变化情况</strong>，<strong>红色线表示验证集误差的变化情况</strong>：</p>
-<p><img src="/img/16_10_24/018.png"></p>
+<p><img src="/img/16_10_24/018.png" alt=""></p>
 <p>可以看到随着多项式次数的增多，训练集误差呈下降趋势，验证集误差呈先降后升的趋势。</p>
 <h3 id="如何分辨算法处于偏差还是方差？"><a href="#如何分辨算法处于偏差还是方差？" class="headerlink" title="如何分辨算法处于偏差还是方差？"></a>如何分辨算法处于偏差还是方差？</h3><p>假设你得出了一个学习算法，而这个算法并没有表现地如你期望那么好，所以你的交叉验证误差或者测试集误差都很大，我们应该如何判断此时的学习算法正处于高偏差的问题还是高方差的问题呢？</p>
-<p><img src="/img/16_10_24/019.png"></p>
+<p><img src="/img/16_10_24/019.png" alt=""></p>
 <p>图中左边点表示偏差(bias)情况，右侧点表示方差(variance)情况。</p>
 <h4 id="偏差情况"><a href="#偏差情况" class="headerlink" title="偏差情况"></a>偏差情况</h4><p>可以看到偏差情况下，测试集误差和验证集误差都很大，两者误差可能很接近：</p>
-<p><img src="/img/16_10_24/020.png"></p>
+<p><img src="/img/16_10_24/020.png" alt=""></p>
 <p>那么当你遇到这种情况，就说明你的算法正处于高偏差的问题。</p>
 <h4 id="方差情况"><a href="#方差情况" class="headerlink" title="方差情况"></a>方差情况</h4><p>而反过来，如果你的交叉验证集误差远远大于训练集误差：</p>
-<p><img src="/img/16_10_24/021.png"></p>
+<p><img src="/img/16_10_24/021.png" alt=""></p>
 <p>这就预示着你的算法正处于高方差和过拟合的情况。</p>
 <h2 id="正则化和偏差-方差"><a href="#正则化和偏差-方差" class="headerlink" title="正则化和偏差/方差"></a>正则化和偏差/方差</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/4VDlf/regularization-and-bias-variance">视频地址</a></p>
 <blockquote>
 <p>你现在应该已经知道算法正则化可以有效地防止过拟合，但正则化跟算法的偏差和方差又有什么关系呢？在这一节中，我想更深入地探讨一下偏差和方差的问题。讨论一下两者之间是如何互相影响的，以及和算法的正则化之间的相互关系。</p>
 </blockquote>
 <p>假设我们要对这样一个高阶多项式进行拟合：</p>
-<p><img src="/img/16_10_24/022.png"></p>
+<p><img src="/img/16_10_24/022.png" alt=""></p>
 <p>为了防止过拟合现象，我们要使用一个正则化项，因此我们试图通过这样一个正则化项：</p>
-<p><img src="/img/16_10_24/023.png"></p>
+<p><img src="/img/16_10_24/023.png" alt=""></p>
 <p>来让参数的值尽可能的小。正则化项的求和范围照例取为$j=1$到$j=m$，而非$j=0$到$j=m$。</p>
 <h3 id="正则化参数-λ-对假设函数的影响"><a href="#正则化参数-λ-对假设函数的影响" class="headerlink" title="正则化参数$λ$对假设函数的影响"></a>正则化参数$λ$对假设函数的影响</h3><p>然后我们来分析以下三种情形：</p>
 <ul>
@@ -195,50 +331,49 @@
 </ul>
 <blockquote>
 <p>在这种情况下，如果我们要拟合一个高阶多项式的话，那么我们通常会处于过拟合（overfitting）的情况。</p>
-<img src="/img/16_10_24/025.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/025.png" width = "300" height = "200" align=center /></p>
 <p>在拟合一个高阶多项式时，如果没有进行正则化或者正则化程度很微小的话，我们通常会得到高方差和过拟合的结果。因为$λ$的值等于0，相当于没有正则化项，因此会对假设过拟合。</p>
 </blockquote>
 <ul>
 <li><strong>只有当我们取一个中间大小的，既不大也不小的$λ$值时，我们才会得到一组合理的对数据刚好拟合的$\theta$参数值。</strong></li>
 </ul>
 <blockquote>
-<img src="/img/16_10_24/026.png" width = "300" height = "200" align=center />
+<p><img src="/img/16_10_24/026.png" width = "300" height = "200" align=center /></p>
 </blockquote>
 <p>那么我们应该怎样自动地选择出一个最合适的正则化参数$λ$呢？</p>
 <p>重申一下，我们的模型和学习参数以及最优化目标是这样的:</p>
 <p>让我们假设在使用正则化的情形中，定义$Jtrain(\theta)$为另一种不同的形式，同样定义为最优化目标，但不使用正则化项:</p>
-<p><img src="/img/16_10_24/027.png"></p>
+<p><img src="/img/16_10_24/027.png" alt=""></p>
 <p>在先前的授课视频中，当我们没有使用正则化时，我们定义的$JTrain(\theta)$就是代价函数$J(\theta)$。</p>
 <p>但当我们使用正则化，多出这个$λ$项时，我们就将训练集误差($Jtrain$)定义为<strong>训练集数据预测误差的平方求和</strong>。或者说是训练集的评价误差平方和，但不考虑正则化项。</p>
 <p>与此类似，我们来定义交叉验证集误差和测试集误差，和之前一样定义为对交叉验证集合测试集进行预测的平均误差平方和。</p>
-<p><img src="/img/16_10_24/028.png"></p>
+<p><img src="/img/16_10_24/028.png" alt=""></p>
 <p>总结一下，<strong>我们对于训练误差$Jtrain$,$Jcv$,$Jtest$的定义，都是平均误差平方和</strong>。</p>
 <hr>
 <h3 id="选择一个正确的-λ"><a href="#选择一个正确的-λ" class="headerlink" title="选择一个正确的$λ$"></a>选择一个正确的$λ$</h3><p>下面就是我们自动选取正则化参数$λ$的方法：</p>
 <p>通常我的做法是选取一系列我想要尝试的$λ$值。因此首先我可能考虑不使用正则化的情形，以及一系列我可能会试的值，比如说我可能从0.01,0.02,0.04开始，一直试下去，通常我会将步长设为2倍的速度增长，直到一个比较大的值。在本例中，我们最终取值为10.24（实际上我们取的值是10，但已经非常接近了）。</p>
-<p><img src="/img/16_10_24/029.png"></p>
+<p><img src="/img/16_10_24/029.png" alt=""></p>
 <p>因此，这样我就得到了12个不同的正则化参数$λ$，对应的12个不同的模型，当然了，你也可以试小于0.01的值或者大于10的值。但在这里，我就不讨论这些情况了。</p>
 <p>得到这12组模型后，接下来我们要做的事情是选用第一个模型，也就是$λ=0$，然后最小化我们的代价函数$J(\theta)$，这样我们就得到了某个参数向量$\theta$。</p>
 <p>与之前视频的做法类似，我使用$\theta^{(1)}$来表示第一个参数向量$\theta$然后我再取第二个模型$λ=0.01$的模型，最小化代价方差，当然现在$λ=0.01$，那么会得到一个完全不同的参数向量$\theta$，用$\theta^{(2)}$来表示。</p>
 <p>同理，接下来，我会得到$\theta^{(3)}$对应于我的第三个模型，以此类推，一直到最后一个$λ=10$或$λ=10.24$的模型对应的$\theta^{(12)}$。</p>
-<p><img src="/img/16_10_24/030.png"></p>
+<p><img src="/img/16_10_24/030.png" alt=""></p>
 <p>接下来我就可以用交叉验证集来评价这些假设参数了。</p>
 <p>因此，我可以从第一个模型开始，然后是第二个模型，对每一个不同的正这化参数$λ$进行拟合，然后用交叉验证集来评价每一个模型:</p>
-<p><img src="/img/16_10_24/031.png"></p>
+<p><img src="/img/16_10_24/031.png" alt=""></p>
 <p>测出每一个参数$\theta$在交叉验证集上的评价误差平方和，然后我就选取这12个模型中交叉验证集误差最小的那个模型作为最终选择。</p>
 <p>对于本例而言，假如说最终我选择了$\theta^{(5)}$，因为此时的交叉验证集误差最小，做完这些最后，如果我想看看该模型在测试集上的表现，我可以用经过学习得到的模型$\theta^{(5)}$来测出它对测试集的预测效果是如何。（再次重申，这里我们依然使用交叉验证集来拟合模型，这也是为什么我之前预留了一部分数据作为测试集的原因。）</p>
 <p>这样我就可以用这部分测试集比较准确地估算出我的参数向量$\theta$对于新样本的泛化能力，这就是模型选择在选取正则化参数$λ$时的应用。</p>
 <h3 id="正则化参数-λ-对交叉验证集误差和训练集误差产生的影响"><a href="#正则化参数-λ-对交叉验证集误差和训练集误差产生的影响" class="headerlink" title="正则化参数$λ$对交叉验证集误差和训练集误差产生的影响"></a>正则化参数$λ$对交叉验证集误差和训练集误差产生的影响</h3><p>在这一节中，我想讲的最后一个问题是，当我们改变正则化参数$λ$的值时，交叉验证集误差和训练集误差会随之发生怎样的变化。</p>
 <p>我想提醒一下，我们最初的代价函数$J(\theta)$是包含正则化项的，但在这里我们把训练误差和交叉验证集误差定义为不包括正则化项。</p>
-<p><img src="/img/16_10_24/033.png"></p>
+<p><img src="/img/16_10_24/033.png" alt=""></p>
 <p>我要做的是绘制出$Jtrain(\theta)$和$Jcv(\theta)$的曲线，表达的是随着增大正则化项参数$λ$，看看假设在训练集上的是如何变化的，以及在交叉验证集上表现如何变化。</p>
 <p>就像我们之前看到的，如果$λ$的值很小，那也就是说我们几乎没有使用正则化，因此我们有很大可能处于过拟合；而如果$λ$的值取的很大的时候，我们很有可能处于高偏差的情况。</p>
 <h3 id="λ-在训练集上的变化"><a href="#λ-在训练集上的变化" class="headerlink" title="$λ$在训练集上的变化"></a>$λ$在训练集上的变化</h3><p>所以，如果你画出$Jtrain(\theta)$和$Jcv(\theta)$的曲线，你就会发现当$λ$的取值很小时，对训练集的拟合相对较好，因为没有使用正则化。而如果$λ$的值很大时，你将处于高偏差问题，不能对训练集很好地拟合，训练集误差$Jtrain(\theta)$的值会趋于上升。</p>
-<p><img src="/img/16_10_24/032.png"></p>
+<p><img src="/img/16_10_24/032.png" alt=""></p>
 <p>此时，你练训练集都不能很好地拟合。反过来，当$λ$的值取得很小的时候，你的数据能随意地与高次多项式很好地拟合。</p>
 <h3 id="λ-在交叉验证集上的变化"><a href="#λ-在交叉验证集上的变化" class="headerlink" title="$λ$在交叉验证集上的变化"></a>$λ$在交叉验证集上的变化</h3><p>在曲线的右端，当$λ$的值取得很大时，我们会处于欠拟合问题。这对应着偏差问题，那么此时交叉验证集误差将会很大。我们的假设不能在交叉验证集上表现地比较好。</p>
-<p><img src="/img/16_10_24/034.png"></p>
+<p><img src="/img/16_10_24/034.png" alt=""></p>
 <p>而在曲线的左端，对应的是高方差问题，此时我们的$λ$值取得很小很小，因此我们会对数据过度拟合，所以交叉验证集误差也会很大。</p>
 <p>这就是当我们改变正则化参数$λ$的值时，交叉验证集误差和训练集误差随之发生的变化。当然，在中间取的某个$λ$的值，表现得刚好合适，这种情况下表现最好，交叉验证集误差或者测试集误差都很小。</p>
 <blockquote>
@@ -252,62 +387,50 @@
 <p>我经常使用学习曲线来判断某一个学习算法是否处于偏差方差问题，或者二者皆有。</p>
 </blockquote>
 <p>为了绘制一条学习曲线，我通常先绘制出$Jtrain(\theta)$（也就是训练集数据的平均误差平方和）或者$Jcv(\theta)$（也就是交叉验证集数据的平均误差平方和）。</p>
-<p><img src="/img/16_10_24/035.png"></p>
+<p><img src="/img/16_10_24/035.png" alt=""></p>
 <p>我要将其绘制成一个关于参数m的函数（也就是一个关于<strong>训练集样本总数</strong>的函数）。</p>
-<p><img src="/img/16_10_24/036.png"></p>
+<p><img src="/img/16_10_24/036.png" alt=""></p>
 <p>所以m一般都是一个常数，比如$m=100$，表示100组训练样本。但我要自己取一些m的值，比如说我取10，20，30或者40组训练集，然后绘制出训练集误差，以及交叉验证集误差。</p>
 <p>那么我们来看看，这条曲线绘制出来是什么样子。</p>
 <p>假设我使用二次函数来拟合模型：</p>
-<p>$$<br>h_{\theta}(x) = \theta_{0} + \theta_{1}x + \theta_{2}x^{2}<br>$$</p>
-<p>当只有一组训练样本，即$m=1$，假设函数对数据的拟合情况正如下图所示：</p>
-<img src="/img/16_10_24/037.png" width = "300" height = "200" align=center />
-
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + \theta\_{2}x^{2}</script><p>当只有一组训练样本，即$m=1$，假设函数对数据的拟合情况正如下图所示：</p>
+<p><img src="/img/16_10_24/037.png" width = "300" height = "200" align=center /></p>
 <p>由于我只有一个训练样本，拟合的结果很明显会很好。对这一个训练样本拟合，其误差一定为0。</p>
 <p>如果有两组训练样本，二次函数也能很好地拟合：</p>
-<img src="/img/16_10_24/038.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/038.png" width = "300" height = "200" align=center /></p>
 <p>即使是使用正则化，拟合结果也会很好。而如果不使用正则化的话，那么拟合效果绝对棒极了。</p>
 <p>如果我用三组训练样本的话，看起来依然能很好地用二次函数拟合：</p>
-<img src="/img/16_10_24/039.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/039.png" width = "300" height = "200" align=center /></p>
 <p>也就是说，当$m=1$、$m=2$或$m=3$时，对训练集数据进行预测，得到的训练集误差都将等于0（这里假设我不使用正则化，当然如果使用正则化那么误差就稍大于0）。</p>
 <p>好的，总结一下，我们现在已经看到，当训练样本容量m很小的时候，训练误差也会很小，因为很显然，如果我们训练集很小，那么很容易就能把训练集拟合到很好，甚至完全拟合。</p>
 <p>现在我们来看看当$m=4$的时候，二次函数似乎也能对数据拟合得很好：</p>
-<img src="/img/16_10_24/040.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/040.png" width = "300" height = "200" align=center /></p>
 <p>那我们再看当$m=5$的情况，这时候再用二次函数来拟合，好像效果有下降，但还是差强人意：</p>
-<img src="/img/16_10_24/041.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/041.png" width = "300" height = "200" align=center /></p>
 <p>而当我的训练集越来越大的时候，你不难发现，要保证使用二次函数的拟合效果依然很好，就显得越来越困难了：</p>
-<img src="/img/16_10_24/042.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/042.png" width = "300" height = "200" align=center /></p>
 <p>因此，事实上随着训练集容量的增大，我们不难发现我们的平均训练误差是逐渐增大的，因此如果你画出这条曲线，你就会发现，训练集误差对假设进行预测的误差平均值随着m的增大而增大。</p>
-<img src="/img/16_10_24/043.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/043.png" width = "300" height = "200" align=center /></p>
 <p>那么对于交叉验证误差的情况如何呢？</p>
 <p>好的，交叉验证集误差是对完全陌生的交叉验证集数据进行预测得到的误差，那么我们知道，当训练集很小的时候，泛化程度不会很好（意思是不能很好的适应新样本）。因此这个假设就不是一个理想的假设，只有当我使用一个更大的训练集时，我才有可能得到一个能够更好拟合数据的可能的假设。</p>
 <p>因此你的验证集误差和测试集误差都会随着训练集样本容量m的增加而减小，因为你是用的数据越多，你能获得的泛化能力就越强，或者说对新样本的适应能力就越强。因此数据越多，越能拟合出合适的假设。</p>
 <p>所以如果你把$Jtrain(\theta)$和$Jcv(\theta)$绘制出来，就应该得到这样的曲线：</p>
-<img src="/img/16_10_24/044.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/044.png" width = "300" height = "200" align=center /></p>
 <hr>
 <h3 id="高偏差-高方差下的学习曲线"><a href="#高偏差-高方差下的学习曲线" class="headerlink" title="高偏差/高方差下的学习曲线"></a>高偏差/高方差下的学习曲线</h3><p>现在我们来看看当处于高偏差或者高方差的情况时，这些学习曲线又会变成什么样子。</p>
 <h4 id="高偏差下的学习曲线"><a href="#高偏差下的学习曲线" class="headerlink" title="高偏差下的学习曲线"></a>高偏差下的学习曲线</h4><p>假如你的假设处于高偏差问题，为了更清楚地解释这个问题，我要用一个简单的例子来说明，也就是用一条直线来拟合数据的例子（很显然，一条直线不能很好地拟合数据）：</p>
-<p>$$<br>h_{\theta}(x)=\theta_{0} + \theta_{1}x<br>$$</p>
-<img src="/img/16_10_24/045.png" width = "300" height = "200" align=center />
-
+<script type="math/tex; mode=display">
+h\_{\theta}(x)=\theta\_{0} + \theta\_{1}x</script><p><img src="/img/16_10_24/045.png" width = "300" height = "200" align=center /></p>
 <p>现在我们来想一想，如果增大样本容量m会发生什么情况呢？</p>
-<img src="/img/16_10_24/046.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/046.png" width = "300" height = "200" align=center /></p>
 <p>当样本数量增多的时候，你不难发现用来拟合这些数据的直线相较于之前不会变化太大，因为这条直线是对这组数据最接近的拟合，但一条直线再怎么接近，也不可能对这组数据进行很好的拟合。</p>
 <p>所以，如果你绘制出交叉验证集误差，应该是这个样子：</p>
-<img src="/img/16_10_24/047.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/047.png" width = "300" height = "200" align=center /></p>
 <p>最左边表示训练集样本容量很小，比如说只有一组样本，那么表现当然很不好；当达到某一个容量值的时候，你就会找到那条最有可能拟合数据的那条直线，并且此时即便你继续增大训练集的样本容量m，你基本上还是会得到一条差不多的直线。因此交叉验证集误差将会很快变为水平而不再变化。</p>
 <p>那么训练误差又如何呢？</p>
 <p>同样，训练误差一开始也是很小的，而在高偏差的情形中，你会发现训练集误差会逐渐增大，一直趋于接近交叉验证集误差，这是因为你的参数很少。但当m很大的时候，数据太多，此时训练集和交叉验证集的预测结果将会非常接近：</p>
-<img src="/img/16_10_24/048.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/048.png" width = "300" height = "200" align=center /></p>
 <p>这就是当你的学习算法处于高偏差情形时学习曲线的大致走向。</p>
 <p>最后补充一点，高偏差的情形反映出的问题是交叉验证集和训练集误差都很大，也就是说，你最终会得到一个值比较大的$Jcv(\theta)$和$Jtrain(\theta)$。</p>
 <p>这也得出一个很有意思的结论，那就是如果一个学习算法有很大的偏差，那么当我们选用更多的训练样本时，我们发现交叉验证集误差的值不会表现出明显的下降，实际上是变为水平了。</p>
@@ -316,29 +439,23 @@
 <hr>
 <h4 id="高方差下的学习曲线"><a href="#高方差下的学习曲线" class="headerlink" title="高方差下的学习曲线"></a>高方差下的学习曲线</h4><p>接下来我们再来看看正处于高方差的时候，学习曲线应该是什么样子的。</p>
 <p>首先我们看看训练集误差，如果你的训练集样本容量很小，如下图：</p>
-<img src="/img/16_10_24/049.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/049.png" width = "300" height = "200" align=center /></p>
 <p>如果我们用很高阶次的多项式来拟合：</p>
-<p>$$<br>h_{\theta}(x) = \theta_{0} + \theta_{1}x + … + \theta_{100}x^{100}<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + ... + \theta\_{100}x^{100}</script><blockquote>
 <p>当然不会有人用这样的多项式，这里只是为了演示使用。</p>
 </blockquote>
 <p>假设我们使用一个很小的$\lambda$，那么很显然，我们会对这组数据拟合的非常好：</p>
-<img src="/img/16_10_24/050.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/050.png" width = "300" height = "200" align=center /></p>
 <p>所以，如果训练集样本容量很小时，训练集误差$Jtrain(\theta)$将会很小，随着训练集样本容量的增加，可能这个假设函数任然会对数据或多或少有一点过拟合，但很明显此时要对数据很好地拟合显得更加困难和吃力了：</p>
-<img src="/img/16_10_24/051.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/051.png" width = "300" height = "200" align=center /></p>
 <p>所以随着训练集样本容量的增大，我们会发现$Jtrain(\theta)$的值会随之增大，因为当训练样本越来越多的时候，我们就越难将训练集数据拟合得很好，但总体来说，训练集误差还是很小：</p>
-<img src="/img/16_10_24/052.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/052.png" width = "300" height = "200" align=center /></p>
 <p>那么交叉验证集误差又如何呢？</p>
 <p>在高方差的情形中，假设函数对数据过拟合，因此交叉验证集误差将会一直都很大，即便我们选择一个比较合适恰当的训练集样本数：</p>
-<img src="/img/16_10_24/053.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/053.png" width = "300" height = "200" align=center /></p>
 <p><strong>所以算法处于高方差情形最明显的一个特点是在训练集误差和交叉验证集误差之间以一段很大的差距：</strong></p>
-<img src="/img/16_10_24/054.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/054.png" width = "300" height = "200" align=center /></p>
 <p>而这个曲线也反映出如果我们要考虑增大训练集的样本数，这两条学习曲线会逐渐靠近，<strong>高方差情形下使用更多的数量级对改进算法的表现事实上是有效果的。</strong></p>
 <hr>
 <blockquote>
@@ -386,16 +503,14 @@
 <ul>
 <li>其中有一种选择是选择相对简单的隐藏层结构，比如说只有一个隐藏层，或者相对来讲比较少的隐藏层单元：</li>
 </ul>
-<img src="/img/16_10_24/055.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/055.png" width = "300" height = "200" align=center /></p>
 <blockquote>
 <p>这种结构简单的神经网络参数就不会很多，很容易出现<strong>欠拟合</strong>。这种比较小型的神经网络其最大优势在于计算量较小。</p>
 </blockquote>
 <ul>
 <li>与之相对的另一种情况是相对较大型的神经网络结构：要么隐藏层单元比较多，要么隐藏层单元比较多：</li>
 </ul>
-<img src="/img/16_10_24/056.png" width = "300" height = "200" align=center />
-
+<p><img src="/img/16_10_24/056.png" width = "300" height = "200" align=center /></p>
 <blockquote>
 <p>这种比较复杂的神经网络参数一般比较多，也更容易出现<strong>过拟合</strong>。这种结构的一大劣势也许不是主要的，但还是需要考虑，那就是当网络中的神经元数量很多的时候，这种结构会显得计算量较大，虽然有这个情况，但通常来讲这不是大问题。</p>
 <p>这种大型网络最主要的问题还是它更容易出现过拟合现象。</p>
@@ -404,157 +519,285 @@
 <p><strong>最后，你还要选择隐藏层的层数，你是该用一个隐藏层呢，还是用三个呢？通常来说，默认的情况是使用一个隐藏层。但是如果你确实想要选择多个隐藏层你也可以试试把数据分割为训练集、验证集和测试集，然后使用交叉验证的方法比较一个隐藏层的神经网络然后试试两个三个隐藏层以此类推，然后看看哪个神经网络在交叉验证集上表现得最理想，然后你对每一个模型都用交叉验证集数据进行测试，算出三种情况下（隐藏层分别为一层、两层、三层）的交叉验证集误差$Jcv(\theta)$，然后选出你认为最好的神经网络结构。</strong></p>
 </blockquote>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/" data-id="ckkwc438t00a2pas9c0y9f345" data-title="斯坦福机器学习课程 第六周 (2)偏差VS方差" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/10/16/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(4)%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" rel="prev" title="斯坦福机器学习课程 第五周 (4)神经网络实现自动驾驶">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第五周 (4)神经网络实现自动驾驶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(1)%E8%AF%84%E4%BB%B7%E4%B8%80%E4%B8%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="next" title="斯坦福机器学习课程 第六周 (1)评价一个学习算法">
+      斯坦福机器学习课程 第六周 (1)评价一个学习算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E5%B7%AE-VS-%E6%96%B9%E5%B7%AE"><span class="nav-number">1.</span> <span class="nav-text">偏差 VS 方差</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%86%E8%BE%A8%E7%AE%97%E6%B3%95%E5%A4%84%E4%BA%8E%E5%81%8F%E5%B7%AE%E8%BF%98%E6%98%AF%E6%96%B9%E5%B7%AE%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">如何分辨算法处于偏差还是方差？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%8F%E5%B7%AE%E6%83%85%E5%86%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">偏差情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E5%B7%AE%E6%83%85%E5%86%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">方差情况</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E5%92%8C%E5%81%8F%E5%B7%AE-%E6%96%B9%E5%B7%AE"><span class="nav-number">2.</span> <span class="nav-text">正则化和偏差&#x2F;方差</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E5%8F%82%E6%95%B0-%CE%BB-%E5%AF%B9%E5%81%87%E8%AE%BE%E5%87%BD%E6%95%B0%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.1.</span> <span class="nav-text">正则化参数$λ$对假设函数的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E6%AD%A3%E7%A1%AE%E7%9A%84-%CE%BB"><span class="nav-number">2.2.</span> <span class="nav-text">选择一个正确的$λ$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E5%8F%82%E6%95%B0-%CE%BB-%E5%AF%B9%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E9%9B%86%E8%AF%AF%E5%B7%AE%E5%92%8C%E8%AE%AD%E7%BB%83%E9%9B%86%E8%AF%AF%E5%B7%AE%E4%BA%A7%E7%94%9F%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">2.3.</span> <span class="nav-text">正则化参数$λ$对交叉验证集误差和训练集误差产生的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%CE%BB-%E5%9C%A8%E8%AE%AD%E7%BB%83%E9%9B%86%E4%B8%8A%E7%9A%84%E5%8F%98%E5%8C%96"><span class="nav-number">2.4.</span> <span class="nav-text">$λ$在训练集上的变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%CE%BB-%E5%9C%A8%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E9%9B%86%E4%B8%8A%E7%9A%84%E5%8F%98%E5%8C%96"><span class="nav-number">2.5.</span> <span class="nav-text">$λ$在交叉验证集上的变化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF-Learning-Curves"><span class="nav-number">3.</span> <span class="nav-text">学习曲线(Learning Curves)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E5%81%8F%E5%B7%AE-%E9%AB%98%E6%96%B9%E5%B7%AE%E4%B8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="nav-number">3.1.</span> <span class="nav-text">高偏差&#x2F;高方差下的学习曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E5%81%8F%E5%B7%AE%E4%B8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="nav-number">3.1.1.</span> <span class="nav-text">高偏差下的学习曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E6%96%B9%E5%B7%AE%E4%B8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="nav-number">3.1.2.</span> <span class="nav-text">高方差下的学习曲线</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E5%86%B3%E5%AE%9A%E4%B8%8B%E4%B8%80%E6%AD%A5%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-number">4.</span> <span class="nav-text">重新审视决定下一步做什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%92%8C%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%81%94%E7%B3%BB"><span class="nav-number">4.1.</span> <span class="nav-text">和神经网络的联系</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(1)%E8%AF%84%E4%BB%B7%E4%B8%80%E4%B8%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第六周 (1)评价一个学习算法
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/10/16/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%94%E5%91%A8%20(4)%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第五周 (4)神经网络实现自动驾驶</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : 'f10cdb6c7e5ea6542194a10ccfc50a27',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

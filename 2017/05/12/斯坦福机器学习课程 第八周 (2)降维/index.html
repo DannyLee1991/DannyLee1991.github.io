@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第八周 (2)降维 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="在这个模块中，我们将介绍主成分分析（PCA），并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。  动机动机I：数据压缩视频地址  本节我将开始介绍第二种无监督学习问题，它叫**降维(dimensionality reduction)**。 我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这个模块中，我们将介绍主成分分析（PCA），并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。  动机动机I：数据压缩视频地址  本节我将开始介绍第二种无监督学习问题，它叫降维(dimensionality reduction)。 我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提速。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第八周 (2)降维">
 <meta property="og:url" content="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="在这个模块中，我们将介绍主成分分析（PCA），并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。  动机动机I：数据压缩视频地址  本节我将开始介绍第二种无监督学习问题，它叫**降维(dimensionality reduction)**。 我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提">
+<meta property="og:site_name" content="圣巢">
+<meta property="og:description" content="在这个模块中，我们将介绍主成分分析（PCA），并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。  动机动机I：数据压缩视频地址  本节我将开始介绍第二种无监督学习问题，它叫降维(dimensionality reduction)。 我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提速。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_05_12/001.png">
 <meta property="og:image" content="http://example.com/img/17_05_12/002.png">
@@ -45,105 +59,227 @@
 <meta property="og:image" content="http://example.com/img/17_05_12/030.png">
 <meta property="og:image" content="http://example.com/img/17_05_12/031.png">
 <meta property="article:published_time" content="2017-05-12T07:51:58.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.861Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_05_12/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第八周 (2)降维 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第八周 (2)降维" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/" class="article-date">
-  <time class="dt-published" datetime="2017-05-12T07:51:58.000Z" itemprop="datePublished">2017-05-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第八周 (2)降维
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第八周 (2)降维
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-05-12 07:51:58" itemprop="dateCreated datePublished" datetime="2017-05-12T07:51:58+00:00">2017-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <blockquote>
 <p>在这个模块中，我们将介绍<strong>主成分分析（PCA）</strong>，并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。</p>
 </blockquote>
 <h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><h2 id="动机I：数据压缩"><a href="#动机I：数据压缩" class="headerlink" title="动机I：数据压缩"></a>动机I：数据压缩</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/0EJ6A/motivation-i-data-compression">视频地址</a></p>
 <blockquote>
-<p>本节我将开始介绍第二种无监督学习问题，它叫**降维(dimensionality reduction)**。</p>
+<p>本节我将开始介绍第二种无监督学习问题，它叫<strong>降维(dimensionality reduction)</strong>。</p>
 <p>我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提速。</p>
 </blockquote>
 <p>首先我们来介绍什么是降维。</p>
 <h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>举一个例子，假如我们有一个有很多很多很多特征变量的数据集：</p>
-<p><img src="/img/17_05_12/001.png"></p>
+<p><img src="/img/17_05_12/001.png" alt=""></p>
 <p>这里为了方便展示，只画了其中两个。</p>
 <p>假设我们不知道这两个特征量。其中$x_1$是某个物体的长度，以厘米为单位；另一个$x_2$是它以英寸为单位的长度。所以这是一个非常冗余的数据，与其用两个特征变量$x_1$和$x_2$，它们都是测量到的长度，或许我们应该把这个数据降到一维，只用一个长度的数据。</p>
 <p>这个例子可能看起来好像是我生造的，但这个厘米英寸的例子其实还真不是那么无聊。我在工业界看到的情况也是大同小异。</p>
@@ -151,44 +287,44 @@
 <p>如果你有上百或者上千的特征变量，很容易就会忘记你到底有什么特征变量，而且有时候可能有几个不同的工程师团队。一队工程师可能给你200个特征变量，第二队工程师可能再给你300个特征变量，然后第三队工程师给你500个特征变量。所以你一共有1000个特征变量，这样就很难搞清哪个队给了你什么特征变量。实际上得到这样冗余的特征变量并不难。</p>
 </blockquote>
 <p>所以如果以厘米计的长度被取整到最近的厘米整数，以英寸计的长度被取整到最近的英寸整数。这就是为什么这些样本没有完美地在一条直线上。就是因为取整所造成的误差。</p>
-<p><img src="/img/17_05_12/002.png"></p>
+<p><img src="/img/17_05_12/002.png" alt=""></p>
 <p>这种情况下，如果我们可以把数据降到一维而不是二维，就可以减少冗余。</p>
 <h3 id="降维含义"><a href="#降维含义" class="headerlink" title="降维含义"></a>降维含义</h3><p>让我们再详细讲讲从二维降到一维到底意味着什么。</p>
 <h4 id="二维降到一维"><a href="#二维降到一维" class="headerlink" title="二维降到一维"></a>二维降到一维</h4><p>让我给这些样本涂上不同的颜色涂上不同的颜色：</p>
-<p><img src="/img/17_05_12/003.png"></p>
+<p><img src="/img/17_05_12/003.png" alt=""></p>
 <p>在这个例子中降低维度的意思是：我希望找到一条线，基本所有数据映射到这条线上。这样做之后，我就可以直接测量这条线上每个样本的位置。我想把这个新特征叫做$z_1$。</p>
-<p><img src="/img/17_05_12/004.png"></p>
+<p><img src="/img/17_05_12/004.png" alt=""></p>
 <p>要确定这条线上的位置，我只需要一个数字。这就是说新特征变量$z_1$能够表示这条绿线上每一个点的位置。</p>
 <p>在之前如果想要表示一个样本点，我需要一个二维向量$(x_1,x_2)$，但是现在我可以用一个一维向量$z_1$来表示这个样本点：</p>
-<p><img src="/img/17_05_12/005.png"></p>
+<p><img src="/img/17_05_12/005.png" alt=""></p>
 <p>总结一下，在把所有训练样本映射到一条线上之后，我就能做到只用一个数字来表示每个训练样本的位置。这是一个对原始训练样本的近似。相对于之前需要用两个数字来表示一个样本而言，现在我只需要一个数字就可以表示了。这样就减少了一半的内存需求或者硬盘需求。</p>
 <p>更重要的是，数据压缩还会让我们的学习算法运行地更快。</p>
 <h4 id="三维降到二维"><a href="#三维降到二维" class="headerlink" title="三维降到二维"></a>三维降到二维</h4><p>现在，我展示一个把三维数据降到二维的例子。</p>
-<p><img src="/img/17_05_12/006.png"></p>
+<p><img src="/img/17_05_12/006.png" alt=""></p>
 <blockquote>
 <p>顺便说一下，在更典型的降维例子中，我们可能有1000维的数据，我们可能想降低到100维，但是因为我在这里能可视化的展示数据的维度是有限制的，所以我要用的例子是三维到二维的。</p>
 </blockquote>
 <p>我们有一个图上这样的数据集，我有一个样本$x^{(i)}$的集合，$x^{(i)}$是一个三维实数的点，所以我的样本是三维的：</p>
-<p>$$<br>x^{(i)} \in R^3<br>$$</p>
-<p>实际上，这些样本点，差不多都处于同一平面上。降维在这里的作用，就是把所有的数据，都投影到一个二维的平面内。所以，我们要对所有的数据进行投影，使得它们落在这个平面上：</p>
-<p><img src="/img/17_05_12/007.png"></p>
+<script type="math/tex; mode=display">
+x^{(i)} \in R^3</script><p>实际上，这些样本点，差不多都处于同一平面上。降维在这里的作用，就是把所有的数据，都投影到一个二维的平面内。所以，我们要对所有的数据进行投影，使得它们落在这个平面上：</p>
+<p><img src="/img/17_05_12/007.png" alt=""></p>
 <p>最后为了表示一个点在平面上的位置，我们需要两个数来表示平面上一个点的位置。这两个数可能叫做$z_1$和$z_2$：</p>
-<p><img src="/img/17_05_12/008.png"></p>
+<p><img src="/img/17_05_12/008.png" alt=""></p>
 <p>这也意味着我们现在可以用一个二维向量$z$来表示每一个训练样本了：</p>
-<p><img src="/img/17_05_12/009.png"></p>
-<p>$$<br>z^{(i)} \in R^2<br>$$</p>
-<hr>
+<p><img src="/img/17_05_12/009.png" alt=""></p>
+<script type="math/tex; mode=display">
+z^{(i)} \in R^2</script><hr>
 <p>为了更好的理解降维的过程，现在让我们用3D绘图来重现上面的整个过程：</p>
-<p><img src="/img/17_05_12/010.png"></p>
+<p><img src="/img/17_05_12/010.png" alt=""></p>
 <p>我们走的过程是这样的：左边是原始数据集，中间是投影到2D的数据集，右边是以$z_1$和$z_2$为坐标轴的2D数据集。</p>
 <p>我们来更详细地看一下：</p>
 <p>原始数据集是这样的：</p>
-<p><img src="/img/17_05_12/011.gif"></p>
+<p><img src="/img/17_05_12/011.gif" alt=""></p>
 <p>可以看出来，大部分数据差不多可能都落在某个2D平面上，或者说距离某个2D平面不远。</p>
 <p>所以我们可以把它们投影到2D平面上。下面是投影后的效果：</p>
-<p><img src="/img/17_05_12/012.gif"></p>
+<p><img src="/img/17_05_12/012.gif" alt=""></p>
 <p>你可以看到所有的数据落在一个平面上，因为我们把所有的东西都投影到一个平面上了。所以我们现在只需要两个数:$z_1$和$z_2$来表示点在平面上的位置即可：</p>
-<p><img src="/img/17_05_12/013.png"></p>
+<p><img src="/img/17_05_12/013.png" alt=""></p>
 <p>这就是把数据从三维降到二维的过程。</p>
 <p>这就是降维以及如何使用它来压缩数据的过程。</p>
 <h2 id="动机II：可视化数据"><a href="#动机II：可视化数据" class="headerlink" title="动机II：可视化数据"></a>动机II：可视化数据</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/t6pYD/motivation-ii-visualization">视频地址</a></p>
@@ -197,33 +333,33 @@
 <p>对于大多数的机器学习应用，它真的可以帮助我们来开发高效的学习算法，但前提是我们能更好地理解数据。降维就是数据可视化的一种方法。</p>
 </blockquote>
 <p>假如我们已经收集了大量的有关全世界不同国家的统计数据集：</p>
-<p><img src="/img/17_05_12/014.png"></p>
+<p><img src="/img/17_05_12/014.png" alt=""></p>
 <p>第一个特征$x_1$是国家的国内生产总值；第二个特征$x_2$是一个百分比，表示人均占有的GDP；第三个特征$x_3$是人类发展指数；第四个特征$x_4$是预期寿命；…直到$x_{50}$</p>
 <p>在这里我们有大量的国家的数据，对于每个国家有50个特征。我们有这样的众多国家的数据集，为了使得我们能更好地来理解数据，我们需要对数据进行可视化展示。这里我们有50个特征，但绘制一幅50维度的图是异常困难的，因此我们需要对数据进行降维，然后再可视化。</p>
 <p>具体做法如下：</p>
 <p>我们使用特征向量$x^{(i)}$来表示每个国家。$x^{(i)}$有着50个维度。我们需要对这50个特征降维之后，我们可以用另一种方式来代表$x^{(i)}$：使用一个二维的向量$z$来代替之前50维的$x$。</p>
-<p><img src="/img/17_05_12/015.png"></p>
-<p>$$<br>z^{(i)} \in R^2<br>$$</p>
-<p>我们用$z_1$和$z_2$这两个数来总结50个维度的数据，我们可以使用这两个数来绘制出这些国家的二维图，使用这样的方法尝试去理解二维空间下不同国家在不同特征的差异会变得更容易。</p>
+<p><img src="/img/17_05_12/015.png" alt=""></p>
+<script type="math/tex; mode=display">
+z^{(i)} \in R^2</script><p>我们用$z_1$和$z_2$这两个数来总结50个维度的数据，我们可以使用这两个数来绘制出这些国家的二维图，使用这样的方法尝试去理解二维空间下不同国家在不同特征的差异会变得更容易。</p>
 <p>在降维处理时，我们用$z_1$来表示那些象征着国家整体情况的数据，例如”国家总面积”、”国家总体经济水平”等；用$z_2$来表示象征着人均情况的数据，例如”人均GDP”，”人均幸福感”等。</p>
 <p>降维处理之后，将数据按照这两个维度展示如下：</p>
-<p><img src="/img/17_05_12/016.png"></p>
+<p><img src="/img/17_05_12/016.png" alt=""></p>
 <p>在图中，右侧的点，象征着国家整体经济比较好的国家；上方的点，象征着人均经济比较好、人均幸福感较高、人均寿命较长…的国家。</p>
 <hr>
-<p>那么具体我们要如何去压缩数据达到降维的效果呢？在下一节视频中我们将会开始开发一种特别的算法。简称<strong>PCA</strong>或者**主成分分析 **。这个算法允许我们进行数据可视化，同时可以进行早先我们提到的一些有关数据压缩方面的应用。</p>
+<p>那么具体我们要如何去压缩数据达到降维的效果呢？在下一节视频中我们将会开始开发一种特别的算法。简称<strong>PCA</strong>或者<strong>主成分分析 </strong>。这个算法允许我们进行数据可视化，同时可以进行早先我们提到的一些有关数据压缩方面的应用。</p>
 <h1 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h1><h2 id="主成分分析（PCA）相关概念"><a href="#主成分分析（PCA）相关概念" class="headerlink" title="主成分分析（PCA）相关概念"></a>主成分分析（PCA）相关概念</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/GBFTt/principal-component-analysis-problem-formulation">视频地址</a></p>
 <blockquote>
 <p>对于降维问题来说，目前最流行最常用的算法是<strong>主成分分析法(Principal Componet Analysis, PCA）</strong>。</p>
 <p>在本节中，我想首先开始讨论PCA问题的公式描述，也就是说，我们用公式准确地精确地描述：我们想让PCA来做什么。</p>
 </blockquote>
 <h3 id="PCA的执行过程2D-gt-1D"><a href="#PCA的执行过程2D-gt-1D" class="headerlink" title="PCA的执行过程2D -&gt; 1D"></a>PCA的执行过程2D -&gt; 1D</h3><p>假设我们有这样的一个数据集:</p>
-<p><img src="/img/17_05_12/017.png"></p>
+<p><img src="/img/17_05_12/017.png" alt=""></p>
 <p>这个数据集含有二维实数空间内的样本X。</p>
 <p>假设我想对数据进行降维，从二维降到一维。也就是说我想找到一条直线将数据投影到这条直线上，那怎么找到一条好的直线来投影这些数据呢？ </p>
 <p>这样的一条直线也许是个不错的选择：</p>
-<p><img src="/img/17_05_12/018.png"></p>
+<p><img src="/img/17_05_12/018.png" alt=""></p>
 <p>你认为这是一个不错的选择的原因是：如果你观察投影到直线上的点的位置，我们发现每个点到它们对应的投影到直线上的点之间的距离非常小。（也就是说这些蓝色的线段非常的短）：</p>
-<p><img src="/img/17_05_12/019.png"></p>
+<p><img src="/img/17_05_12/019.png" alt=""></p>
 <p>所以，正式的说<strong>PCA</strong>所做的就是<strong>寻找一个低维的面(在这个例子中，其实是一条直线）数据投射在上面，使得这些蓝色小线段的平方和达到最小值</strong>。这些蓝色线段的长度被叫做<strong>投影误差</strong>。</p>
 <p>所以<strong>PCA</strong>所做的就是寻找一个投影平面，对数据进行投影，使得这个能够最小化。</p>
 <p>另外在应用<strong>PCA</strong>之前，通常的做法是先进行<strong>均值归一化</strong>和<strong>特征规范化</strong>，使得特征$x_1$和$x_2$均值为0，数值在可比较的范围之内。</p>
@@ -233,7 +369,7 @@
 <hr>
 <p>我们正式一点地写出<strong>PCA</strong>的目标是这样的：</p>
 <p>如果我们将数据从二维降到一维的话，我们需要试着寻找一个向量$u^{(i)}$，该向量属于$n$维空间中的向量（在这个例子中是二维的），我们将寻找一个对数据进行投影的方向，使得<strong>投影误差能够最小</strong>（在这个例子里，我们把PCA寻找到这个向量记做$u^{(1)}$）：</p>
-<p><img src="/img/17_05_12/020.png"></p>
+<p><img src="/img/17_05_12/020.png" alt=""></p>
 <p>所以当我把数据投影到这条向量所在的直线上时，最后我将得到非常小的重建误差。</p>
 <blockquote>
 <p>另外需要说明的时无论PCA给出的是这个$u^{(1)}$是正还是负都没关系。因为无论给的是正的还是负的$u^{(1)}$它对应的直线都是同一条，也就是我将投影的方向。</p>
@@ -241,9 +377,9 @@
 <p>这就是将二维数据降到一维的例子。</p>
 <p>更一般的情况是我们有$n$维的数据想降到$k$维。在这种情况下我们不仅仅只寻找单个的向量（$u^{(1)}$）来对数据进行投影，我们要找到$k$个方向($u^{(k)}$)来对数据进行投影，从而最小化投影误差。</p>
 <h3 id="PCA的执行过程3D-gt-2D"><a href="#PCA的执行过程3D-gt-2D" class="headerlink" title="PCA的执行过程3D -&gt; 2D"></a>PCA的执行过程3D -&gt; 2D</h3><p>下面的例子中，假设我有一些三维数据点：</p>
-<p><img src="/img/17_05_12/021.png"></p>
+<p><img src="/img/17_05_12/021.png" alt=""></p>
 <p>我想要做的是是寻找两个向量$u^{(1)}$和$u^{(2)}$：</p>
-<p><img src="/img/17_05_12/022.png"></p>
+<p><img src="/img/17_05_12/022.png" alt=""></p>
 <p>这两个向量一起定义了一个二维平面，我将把数据投影到这个二维平面上。</p>
 <blockquote>
 <p>如果你精通线性代数，那么这里更正式的定义是：我们将寻找一组向量$u^{(1)}$，$u^{(2)}$，…，$u^{(k)}$，我们将要做的是将数据投影到这$k$个向量展开的线性子空间上。</p>
@@ -254,13 +390,13 @@
 <p>因此<strong>PCA</strong>做的就是：<strong>寻找一组$k$维向量(一条直线、或者平面、或者诸如此类等等)对数据进行投影，来最小化正交投影误差。</strong></p>
 <h3 id="PCA和线性回归的关系"><a href="#PCA和线性回归的关系" class="headerlink" title="PCA和线性回归的关系"></a>PCA和线性回归的关系</h3><p>最后一个我有时会被问到的问题是：<strong>PCA和线性回归有怎么样的关系？</strong></p>
 <p>因为当我解释<strong>PCA</strong>的时候，我有时候会画出这样看上去有点像线性回归的图：</p>
-<p><img src="/img/17_05_12/023.png"></p>
+<p><img src="/img/17_05_12/023.png" alt=""></p>
 <p>但是，事实上<strong>PCA不是线性回归</strong>。尽管看上去有一些相似，但是它们确实是两种不同的算法。</p>
 <h4 id="不同点-之一"><a href="#不同点-之一" class="headerlink" title="不同点 之一"></a>不同点 之一</h4><p>如果我们做线性回归，我们做的是在给定某个输入特征$x$的情况下预测某个变量$y$的数值。因此对于线性回归，我们想做的是拟合一条直线，来最小化点和直线之间的平方误差：</p>
-<p><img src="/img/17_05_12/024.png"></p>
+<p><img src="/img/17_05_12/024.png" alt=""></p>
 <p>所以我们要最小化的是，上图中蓝线幅值的平方。注意我画的这些蓝色的垂直线，这是垂直距离。它是某个点与通过假设的得到的其预测值之间的距离。</p>
 <p>与此想反，PCA要做的是最小化这些样本点与直线的最短距离(直角距离)：</p>
-<p><img src="/img/17_05_12/025.png"></p>
+<p><img src="/img/17_05_12/025.png" alt=""></p>
 <p>这是一种非常不同的效果。</p>
 <h4 id="不同点-之二"><a href="#不同点-之二" class="headerlink" title="不同点 之二"></a>不同点 之二</h4><p>更更更一般的是，当你做线性回归的时候，有一个特别的变量$y$作为我们即将预测的值，线性回归所要做的就是用$x$的所有的值来预测$y$。然而在PCA中，没有这么一个特殊的变量$y$是我们要预测的。我们所拥有的是特征$x_1$,$x_2$,…,$x_n$，所有的这些特征都是被同样地对待。</p>
 <p>在上面那个从3维降到2维的例子中，原先的3个特征$x_1$,$x_2$,$x_3$都是被同样地对待的，没有特殊的变量$y$需要被预测。</p>
@@ -272,7 +408,7 @@
 <p>本节，将介绍<strong>PCA</strong>算法的具体细节，学完本节后，你就应该知道<strong>PCA</strong>的实现过程，并且应用PCA来给你的数据降维了。</p>
 </blockquote>
 <h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>在使用PCA之前，我们通常会有一个数据预处理的过程。</p>
-<p>拿到某组有m个无标签样本的训练集，一般先进行<strong>均值归一化(mean normalization)**。这一步很重要。然后还可以进行</strong>特征缩放(feature scaling)**，这根据你的数据而定。</p>
+<p>拿到某组有m个无标签样本的训练集，一般先进行<strong>均值归一化(mean normalization)</strong>。这一步很重要。然后还可以进行<strong>特征缩放(feature scaling)</strong>，这根据你的数据而定。</p>
 <blockquote>
 <p>这跟我们之前在<strong>监督学习</strong>中提到的<strong>均值归一</strong>和<strong>特征缩放</strong>是一样的。</p>
 </blockquote>
@@ -280,30 +416,30 @@
 <p><strong>举例说明：</strong></p>
 <p>比如说，如果$x_1$表示房子的面积，$x_2$表示房屋的卧室数量，然后我们可以把每个特征进行缩放，使其处于同一可比的范围内。</p>
 <p>同样地，跟之前的监督学习类似，我们可以首先计算出每个特征的均值：</p>
-<p>$$<br>μ_j=\frac{1}{m}\sum_{i=1}^{m}x_j^{(i)}<br>$$</p>
-<p>然后每个样本值对应的特征减去其对应的均值：</p>
-<p>$$<br>x_j^{(i)} ← x_j^{(i)}-μ_j<br>$$</p>
-<p>将所有的特征替换为这种形式的结果。这样就保证了所有特征的均值为0。</p>
+<script type="math/tex; mode=display">
+μ\_j=\frac{1}{m}\sum\_{i=1}^{m}x\_j^{(i)}</script><p>然后每个样本值对应的特征减去其对应的均值：</p>
+<script type="math/tex; mode=display">
+x\_j^{(i)} ← x\_j^{(i)}-μ\_j</script><p>将所有的特征替换为这种形式的结果。这样就保证了所有特征的均值为0。</p>
 <h4 id="数据预处理第二步：特征缩放-feature-scaling"><a href="#数据预处理第二步：特征缩放-feature-scaling" class="headerlink" title="数据预处理第二步：特征缩放(feature scaling)"></a>数据预处理第二步：特征缩放(feature scaling)</h4><p>然后，由于不同特征的取值范围都很不一样，我们还需要进行<strong>特征缩放</strong>。</p>
 <p>我们需要将每个特征的取值范围都划定在同一范围内，因此对于均值化处理之后的特征值$x_j^{(i)}-μ_j$，我们还需要做进一步处理：</p>
-<p>$$<br>x_j^{(i)} ← \frac{x_j^{(i)}-μ_j}{s_j}<br>$$</p>
-<p>这里$s_j$表示特征$j$度量范围，即该特征的最大值减去最小值。</p>
+<script type="math/tex; mode=display">
+x\_j^{(i)} ← \frac{x\_j^{(i)}-μ\_j}{s\_j}</script><p>这里$s_j$表示特征$j$度量范围，即该特征的最大值减去最小值。</p>
 <h3 id="PCA算法"><a href="#PCA算法" class="headerlink" title="PCA算法"></a>PCA算法</h3><p>接下来就正式进入PCA的算法部分。</p>
 <p>在之前的视频中，我们已经知道了PCA的原理。PCA是在试图找到一个低维的子空间，然后把原数据投影到子空间上，并且最小化平方投影误差的值（投影误差的平方和，即下图中蓝色线段长度的平方和）：</p>
-<p><img src="/img/17_05_12/026.png"></p>
+<p><img src="/img/17_05_12/026.png" alt=""></p>
 <p>那么应该怎样来计算这个子空间呢? 实际上这个问题有完整的数学证明来解释如何找到这样的子空间，不过这个数学证明过程是非常复杂的，同时也超出了本课程的范围。但如果你推导一遍这个数学证明过程，你就会发现要找到$u^{(1)}$的值，也不是一件很难的事。但在这里，我不会给出证明，我只是简单描述一下实现PCA所需要进行的步骤。</p>
 <p>假如说我们想要把数据从$n$维降低到$k$维，我们首先要做的是计算出下面这个协方差矩阵(通常用$∑$来表示)：</p>
-<p>$$<br>∑=\frac{1}{m}\sum_{i=1}^n(x^{(i)})(x^{(i)})^T<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+∑=\frac{1}{m}\sum\_{i=1}^n(x^{(i)})(x^{(i)})^T</script><blockquote>
 <p>很不幸的是，这个希腊符号$∑$和求和符号重复了。希望你对这里不要产生混淆。</p>
 </blockquote>
-<p>计算出这个协方差矩阵后，假如我们把它存为Octave中的一个名为<code>Sigma</code>的变量，我们需要做的是计算出<code>Sigma</code>矩阵的**特征向量(eigenvectors)**。</p>
+<p>计算出这个协方差矩阵后，假如我们把它存为Octave中的一个名为<code>Sigma</code>的变量，我们需要做的是计算出<code>Sigma</code>矩阵的<strong>特征向量(eigenvectors)</strong>。</p>
 <p>在Octave中，你可以使用如下命令来实现这一功能：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V] &#x3D; svd(Sigma); </span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>顺便说一下，<code>svd</code>表示**奇异值分解(singular value decomposition)**，这是某种更高级的奇异值分解，这是比较高级的线性代数的内容。你不必掌握这些，但实际上<code>Sigma</code>是一个协方差矩阵。有很多种方法来计算它的特征向量。</p>
+<p>顺便说一下，<code>svd</code>表示<strong>奇异值分解(singular value decomposition)</strong>，这是某种更高级的奇异值分解，这是比较高级的线性代数的内容。你不必掌握这些，但实际上<code>Sigma</code>是一个协方差矩阵。有很多种方法来计算它的特征向量。</p>
 <p>如果你线性代数学得很好，或者你之前听说过特征向量的话，那也许知道在Octave中还有另一个<code>eig</code>命令，可以用来计算特征向量。实际上<code>svd</code>命令和<code>eig</code>命令将得到相同的结果。但<code>svd</code>其实要更稳定一些，所以我一般选择用<code>svd</code>，不过我也有一些朋友喜欢用<code>eig</code>函数。</p>
-<p>在这里对协方差矩阵<code>Sigma</code>使用<code>eig</code>和<code>svd</code>时，你会得到同样的答案。这是因为协方差均值总满足一个数学性质，称为**对称正定(symmetric positive definite)**，其实你不必细究这个具体是什么意思，只要知道这种情况下，使用<code>eig</code>和<code>svd</code>结果是一样的就可以了。</p>
+<p>在这里对协方差矩阵<code>Sigma</code>使用<code>eig</code>和<code>svd</code>时，你会得到同样的答案。这是因为协方差均值总满足一个数学性质，称为<strong>对称正定(symmetric positive definite)</strong>，其实你不必细究这个具体是什么意思，只要知道这种情况下，使用<code>eig</code>和<code>svd</code>结果是一样的就可以了。</p>
 </blockquote>
 <p>好了，这就是你需要了解的一点线性代数知识，如果有任何地方不清楚的话不必在意。你只需要知道上面这行Octave代码就行了。</p>
 <p>如果你用除了Octave或者MATLAB之外的其他编程环境，你要做的是找到某个可以计算svd，即奇异值分解的函数库文件。在主流的编程语言中，应该有不少这样的库文件。我们可以用它们来计算出协方差矩阵的$U$ $S$ $V$矩阵。</p>
@@ -313,16 +449,49 @@
 <p>然后把这n个$n×n$的矩阵加起来，当然还是$n×n$矩阵。</p>
 <p>然后svd将输出三个矩阵，分别是$U$ $S$ $V$。你真正需要的是$U$矩阵。</p>
 <p>$U$矩阵也是一个$n×n$矩阵：</p>
-<p><img src="/img/17_05_12/027.png"></p>
+<p><img src="/img/17_05_12/027.png" alt=""></p>
 <p>实际上$U$矩阵的列元素就是我们需要的$u^{(1)}$,$u^{(1)}$等等。</p>
 <p>如果我们想将数据的维度从$n$降低到$k$的话，我们只需要提取前$k$列向量。这样我们就得到了$u^{(1)}$到$u^{(k)}$，也就是我们用来投影数据的$k$个方向。</p>
 <p>我们取出$U$矩阵的前$k$列得到一个新的，由$u^{(1)}$到$u^{(k)}$组成的矩阵$U_{reduce}$：</p>
-<p>$$<br>\begin{equation}<br>U_{reduce}=\left[<br>\begin{matrix}<br>|&amp;|&amp;|&amp;…&amp;|\\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>u^{(1)}&amp;u^{(2)}&amp;u^{(3)}&amp;…&amp;u^{(k)}\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>\end{matrix}<br>\right]<br>\end{equation}<br>$$</p>
-<p>这是一个$n × k$维的矩阵。</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+U\_{reduce}=\left[
+\begin{matrix}
+|&|&|&...&|\\\\
+|&|&|&...&|\\\\
+u^{(1)}&u^{(2)}&u^{(3)}&...&u^{(k)}\\\
+|&|&|&...&|\\\\
+|&|&|&...&|\\\\
+\end{matrix}
+\right]
+\end{equation}</script><p>这是一个$n × k$维的矩阵。</p>
 <p>然后我们用这个$U_{reduce}$来对我的数据进行<strong>降维</strong>。我们定义：</p>
-<p>$$<br>\begin{equation}<br>z=\left[<br>\begin{matrix}<br>|&amp;|&amp;|&amp;…&amp;|\\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>u^{(1)}&amp;u^{(2)}&amp;u^{(3)}&amp;…&amp;u^{(k)}\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>|&amp;|&amp;|&amp;…&amp;|\\<br>\end{matrix}<br>\right]<br>^{T}x<br>\\<br>=<br>\left[<br>\begin{matrix}<br>-&amp;-&amp;u^{(1)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(2)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(3)}&amp;…&amp;-\<br>.&amp;.&amp;.&amp;…&amp;.\\<br>-&amp;-&amp;u^{(k)}&amp;…&amp;-\\<br>\end{matrix}<br>\right]<br>x<br>\end{equation}<br>$$</p>
-<p>$$<br>z \in R^k<br>$$</p>
-<p>其中$\left[<br>\begin{matrix}<br>-&amp;-&amp;u^{(1)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(2)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(3)}&amp;…&amp;-\<br>.&amp;.&amp;.&amp;…&amp;.\\<br>-&amp;-&amp;u^{(k)}&amp;…&amp;-\\<br>\end{matrix}<br>\right]$是$k×n$的矩阵，$x$是$n×1$的矩阵，因此$z$是$k×1$的矩阵。</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+z=\left[
+\begin{matrix}
+|&|&|&...&|\\\\
+|&|&|&...&|\\\\
+u^{(1)}&u^{(2)}&u^{(3)}&...&u^{(k)}\\\
+|&|&|&...&|\\\\
+|&|&|&...&|\\\\
+\end{matrix}
+\right]
+^{T}x
+\\\\
+=
+\left[
+\begin{matrix}
+-&-&u^{(1)}&...&-\\\\
+-&-&u^{(2)}&...&-\\\\
+-&-&u^{(3)}&...&-\\\
+.&.&.&...&.\\\\
+-&-&u^{(k)}&...&-\\\\
+\end{matrix}
+\right]
+x
+\end{equation}</script><script type="math/tex; mode=display">
+z \in R^k</script><p>其中$\left[<br>\begin{matrix}<br>-&amp;-&amp;u^{(1)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(2)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(3)}&amp;…&amp;-\\<br>.&amp;.&amp;.&amp;…&amp;.\\<br>-&amp;-&amp;u^{(k)}&amp;…&amp;-\\<br>\end{matrix}<br>\right]$是$k×n$的矩阵，$x$是$n×1$的矩阵，因此$z$是$k×1$的矩阵。</p>
 <p>这里的$x$可以是训练集中的样本，也可以是交叉验证集中的样本，也可以是测试集样本。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总结一下，这就是PCA的全过程：</p>
 <ul>
@@ -339,8 +508,8 @@
 <li><p>在以上的预处理之后，我们计算出这个协方差<code>Sigma</code>矩阵：</p>
 </li>
 </ul>
-<p>$$<br>Sigma = \frac{1}{m}\sum_{i=1}^m(x^{(i)})(x^{(i)})^T<br>$$</p>
-<ul>
+<script type="math/tex; mode=display">
+Sigma = \frac{1}{m}\sum\_{i=1}^m(x^{(i)})(x^{(i)})^T</script><ul>
 <li>然后我们可以应用<code>svd</code>函数来计算出<code>U S V</code>矩阵:</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V] &#x3D; svd(Sigma);</span><br></pre></td></tr></table></figure>
@@ -359,45 +528,50 @@
 </blockquote>
 <h1 id="应用PCA"><a href="#应用PCA" class="headerlink" title="应用PCA"></a>应用PCA</h1><h2 id="对压缩数据的还原"><a href="#对压缩数据的还原" class="headerlink" title="对压缩数据的还原"></a>对压缩数据的还原</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/X8JoQ/reconstruction-from-compressed-representation">视频地址</a></p>
 <blockquote>
-<p>在前面的视频中我们介绍了**PCA (主成分分析)**作为压缩数据的算法，你会发现它能将高达一千维度的数据压缩到只有一百个维度；或者将三维数据压缩到两个维度的情况。</p>
+<p>在前面的视频中我们介绍了<strong>PCA (主成分分析)</strong>作为压缩数据的算法，你会发现它能将高达一千维度的数据压缩到只有一百个维度；或者将三维数据压缩到两个维度的情况。</p>
 <p>如果有一个这样的压缩算法，那么也应该有一种方法可以从压缩过的数据近似地回到原始高维度的数据。</p>
 <p>假设有一个已经被压缩过的$z^{(i)}$它有100个维度，怎样使它回到其最初的表示$x^{(i)}$也就是压缩前的1000维的数据呢？ </p>
 <p>在本节，我将会告诉你如何做到。</p>
 </blockquote>
 <p>在PCA算法中，我们有下面这些样本：</p>
-<p><img src="/img/17_05_12/028.png"></p>
+<p><img src="/img/17_05_12/028.png" alt=""></p>
 <p>我们让这些样本投影在一维平面$z_1$上，并且明确地指定其位置：</p>
-<p><img src="/img/17_05_12/029.png"></p>
+<p><img src="/img/17_05_12/029.png" alt=""></p>
 <p>那么给出一个一维实数点$z$我们能否，让$z$重新变成原来的二维实数点$x$呢？</p>
 <p>即做到：</p>
-<p>$$<br>z \in R → x \in R^2<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+z \in R → x \in R^2</script><hr>
 <p>我们知道:</p>
-<p>$$<br>z = U^T_{reduce}x<br>$$</p>
-<p>如果想得到相反的情形，方程应这样变化:</p>
-<p>$$<br>x_{approx} = U_{reduce}z<br>$$</p>
-<p>为了检查维度，在这里$U_{reduce}$是一个$n×k$矩阵，$z$就是一个$k×1$维向量。将它们相乘得到的就是$n×1$维。</p>
+<script type="math/tex; mode=display">
+z = U^T\_{reduce}x</script><p>如果想得到相反的情形，方程应这样变化:</p>
+<script type="math/tex; mode=display">
+x\_{approx} = U\_{reduce}z</script><p>为了检查维度，在这里$U_{reduce}$是一个$n×k$矩阵，$z$就是一个$k×1$维向量。将它们相乘得到的就是$n×1$维。</p>
 <p>所以$x_{approx}$是一个$n$维向量。</p>
 <p>同时根据PCA的意图，投影的平方误差不能很大。也就是说$x_{approx}$将会与最开始用来导出$z$的原始$x$很接近。用图表示出来就是这样：</p>
-<p><img src="/img/17_05_12/030.png"></p>
+<p><img src="/img/17_05_12/030.png" alt=""></p>
 <p>这已经与原始数据非常近似了。</p>
-<p>这就是用低维度的特征数据$z$还原到未被压缩的特征数据的过程。我们找到一个与原始数据$x$近似的$x_{approx}$。我们也称这一过程为**原始数据的重构(reconstruction)**。</p>
+<p>这就是用低维度的特征数据$z$还原到未被压缩的特征数据的过程。我们找到一个与原始数据$x$近似的$x_{approx}$。我们也称这一过程为<strong>原始数据的重构(reconstruction)</strong>。</p>
 <h2 id="选择主成分的数量k"><a href="#选择主成分的数量k" class="headerlink" title="选择主成分的数量k"></a>选择主成分的数量k</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/S1bq1/choosing-the-number-of-principal-components">视频地址</a></p>
 <blockquote>
 <p>在PCA算法中，我们把n维特征变量降维到k维特征变量。这个数字k是PCA算法的一个参数。这个数字k也被称作<strong>主成分的数量</strong>。在本节中我会给你们一些参考，告诉你们人们是怎样思考如何选择PCA的参数k的。</p>
 </blockquote>
 <h3 id="算法原理：最小化平均平方映射误差"><a href="#算法原理：最小化平均平方映射误差" class="headerlink" title="算法原理：最小化平均平方映射误差"></a>算法原理：最小化平均平方映射误差</h3><p>为了选择参数k（也就是要选择<strong>主成分的数量</strong>），这里有几个有用的概念：</p>
-<p>PCA所做的是尽量最小化**平均平方映射误差 (Average Squared Projection Error) **。</p>
+<p>PCA所做的是尽量最小化<strong>平均平方映射误差 (Average Squared Projection Error) </strong>。</p>
 <p>因此PCA就是要将下面这个量最小化：</p>
-<p>$$<br>\frac{1}{m}\sum_{i=1}^m||x^{i}-x_{approx}^{(i)}||^2<br>$$</p>
-<p>即最小化$x$和其在低维表面上的映射点之间的距离的平方。这就是平均平方映射误差。</p>
-<p>同时我们还要定义一下**数据的总变差(Total Variation)**：</p>
-<p>$$<br>\frac{1}{m}\sum_{1=m}^m||x^{(i)}||^2<br>$$</p>
-<p>数据的总变差 (Total Variation) 是这些样本的长度的平方的均值。它的意思是 “平均来看，我的训练样本距离零向量（原点）多远？”。</p>
+<script type="math/tex; mode=display">
+\frac{1}{m}\sum\_{i=1}^m||x^{i}-x\_{approx}^{(i)}||^2</script><p>即最小化$x$和其在低维表面上的映射点之间的距离的平方。这就是平均平方映射误差。</p>
+<p>同时我们还要定义一下<strong>数据的总变差(Total Variation)</strong>：</p>
+<script type="math/tex; mode=display">
+\frac{1}{m}\sum\_{1=m}^m||x^{(i)}||^2</script><p>数据的总变差 (Total Variation) 是这些样本的长度的平方的均值。它的意思是 “平均来看，我的训练样本距离零向量（原点）多远？”。</p>
 <p>当我们去选择k值的时候，我们通过平均平方映射误差除以数据的总变差来表示数据的变化有多大。我们想要这个比值能够小于1%：</p>
-<p>$$<br>\frac{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2<br>}{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2<br>}<br>\le0.01<br>$$</p>
-<p>大部分人在考虑，选择k的方法时，不是直接选择k值，而是这里的数字应该设置为多少：</p>
-<p><img src="/img/17_05_12/031.png"></p>
+<script type="math/tex; mode=display">
+\frac{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
+}{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
+}
+\le0.01</script><p>大部分人在考虑，选择k的方法时，不是直接选择k值，而是这里的数字应该设置为多少：</p>
+<p><img src="/img/17_05_12/031.png" alt=""></p>
 <p>它应该是0.01还是其它的数？如果选择了0.01，那么用PCA的语言说就是保留了99%的差异性。</p>
 <p>数字0.01是人们经常用的一个值，另一个常用的值是0.05。如果选择了0.05，就意味着95%的差异性被保留了。从95到99是人们最为常用的取值范围。</p>
 <p>你可能会惊讶的发现，对于许多数据集，即使保留了99%的差异性，可以大幅地降低数据的维度。因为大部分现实中的数据，许多特征变量都是高度相关的。所以实际上大量压缩数据是可能的，而且仍然会保留99%或95%的差异性。</p>
@@ -409,22 +583,51 @@
 <li>计算出$U_{reduce}，z^{(1)}，z^{(2)}，…，z^{(m)}，x^{(1)}_{approx}，…，x^{(m)}_{approx}$</li>
 <li>检查是否满足：</li>
 </ul>
-<p>$$<br>\frac{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2<br>}{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2<br>}<br>\le0.01<br>$$</p>
-<p>如果满足条件，我们就用$k=1$；但如果不满足，那么我们接下来尝试$k=2$，然后我们要重新走一遍这整个过程。</p>
+<script type="math/tex; mode=display">
+\frac{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
+}{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
+}
+\le0.01</script><p>如果满足条件，我们就用$k=1$；但如果不满足，那么我们接下来尝试$k=2$，然后我们要重新走一遍这整个过程。</p>
 <p>以此类推一直试到上面不等式成立为止。</p>
 <h4 id="一种更快的算法"><a href="#一种更快的算法" class="headerlink" title="一种更快的算法"></a>一种更快的算法</h4><p>可以想象，上面这种方式非常低效。每次尝试使用新的$k$值带入计算时，整个计算过程都需要重新执行一遍，还好我没有一种更快捷方便的计算方式。</p>
 <p>当你调用<code>svd</code>来计算PCA时，你会得到三个矩阵<code>[U,S,V]</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V]&#x3D;svd(Sigma)</span><br></pre></td></tr></table></figure>
 <p>除了之前提到的<code>U</code>矩阵之外，当你对协方差的矩阵<code>Sigma</code>调用<code>svd</code>时，我没还会得到中间的这个<code>S</code>矩阵。<code>S</code>矩阵是一个$n×n$的对角矩阵，它只有在对角线上的元素不为0，其余的元素都是0。并且显而易见，它是一个方阵：</p>
-<p>$$<br>\begin{equation}<br>S=\left[<br>\begin{matrix}<br>s_{11}&amp;0&amp;0&amp;…&amp;0\\<br>0&amp;s_{22}&amp;0&amp;…&amp;0\\<br>0&amp;0&amp;s_{33}&amp;…&amp;0\<br>┋&amp;┋&amp;┋&amp;…&amp;┋\\<br>0&amp;0&amp;0&amp;…&amp;s_{nn}\\<br>\end{matrix}<br>\right]<br>\end{equation}<br>$$</p>
-<p>可以证明的是（我不会在此证明）实际上对于一个给定的k值，可以通过这个$S$矩阵方便的计算出差异性那一项的值：</p>
-<p>$$<br>\frac{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2<br>}{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2<br>}<br>=<br>1-\frac{\sum_{i=1}^k S_{ii}}{\sum_{i=1}^n S_{ii}}<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+\begin{equation}
+S=\left[
+\begin{matrix}
+s\_{11}&0&0&...&0\\\\
+0&s\_{22}&0&...&0\\\\
+0&0&s\_{33}&...&0\\\
+┋&┋&┋&...&┋\\\\
+0&0&0&...&s\_{nn}\\\\
+\end{matrix}
+\right]
+\end{equation}</script><p>可以证明的是（我不会在此证明）实际上对于一个给定的k值，可以通过这个$S$矩阵方便的计算出差异性那一项的值：</p>
+<script type="math/tex; mode=display">
+\frac{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
+}{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
+}
+=
+1-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}</script><hr>
 <p>例如，假设差异性要满足小于$0.01$，那么可以得出：</p>
-<p>$$<br>\frac{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2<br>}{<br>\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2<br>}<br>=<br>1-\frac{\sum_{i=1}^k S_{ii}}{\sum_{i=1}^n S_{ii}}<br>\le0.01<br>$$</p>
-<p>即：</p>
-<p>$$<br>\frac{\sum_{i=1}^k S_{ii}}{\sum_{i=1}^n S_{ii}}<br>\ge0.99<br>$$</p>
-<p>那么你可以从1开始，慢慢增大$k$的值，来计算上面这个不等式，直到满足为止即可（得到满足上面不等式的最小$k$值）。</p>
+<script type="math/tex; mode=display">
+\frac{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
+}{
+\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
+}
+=
+1-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
+\le0.01</script><p>即：</p>
+<script type="math/tex; mode=display">
+\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
+\ge0.99</script><p>那么你可以从1开始，慢慢增大$k$的值，来计算上面这个不等式，直到满足为止即可（得到满足上面不等式的最小$k$值）。</p>
 <hr>
 <p>通过这种方式，你只需要<strong>调用一次<code>svd</code>函数</strong>，通过<code>svd</code>给出的<code>S</code>矩阵你就可以通过依次增加$k$值的方式来求解了。这样以来就大幅的提升了计算效率。</p>
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>总结一下，使用PCA算法时寻找合适$k$值的方法：</p>
@@ -435,11 +638,12 @@
 <ul>
 <li>然后使用下面的不等式求得满足条件的最小$k$值：</li>
 </ul>
-<p>$$<br>\frac{\sum_{i=1}^k S_{ii}}{\sum_{i=1}^n S_{ii}}<br>\ge0.99<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
+\ge0.99</script><hr>
 <p>顺便说一下，即使你想要手动挑选$k$值，如果你想要向别人解释你实现的PCA的性能具体如何，那么一个好方法就是算出这个值：</p>
-<p>$$<br>\frac{\sum_{i=1}^k S_{ii}}{\sum_{i=1}^n S_{ii}}<br>$$</p>
-<p>它会告诉你百分之多少的差异性被保留了下来。</p>
+<script type="math/tex; mode=display">
+\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}</script><p>它会告诉你百分之多少的差异性被保留了下来。</p>
 <p>如果你把这个数值展现出来，那么熟悉PCA的人们就可以通过它来更好地理解你用来代表原始数据的压缩后的数据近似得有多好。因为有99%的差异性被保留了。</p>
 <p>这就是一个<strong>平方投影误差的测量指标</strong>。它可以带给你对于数据压缩后是否与原始数据相似带来一种很好的直观感受。</p>
 <h2 id="应用PCA的建议"><a href="#应用PCA的建议" class="headerlink" title="应用PCA的建议"></a>应用PCA的建议</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/RBqQl/advice-for-applying-pca">视频地址</a></p>
@@ -459,23 +663,23 @@
 </li>
 </ul>
 <h3 id="通过PCA来提高学习算法的速度"><a href="#通过PCA来提高学习算法的速度" class="headerlink" title="通过PCA来提高学习算法的速度"></a>通过PCA来提高学习算法的速度</h3><p>举例说明，假如你正在用机器学习来处理图片数据。假设每张输入的图片尺寸是$100×100$的，那么对于每张图片来说，都有10000个像素点。假设样本$x^{(i)}$是包含了10000像素强度值的特征向量，即：</p>
-<p>$$<br>x^{(i)}\in R<br>$$</p>
-<p>那么对于我们的样本数据集来说：</p>
-<p>$$<br>(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),…,(x^{(m)},y^{(m)})<br>$$</p>
-<p>每个样本中，对应的$x^{(i)}$都是10000维的特征向量。</p>
+<script type="math/tex; mode=display">
+x^{(i)}\in R</script><p>那么对于我们的样本数据集来说：</p>
+<script type="math/tex; mode=display">
+(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})</script><p>每个样本中，对应的$x^{(i)}$都是10000维的特征向量。</p>
 <p>可想而知，这么高维度的数据带入到逻辑回归、神经网络、支持向量机或者任何别的算法中，学习算法运行的都会很慢。</p>
 <p>幸运的是，通过使用PCA，我们能够<strong>降低数据的维数，从而使得算法能够更加高效地运行</strong>。这就是PCA提高算法运算效率的原理。</p>
 <h4 id="降维步骤"><a href="#降维步骤" class="headerlink" title="降维步骤"></a>降维步骤</h4><p>首先我们需要检查带标签的训练数据集，并提取出输入数据。我们只需要提取出$x$并暂时把$y$放在一边。这一步我们会得到一组无标签的训练集：</p>
-<p>$$<br>x^{(1)},x^{(2)},…,x^{(m)}\in R^{10000}<br>$$</p>
-<p>从$x^{(1)}$到$x^{(m)}$，每个样本都是10000维的数据。然后我们应用PCA降维，我们会得到一个降维后的1000维的数据集：</p>
-<p>$$<br>z^{(1)},z^{(2)},…,z^{(m)}\in R^{1000}<br>$$</p>
-<p>这样我们就得到了一个新的训练集：</p>
-<p>$$<br>(z^{(1)},y^{(1)}),(z^{(2)},y^{(2)}),…,(z^{(m)},y^{(m)})<br>$$</p>
-<p>现在，我可以将这个已经降维的数据集输入到学习算法中，来得出假设函数，并把降维后的数据作为输入带入，做出预测。</p>
+<script type="math/tex; mode=display">
+x^{(1)},x^{(2)},...,x^{(m)}\in R^{10000}</script><p>从$x^{(1)}$到$x^{(m)}$，每个样本都是10000维的数据。然后我们应用PCA降维，我们会得到一个降维后的1000维的数据集：</p>
+<script type="math/tex; mode=display">
+z^{(1)},z^{(2)},...,z^{(m)}\in R^{1000}</script><p>这样我们就得到了一个新的训练集：</p>
+<script type="math/tex; mode=display">
+(z^{(1)},y^{(1)}),(z^{(2)},y^{(2)}),...,(z^{(m)},y^{(m)})</script><p>现在，我可以将这个已经降维的数据集输入到学习算法中，来得出假设函数，并把降维后的数据作为输入带入，做出预测。</p>
 <p>以<strong>逻辑回归</strong>为例：</p>
 <p>逻辑回归中，我们得到的假设函数如下：</p>
-<p>$$<br>h_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}<br>$$</p>
-<p>我们将$z$向量作为输入带入，并得出一个预测值。</p>
+<script type="math/tex; mode=display">
+h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作为输入带入，并得出一个预测值。</p>
 <p>最后，如果你有一个新的样本$x$，那么你所要做的是将你的测试样本$x$通过同样的PCA降维之后，你会得到这个样本所对应的$z$。然后将这个$z$值带入到这个假设函数中进行预测。</p>
 <blockquote>
 <p><strong>注意（重要）：</strong></p>
@@ -510,157 +714,285 @@
 <p>然而，尽管有这些需要注意的地方，PCA仍旧是一种不可思议的有用的算法。PCA的使用频率也很高，大部分时候我都用它来加快学习算法。但我认为PCA通常都是被用来压缩数据以减少内存使用或硬盘空间占用的、或者用来可视化数据的。</p>
 <p>同时PCA也是一种强有力的无监督学习算法。</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/" data-id="ckkwc438m009upas97eb0a54t" data-title="斯坦福机器学习课程 第八周 (2)降维" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/26/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91TextRank-%E5%AF%B9%E6%96%87%E6%9C%AC%E6%8E%92%E5%BA%8F/" rel="prev" title="【翻译】TextRank:对文本排序">
+      <i class="fa fa-chevron-left"></i> 【翻译】TextRank:对文本排序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" rel="next" title="斯坦福机器学习课程 第九周 (1)密度估计">
+      斯坦福机器学习课程 第九周 (1)密度估计 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BAI%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.1.</span> <span class="nav-text">动机I：数据压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%8D%E7%BB%B4%E5%90%AB%E4%B9%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">降维含义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E9%99%8D%E5%88%B0%E4%B8%80%E7%BB%B4"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">二维降到一维</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E9%99%8D%E5%88%B0%E4%BA%8C%E7%BB%B4"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">三维降到二维</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BAII%EF%BC%9A%E5%8F%AF%E8%A7%86%E5%8C%96%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">动机II：可视化数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PCA"><span class="nav-number">2.</span> <span class="nav-text">PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%EF%BC%88PCA%EF%BC%89%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">主成分分析（PCA）相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B2D-gt-1D"><span class="nav-number">2.1.1.</span> <span class="nav-text">PCA的执行过程2D -&gt; 1D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B3D-gt-2D"><span class="nav-number">2.1.2.</span> <span class="nav-text">PCA的执行过程3D -&gt; 2D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E5%92%8C%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.3.</span> <span class="nav-text">PCA和线性回归的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%82%B9-%E4%B9%8B%E4%B8%80"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">不同点 之一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%82%B9-%E4%B9%8B%E4%BA%8C"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">不同点 之二</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCA%E7%AE%97%E6%B3%95-%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">PCA算法 实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%9D%87%E5%80%BC%E5%BD%92%E4%B8%80%E5%8C%96-mean-normalization"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">数据预处理第一步：均值归一化(mean normalization)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE-feature-scaling"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">数据预处理第二步：特征缩放(feature scaling)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">PCA算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.2.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8PCA"><span class="nav-number">3.</span> <span class="nav-text">应用PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E5%8E%8B%E7%BC%A9%E6%95%B0%E6%8D%AE%E7%9A%84%E8%BF%98%E5%8E%9F"><span class="nav-number">3.1.</span> <span class="nav-text">对压缩数据的还原</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E4%B8%BB%E6%88%90%E5%88%86%E7%9A%84%E6%95%B0%E9%87%8Fk"><span class="nav-number">3.2.</span> <span class="nav-text">选择主成分的数量k</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86%EF%BC%9A%E6%9C%80%E5%B0%8F%E5%8C%96%E5%B9%B3%E5%9D%87%E5%B9%B3%E6%96%B9%E6%98%A0%E5%B0%84%E8%AF%AF%E5%B7%AE"><span class="nav-number">3.2.1.</span> <span class="nav-text">算法原理：最小化平均平方映射误差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.2.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">原始的算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E7%A7%8D%E6%9B%B4%E5%BF%AB%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">一种更快的算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">3.2.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8PCA%E7%9A%84%E5%BB%BA%E8%AE%AE"><span class="nav-number">3.3.</span> <span class="nav-text">应用PCA的建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%80%BB%E7%BB%93"><span class="nav-number">3.3.1.</span> <span class="nav-text">PCA应用场景总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87PCA%E6%9D%A5%E6%8F%90%E9%AB%98%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E7%9A%84%E9%80%9F%E5%BA%A6"><span class="nav-number">3.3.2.</span> <span class="nav-text">通过PCA来提高学习算法的速度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%8D%E7%BB%B4%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">降维步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA%E7%9A%84%E9%94%99%E8%AF%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.3.</span> <span class="nav-text">PCA的错误使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%BB%BA%E8%AE%AE"><span class="nav-number">3.3.4.</span> <span class="nav-text">两个建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9C%9F%E7%9A%84%E9%9C%80%E8%A6%81PCA%E5%90%97%EF%BC%9F"><span class="nav-number">3.3.4.1.</span> <span class="nav-text">真的需要PCA吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E4%B8%80%E5%BC%80%E5%A7%8B%E5%B0%B1%E5%B8%A6%E5%85%A5PCA"><span class="nav-number">3.3.4.2.</span> <span class="nav-text">不要一开始就带入PCA</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第九周 (1)密度估计
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/04/26/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91TextRank-%E5%AF%B9%E6%96%87%E6%9C%AC%E6%8E%92%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【翻译】TextRank:对文本排序</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '0321b66ab679028f81848e457306fe73',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

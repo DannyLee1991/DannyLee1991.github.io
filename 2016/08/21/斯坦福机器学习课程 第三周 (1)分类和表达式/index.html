@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>斯坦福机器学习课程 第三周 (1)分类和表达式 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="分类视频地址 在接下来的几节课中，将介绍分类问题。我们将学习一种叫做**逻辑回归(Logistic Regression)**的算法，这也是目前最流行，使用最广泛的一种学习算法。 下面是几个使用分类算法的例子：  Email的垃圾邮件分类问题：区分邮件是否为垃圾邮件 网上交易分类问题：是否为欺诈交易 肿瘤分类问题：区分肿瘤是恶性还是良性  在所有的这些问题中，我们想要预测的变量是$y$，我们可以认">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="分类视频地址 在接下来的几节课中，将介绍分类问题。我们将学习一种叫做逻辑回归(Logistic Regression)的算法，这也是目前最流行，使用最广泛的一种学习算法。 下面是几个使用分类算法的例子：  Email的垃圾邮件分类问题：区分邮件是否为垃圾邮件 网上交易分类问题：是否为欺诈交易 肿瘤分类问题：区分肿瘤是恶性还是良性  在所有的这些问题中，我们想要预测的变量是$y$，我们可以认为它可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="斯坦福机器学习课程 第三周 (1)分类和表达式">
 <meta property="og:url" content="http://example.com/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="分类视频地址 在接下来的几节课中，将介绍分类问题。我们将学习一种叫做**逻辑回归(Logistic Regression)**的算法，这也是目前最流行，使用最广泛的一种学习算法。 下面是几个使用分类算法的例子：  Email的垃圾邮件分类问题：区分邮件是否为垃圾邮件 网上交易分类问题：是否为欺诈交易 肿瘤分类问题：区分肿瘤是恶性还是良性  在所有的这些问题中，我们想要预测的变量是$y$，我们可以认">
+<meta property="og:site_name" content="圣巢">
+<meta property="og:description" content="分类视频地址 在接下来的几节课中，将介绍分类问题。我们将学习一种叫做逻辑回归(Logistic Regression)的算法，这也是目前最流行，使用最广泛的一种学习算法。 下面是几个使用分类算法的例子：  Email的垃圾邮件分类问题：区分邮件是否为垃圾邮件 网上交易分类问题：是否为欺诈交易 肿瘤分类问题：区分肿瘤是恶性还是良性  在所有的这些问题中，我们想要预测的变量是$y$，我们可以认为它可以">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/16_08_22/001.png">
 <meta property="og:image" content="http://example.com/img/16_08_22/002.png">
@@ -26,96 +40,218 @@
 <meta property="og:image" content="http://example.com/img/16_08_22/011.png">
 <meta property="og:image" content="http://example.com/img/16_08_22/012.png">
 <meta property="article:published_time" content="2016-08-21T18:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="斯坦福课程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/16_08_22/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>斯坦福机器学习课程 第三周 (1)分类和表达式 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-斯坦福机器学习课程 第三周 (1)分类和表达式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
-  <time class="dt-published" datetime="2016-08-21T18:00:00.000Z" itemprop="datePublished">2016-08-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      斯坦福机器学习课程 第三周 (1)分类和表达式
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斯坦福机器学习课程 第三周 (1)分类和表达式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-08-21 18:00:00" itemprop="dateCreated datePublished" datetime="2016-08-21T18:00:00+00:00">2016-08-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/wlPeP/classification">视频地址</a></p>
-<p>在接下来的几节课中，将介绍分类问题。我们将学习一种叫做**逻辑回归(Logistic Regression)**的算法，这也是目前最流行，使用最广泛的一种学习算法。</p>
+<p>在接下来的几节课中，将介绍分类问题。我们将学习一种叫做<strong>逻辑回归(Logistic Regression)</strong>的算法，这也是目前最流行，使用最广泛的一种学习算法。</p>
 <p>下面是几个使用分类算法的例子：</p>
 <ul>
 <li>Email的垃圾邮件分类问题：区分邮件是否为垃圾邮件</li>
@@ -123,79 +259,93 @@
 <li>肿瘤分类问题：区分肿瘤是恶性还是良性</li>
 </ul>
 <p>在所有的这些问题中，我们想要预测的变量是$y$，我们可以认为它可以取两个值：<code>0</code>或者<code>1</code>。</p>
-<p>$$<br>y\in {0, 1}<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+y\in {0, 1}</script><blockquote>
 <p>0：“负类”（例如：良性肿瘤）<br>1：“正类”（例如：恶性肿瘤）</p>
 </blockquote>
 <p>现在我们要开始研究只有两类（0和1）的分类问题。之后我们也会讨论更多类别的问题：$y\in {0,1,2,3,…}$，这就是所谓的<strong>多类分类问题</strong>。但接下来，我们将开始介绍只有两种类别的分类问题，或者叫做<strong>二元分类</strong>问题。</p>
 <h3 id="二元分类"><a href="#二元分类" class="headerlink" title="二元分类"></a>二元分类</h3><p>那么我们要怎样开发一个分类算法呢？下面是一个用来给肿瘤分类的训练集的例子(恶性或良性)。</p>
-<p><img src="/img/16_08_22/001.png"></p>
+<p><img src="/img/16_08_22/001.png" alt=""></p>
 <blockquote>
 <p>注意这里的恶性值(Malignant)只取两个值：0也就是良性，1也就是恶性。</p>
 </blockquote>
 <p>所以拿到这样的数据，我们通常的做法是用线性回归算法尝试使用一条直线来拟合这些数据：</p>
-<p>$$<br>h_{\theta}(x)=\theta^{T}x<br>$$</p>
-<p>如果你试着用一条直线去拟合这些数据，你也许会得到这样一条直线：</p>
-<p><img src="/img/16_08_22/002.png"></p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x)=\theta^{T}x</script><p>如果你试着用一条直线去拟合这些数据，你也许会得到这样一条直线：</p>
+<p><img src="/img/16_08_22/002.png" alt=""></p>
 <p>如果你想要尝试分类，可以试着将分类器的阈值设为0.5：</p>
 <ul>
 <li>当$h_{\theta}(x)\ge0.5$时，预测$y=1$。</li>
 <li>当$h_{\theta}(x)\lt0.5$时，预测$y=0$。</li>
 </ul>
 <p>因此，如图这里就是阈值的所在点：</p>
-<p><img src="/img/16_08_22/003.png"></p>
+<p><img src="/img/16_08_22/003.png" alt=""></p>
 <p>这个点右侧的点，我们会将它们全部预测为正，因为它们的输出值在纵轴上都是大于0.5的。同理，在这一点的左侧的点，我们会将它们全部预测为负。</p>
 <p>在这个例子中，看起来好像线性回归所做的实际上是合理的，现在让我们稍做一些改动，延长一下横轴，假设在很远的右侧有一个训练样本。</p>
-<p><img src="/img/16_08_22/004.png"></p>
+<p><img src="/img/16_08_22/004.png" alt=""></p>
 <p>此时，得到的拟合数据的直线就会是上图那样，而且阈值所在的位置也会向右侧偏移。此时我们预测阈值点右侧的值都为正，左侧都为负。这看起来线性回归的效果并不好。因为我们可以很明显的看出来，新增的这个点其实并没有给我们带来什么新的信息，这里的意思是说，按照原本的预测，这一个位置出现的点就应该是正。而且我们根据这个新增的点得到的阈值所在点并没有很好的把数据进行划分。</p>
 <p>因此<strong>使用线性函数进行分类并不是一个好办法</strong>。在第一个例子中，线性函数能够正常的预测数据只不过是巧合罢了。</p>
 <p>另外一个不使用线性函数进行分类的原因是：对于分类问题，我们通常只需要取得$y=0$或$y=1$。如果使用线性回归，那么假设输出函数很有可能远大于1或者远小于0。</p>
-<p><img src="/img/16_08_22/005.png"></p>
-<p>因此我们接下来的视频中将要介**逻辑回归算法(Logistic Regression)**，这个算法的性质就是适用于$y$值为离散值的情况，并且它的输出值保证在0到1之间:<br>$$<br>0\le h_{\theta}(x)\le1<br>$$</p>
-<blockquote>
+<p><img src="/img/16_08_22/005.png" alt=""></p>
+<p>因此我们接下来的视频中将要介<strong>逻辑回归算法(Logistic Regression)</strong>，这个算法的性质就是适用于$y$值为离散值的情况，并且它的输出值保证在0到1之间:</p>
+<script type="math/tex; mode=display">
+0\le h\_{\theta}(x)\le1</script><blockquote>
 <p>顺便提一句，<strong>逻辑回归算法</strong>是一个<strong>分类算法</strong>，即使它的名字里有<strong>回归</strong>，但我们也把它当成分类算法来使用。这里只是因为历史原因，才被这样称呼。</p>
 </blockquote>
 <h2 id="假设函数表达式"><a href="#假设函数表达式" class="headerlink" title="假设函数表达式"></a>假设函数表达式</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/RJXfB/hypothesis-representation">视频地址</a> </p>
 <p>之前我们说过，我们希望分类器的输出值的范围能控制在0和1之间：</p>
-<p>$$<br>0\le h_{\theta}(x)\le1<br>$$</p>
-<p>因此我们渴望找到一个满足这种预测值性质的函数。</p>
+<script type="math/tex; mode=display">
+0\le h\_{\theta}(x)\le1</script><p>因此我们渴望找到一个满足这种预测值性质的函数。</p>
 <p>当我们使用线性回归时，我们用下面的式子来作为假设函数表达式：</p>
-<p>$$<br>h_{\theta}(x) = \theta^{T}x<br>$$</p>
-<p>对于逻辑回归来说，我们需要稍微改动一下：</p>
-<p>$$<br>h_{\theta}(x) = g(\theta^{T}x)<br>$$</p>
-<p>其中$g$函数的表达式为：</p>
-<p>$$<br>g(z)=\frac{1}{1+e^{-z}}<br>$$</p>
-<p>这个函数被称为<strong>S型函数(Sigmoid function)**，或者</strong>逻辑函数(Logistic function)**。</p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = \theta^{T}x</script><p>对于逻辑回归来说，我们需要稍微改动一下：</p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = g(\theta^{T}x)</script><p>其中$g$函数的表达式为：</p>
+<script type="math/tex; mode=display">
+g(z)=\frac{1}{1+e^{-z}}</script><p>这个函数被称为<strong>S型函数(Sigmoid function)</strong>，或者<strong>逻辑函数(Logistic function)</strong>。</p>
 <blockquote>
-<p><strong>S型函数(Sigmoid function)**和</strong>逻辑函数(Logistic function)**基本上是同义词。因此这两个术语是可以互换的。</p>
+<p><strong>S型函数(Sigmoid function)</strong>和<strong>逻辑函数(Logistic function)</strong>基本上是同义词。因此这两个术语是可以互换的。</p>
 </blockquote>
-<p>**S型函数(Sigmoid function)**的图形是这样的，顶部是随着$z$的增大而逐渐趋近于1，底部随着$z$的减小而逐渐趋近于0：</p>
-<p><img src="/img/16_08_22/006.png"></p>
+<p><strong>S型函数(Sigmoid function)</strong>的图形是这样的，顶部是随着$z$的增大而逐渐趋近于1，底部随着$z$的减小而逐渐趋近于0：</p>
+<p><img src="/img/16_08_22/006.png" alt=""></p>
 <p>因此我们可以得到：</p>
-<p>$$<br>\begin{align*}<br>h_{\theta}(x) &amp;= g(\theta^{T}x) \\<br>&amp;= \frac{1}{1+e^{-\theta^{T}x}}<br>\end{align*}<br>$$ </p>
-<p>接下来我们要做的就是用参数$\theta$来拟合我们的数据。</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+h\_{\theta}(x) &= g(\theta^{T}x) \\\\
+&= \frac{1}{1+e^{-\theta^{T}x}}
+\end{align*}</script><p>接下来我们要做的就是用参数$\theta$来拟合我们的数据。</p>
 <h3 id="对假设函数的进一步理解"><a href="#对假设函数的进一步理解" class="headerlink" title="对假设函数的进一步理解"></a>对假设函数的进一步理解</h3><p><strong>假设函数的解释</strong>：</p>
 <p>$h_{\theta}(x)$是对于新注入样本$x$的满足$y=1$的概率估计。</p>
 <p>举个肿瘤分类的例子来说：</p>
 <p>如果：</p>
-<p>$$<br>x=<br>\begin{bmatrix}<br>x_{0} \\<br>x_{1}<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>1 \\<br>tumorSizs<br>\end{bmatrix}<br>$$</p>
-<p>$$<br>h_{\theta}(x) = 0.7<br>$$</p>
-<p>和之前一样，特征向量$x_{0}=1$，特征向量$x_{1}=tumorSize$代表肿瘤大小。</p>
-<p>假设有一个病人，我们已知他肿瘤的大小，将他的特征向量$x$带入到$h_{\theta}(x)$中，得到的结果是$0.7$，那么我的解释就是$y=1$的概率是$0.7$，即这个患者的肿瘤是恶性的概率是$70%$。</p>
+<script type="math/tex; mode=display">
+x=
+\begin{bmatrix}
+x\_{0} \\\\
+x\_{1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\\\
+tumorSizs
+\end{bmatrix}</script><script type="math/tex; mode=display">
+h\_{\theta}(x) = 0.7</script><p>和之前一样，特征向量$x_{0}=1$，特征向量$x_{1}=tumorSize$代表肿瘤大小。</p>
+<p>假设有一个病人，我们已知他肿瘤的大小，将他的特征向量$x$带入到$h_{\theta}(x)$中，得到的结果是$0.7$，那么我的解释就是$y=1$的概率是$0.7$，即这个患者的肿瘤是恶性的概率是$70\%$。</p>
 <p>用更加正式的式子来表示就是：</p>
-<p>$$<br>h_{\theta}(x) = P(y=1|x;\theta)<br>$$</p>
-<blockquote>
-<p>熟悉概率的同学可能对这个式子不陌生，这个式子代表着**在给定的特征$x$的情况下，$y=1$的概率，其中参数为$\theta$**。<br>在这里给定的$x$就是代表我的病人的肿瘤大小的特征$x$。</p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = P(y=1|x;\theta)</script><blockquote>
+<p>熟悉概率的同学可能对这个式子不陌生，这个式子代表着<strong>在给定的特征$x$的情况下，$y=1$的概率，其中参数为$\theta$</strong>。<br>在这里给定的$x$就是代表我的病人的肿瘤大小的特征$x$。</p>
 </blockquote>
 <p>由于我们知道，$y$的取值不是0就是1，因此当我们得到了$y=1$的概率时，$y=0$的概率就很容易得出：</p>
-<p>$$<br>P(y=0|x;\theta) + P(y=1|x;\theta) = 1 \\<br>P(y=0|x;\theta) = 1 - P(y=1|x;\theta)<br>$$</p>
-<h2 id="决策边界"><a href="#决策边界" class="headerlink" title="决策边界"></a>决策边界</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/discussions/weeks/3">视频地址</a></p>
-<p>这一节向大家介绍一个**决策边界(Decision Boundary)**的概念，这个概念能更好的帮助大家理解逻辑回归中假设函数在计算什么。</p>
+<script type="math/tex; mode=display">
+P(y=0|x;\theta) + P(y=1|x;\theta) = 1 \\\\
+P(y=0|x;\theta) = 1 - P(y=1|x;\theta)</script><h2 id="决策边界"><a href="#决策边界" class="headerlink" title="决策边界"></a>决策边界</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/discussions/weeks/3">视频地址</a></p>
+<p>这一节向大家介绍一个<strong>决策边界(Decision Boundary)</strong>的概念，这个概念能更好的帮助大家理解逻辑回归中假设函数在计算什么。</p>
 <p>在上一节中，我们说假设函数可以表示为如下形式：</p>
-<p>$$<br>h_{\theta}(x) = g(\theta^{T}x)<br>$$</p>
-<p>$$<br>g(z)=\frac{1}{1+e^{-z}}<br>$$</p>
-<p>对应的图像是这样的：</p>
-<p><img src="/img/16_08_22/007.png"></p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = g(\theta^{T}x)</script><script type="math/tex; mode=display">
+g(z)=\frac{1}{1+e^{-z}}</script><p>对应的图像是这样的：</p>
+<p><img src="/img/16_08_22/007.png" alt=""></p>
 <p>更进一步来理解：</p>
 <ul>
 <li>如果$h_{\theta}(x)\ge0.5$ 我们认为$y=1$</li>
@@ -213,197 +363,345 @@
 </ul>
 <p>通过上面这些，我们可以更好的理解如何利用逻辑回归的假设函数来进行预测。</p>
 <p>接下来我们看一个例子：</p>
-<p><img src="/img/16_08_22/008.png"></p>
+<p><img src="/img/16_08_22/008.png" alt=""></p>
 <p>假设我们有一个训练集，我们的假设函数为：</p>
-<p>$$<br>h_{\theta}(x)=g(\theta_{0} + \theta_{1}x_{1} + \theta_{2}x_{2})<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+h\_{\theta}(x)=g(\theta\_{0} + \theta\_{1}x\_{1} + \theta\_{2}x\_{2})</script><blockquote>
 <p>目前我们还没有讲解如何拟合此模型中的参数，这个知识点将在下一节中讲解。这里我们假设数据已经是拟合好的了。</p>
 </blockquote>
 <p>假设我们已经拟合好了数据，并且得到了$\theta_{0}=-3$、$\theta_{1}=1$、$\theta_{2}=1$。这意味着：</p>
-<p>$$<br>\theta=<br>\begin{bmatrix}<br>-3 \\<br>1 \\<br>1<br>\end{bmatrix}<br>$$</p>
-<p>根据上面我们的讨论，我们可以得到：</p>
+<script type="math/tex; mode=display">
+\theta=
+\begin{bmatrix}
+-3 \\\\
+1 \\\\
+1
+\end{bmatrix}</script><p>根据上面我们的讨论，我们可以得到：</p>
 <ul>
 <li>当$-3 + x_{1} + x_{2} \ge 0$时，满足$y=1$；</li>
 <li>当$-3 + x_{1} + x_{2} \lt 0$时，满足$y=0$。</li>
 </ul>
 <p>因此，当$x_{1} + x_{2} = 3$时，我们可以得到一条直线：</p>
-<p><img src="/img/16_08_22/009.png"></p>
+<p><img src="/img/16_08_22/009.png" alt=""></p>
 <p>在这条直线右上方的点，代表$y=1$的点，这片区域被称为$y=1$区域。于此相对的是，在这条直线左下方的点，代表$y=0$的点，这片区域被称为$y=0$区域。</p>
-<p>上面我们绘制出来的$x_{1} + x_{2} = 3$这条直线被称为**决策边界(decision boundary)**。</p>
+<p>上面我们绘制出来的$x_{1} + x_{2} = 3$这条直线被称为<strong>决策边界(decision boundary)</strong>。</p>
 <blockquote>
 <p>值得说明的是，决策边界其实是假设函数$h_{\theta}(x)$的属性，它取决于其参数$\theta$。目前我们还没有说明如何对这些参数$\theta$进行取值，后面我们会学习如何使用训练集来确定这些参数的取值。但是，我们一旦能确定$\theta$的值时，我们就能确定出决策边界了。</p>
 </blockquote>
 <p>接下来我们来看一个更复杂的例子：</p>
-<p><img src="/img/16_08_22/010.png"></p>
+<p><img src="/img/16_08_22/010.png" alt=""></p>
 <p>和之前一样，圆圈表示负样本，红色的叉号表示正样本。那么我们怎样使用逻辑回归来拟合这些数据呢？</p>
 <p>之前我们讲过多项式回归时，我们谈论到可以通过添加额外的高阶多项式项，这里我们同样可以对逻辑回归使用相同的方法。</p>
 <p>具体的说，假设我的假设函数如下：</p>
-<p>$$<br>h_{\theta}(x) =<br>g(\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}+\theta_{3}x_{1}^{2}+\theta_{4}x_{2}^{2})<br>$$</p>
-<p>之前我们说到，我们将在后面的学习讨论如何得到正确的$\theta$，这里假设我们已经得到了正确的$\theta$，值如下：</p>
-<p>$$<br>\begin{align*}<br>\theta_{0} &amp;= -1 \\<br>\theta_{1} &amp;= 0 \\<br>\theta_{2} &amp;= 0 \\<br>\theta_{3} &amp;= 1 \\<br>\theta_{4} &amp;= 1<br>\end{align*}<br>$$</p>
-<p>在这个参数的选择下，我们的参数向量将是：</p>
-<p>$$<br>\theta=<br>\begin{bmatrix}<br>-1 \\<br>0 \\<br>0 \\<br>1 \\<br>1<br>\end{bmatrix}<br>$$</p>
-<p>这也说明，若我们期望$y$满足$y=1$，那么$x_{1}$,$x_{2}$需满足：</p>
-<p>$$<br>-1 + x_{1}^{2} + x_{2}^{2} \ge 0<br>$$</p>
-<p>对应的决策边界就是这样：</p>
-<p><img src="/img/16_08_22/011.png"></p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = 
+g(\theta\_{0}+\theta\_{1}x\_{1}+\theta\_{2}x\_{2}+\theta\_{3}x\_{1}^{2}+\theta\_{4}x\_{2}^{2})</script><p>之前我们说到，我们将在后面的学习讨论如何得到正确的$\theta$，这里假设我们已经得到了正确的$\theta$，值如下：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+\theta\_{0} &= -1 \\\\
+\theta\_{1} &= 0 \\\\
+\theta\_{2} &= 0 \\\\
+\theta\_{3} &= 1 \\\\
+\theta\_{4} &= 1 
+\end{align*}</script><p>在这个参数的选择下，我们的参数向量将是：</p>
+<script type="math/tex; mode=display">
+\theta=
+\begin{bmatrix}
+-1 \\\\
+0 \\\\
+0 \\\\
+1 \\\\
+1
+\end{bmatrix}</script><p>这也说明，若我们期望$y$满足$y=1$，那么$x_{1}$,$x_{2}$需满足：</p>
+<script type="math/tex; mode=display">
+-1 + x\_{1}^{2} + x\_{2}^{2} \ge 0</script><p>对应的决策边界就是这样：</p>
+<p><img src="/img/16_08_22/011.png" alt=""></p>
 <hr>
 <p>其实对于更复杂的假设函数：</p>
-<p>$$<br>h_{\theta}(x) =<br>g(\theta_{0}+\theta_{1}x_{1}+\theta_{2}x_{2}+\theta_{3}x_{1}^{2}+\theta_{4}x_{1}^{2}x_{2}+\theta_{5}x_{1}^{2}x_{2}^{2}+\theta_{6}x_{1}^{3}x_{2}+…)<br>$$</p>
-<p>它的决策边界可能会是一些有趣的形状：</p>
-<p><img src="/img/16_08_22/012.png"></p>
+<script type="math/tex; mode=display">
+h\_{\theta}(x) = 
+g(\theta\_{0}+\theta\_{1}x\_{1}+\theta\_{2}x\_{2}+\theta\_{3}x\_{1}^{2}+\theta\_{4}x\_{1}^{2}x\_{2}+\theta\_{5}x\_{1}^{2}x\_{2}^{2}+\theta\_{6}x\_{1}^{3}x\_{2}+...)</script><p>它的决策边界可能会是一些有趣的形状：</p>
+<p><img src="/img/16_08_22/012.png" alt=""></p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/" data-id="ckkwc437x0082pas90l53fpyh" data-title="斯坦福机器学习课程 第三周 (1)分类和表达式" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag"># 斯坦福课程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/08/13/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(4)Octave:Matlab%20%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" rel="prev" title="斯坦福机器学习课程 第二周 (4)Octave/Matlab 使用说明">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程 第二周 (4)Octave/Matlab 使用说明
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" rel="next" title="斯坦福机器学习课程 第三周 (2)Logistic回归模型">
+      斯坦福机器学习课程 第三周 (2)Logistic回归模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">二元分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">假设函数表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%81%87%E8%AE%BE%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%90%86%E8%A7%A3"><span class="nav-number">2.1.</span> <span class="nav-text">对假设函数的进一步理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E8%BE%B9%E7%95%8C"><span class="nav-number">3.</span> <span class="nav-text">决策边界</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          斯坦福机器学习课程 第三周 (2)Logistic回归模型
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/08/13/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%BA%8C%E5%91%A8%20(4)Octave:Matlab%20%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程 第二周 (4)Octave/Matlab 使用说明</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
+
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
       
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
     
 
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '15d79726ee05351f47d5cfa4c74db2c4',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>

@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>【翻译】图解信息论 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
   <meta name="description" content="原文地址  我很喜欢那种获得一种新的方式来思考我们的世界时的那种感觉。尤其是在一些模糊的想法变成一个具体的概念的时候。信息论就是这样一种把模糊的概念具象化的典型的例子。 信息理论为我们描述很多事情提供了准确的语言。关于某个问题我到底有多不确定？问题A的答案会告诉我们多少关于问题B的答案的信息？一组信息和另一组信息的相似度如何衡量？在我小的时候，我就已经形成了一些关于这些问题的模糊的想法，但是信息">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【翻译】图解信息论">
 <meta property="og:url" content="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="圣巢">
 <meta property="og:description" content="原文地址  我很喜欢那种获得一种新的方式来思考我们的世界时的那种感觉。尤其是在一些模糊的想法变成一个具体的概念的时候。信息论就是这样一种把模糊的概念具象化的典型的例子。 信息理论为我们描述很多事情提供了准确的语言。关于某个问题我到底有多不确定？问题A的答案会告诉我们多少关于问题B的答案的信息？一组信息和另一组信息的相似度如何衡量？在我小的时候，我就已经形成了一些关于这些问题的模糊的想法，但是信息">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/17_06_13/001.png">
@@ -63,93 +77,215 @@
 <meta property="og:image" content="http://example.com/img/17_06_13/048.png">
 <meta property="og:image" content="http://example.com/img/17_06_13/049.png">
 <meta property="article:published_time" content="2017-06-13T12:23:00.000Z">
-<meta property="article:modified_time" content="2021-02-08T08:48:41.857Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2021-02-10T16:11:40.001Z">
+<meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/17_06_13/001.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+<link rel="canonical" href="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/">
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-  
-<meta name="generator" content="Hexo 5.3.0"></head>
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
+  <title>【翻译】图解信息论 | 圣巢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">圣巢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
       
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-【翻译】视觉信息论" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/" class="article-date">
-  <time class="dt-published" datetime="2017-06-13T12:23:00.000Z" itemprop="datePublished">2017-06-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
   </div>
 
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
-  <div class="article-inner">
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
     
-    
-      <header class="article-header">
-        
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      【翻译】图解信息论
-    </h1>
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【翻译】图解信息论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-13 12:23:00" itemprop="dateCreated datePublished" datetime="2017-06-13T12:23:00+00:00">2017-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-10 16:11:40" itemprop="dateModified" datetime="2021-02-10T16:11:40+00:00">2021-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="e-content article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <ul>
 <li><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-09-Visual-Information/">原文地址</a></li>
@@ -159,142 +295,113 @@
 <p>不过，信息论看起来似乎有些不容易理解，但我不认为信息论应该是这样难以理解的。事实上，信息论中许多核心理论都可以完全用图解的方式来解释！</p>
 <h2 id="可视化概率分布"><a href="#可视化概率分布" class="headerlink" title="可视化概率分布"></a>可视化概率分布</h2><p>在我们深入信息理论之前，让我们考虑一下如何可视化简单的概率分布。</p>
 <p>我住在加利福尼亚州。有些时候这里是下雨天，但大多数时间里这里都是晴天！我们假设有75%的时间是晴天。我们很容易就可以将这些信息可视化的展示出来：</p>
-<img src="/img/17_06_13/001.png" width=100 height=100 />
-
+<p><img src="/img/17_06_13/001.png" width=100 height=100 /></p>
 <p>大多数的时间，我都穿T恤衫，但在某些时间，我会穿外套。那么假设我38%的时间里是穿外套的。可视化这个信息也很容易：</p>
-<img src="/img/17_06_13/002.png" width=100 height=100 />
-
+<p><img src="/img/17_06_13/002.png" width=100 height=100 /></p>
 <p>如果我想将这两件事同时可视化该怎么做呢？如果这两件事情相互不影响（相互独立），那么这很容易做到。例如，我穿T恤或者外套与下一周的天气并不相关。我们可以通过两个轴分别表示两种不同的变量的方式来可视化这些信息：</p>
-<img src="/img/17_06_13/003.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/003.png" width=300 height=300 /></p>
 <p>请注意水平方向和竖直方向上穿过的直线。<em>这就是独立性的标识！</em>我穿外套的概率并不受那一周天气都是下雨天而改变。换句话说，在下周要下雨并且我恰好也穿外套的概率，是我穿外套的概率与下雨天的概率之积。它们互不影响。</p>
 <p>当变量之间相互作用时，对于某组相互排斥的变量而言，他们组成的概率会减少；而某组相互促进影响的变量而言，他们组成的概率会增加。对于在下雨天我穿外套的这种情况，会有额外的概率增加，因为下雨天和外套这两个变量是相关的，它们使得彼此之间更有可能发生。在下雨天我穿外套的概率，比我在其他某天穿外套的概率高。</p>
 <p>可视化之后，这些看起来有肿胀的部分是因为额外增加的概率导致的，而其他收缩的部分，是因为这一对事件不太可能同时出现。</p>
-<img src="/img/17_06_13/004.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/004.png" width=300 height=300 /></p>
 <p>这张图虽然这看起来很酷，但对于理解具体发生了什么并不是很有帮助。</p>
 <p>相反，让我们焦点集中在其中的某一个变量上，例如天气。我们知道某天是晴天或者下雨天的可能性。对于是否穿外套的两种情况，我们可以看看<em>条件概率</em>。我在晴天穿外套的可能性有多大？如果是下雨天，那么我穿外套的可能性又是多大？</p>
-<img src="/img/17_06_13/005.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/005.png" width=500 height=300 /></p>
 <p>有25%的时间是下雨天。如果是下雨天，那么有75%的可能性我会穿外套。所以，我在下雨天穿外套的概率是25%乘以75%，结果大约是19%。下雨天的概率乘以我在下雨天的情况下穿外套的概率，就是在所有情况下，天气为下雨天并且我穿外套的概率。我们用这样的式子来描述：</p>
-<p>$$<br>p(\text{rain}, \text{coat}) = p(\text{rain}) \cdot p(\text{coat} <del>|</del> \text{rain})<br>$$</p>
-<p>这就是概率论的最基本的定理之一：</p>
-<p>$$<br>p(x,y) = p(x)\cdot p(y|x)<br>$$</p>
-<p>我们把一个整体的概率拆分成两部分来看。首先，我们来看其中一个变量的概率的值，例如不同天气的概率。然后我们观察另一个变量，例如我的穿衣情况，观察它在第一个变量的条件下的概率。</p>
+<script type="math/tex; mode=display">
+p(\text{rain}, \text{coat}) = p(\text{rain}) \cdot p(\text{coat} ~|~ \text{rain})</script><p>这就是概率论的最基本的定理之一：</p>
+<script type="math/tex; mode=display">
+p(x,y) = p(x)\cdot p(y|x)</script><p>我们把一个整体的概率拆分成两部分来看。首先，我们来看其中一个变量的概率的值，例如不同天气的概率。然后我们观察另一个变量，例如我的穿衣情况，观察它在第一个变量的条件下的概率。</p>
 <p>具体选择哪个变量开始，是任意的。我们可以以我的穿衣情况为第一个被观察的条件，这也许会有点不直观，因为我们知道穿衣情况是受到天气情况影响的，而天气情况并不会受到我的穿衣情况影响的…但其实这里两种方式的效果是一样有效的！</p>
 <p>让我们来看一个例子。我已经知道穿外套的概率是38%。假设我已经知道我在某一天是穿外套的，那么这一天下雨的概率有多大呢？我在下雨天比在晴天穿外套的可能性更大，但在加州是很少下雨的，所以有50%的概率这一天是下雨天。因此，某天是雨天并且我穿了外套的概率就等于我穿外套的概率（38%）乘以我穿外套的情况下是下雨天的概率（50%），结果大约是19%。</p>
-<p>$$<br>p(\text{rain}, \text{coat}) = p(\text{coat}) \cdot p(\text{rain} <del>|</del> \text{coat})<br>$$</p>
-<p>这为我们提供了第二种来可视化这些概率分布的方法：</p>
-<img src="/img/17_06_13/006.png" width=300 height=500 />
-
+<script type="math/tex; mode=display">
+p(\text{rain}, \text{coat}) = p(\text{coat}) \cdot p(\text{rain} ~|~ \text{coat})</script><p>这为我们提供了第二种来可视化这些概率分布的方法：</p>
+<p><img src="/img/17_06_13/006.png" width=300 height=500 /></p>
 <p>注意，这里的标签与之前图中稍有不同：T恤和外套现在是<em>边际概率</em>，我穿外套的概率是不需要考虑天气情况的。另一方面，现在有两个雨天和晴天的标签，分别来标识我穿T恤情况下的概率和我穿外套情况下的概率。</p>
 <blockquote>
 <p>你可能已经听说过<strong>贝叶斯定理</strong>。其实你也完全可以使用贝叶斯定理来解释这部分内容。</p>
 </blockquote>
 <h2 id="Aside：辛普森悖论"><a href="#Aside：辛普森悖论" class="headerlink" title="Aside：辛普森悖论"></a>Aside：辛普森悖论</h2><p>这些可视化概率分布的技巧真的很有用吗？我认为的确很有用！在我们图解信息论之前，我还需要一些时间来用可视化的技术探索一下辛普森悖论。辛普森悖论是一种非常不直观的统计状况。它真的很不容易被直观的理解。迈克尔·尼尔森（Michael Nielsen）撰写了一篇很有爱的文章：<a target="_blank" rel="noopener" href="http://michaelnielsen.org/reinventing_explanation/">“创新说明”</a>，探讨了不同方式来解释它。而我想尝试使用我们在上一节中学到的技巧来解释它。</p>
 <p>测试两种肾结石治疗方法。对一半的患者使用A治疗方案，而另一半则使用B治疗方案。接受治疗方案B的患者比接受治疗方案A的患者更容易存活。</p>
-<img src="/img/17_06_13/007.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/007.png" width=400 height=400 /></p>
 <p>然而，如果接受治疗方案A的话，患肾小结石的患者更有可能存活。然而大肾结石患者如果接受治疗方案A也更有可能存活！这怎么可能呢？</p>
 <p>这个问题的核心是因为患者样本没有被正确随机分组。接受治疗方案A的患者大部分可能患有大肾结石，而接受治疗方案B的患者大部分可能患有小肾结石。</p>
-<img src="/img/17_06_13/008.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/008.png" width=400 height=400 /></p>
 <p>事实证明，肾结石较小的患者通常更有可能生存。</p>
 <p>为了更好地理解这一点，我们可以将前两个图表组合为一个三维图，其中将小型和大型肾结石的存活率分开展示。</p>
-<img src="/img/17_06_13/009.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/009.png" width=400 height=400 /></p>
 <p>我们现在可以看到，在两种小肾结石和大肾结石的病例中，治疗方案A是超过治疗方案B的。治疗方案B看起来似乎更好，仅仅是因为应用它的患者本身更有可能存活！</p>
 <h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>现在我们有了可视化概率的方法，我们可以深入到信息论中了。</p>
 <p>首先我向你介绍一位我假想的朋友，Bob。Bob很喜欢动物。他一直不停在谈论动物。事实上，他只会说四个字：“dog”, “cat”, “fish” 和 “bird”。</p>
 <p>几周前（虽然这只是我的想象)Bob搬到了澳大利亚。另外，他决定只想要使用二进制来交流。来自Bob的所有（虚构的）消息都是这样的：</p>
-<img src="/img/17_06_13/010.png" width=300 height=100 />
-
+<p><img src="/img/17_06_13/010.png" width=300 height=100 /></p>
 <p>为了沟通，Bob和我必须建立一个编码，一种将单词映射成位序列的方式。</p>
-<img src="/img/17_06_13/011.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/011.png" width=300 height=300 /></p>
 <p>要发送消息，Bob用相应的编码字来替换每个单词，然后将它们连接在一起形成编码的字符串。</p>
-<img src="/img/17_06_13/012.png" width=300 height=150 />
-
+<p><img src="/img/17_06_13/012.png" width=300 height=150 /></p>
 <h3 id="可变长度码"><a href="#可变长度码" class="headerlink" title="可变长度码"></a>可变长度码</h3><p>不幸的是，在假想中的澳大利亚，通信服务是昂贵的。从Bob收到的每条消息中，每一位（bit）数据我都必须支付5美元。我是不是还没有提到Bob喜欢说很多话这件事？为了防止我破产，Bob和我决定来研究一些可以使我们的平均消息长度变得更短的方法。</p>
 <p>事实证明，并不是所有的词Bob都会经常说。Bob很喜欢狗，他一直在说“dog”。同时他也会不定期地说其他的动物，尤其是他的狗喜欢追的猫，但它大多数时间他还是在说“dog”。这是一个他的单词频率图：</p>
-<img src="/img/17_06_13/013.png" width=300 height=200 />
-
+<p><img src="/img/17_06_13/013.png" width=300 height=200 /></p>
 <p>这似乎看来是有优化空间的。因为我们可以看到，按照旧的编码方式，对于不同的词无论它们是多么常见，都在使用2位长的码字来表示。</p>
 <p>我们可以用下面这张图来可视化这些信息。在下面这张图中，我们使用竖直方向的坐标轴来表示每个词的概率$p(x)$，水平方向的坐标轴来表示相应的码字的长度$L(x)$。可以看到在这种情况下平均码字是2位。</p>
-<img src="/img/17_06_13/014.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/014.png" width=500 height=300 /></p>
 <p>也许我们可以用一种非常聪明的方式来制作一种可变长度的编码方式，使得其中常用单词对应的码字特别短。这样做的挑战就是码字之间是存在竞争关系的，我们需要让一部分词对应的码字变短，而另一部分则会变长。为了最大限度地减少消息长度，我们希望理想状态下所有的码字都很短，尤其是那些常用的词我们更希望它们能变短。因此，最终得到的编码对于常用词（例如“dog”）具有较短的码字，并且较长的码字被应用到了不常用的词之上（例如“bird”）。</p>
-<img src="/img/17_06_13/015.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/015.png" width=300 height=300 /></p>
 <p>让我们再次可视化这些信息。注意那些最常用的词变短了，那些不常用的词变长了。经过这样处理之后，对于传递与之前相同的信息，我们的流量开销的确变少了。平均来说，码字长度现在是1.75位！</p>
-<img src="/img/17_06_13/016.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/016.png" width=500 height=300 /></p>
 <blockquote>
 <p>你也许会好奇：为什么不用1来作为码字？因为可惜的是，如果我们这么做，当我们对编码的字符串进行解码时，会引起歧义。我们稍后会介绍这些内容。</p>
 </blockquote>
 <p>事实证明，这种编码方式是最好的。对于这个分配问题，没有其他的编码方式能带来平均码字长度小于1.75位的效果了。</p>
 <p>这是一个简单的基本限制。这要求我们传达的信息平均码字长度至少是1.75位。无论我们用多么聪明的代码，都不可能让平均消息长度变得更短。我们称这种限制为<strong>熵</strong>。关于熵的内容，我们将在稍后详细讨论。</p>
-<img src="/img/17_06_13/017.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/017.png" width=500 height=300 /></p>
 <p>如果我们想了解这个平均最短码字长度的限制，这个问题的关键在于理解如何在使得一些码字变短但同时其他码字变长的过程中进行权衡。一旦我们弄明白了如何进行这种权衡，我们就能够找出最好的编码方式了。</p>
 <h3 id="码字的空间"><a href="#码字的空间" class="headerlink" title="码字的空间"></a>码字的空间</h3><p>码字长度为1时，能表示2种编码：0和1的编码；码字长度为2时，能表示4中编码：00，01，10和11。下面是每增加一位码字长度，能表示的编码种类数量的递增情况：</p>
-<img src="/img/17_06_13/018.png" width=350 height=300 />
-
+<p><img src="/img/17_06_13/018.png" width=350 height=300 /></p>
 <p>但我们感兴趣的是那些可变长度编码。一种比较简单的情况是有八个长度为3位的码字。我们也可能有一些比较复杂的组合，比如长度为2的两个码字，与长度为3的四个码字的组合。那么究竟是什么决定了我们可以有不同长度的码字呢？</p>
 <p>回想一下，Bob通过用它的码字替换每个单词并将它们连接在一起，将他的消息转换成编码的字符串。</p>
-<img src="/img/17_06_13/019.png" width=300 height=200 />
-
+<p><img src="/img/17_06_13/019.png" width=300 height=200 /></p>
 <p>当制作可变长度代码时，需要注意一个微妙的问题。我们如何将编码过的字符串分割回码字呢？当所有的码字长度相同时，这很简单。我们只需将这个字符串按照固定的码字长度分割成不同的码字即可。但是由于存在不同长度的码字，所以我们需要关注编码过的字符串的内容。</p>
 <p>我们希望只有一种方式来解码编码过的字符串。我们不希望我们的编码方式在解码过程中变得含糊不清。如果我们有一些特殊的“码字结束”符号，这个问题这就会变得很容易。但其实我们没有这种符号，我们只能够发送0和1。因此，我们需要能够查看一系列连续的码字，并且说明每个码字应该停止的位置。</p>
 <p>而这，很可能出现编码不能被唯一解码的情况。例如，假设0和01都是码字，那么我们就会搞不清楚符串0100111的第一个码字到底是什么。因为这个字符串的第一个码字既可以是0也可以是01！因此，我们想要的效果是没有哪个码字是另一个码字的前缀。这称为<strong>前缀属性</strong>，遵守它的编码称为<strong>前缀编码</strong>。</p>
 <p>思考这个问题的一个好的方法是每个码字需要从可能的码字的空间中做出牺牲。如果我们取代码字01，那么我们就失去了使用任何以01前缀开头的码字的能力。我们不能使用010或011010110，因为会产生歧义。</p>
-<img src="/img/17_06_13/020.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/020.png" width=400 height=400 /></p>
 <p>由于所有码字中，有$\frac{1}{1}$都是从01开始，所以我们牺牲了$\frac{1}{1}$的所有可能的码字。这是我们付出的代价，而换来的结果只是使得其中一个码字的长度缩短到2位长！反过来，这种牺牲意味着所有其他码字需要更长一些。在不同码字的长度之间总是有这种折衷。为获取一个比较短的码字，需要你牺牲更多的其他码字的空间。而我们需要弄清楚，正确的权衡方式是什么？</p>
 <h3 id="最佳编码"><a href="#最佳编码" class="headerlink" title="最佳编码"></a>最佳编码</h3><p>可以理解为简短编码的长度是有一个限定的度量在里面，每减短一个bit的密文就会牺牲一些编码的可能性从而让其它密文的长度增长。 </p>
 <p>购买长度为0的码字的成本为1，会牺牲掉所有的码字空间，如果这样做，就不会有其他码字了。长度为1的码字（如“0”）的代价是$\frac{1}{2}$的码字空间，因为有一半的码字以“0”开始的。长度为2的码字的成本(例如“01”)是$\frac{1}{4}$码字空间，因为有$\frac{1}{4}$的码字以“01”开始的。一般来说，码字的代价随代码字的长度而呈指数减小。</p>
-<img src="/img/17_06_13/021.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/021.png" width=600 height=300 /></p>
 <p>如果代价是以指数衰减，那么这个高度和面积也是成指数衰减。</p>
 <p>我们想要通过得到比较短的码字来缩短平均消息长度。每个码字的期望长度是每个码字出现的概率乘以码字的长度。假设我们有一个4bit的密文，出现概率是50%，那么我们的期望就是4*50%=2bit。我们可以作图来表示。</p>
-<img src="/img/17_06_13/022.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/022.png" width=300 height=300 /></p>
 <p>这两个值（代价和期望长度）与码字的长度相关。信息的长度决定了码字的平均长度。我们可以把这两者画在一起，就像这样。</p>
-<img src="/img/17_06_13/023.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/023.png" width=600 height=300 /></p>
 <p>短码字减少了平均消息长度，但是越短的码字越昂贵，而长码字增加了平均消息长度，但长码字相对便宜。</p>
-<img src="/img/17_06_13/024.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/024.png" width=600 height=300 /></p>
 <p>使用有限预算的最佳方法是什么？我们应该在每个事件的码字上投入多少花费呢？</p>
 <p>就像一个人想要把较多的钱投入在经常定期使用的工具上一样，我们更愿意对那些频繁使用的码字支付更高的花费。有一种特别顺其自然的处理方式：按照事件的普遍程度分配我们的预算。如果一个事件发生的概率是50％，那么我们就花费预算的50％来购买这个短的码字。但是，如果一个事件的发生概率只有1％，那么我们就只花1％的预算，因为我们并不是很在意这个不常见的码字变得很长。</p>
 <p>这是一件很顺其自然的解决方案，但它是最优解吗？没错，它是，我接下来会证明它！</p>
 <p><em>以下是可视化的证明过程，应该是可以理解的，但理解起来有一定难度，而这部分绝对是这篇文章中最难的部分。读者应该自由地选择是否默认接受这一结论跳过这一部分。</em></p>
 <p>我们来看一个具体的例子，我们需要比较两个可能发生的事件。事件a发生的概率是$p(a)$，事件b发生的概率是$p(b)$。我们按照上述自然的方式分配预算，花费$p(a)$的预算在a获得一个较短的码字上，花费$p(b)$的预算在b获得较短的码字上。</p>
-<img src="/img/17_06_13/025.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/025.png" width=600 height=300 /></p>
 <p>花费的成本和对应的长度贡献的边界完美的对齐了，这是否意味着什么？</p>
 <p>那么，请考虑一个问题，如果我们稍微改变码字的长度，会对花费的成本和码字长度贡献值有什么样的影响呢？如果我们稍微增加码字的长度，则消息长度的贡献值将与其边界的高度成比例地增加，而成本则会与边界的高度成正比。</p>
-<img src="/img/17_06_13/026.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/026.png" width=600 height=300 /></p>
 <p>所以，使码字a缩短的代价的值是$p(a)$。同时，我们不关心每个码字的具体长度，我们关心的是使用它们的占比。在a这种情况下，占比就是$p(a)$。对我们来说，就是$p(a)$使码字a的长度变得更短一些。</p>
 <p>然而有趣的是，这两者的导数都是一样的。这意味着我们的初始预算有一个有趣的属性，如果你花费了一些用于缩短码字的投入，那么这个投入对于投在任何码字上，效果都是一样的。我们真正关心的是最终的利益/成本比例 - 这就决定了我们应该投资多少。在这种情况下，这个比例是$\frac{p(a)}{p(a)}$等于1。这与$p(a)$的值无关，因为这个结果总是1。我们也可以将相同的参数应用于其他事件。利益/成本总是一，所以在其中任何一方投资更多是平等的。</p>
-<img src="/img/17_06_13/027.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/027.png" width=600 height=300 /></p>
 <p>无论如何，改变预算是没有意义的。但这不证明这是最好的预算。为了证明这一点，我们会考虑使用一个不同的预算。我们将在$b$中投资$ε$，并在$a$中投资相反的花费。这使得a的码字稍短一些，而b的码字稍长一些。</p>
 <p>现在为a购买一个较短的码字的成本是$p(a)+ε$，为b购买较短码字的费用b是$p(b)-ε$。但收益还是一样的。这导致了购买$a$的收益成本比例为一个小于1的值：$\frac{p(a)}{p(a) + ε}$。而另一边，对于购买$b$的收益成本比例是一个大于1的值：$\frac{p(b)}{p(b) - ε}$</p>
-<img src="/img/17_06_13/028.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/028.png" width=600 height=300 /></p>
 <p>价格不再保持平衡。b相对于a来说是一笔更好的交易。投资者们尖叫道：“买b！卖a！”我们通过这样做，结束了我们原来的预算计划。所有预算都可以通过转向原始预算的方式来得到改进。</p>
 <p>原始预算 - 按照我们使用频率的比例投入每个码字 - 这不仅仅是自然而然的事情，而且这是最好的方法。（虽然这个证明仅适用于两个码字，但它很容易泛化为更多的情况。）</p>
 <blockquote>
 <p>认真的读者可能已经注意到，我们的最优预算有可能提出码字具有分数长度的编码，这似乎很有用！这是意味着什么呢？当然，在实践中，如果你想通过发送一个单码字，你必须取整，但是我们稍后会看到，当我们一次发送很多码字时，可以发送分数码字！现在请你耐心的看我现在的讲解！</p>
 </blockquote>
 <h3 id="计算熵"><a href="#计算熵" class="headerlink" title="计算熵"></a>计算熵</h3><p>回想一下，一个长度为$L$的消息代价是$\frac{1}{2^L}$。再做一个简单的变换后，这个信息的长度就是：$\log_2\left(\frac{1}{\text{cost}}\right)$。因为我们对每个码字$x$花费$p(x)$的成本，长度是$\log_2\left(\frac{1}{p(x)}\right)$。这是长度的最佳选择。</p>
-<img src="/img/17_06_13/029.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/029.png" width=600 height=300 /></p>
 <p>早些时候，我们讨论了如何从一个特定的概率分布$p$中获取平均消息来传达事件的基本限制。这个将平均消息长度缩短到最优的编码的限制，我们称之为$p$的熵，$H(p)$。现在我们知道了码字的最佳长度，而且我们可以精确的计算出来！</p>
-<p>$$<br>H(p) = \sum_x p(x)\log_2\left(\frac{1}{p(x)}\right)<br>$$</p>
-<blockquote>
+<script type="math/tex; mode=display">
+H(p) = \sum_x p(x)\log_2\left(\frac{1}{p(x)}\right)</script><blockquote>
 <p>人们通常将熵写作$H(p) = - \sum p(x)\log_2(p(x))$这种形式，因为$\log(1/a) = -\log(a)$。但我认为第一种写法更直观，并且我在这篇文章的后续部分会继续使用这种形式。</p>
 </blockquote>
 <p>无论我做什么，平均来说，如果我想要进行通信交流，信息平均长度最少都是这个值。</p>
@@ -302,15 +409,13 @@
 <p>如果我确实知道会发生什么事件，我根本就不必发消息！如果有两件可能发生的概率为50％，我只需要发送1bit的数据。如果有64个不同的事情可能以相等的概率发生，我必须发送6bit。发生的概率越集中在某一件事上，就越能用巧妙的编码方式来减少信息的平均长度。概率扩散的范围越大，信息越长。发生的概率越分散到不同事情上，我需要发送的信息平均长度就越长。</p>
 <p>结果越不明确，在发生事情时就能学到越多的东西。</p>
 <h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><p>在Bob搬到澳大利亚不久之后，他和我假想的另一个女孩Alice结婚了(让我惊讶的是，我脑海里居然还有其他角色)。然而Alice并不是一个狗狗爱好者。她是一个猫猫爱好者。尽管如此，他们俩也可以在仅有非常有限的关于动物的词汇的情况下，找到共同话题。</p>
-<img src="/img/17_06_13/030.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/030.png" width=300 height=300 /></p>
 <p>他们两以不同的频率说着相同的话。Bob总是谈论狗，而Alice却总是谈论猫。</p>
 <p>最初，Alice使用Bob的编码向我发送消息。不幸的是，她的消息比他们实际需要的要长。Bob的编码是按照Bob的概率分布优化得到的。而Alice与Bob有不同的信息概率分布，并且Bob编码对她来说并不是最佳的。当Bob使用自己的编码时，码字的平均长度是1.75，但Alice在使用这组编码时，她的码字平均长度是2.25。如果他们两的概率密度越不相似，这个结果就越糟糕。</p>
 <p>这种根据一边信息概率分布优化过的编码方式来传输另一种概率分布不同的信息时，消息的平均长度称为交叉熵。关于交叉熵，更正式的定义如下：</p>
-<p>$$<br>H_p(q) = \sum_x q(x)\log_2\left(\frac{1}{p(x)}\right)<br>$$</p>
-<p>在这种情况下，Alice的猫爱好者的词频与Bob的狗爱好者词频存在交叉熵。</p>
-<img src="/img/17_06_13/031.png" width=300 height=300 />
-
+<script type="math/tex; mode=display">
+H_p(q) = \sum_x q(x)\log_2\left(\frac{1}{p(x)}\right)</script><p>在这种情况下，Alice的猫爱好者的词频与Bob的狗爱好者词频存在交叉熵。</p>
+<p><img src="/img/17_06_13/031.png" width=300 height=300 /></p>
 <p>为了让我们的通信的花费减少，我让Alice来使用她自己的编码。让我感到安慰的是，这使得她的平均消息长度变短了。但是，这也引入了一个新的问题：有时Bob会不小心使用Alice的编码。令人惊讶的是，Bob使用Alice的编码时，Bob信息的平均长度比Alice用Bob编码时的最优方式还长</p>
 <p>所以，现在我们有四种可能的情况：</p>
 <ul>
@@ -321,90 +426,71 @@
 </ul>
 <p>这并不能直观的展示出这种值之间的关联关系。我们可以使用下图来寻找它们之间的关系。</p>
 <p>在下图中，每个子图分别表示这四种情况之一。每个子图以与之前相同的方式来显示平均消息长度。处于同一行的两种情况有相同的概率分布，处于同一列的两种情况有相同的编码方式。通过这种方式，可以可视化的观测到概率分布和编码方式的关系。</p>
-<img src="/img/17_06_13/032.png" width=500 height=500 />
-
+<p><img src="/img/17_06_13/032.png" width=500 height=500 /></p>
 <p>你能看出来为什么$H_p(q) \neq H_q(p)$吗？$H_q(p)$比较大因为在概率分布$p$之下有一个非常常见的码字比较长的事件（蓝色），因为这个事件在概率分布$q$的情况下并不常见。然而，另一边，在$q$的情况下比较常见的事件，在$p$的情况下比较少见，但差异较小，所以$H_p(q)$不是很高。</p>
 <p>因此我们发现交叉熵是不对称的。</p>
 <p>那么，为什么要关心交叉熵呢？交叉熵给我们一种表达两种概率分布不同的方法。概率分布$p$和$q$的差异越大，那么$p$关于$q$的交叉熵就比$p$的熵越大。</p>
-<img src="/img/17_06_13/033.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/033.png" width=300 height=300 /></p>
 <p>同样的，概率分布$p$和$q$差异越大，$q$关于$p$的交叉熵就比$q$本身的熵越大。</p>
-<img src="/img/17_06_13/034.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/034.png" width=300 height=300 /></p>
 <p>真正有趣的东西是熵与交叉熵之间的差异。差异在于我们的信息具体长多少，因为我们对不同的概率分布使用了同一套优化过的编码方式。如果概率分布相同，那么这个差异将为零。随着差异的增长，这个差值将变得更大。</p>
 <p>我们称这种差异为Kullback-Leibler分歧，或者简称为KL分歧。概率分布$p$关于$q$的KL分歧$D_q(p)$定义如下：</p>
-<p>$$<br>D_q(p) = H_q(p) - H(p)<br>$$</p>
-<p>关于KL分歧真正在做的事情，其实就像是在衡量不同概率分布之间的差异程度。（如果继续研究这个概念就会进入信息几何的领域。）</p>
+<script type="math/tex; mode=display">
+D_q(p) = H_q(p) - H(p)</script><p>关于KL分歧真正在做的事情，其实就像是在衡量不同概率分布之间的差异程度。（如果继续研究这个概念就会进入信息几何的领域。）</p>
 <p>交叉熵和KL分歧在机器学习中有着难以置信的用处。通常，我们希望一个分布与另一个分布相互靠近。例如，我们希望一个用于预测的概率分布与真实情况更接近。KL分歧为我们提供了一种很自然的方式来做到这一点，所以它在任何地方都有用武之地。</p>
 <h2 id="熵和多变量"><a href="#熵和多变量" class="headerlink" title="熵和多变量"></a>熵和多变量</h2><p>让我回到之前关于天气和穿着的例子：</p>
-<img src="/img/17_06_13/035.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/035.png" width=300 height=300 /></p>
 <p>我的妈妈，就像大多数的家长一样，都会担心我的衣着跟天气不搭配。（她的这种担心不是没有道理的，因为我在冬天经常不穿外套。）所以她总是想要知道我这边有关天气和穿衣的信息。我需要发送几个bit的数据来传达这些信息呢？</p>
 <p>为了更方便的分析这个问题，我们把概率扁平化分析：</p>
-<img src="/img/17_06_13/036.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/036.png" width=600 height=300 /></p>
 <p>现在我们可以找出这些概率的事件的最优码字，并计算平均消息长度：</p>
-<img src="/img/17_06_13/037.png" width=600 height=300 />
-
+<p><img src="/img/17_06_13/037.png" width=600 height=300 /></p>
 <p>我们把这个称之为$X$和$Y$的联合熵，定义如下：</p>
-<p>$$<br>H(X,Y) = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x,y)}\right)<br>$$</p>
-<p>这与我们关于熵的正规定义完全相同，唯一的区别就是这里有两个变量，而之前是一个。</p>
+<script type="math/tex; mode=display">
+H(X,Y) = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x,y)}\right)</script><p>这与我们关于熵的正规定义完全相同，唯一的区别就是这里有两个变量，而之前是一个。</p>
 <p>我们再把这个图形表现得更形象话一些，加入码字长度作为第三个维度，让图形更立体。现在，熵的大小就是体积的大小。</p>
-<img src="/img/17_06_13/038.png" width=300 height=600 />
-
+<p><img src="/img/17_06_13/038.png" width=300 height=600 /></p>
 <p>假设我的妈妈已经知道了天气信息（她可以通过新闻知道这些信息）。那么现在我需要提供多少的信息量呢？</p>
 <p>似乎我需要发送很多信息来传达我的穿衣情况。但实际情况，我发送的信息比之前要少，因为天气与我的衣着有着密切的联系！我们来分别思考关于下雨天和晴天下的两种情况。</p>
-<img src="/img/17_06_13/039.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/039.png" width=400 height=400 /></p>
 <p>在这两种情况下，平均来看，我不需要发送特别多的信息，因为天气信息对我的穿衣情况有着很好的预示。当阳光明媚的晴天，我可以使用一个特定的“晴天优化版”编码，对于下雨天，我可以使用一个特定的“雨天优化版”编码。分别在这两种情况下用不同的编码会比用同一种通用编码的长度少很多。为了得到我需要发送给我妈妈的平均信息量，我把这两个例子放在一起…</p>
-<img src="/img/17_06_13/040.png" width=200 height=300 />
-
+<p><img src="/img/17_06_13/040.png" width=200 height=300 /></p>
 <p>我们称之为条件熵。可以把它写成如下的数学表达式：</p>
-<p>$$<br>H(X|Y) = \sum_y p(y) \sum_x p(x|y) \log_2\left(\frac{1}{p(x|y)}\right)<br>$$</p>
-<p>$$</p>
-<p>~~~~ = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x|y)}\right)<br>$$</p>
-<h2 id="交互信息"><a href="#交互信息" class="headerlink" title="交互信息"></a>交互信息</h2><p>在上一节，我们得到一个结论，那就是在知道一个变量的情况下，可能会意味着导致传达另一个变量需要更少的信息。</p>
+<script type="math/tex; mode=display">
+H(X|Y) = \sum_y p(y) \sum_x p(x|y) \log_2\left(\frac{1}{p(x|y)}\right)</script><script type="math/tex; mode=display">
+~~~~ = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x|y)}\right)</script><h2 id="交互信息"><a href="#交互信息" class="headerlink" title="交互信息"></a>交互信息</h2><p>在上一节，我们得到一个结论，那就是在知道一个变量的情况下，可能会意味着导致传达另一个变量需要更少的信息。</p>
 <p>一种思考这种情况的很好方式是将信息的总量想象成一个条。如果不同的消息之间在共享信息，就叠加显示。例如，$X$和$Y$存在一部分共享信息，因此$H(X)$和$H(Y)$是有重叠部分。并且$H(X,Y)$是两者的共同信息，是$H(X)$和$H(Y)$的集合。</p>
-<img src="/img/17_06_13/041.png" width=300 height=200 />
-
+<p><img src="/img/17_06_13/041.png" width=300 height=200 /></p>
 <p>一旦我们开始以这种方式思考事情，很多事情就变得简单了。</p>
 <p>例如，我们之前注意到同时传递$X$和$Y$（“联合熵”$H(X,Y)$）比仅仅使用$X$来通信（“边际熵”$H(X)$）需要更多的信息。如果你已经知道了$Y$，那么它会用更少的信息来对$X$进行通信（“条件熵”$H(X|Y)$）。</p>
-<img src="/img/17_06_13/042.png" width=500 height=400 />
-
+<p><img src="/img/17_06_13/042.png" width=500 height=400 /></p>
 <p>这听起来有点复杂，但从条状显示图来看，就很简单了。$H(X|Y)$是指我们在向已经知道$Y$的信息的人在传达$X$的信息时的熵，蕴含在$X$中的信息并不包含在$Y$中。从视觉上来看，这意味着$H(X|Y)$是$H(X)$的条中，不与$H(Y)$重叠的那一部分。</p>
 <p>你可以从下图中得出这个不等式:$H(X,Y) \geq H(X) \geq H(X|Y)$。</p>
-<img src="/img/17_06_13/043.png" width=300 height=200 />
-
+<p><img src="/img/17_06_13/043.png" width=300 height=200 /></p>
 <p>另一个特性：$H(X,Y) = H(Y) + H(X|Y)$。也就是说$X$和$Y$的信息也就是$Y$的信息加上不在$Y$中的$X$的信息。</p>
-<img src="/img/17_06_13/044.png" width=500 height=400 />
-
+<p><img src="/img/17_06_13/044.png" width=500 height=400 /></p>
 <p>从方程中很难看出这些信息，但如果你将这些信息用条状图显示出来，就变得容易了。</p>
 <p>在这里，我们以多种方式组织了$X$和$Y$的信息。我们有每个变量所包含的信息$H(X)$和$H(Y)$。我们有着两种信息的交集$H(X,Y)$。我们有只存在与一个变量但不存在与另一个变量的信息$H(X|Y)$和$H(Y|X)$。还有很多这些围绕着变量之间共享的信息，即他们之间信息的交集。我们称之为“相互信息”$I(X,Y)$，定义如下：</p>
-<p>$$<br>I(X,Y) = H(X) + H(Y) - H(X,Y)<br>$$</p>
-<p>这个定义是有效的，因为$H(X) + H(Y)$存在有两个相互信息的副本，因为他们同时蕴含在$X$中以及$Y$中，而$H(X,Y)$只有一份。(想想上一个条形图。)</p>
+<script type="math/tex; mode=display">
+I(X,Y) = H(X) + H(Y) - H(X,Y)</script><p>这个定义是有效的，因为$H(X) + H(Y)$存在有两个相互信息的副本，因为他们同时蕴含在$X$中以及$Y$中，而$H(X,Y)$只有一份。(想想上一个条形图。)</p>
 <p>与信息密切相关的是信息的变化。信息的变化是变量之间不共享的信息。我们可以这样定义它：</p>
-<p>$$<br>V(X,Y) = H(X,Y) - I(X,Y)<br>$$</p>
-<p>信息的变化很有趣，因为它给了我们一个不同变量之间度量距离的概念。两个变量如果知道一个值的值可以得出另一个变量的值，那么这两者之间的信息变化是零，并且这个信息变化的值随着他们彼此之间变得更加独立而增加。</p>
+<script type="math/tex; mode=display">
+V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了我们一个不同变量之间度量距离的概念。两个变量如果知道一个值的值可以得出另一个变量的值，那么这两者之间的信息变化是零，并且这个信息变化的值随着他们彼此之间变得更加独立而增加。</p>
 <p>这和同样可以告诉我们距离信息的KL分歧之间的关系是什么呢？KL分歧给了我们两个分布之间在同一个变量或一组变量上的距离。相反，信息的变化给我们两个相同分布的变量之间的距离。KL分歧是应用在不同信息的概率分布中的，标识这概率分布中的信息变化。</p>
 <p>我们可以将所有这些信息全部汇集成一个单独的图表：</p>
-<img src="/img/17_06_13/045.png" width=400 height=400 />
-
+<p><img src="/img/17_06_13/045.png" width=400 height=400 /></p>
 <h2 id="分数形式的位"><a href="#分数形式的位" class="headerlink" title="分数形式的位"></a>分数形式的位</h2><p>关于信息理论的一个非常不直观的事情是我们可以拥有小数位数。这看起来很奇怪，半个位(0.5bit)意味着什么？</p>
 <p>有一种简单的答案：通常，我们对消息的平均长度感兴趣，而不是任何特定的消息长度。如果一半的时间发送一个位的长度，一半时间发送两个位的长度，那么平均发送的长度是1.5位。对于平均数是小数的情况并没有什么奇怪的。</p>
 <p>但是，这个答案其实是在避开这个问题。通常，码字的最佳长度都是分数形式。这意味着什么呢？</p>
 <p>具体来说，让我们考虑一个概率分布，其中事件$a$发生的概率是$71%$，另一个事件$b$发生的概率为$29%$。</p>
-<img src="/img/17_06_13/046.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/046.png" width=300 height=300 /></p>
 <p>最佳编码将使用0.5位来表示$a$，用1.7位来表示$b$。那么，如果我们要发送这些码字中的任何一个，都是不可能的。我们会强制被安排发送整数位数的信息，并且发送的平均消息长度是1位。</p>
 <p>但是，如果我们一次性发送多条消息，我们可以处理的更好。让我们来考虑按照这种概率分布的情况下来同时传递两个事件。如果我们每次只发送一个事件，那么我们需要发送两位的长度。我们可以处理的更好吗？</p>
-<img src="/img/17_06_13/047.png" width=300 height=300 />
-
+<p><img src="/img/17_06_13/047.png" width=300 height=300 /></p>
 <p>有一半的概率，我们需要传递$aa$的信息，有21%的概率我们需要发送$ab$或者$ba$，而我们传递$bb$的概率只有8%。我们再一次把编码优化到理想的小数位数的形式。</p>
-<img src="/img/17_06_13/048.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/048.png" width=500 height=300 /></p>
 <p>如果我们对码字长度取整，我们将得到这样的结果：</p>
-<img src="/img/17_06_13/049.png" width=500 height=300 />
-
+<p><img src="/img/17_06_13/049.png" width=500 height=300 /></p>
 <p>这个编码给我们带来的平均消息长度为1.8位。这比我们每次分别只传递一个事件的平均消息长度2位要小。另一种思考这个问题的方式是我们平均每个事件发送的信息是0.9位。如果我们一次发送更多的事件，那么这个值会更小。由于$n$趋向于无穷大，取整造成的损失将逐渐减少，并且每个码字的位数将接近熵。</p>
 <p>另外，请注意，$a$的理想码字为0.5位，$aa$的理想码字是1位。即使理想码字的长度是小数，它们的长度也在增加！所以，如果我们一次传达很多事件时，长度会增加。</p>
 <p>即使在实际的编码中，只能使用整数长度的码字，这里也有使用小数位数码字的实际的意义。</p>
@@ -427,157 +513,232 @@
 <p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">神经网络，歧管和拓扑</a></p>
 <p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-01-Visualizing-Representations/">可视化展示深度学习和人类</a></p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/" data-id="ckkwc4377005tpas9b7q43w59" data-title="【翻译】图解信息论" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" rel="prev" title="斯坦福机器学习课程汇总">
+      <i class="fa fa-chevron-left"></i> 斯坦福机器学习课程汇总
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" rel="next" title="【斯坦福cs231n】2-1图像分类">
+      【斯坦福cs231n】2-1图像分类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="nav-number">1.</span> <span class="nav-text">可视化概率分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Aside%EF%BC%9A%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">Aside：辛普森悖论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%A6%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">可变长度码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%81%E5%AD%97%E7%9A%84%E7%A9%BA%E9%97%B4"><span class="nav-number">3.2.</span> <span class="nav-text">码字的空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E7%BC%96%E7%A0%81"><span class="nav-number">3.3.</span> <span class="nav-text">最佳编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%86%B5"><span class="nav-number">3.4.</span> <span class="nav-text">计算熵</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">4.</span> <span class="nav-text">交叉熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%86%B5%E5%92%8C%E5%A4%9A%E5%8F%98%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">熵和多变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E4%BF%A1%E6%81%AF"><span class="nav-number">6.</span> <span class="nav-text">交互信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%95%B0%E5%BD%A2%E5%BC%8F%E7%9A%84%E4%BD%8D"><span class="nav-number">7.</span> <span class="nav-text">分数形式的位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E9%98%85%E8%AF%BB"><span class="nav-number">9.</span> <span class="nav-text">进一步阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B4%E8%B0%A2"><span class="nav-number">10.</span> <span class="nav-text">致谢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E6%96%87%E7%AB%A0"><span class="nav-number">11.</span> <span class="nav-text">更多的文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="DannyLee"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">DannyLee</p>
+  <div class="site-description" itemprop="description">愿你的努力终取得成果</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DannyLee</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          【斯坦福cs231n】2-1图像分类
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">斯坦福机器学习课程汇总</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/%E5%B7%A5%E5%85%B7/">工具</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/R/">R</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/django/">django</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/gradle/">gradle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/scala/">scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/">工具学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E5%85%AC%E5%BC%80%E8%AF%BE/">公开课</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E5%AD%A6/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/">Tensorflow</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/">cs231n</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/schemes/pisces.js"></script>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-QI/" rel="tag">AI-QI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tensorflow/" rel="tag">Tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/" rel="tag">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kaggle/" rel="tag">kaggle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scala/" rel="tag">scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" rel="tag">傅里叶变换</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E4%BB%96/" rel="tag">其他</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" rel="tag">工具学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" rel="tag">斯坦福大学公开课</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" rel="tag">斯坦福课程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag">神经网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag">线性代数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" rel="tag">论文翻译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-    </div>
-  </div>
+<script src="/js/next-boot.js"></script>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AI-QI/" style="font-size: 10px;">AI-QI</a> <a href="/tags/Android/" style="font-size: 18px;">Android</a> <a href="/tags/Docker/" style="font-size: 15px;">Docker</a> <a href="/tags/R/" style="font-size: 11px;">R</a> <a href="/tags/Tensorflow/" style="font-size: 17px;">Tensorflow</a> <a href="/tags/django/" style="font-size: 11px;">django</a> <a href="/tags/gradle/" style="font-size: 16px;">gradle</a> <a href="/tags/java/" style="font-size: 11px;">java</a> <a href="/tags/kaggle/" style="font-size: 10px;">kaggle</a> <a href="/tags/linux/" style="font-size: 13px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/scala/" style="font-size: 10px;">scala</a> <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 10px;">人工智能</a> <a href="/tags/%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2/" style="font-size: 11px;">傅里叶变换</a> <a href="/tags/%E5%85%B6%E4%BB%96/" style="font-size: 10px;">其他</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">工具学习</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 12px;">数学</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%A4%A7%E5%AD%A6%E5%85%AC%E5%BC%80%E8%AF%BE/" style="font-size: 11px;">斯坦福大学公开课</a> <a href="/tags/%E6%96%AF%E5%9D%A6%E7%A6%8F%E8%AF%BE%E7%A8%8B/" style="font-size: 19px;">斯坦福课程</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 20px;">机器学习</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">神经网络</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" style="font-size: 16px;">线性代数</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">翻译</a> <a href="/tags/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" style="font-size: 10px;">论文翻译</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 15px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 11px;">读书笔记</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/11/11/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8B/">隐马尔科夫模型</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/29/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9102-%E5%B0%86%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E7%AE%80%E5%8D%95%E5%91%A8%E6%9C%9F/">【傅里叶变换及其应用讲义】第一章 傅里叶级数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/27/%E3%80%90%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E3%80%9101-%E5%91%A8%E6%9C%9F%E6%80%A7%EF%BC%8C%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E8%A1%A8%E7%A4%BA%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0/">【傅里叶变换及其应用】01-周期性，三角函数表示复杂函数</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/11/NumPy%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">NumPy入门教程</a>
-          </li>
-        
-          <li>
-            <a href="/2018/05/03/Docker%E5%85%A5%E9%97%A8Part6-%E5%8F%91%E5%B8%83%E4%BD%A0%E7%9A%84app/">Docker入门Part6-发布你的app</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
 
 
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
 
 
 
 
-<script src="/js/script.js"></script>
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
 
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '6c06eff1a822eacb3b46',
+      clientSecret: '1be354a97acec874c1cb989a017dae44a786aa42',
+      repo        : 'DannyLee1991.github.io',
+      owner       : '747554505@qq.com',
+      admin       : ['747554505@qq.com'],
+      id          : '041b2d1db2301278a5e270761cf699ca',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 </body>
 </html>
