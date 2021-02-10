@@ -114,3 +114,10 @@ math:
     # src: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML   
     cdn: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
+
