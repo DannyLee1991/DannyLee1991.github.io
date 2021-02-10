@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="愿你的努力终取得成果">
@@ -143,18 +143,21 @@
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
-  <div class="search-input-container"></div>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div class="algolia-results">
-  <div id="algolia-stats"></div>
-  <div id="algolia-hits"></div>
-  <div id="algolia-pagination" class="algolia-pagination"></div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
 </div>
 
-      
     </div>
   </div>
 
@@ -210,7 +213,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -520,7 +523,7 @@ h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + ... + \theta\_{100}x^{100}</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -605,7 +608,7 @@ h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + ... + \theta\_{100}x^{100}</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -968,7 +971,7 @@ h\_{Θ}(x^{(i)})≈y^{(i)}</script><p>那么如果是这样的话，那么我们
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1279,7 +1282,7 @@ cost(i) = y^{(i)}log h\_{Θ}(x^{(i)}) + (1 - y^{(i)})logh\_{Θ}(x^{(i)})</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1675,7 +1678,7 @@ h\_{Θ}(x)\approx
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1943,7 +1946,7 @@ h\_{Θ}(x)=g(Θ\_{10}^{(2)}a\_{0}^{(2)} + Θ\_{11}^{(2)}a\_{1}^{(2)} + Θ\_{12}^
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2095,7 +2098,7 @@ x\_{1}^{2},x\_{1}x\_{2},x\_{1}x\_{3},x\_{1}x\_{4}...x\_{1}x\_{100},x\_{2}^{2},x\
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2396,7 +2399,7 @@ X^{T}X + \lambda
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2501,7 +2504,7 @@ h\_{\theta}^{(i)}(x) = P(y=i|x;\theta)    \qquad  (i=1,2,3)</script><p>总之，
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 16:54:20" itemprop="dateModified" datetime="2021-02-10T16:54:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-10 17:00:48" itemprop="dateModified" datetime="2021-02-10T17:00:48+00:00">2021-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2866,10 +2869,7 @@ Cost(h\_{\theta}(x),y)=-ylog(h\_{\theta}(x))-(1-y)log(1-h\_{\theta}(x))</script>
 
 
   
-<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
-<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
-<script src="/js/algolia-search.js"></script>
-
+<script src="/js/local-search.js"></script>
 
 
 
