@@ -6700,6 +6700,60 @@ f(t)&=\sum\_{k=-n}^n C_ke^{2πikt}\\\\
       </tags>
   </entry>
   <entry>
+    <title>【强化学习】1-1 K臂老虎机</title>
+    <url>/2021/02/11/%E3%80%90%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%911-1K%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/</url>
+    <content><![CDATA[<p>在强化学习中，代理人通过与世界互动来生成自己的训练数据。 代理人必须通过试验和错误了解自己行为的后果，而不是被告知正确的行动。 </p>
+<p>我们使用K臂老虎机（K-Armed Bandit）来描述强化学习中的基本概念，比如rewards、timesteps和values。</p>
+<p>想象一下，有一名医生想要测量3种药物的效果：</p>
+<p><img src="/img/rl_21_02_11/01.png" height=200 /></p>
+<p>医生会随机开始一次治疗，然后观测患者的反映情况。</p>
+<p>过了一段时间后，医生发现其中某种药物似乎比其他药物效果要更好：</p>
+<p><img src="/img/rl_21_02_11/02.png" height=200 /></p>
+<p>医生现在必须决定<strong>是否坚持最佳治疗</strong>或<strong>继续进行随机研究</strong>。如果医生只使用一种药物治疗， 那么他们就不能再收集另外两种药物治疗的数据（也许其他治疗方法之一实际上是更好的， 只是由于偶然而变得更糟）。 但如果其他两种治疗方法更糟， 那么继续研究会危及其他患者的健康。 </p>
+<p>这种医疗试验的本质就是一个K臂老虎机的案例。</p>
+<h2 id="K臂老虎机"><a href="#K臂老虎机" class="headerlink" title="K臂老虎机"></a>K臂老虎机</h2><p>在K臂老虎机问题中，我们有一个决策者（代理）负责在k个不同的行动之间进行选择，并根据他选择的行动获得奖励。</p>
+<p>在<strong>医疗试验</strong>的例子中，代理人就是医生。医生必须在3种不同的治疗行动之间进行选择，选择不同的治疗会产生一些未知的回报，最后患者是否得到治疗就是医生获得的奖励。</p>
+<p><img src="/img/rl_21_02_11/03.png" height=200 /></p>
+<h3 id="Action-Values"><a href="#Action-Values" class="headerlink" title="Action-Values"></a>Action-Values</h3><p>为了让医生决定哪个动作是最好的，我们必须定义每个动作的价值（Action-Values）。</p>
+<p>我们对动作价值的定义是<strong>奖励的期望</strong>：</p>
+<script type="math/tex; mode=display">
+q*(a) \doteq \mathbb{E}[R_t|A_t=a] 
+\ \ \ \  \forall a \in \{1, ..., k\}</script><blockquote>
+<p>说明：<script type="math/tex">\doteq</script> 符号的意思是 <strong>定义为</strong><br>上面公式的含义是：$q*(a)$被定义为$R_t$的期望，$R_t$是我们在选中某个动作的时候的奖惩值。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+q*(a) = \sum_r p(r|a) r</script><p>这个条件期望被定义为所有可能的奖励的总和。在该总和中，我们将可能的奖励（$r$）乘以观察到该奖励的概率（$p(r|a)$）。</p>
+<p>代理（agent）的目标就是<strong>最大限度的提高预期的回报</strong>。</p>
+<p>代理选择最大的value的操作的过程称为argmax:</p>
+<p><img src="/img/rl_21_02_11/04.png" height=40 /></p>
+<h3 id="连续型的reward"><a href="#连续型的reward" class="headerlink" title="连续型的reward"></a>连续型的reward</h3><p>在上面的例子中，我们把患者是否治愈作为reward，下面我们用一个更容易测量的指标来衡量患者的状态：<strong>接受治疗后血压的变化</strong>。</p>
+<p>在每种不同的药物治疗之后，患者的血压会呈现出不同的概率分布，也许是伯努利分布（结果1）、二项式分布（结果2）、均值分布中的某一种（结果3）：</p>
+<p><img src="/img/rl_21_02_11/05.png" height=300 /></p>
+<p>$q*(a)$是a动作的reward的均值</p>
+<h2 id="为什么要研究老虎机问题"><a href="#为什么要研究老虎机问题" class="headerlink" title="为什么要研究老虎机问题"></a>为什么要研究老虎机问题</h2><p>现实生活中，我们随时都需要做出各种各样的决策，除了医生对患者选择最佳药物的例子外，我们决定去看什么电影、听什么歌曲、即便是在餐厅点菜 我们都在做着类似的选择。</p>
+<p>老虎机是对未知环境下动作选择问题的简单抽象，在这种简单的问题下去思考算法的设计会使问题更加清晰。</p>
+]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【强化学习】1-2 RL在学什么？预估Action Value</title>
+    <url>/2021/02/11/%E3%80%90%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E3%80%911-2RL%E5%9C%A8%E5%AD%A6%E4%BB%80%E4%B9%88%EF%BC%9F%E9%A2%84%E4%BC%B0Action%20Value/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>强化学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>强化学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【斯坦福cs231n】2-1图像分类</title>
     <url>/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/</url>
     <content><![CDATA[<h2 id="图像分类"><a href="#图像分类" class="headerlink" title="图像分类"></a>图像分类</h2><p><strong>动机.</strong>在这一部分，我们将介绍图像分类问题，这是将输入图像分配到一组固定类别标签中的某一个标签的任务。尽管这个问题很简单，但它是计算机视觉的核心问题之一，并且有着各种各样的实际应用。此外，正如我们将在后面看到的，许多其它不同的计算机视觉任务（例如对象检测，分割）都可以被简化为图像识别问题。</p>

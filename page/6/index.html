@@ -191,6 +191,663 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/19/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(4)%E6%93%8D%E4%BD%9C%E5%81%8F%E6%96%9C%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/19/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(4)%E6%93%8D%E4%BD%9C%E5%81%8F%E6%96%9C%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第六周 (4)操作偏斜数据</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-19 23:29:58" itemprop="dateCreated datePublished" datetime="2017-01-19T23:29:58+00:00">2017-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="偏移类的错误度量"><a href="#偏移类的错误度量" class="headerlink" title="偏移类的错误度量"></a>偏移类的错误度量</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/tKMWX/error-metrics-for-skewed-classes">视频地址</a></p>
+<blockquote>
+<p>在前面的课程中,我提到了<strong>误差分析</strong>以及设定误差度量值的重要性。那就是设定某个实数来评估你的学习算法，并衡量它的表现。有了算法的评估和误差度量值，有一件重要的事情要注意，就是使用一个合适的误差度量值。这有时会对于你的学习算法造成非常微妙的影响。</p>
+<p>这件重要的事情就是<strong>偏斜类（skewed classes）</strong>的问题。</p>
+</blockquote>
+<p>想一想之前的癌症分类问题，我们拥有内科病人的特征变量，我们希望知道他们是否患有癌症，这就像我们之前讲过的恶性与良性肿瘤的分类问题。</p>
+<p><strong>癌症分类实例</strong></p>
+<ul>
+<li>训练逻辑回归模型$h_{\theta}(x)$。(如果是癌症$y=1$，否则$y=0$)</li>
+<li>发现你在测试集上有1%的错误率。(99%的诊断是正确的)</li>
+<li>只有0.50%的病人患有癌症</li>
+</ul>
+<p>我们训练逻辑回归模型，假设我们用测试集检验了这个分类模型，并且发现它只有1%的错误，因此我们99%会做出正确诊断。看起来是非常不错的结果，我们99%的情况都是正确的。</p>
+<p>但是，假如我们发现，在测试集中只有0.5%的患者真正得了癌症，那么在这个例子中 1%的错误率就不再显得那么好了。</p>
+<p>举个具体的例子，这里有一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function y &#x3D; predictCancer(x)</span><br><span class="line">	y &#x3D; 0; %ignore x!</span><br><span class="line">return</span><br></pre></td></tr></table></figure>
+<p>不是机器学习代码，它忽略了输入值<code>X</code>，它让<code>y</code>总是等于0，因此它总是预测没有人得癌症，那么这个算法实际上只有<code>0.5%</code>的错误率。因此这甚至比我们之前得到的<code>1%</code>的错误率更好。这是一个非机器学习算法，因为它只是预测<code>y</code>总是等于<code>0</code>。</p>
+<p>这种情况发生在正例和负例的比率非常接近于一个极端值，在这个例子中，正样本的数量与负样本的数量相比，非常非常少。因为<code>y=1</code>非常少，我们把这种情况叫做<strong>偏斜类</strong>。</p>
+<p>一个类中的样本数与另一个类的数据相比多很多，通过总是预测<code>y=0</code>或者总是预测<code>y=1</code>算法可能表现非常好。因此使用分类误差或者分类精确度来作为评估度量可能会产生如下问题：</p>
+<p>假如说你有一个算法，它的精确度是<code>99.2%</code>，因此它只有<code>0.8%</code>的误差。假设你对你的算法做出了一点改动，现在你得到了<code>99.5%</code>的精确度，只有<code>0.5%</code>的误差，这到底是不是算法的一个提升呢？</p>
+<p>用某个实数来作为评估度量值的一个好处就是，它可以帮助我们<strong>迅速决定我们是否需要对算法做出一些改进</strong>。</p>
+<p>将精确度从<code>99.2%</code>提高到<code>99.5%</code>，但是我们的改进到底是有用的，还是说我们只是把代码替换成了像<code>y=0</code>这样的东西？</p>
+<p>因此如果你有一个偏斜类，用分类精确度并不能很好地衡量算法，因为你可能会获得一个很高的精确度，非常低的错误率。但是我们并不知道我们是否真的提升了分类模型的质量，因为<code>y=0</code>并不是一个好的分类模型。但是<code>y=0</code>会将你的误差降低至<code>0.5%</code>。</p>
+<h3 id="查准率（precision）和召回率（recall）"><a href="#查准率（precision）和召回率（recall）" class="headerlink" title="查准率（precision）和召回率（recall）"></a>查准率（precision）和召回率（recall）</h3><p>当我们遇到这样一个偏斜类时，我们希望有一个不同的误差度量值，或者不同的评估度量值。其中一种评估度量值叫做<strong>查准率（precision）</strong>和<strong>召回率（recall）</strong>。</p>
+<p>让我来解释一下：</p>
+<p>假设我们正在用测试集来评估一个分类模型，对于测试集中的样本，每个测试集中的样本都会等于0或者1(假设这是一个二分问题)我们的学习算法要做的是：做出值的预测，并且学习算法会为每一个测试集中的实例做出预测，预测值也是等于0或1。</p>
+<p>让我画一个2x2的表格：</p>
+<p><img src="/img/17_01_19/001.png" alt=""></p>
+<p>基于实际的类与预测的类：</p>
+<ul>
+<li>如果有一个样本它实际所属的类是1，预测的类也是1，那么我们把这个样本叫做<strong>真阳性（true positive）</strong>，意思是说我们的学习算法 预测这个值为阳性，实际上这个样本也确实是阳性。</li>
+<li>如果我们的学习算法预测某个值是阴性(等于0)，实际的类也确实属于0，那么我们把这个叫做<strong>真阴性（true negative）</strong>，我们预测为0的值实际上也等于0。</li>
+<li>如果我们的学习算法预测某个值等于1，但是实际上它等于0，这个叫做<strong>假阳性（false positive）</strong>。<blockquote>
+<p>比如我们的算法预测某些病人患有癌症，但是事实上他们并没有得癌症。</p>
+</blockquote>
+</li>
+<li>最后如果我们的学习算法预测某个值等于0，但是实际上它等于1，这个叫做<strong>假阴性（false negative）</strong>。因为我们的算法预测值为0，但是实际值是1。</li>
+</ul>
+<p>这样我们有了一个另一种方式来评估算法的表现。</p>
+<p>我们要计算两个数字：</p>
+<h4 id="查准率（Precision）"><a href="#查准率（Precision）" class="headerlink" title="查准率（Precision）"></a>查准率（Precision）</h4><p>第一个叫做<strong>查准率</strong>这个意思是，对于所有我们预测他们患有癌症的病人，有多大比率的病人是真正患有癌症的，让我把这个写下来：</p>
+<script type="math/tex; mode=display">
+\frac{真阳性的数量} {预测值为阳性的数量} = \frac{真阳性的数量} {真阳性的数量 + 假阳性的数量}</script><p>这个就叫做<strong>查准率</strong>，<strong>查准率</strong>越高就越好。这是说，对于那些病人，我们告诉他们：”非常抱歉，我们认为你得了癌症”，高查准率说明对于这类病人我们对预测他们得了癌症有很高的准确率。</p>
+<h4 id="召回率（Recall）"><a href="#召回率（Recall）" class="headerlink" title="召回率（Recall）"></a>召回率（Recall）</h4><p>另一个数字我们要计算的，叫做<strong>召回率</strong>，<strong>召回率</strong>是如果所有的在数据集中的病人（假设测试集中的病人，或者交叉验证集中的病人）确实得了癌症，有多大比率 我们正确预测他们得了癌症。召回率被定义为：</p>
+<script type="math/tex; mode=display">
+\frac{真阳性的数量} {实际阳性的数量} = \frac{真阳性的数量} {真阳性的数量 + 假阴性的数量}</script><p>同样地，召回率越高越好。</p>
+<p>通过计算<strong>查准率</strong>和<strong>召回率</strong>我们能更好的知道分类模型到底好不好。</p>
+<p>具体地说，如果我们有一个算法，总是预测<code>y=0</code>，即它总是预测没有人患癌症，那么这个分类模型的召回率等于0，因为它不会有<strong>真阳性</strong>。因此我们能会快发现这个分类模型不是一个好的模型。</p>
+<p>总的来说，即使我们有一个非常偏斜的类，算法也不能够”欺骗”我们。我们能够更肯定的是：拥有高查准率或者高召回率的模型是一个好的分类模型。这给予了我们一个更好的评估值，给予我们一种更直接的方法来评估模型的好与坏。</p>
+<p>最后一件需要记住的事，在查准率和召回率的定义中，我们总是习惯性地用<code>y=1</code>，因此如果我们试图检测某种很稀少的情况（比如癌症，我希望它是个很稀少的情况），查准率和召回率会被定义为<code>y=1</code>而不是<code>y=0</code>作为某种我们希望检测的出现较少的类。通过使用查准率和召回率，我们发现即使我们拥有非常偏斜的类，算法不能够通过总是预测<code>y=1</code>或<code>y=0</code>来”欺骗”我们。因为它不能够获得高查准率和召回率。具体地说，如果一个分类模型拥有高查准率和召回率，那么我们可以确信地说这个算法表现很好，即便它是一个很偏斜的类。</p>
+<p>因此对于偏斜类的问题，查准率和召回率给予了我们更好的方法来检测学习算法表现如何，这是一种更好地评估学习算法的标准。当出现偏斜类时，比仅仅只用分类误差或者分类精度好。</p>
+<h2 id="查准率和召回率练习"><a href="#查准率和召回率练习" class="headerlink" title="查准率和召回率练习"></a>查准率和召回率练习</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/CuONQ/trading-off-precision-and-recall">视频地址</a></p>
+<blockquote>
+<p>在之前的课程中，我们谈到<strong>查准率</strong>和<strong>召回率</strong>作为遇到偏斜类问题的评估度量值。在很多应用中，我们希望能够保证<strong>查准率</strong>和<strong>召回率</strong>的相对平衡。在这节课中，我将告诉你应该如何处理此类问题，同时也向你展示一些查准率和召回率 作为算法评估度量值的更有效的方式。</p>
+</blockquote>
+<p>回忆一下，这是我们在上一节中讲到的<strong>查准率</strong>和<strong>召回率</strong>的定义：</p>
+<script type="math/tex; mode=display">
+查准率 = \frac{真阳性的数量} {预测值为阳性的数量} = \frac{真阳性的数量} {真阳性的数量 + 假阳性的数量}</script><script type="math/tex; mode=display">
+召回率 = \frac{真阳性的数量} {实际阳性的数量} = \frac{真阳性的数量} {真阳性的数量 + 假阴性的数量}</script><p>让我们继续用癌症分类的例子。</p>
+<p>如果病人患癌症，则<code>y=1</code>反之则<code>y=0</code>。</p>
+<p>假设我们用<strong>逻辑回归模型</strong>训练了数据，输出概率是在<code>0-1</code>之间的值：</p>
+<script type="math/tex; mode=display">
+0\le h\_{\theta}(x)\le1</script><p>因此可以得到：</p>
+<ul>
+<li>如果$h_{\theta}(x)\ge0.5$，预测值为1 </li>
+<li>如果$h_{\theta}(x)\lt0.5$，预测值为0 </li>
+</ul>
+<p>这个回归模型能够计算<strong>查准率</strong>和<strong>召回率</strong>。但是现在，假如我们希望在我们非常确信地情况下，才预测一个病人得了癌症。</p>
+<blockquote>
+<p>因为你知道如果你告诉一个病人，说他得了癌症，他会非常震惊，因为这是一个非常坏的消息，而且他们会经历一段非常痛苦的治疗过程，因此我们希望只有在我们非常确信的情况下，才告诉这个人他得了癌症。</p>
+</blockquote>
+<p>这样做的一种方法是修改算法。</p>
+<h3 id="高查准率低召回率情况"><a href="#高查准率低召回率情况" class="headerlink" title="高查准率低召回率情况"></a>高查准率低召回率情况</h3><p>我们不再将临界值设为<code>0.5</code>，也许我们只在$h_{\theta}(x)\ge0.7$的情况下，才预测$y=1$。因此我们会在我们认为他有$\ge70\%$得癌症的概率情况下，告诉一个人他得了癌症。</p>
+<p>如果你这么做，那么你只在非常确信地情况下才去预测癌症，那么你的回归模型会有较高的<strong>查准率</strong>，因为在所有你准备告诉他们患有癌症的病人中，他们有较高的可能性真的患有癌症。</p>
+<p>你预测患有癌症的病人中有较大比率的人，他们确实患有癌症。因为这是我们在非常确信的情况下做出的预测。</p>
+<p>与之相反，这个回归模型会有较低的<strong>召回率</strong>，因为当我们做预测的时候，我们只给很小一部分的病人预测$y=1$，现在我们把这个情况夸大一下，我们不再把临界值 设在$0.7$，我们把它设为$0.9$，我们只在至少$90\%$肯定这个病人患有癌症的情况下才预测$y=1$。那么这些病人当中，有非常大的比率，真正患有癌症。因此这是一个<strong>高查准率</strong>的模型。但是<strong>召回率</strong>会变低，因为我们希望能够正确检测患有癌症的病人。</p>
+<h3 id="高召回率低查准率情况"><a href="#高召回率低查准率情况" class="headerlink" title="高召回率低查准率情况"></a>高召回率低查准率情况</h3><p>现在考虑一个不同的例子。</p>
+<p>假设我们希望避免遗漏掉患有癌症的人，即我们希望避免<strong>假阴性</strong>。具体地说，如果一个病人实际患有癌症，但是我们并没有告诉他患有癌症，那这可能会造成严重后果。因为如果我们告诉病人他们没有患癌症，那么他们就不会接受治疗。但是如果他们真的患有癌症，我们又没有告诉他们，那么他们就根本不会接受治疗，这可能会造成严重后果，甚至使病人丧失生命，因为我们没有告诉他患有癌症，他没有接受治疗。这种情况下，我们希望预测病人患有癌症，即$y=1$。这样他们会做进一步的检测，然后接受治疗以避免他们真的患有癌症。</p>
+<p>在这个例子中，我们不再设置高的<strong>临界值</strong>，我们会设置另一个值，将<strong>临界值</strong>设得较低，比如$0.3$。这样以来，我们认为这些病人有$\gt30\%$的概率患有癌症，我们以更加保守的方式来告诉他们患有癌症，因此他们能够接受治疗。但是在这种情况下，我们会有一个较<strong>高召回率</strong>的模型。因为在患有癌症的病人中，有很大一部分被我们正确标记出来了，但是我们会得到较低的查准率，因为我们预测患有癌症的病人比例越大，那么就有较大比例的人其实没有患癌症。</p>
+<hr>
+<p>顺带一提，当我在给别的学生讲这个的时候，令人惊讶的是有的学生问，怎么可以从两面来看这个问题？为什么我总是只想要高查准率或高召回率，但是这看起来可以使两边都提高。更普遍的一个原则是：这取决于你想要什么。你想要<strong>高查准率低召回率</strong>，还是<strong>高召回率低查准率</strong>？你可以预测$y=1$当$h_\theta(x)\ge临界值$。因此总的来说，对于大多数的回归模型，你得权衡查准率和召回率。</p>
+<h3 id="临界值的选取"><a href="#临界值的选取" class="headerlink" title="临界值的选取"></a>临界值的选取</h3><p>当你改变临界值的值时，你可以画出曲线来权衡查准率和召回率：</p>
+<p><img src="/img/17_01_19/002.png" width = "300" height = "200" align=center /></p>
+<p>这里的一个值，反应出一个较高的临界值，这个临界值可能等于$0.99$，我们假设 只在有大于$99\%$的确信度的情况下，才预测$y=1$。至少，有$99\%$的可能性。因此这个点反应<strong>高查准率低召回率</strong>：</p>
+<p><img src="/img/17_01_19/003.png" width = "300" height = "200" align=center /></p>
+<p>然而这里的一个点，反映一个较低的临界值，比如说$0.01$，毫无疑问，在这里预测$y=1$，如果你这么做，你最后会得到<strong>低查准率高的召回率</strong>的预测结果：</p>
+<p><img src="/img/17_01_19/004.png" width = "300" height = "200" align=center /></p>
+<p>当你改变临界值时，如果你愿意，你可以画出回归模型的所有曲线，来看看你能得到的查准率和召回率的范围。</p>
+<p>顺带一提，查准率-召回率曲线可以是各种不同的形状，有时它看起来是这样：</p>
+<p><img src="/img/17_01_19/005.png" width = "300" height = "200" align=center /></p>
+<p>有时是那样：</p>
+<p><img src="/img/17_01_19/006.png" width = "300" height = "200" align=center /></p>
+<p>查准率-召回率曲线的形状有很多可能性，这取决于回归模型的具体算法。因此这又产生了另一个有趣的问题，那就是<strong>有没有办法自动选取临界值</strong>，或者更广泛地说，如果我们有不同的算法，我们如何比较不同的查准率和召回率呢？</p>
+<h4 id="选取临界值的方式：-F-1-Score-F-score"><a href="#选取临界值的方式：-F-1-Score-F-score" class="headerlink" title="选取临界值的方式：$F_{1}Score$(F score)"></a>选取临界值的方式：$F_{1}Score$(F score)</h4><p>具体来说，假设我们有三个不同的学习算法；或者这三个不同的学习曲线是同样的算法，但是临界值不同。我们怎样决定哪一个算法是最好的？</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">查准率(P)</th>
+<th style="text-align:center">召回率(R)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">算法1</td>
+<td style="text-align:center">0.5</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">算法2</td>
+<td style="text-align:center">0.7</td>
+<td style="text-align:center">0.1</td>
+</tr>
+<tr>
+<td style="text-align:center">算法3</td>
+<td style="text-align:center">0.02</td>
+<td style="text-align:center">1.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们之前讲到的其中一件事就是评估度量值的重要性。这个概念是通过一个具体的数字来反映你的回归模型到底如何。但是查准率和召回率的问题我们却不能这样做，因为在这里我们有两个可以判断的数字。</p>
+<p>因此我们经常会不得不面对这样的情况：如果我们正在试图比较<strong>算法1</strong>和<strong>算法2</strong>，我们最后问自己，到底是<code>0.5</code>的查准率与<code>0.4</code>的召回率好；还是说<code>0.7</code>的查准率与<code>0.1</code>的召回率好？如果你最后这样坐下来思考，这回降低你的决策速度。思考到底哪些改变是有用的，应该被融入到你的算法中。</p>
+<p>与此相反的是，如果我们有一个评估度量值，一个数字，能够告诉我们到底是算法1好还是算法2好，这能够帮助我们更快地决定哪一个算法更好，同时也能够更快地帮助我们评估不同的改动，哪些应该被融入进算法里面。那么我们怎样才能得到这个评估度量值呢？</p>
+<p>你可能会去尝试的一件事情是计算一下查准率和召回率的平均值:</p>
+<script type="math/tex; mode=display">
+平均值：\frac{P+R} {2}</script><p>用<strong>P</strong>和<strong>R</strong>来表示查准率和召回率，你可以做的是计算它们的平均值，看一看哪个模型有最高的均值:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">查准率(P)</th>
+<th style="text-align:center">召回率(R)</th>
+<th style="text-align:center">平均值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">算法1</td>
+<td style="text-align:center">0.5</td>
+<td style="text-align:center">0.4</td>
+<td style="text-align:center">0.45</td>
+</tr>
+<tr>
+<td style="text-align:center">算法2</td>
+<td style="text-align:center">0.7</td>
+<td style="text-align:center">0.1</td>
+<td style="text-align:center">0.4</td>
+</tr>
+<tr>
+<td style="text-align:center">算法3</td>
+<td style="text-align:center">0.02</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">0.51</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>但是这可能并不是一个很好的解决办法，因为像我们之前的例子一样,如果我们的回归模型总是预测$y=1$，这么做你可能得到非常高的召回率得到非常低的查准率；相反地，如果你的模型总是预测$y=0$，就是说如果很少预测$y=1$，对应的设置了一个高临界值，最后你会得到非常高的查准率和非常低的召回率。</p>
+<p>这两个极端情况一个有<strong>非常高的临界值</strong>，一个有<strong>非常低的临界值</strong>，它们中的任何一个都不是一个好的模型，我们可以通过非常低的查准率，或者非常低的召回率来判断这不是一个好模型。</p>
+<p>在这里如果使用平均值的方式来计算，那么<strong>算法3</strong>的计算结果是最高的，但这并不是一个好模型，因为你总是预测$y=1$，这并不是一个有用的模型，因为它只能输出$y=1$。</p>
+<p>所以，我们认为通过计算查准率和召回率平均值的方式来评估算法的好坏，不是一个好方法。</p>
+<hr>
+<p>相反的，有一种结合查准率和召回率的另一种方式，叫做<strong>F score</strong>，公式如下：</p>
+<script type="math/tex; mode=display">
+F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法我们可以得出：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">查准率(P)</th>
+<th style="text-align:center">召回率(R)</th>
+<th style="text-align:center">平均值</th>
+<th style="text-align:center">$F_{1}Score$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">算法1</td>
+<td style="text-align:center">0.5</td>
+<td style="text-align:center">0.4</td>
+<td style="text-align:center">0.45</td>
+<td style="text-align:center">0.444</td>
+</tr>
+<tr>
+<td style="text-align:center">算法2</td>
+<td style="text-align:center">0.7</td>
+<td style="text-align:center">0.1</td>
+<td style="text-align:center">0.4</td>
+<td style="text-align:center">0.175</td>
+</tr>
+<tr>
+<td style="text-align:center">算法3</td>
+<td style="text-align:center">0.02</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">0.51</td>
+<td style="text-align:center">0.0392</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可以看出<strong>算法1</strong>的<strong>F score</strong>最高，所以我们会选择使用<strong>算法1</strong>。</p>
+<blockquote>
+<p><strong>F score</strong>也叫作$F_{1}Score$，但通常人们叫它<strong>F score</strong>。</p>
+</blockquote>
+<p><strong>F score</strong>的定义会考虑一部分查准率和召回率的平均值，但是它会给查准率和召回率中较低的值更高的权重，因此你可以看到<strong>F score</strong>的分子是查准率和召回率的乘积，如果查准率等于0或者召回率等于0，<strong>F score</strong>也会等于0。因此它结合了查准率和召回率，对于一个较大的<strong>F score</strong>，查准率和召回率都必须较大。</p>
+<p>我必须说明的是，有较多的公式可以结合查准率和召回率，<strong>F score</strong>公式只是 其中一个，但是出于历史原因和习惯问题，人们在机器学习中普遍使用<strong>F score</strong>。<strong>F score</strong>这个术语没有什么特别的意义，所以不要担心它到底为什么叫做<strong>F score</strong>或者$F_{1}Score$。</p>
+<p><strong>F score</strong>给出了你所需要的有效方法，因为无论是查准率等于0，还是召回率等于0，它都会得到一个很低的<strong>F score</strong>。因此，如果要得到一个很高的<strong>F score</strong>，你的算法的查准率和召回率都要接近于1。具体地说，如果$P=0$或者$R=0$，你的<strong>F score</strong>也会等于0。</p>
+<blockquote>
+<p>在这次的视频中，我们讲到了如何权衡查准率和召回率，以及我们如何变动临界值 来决定我们希望预测$y=1$还是$y=0$。比如我们需要一个$70\%$还是$90\%$置信度的临界值，或者别的，来预测$y=1$。</p>
+<p>通过变动临界值，你可以控制权衡查准率和召回率。</p>
+<p>之后我们讲到了<strong>F score</strong>，它权衡查准率和召回率，给了你一个评估度量值。当然，如果你的目标是自动选择临界值来决定你希望预测$y=1$还是$y=0$，那么一个比较理想的办法是试一试不同的临界值，然后评估这些不同的临界值在交叉检验集上进行测试，然后选择哪一个临界值能够在交叉检验集上得到最高的<strong>F score</strong>，这是自动选择临界值的较好办法。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/17/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC2%E7%AB%A0%E3%80%91%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/17/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC2%E7%AB%A0%E3%80%91%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">【Python3教程 第2章】控制结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-17 00:28:58" itemprop="dateCreated datePublished" datetime="2017-01-17T00:28:58+00:00">2017-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="布尔与比较"><a href="#布尔与比较" class="headerlink" title="布尔与比较"></a>布尔与比较</h2><h3 id="布尔"><a href="#布尔" class="headerlink" title="布尔"></a>布尔</h3><p>Python中的另一种类型是布尔类型(Boolean)。布尔类型有两种值：<strong>True</strong>和<strong>False</strong>。它们可以通过比较值来创建，例如通过等号操作符<code>==</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_boolean = <span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_boolean</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> == <span class="number">3</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;hello&quot;</span> == <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意不要混淆<strong>赋值</strong>（一个等号）和<strong>比较</strong>（两个等号）操作符。</p>
+</blockquote>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p>另外一个比较操作符是不等于(<strong>!=</strong>)，如果两者相比不相等，则结果为<strong>False</strong>否则为<strong>True</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> != <span class="number">1</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;eleven&quot;</span> != <span class="string">&quot;seven&quot;</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> != <span class="number">10</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>Python也有比较两个数值（浮点数或整数）是否大于或小于另一个数值的运算。操作符分别是<code>&gt;</code>和<code>&lt;</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">7</span> &gt; <span class="number">5</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">10</span> &lt; <span class="number">10</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>大于或等于的运算符是<code>&gt;=</code>，小于或等于的运算符是<code>&lt;=</code>。</p>
+<p>与大于小于操作符类似，除了当两者相等的时候也返回<strong>True</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">7</span> &lt;= <span class="number">8</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">9</span> &gt;= <span class="number">9.0</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>大于等于和小于等于操作符也可以用于按字典排序模式比较字符串操作（字的字母顺序是基于它们的组成字母的字母顺序排序的）。</p>
+</blockquote>
+<h2 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h2><p>你可以使用<strong>if</strong>语句来运行满足某个条件的语句。</p>
+<p>如果表达式的结果是<strong>True</strong>，某些语句会执行。否则，它们不会被执行。</p>
+<p>一个if语句看起来像是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> expression:</span><br><span class="line">   statements</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Python使用缩进(在行首的空白)的方式来限制代码块。其他语言，例如C语言，使用花括号来表示代码块，但在Python中缩进是强制性的，程序没有缩进就不会正常工作。正如你看到的<strong>if</strong>里的语句应该被缩进。</p>
+</blockquote>
+<p>下面是一个<strong>if</strong>语句的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">10</span> &gt; <span class="number">5</span>:</span><br><span class="line">   print(<span class="string">&quot;10 greater than 5&quot;</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Program ended&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>判断表达式10是否大于5，如果是，则执行缩进的语句，输出<code>10 greater than 5</code>，然后执行后面没有缩进的语句。</p>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">10</span> greater than <span class="number">5</span></span><br><span class="line">Program ended</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>注意<strong>冒号</strong>在<strong>if</strong>语句的末尾处。</p>
+<blockquote>
+<p>由于程序包含多行代码，因此应将其创建为单独的代码文件来运行。</p>
+</blockquote>
+<h3 id="if的嵌套"><a href="#if的嵌套" class="headerlink" title="if的嵌套"></a>if的嵌套</h3><p>为了执行更严格的条件检查，<strong>if</strong>语句可以嵌套使用，嵌套在另一个if语句中。这意味着内部的<strong>if</strong>语句是外部的<strong>if</strong>语句的一部分，这是一种查看是否满足多个条件的方法。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">12</span></span><br><span class="line"><span class="keyword">if</span> num &gt; <span class="number">5</span>:</span><br><span class="line">   print(<span class="string">&quot;Bigger than 5&quot;</span>)</span><br><span class="line">   <span class="keyword">if</span> num &lt;=<span class="number">47</span>:</span><br><span class="line">      print(<span class="string">&quot;Between 5 and 47&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">Bigger than <span class="number">5</span></span><br><span class="line">Between <span class="number">5</span> <span class="keyword">and</span> <span class="number">47</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="else语句"><a href="#else语句" class="headerlink" title="else语句"></a>else语句</h2><p>一个<strong>else</strong>语句跟在一个<strong>if</strong>语句后面，并且包含当<strong>if</strong>条件语句执行结果为<strong>False</strong>时执行的代码。</p>
+<p>与<strong>if</strong>语句一样，内部的代码块也应该缩进。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">4</span></span><br><span class="line"><span class="keyword">if</span> x == <span class="number">5</span>:</span><br><span class="line">   print(<span class="string">&quot;Yes&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   print(<span class="string">&quot;No&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; </span><br><span class="line">No</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="if和else嵌套使用"><a href="#if和else嵌套使用" class="headerlink" title="if和else嵌套使用"></a>if和else嵌套使用</h3><p>你可以将<strong>if</strong>和<strong>else</strong>连接起来，来判断一系列的对错情况，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">7</span></span><br><span class="line"><span class="keyword">if</span> num == <span class="number">5</span>:</span><br><span class="line">  print(<span class="string">&quot;Number is 5&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>: </span><br><span class="line">  <span class="keyword">if</span> num == <span class="number">11</span>:</span><br><span class="line">    print(<span class="string">&quot;Number is 11&quot;</span>)</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">7</span>:</span><br><span class="line">      print(<span class="string">&quot;Number is 7&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">      print(<span class="string">&quot;Number isn&#x27;t 5, 11 or 7&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">Number <span class="keyword">is</span> <span class="number">7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br></pre></td></tr></table></figure>
+<h3 id="elif语句"><a href="#elif语句" class="headerlink" title="elif语句"></a>elif语句</h3><p><strong>elif</strong>(<code>else if</code>的缩写)语句是<code>if</code>和<code>else</code>连起来使用的一个缩写形式。一系列的<strong>elif</strong>判断需要用一个<strong>else</strong>来收尾，用于判断<strong>if</strong>或<strong>elif</strong>以外的情况。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">7</span></span><br><span class="line"><span class="keyword">if</span> num == <span class="number">5</span>:</span><br><span class="line">   print(<span class="string">&quot;Number is 5&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> num == <span class="number">11</span>:</span><br><span class="line">   print(<span class="string">&quot;Number is 11&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> num == <span class="number">7</span>:</span><br><span class="line">   print(<span class="string">&quot;Number is 7&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   print(<span class="string">&quot;Number isn&#x27;t 5, 11 or 7&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">Number <span class="keyword">is</span> <span class="number">7</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在其他的编程语言中，<strong>elif</strong>语句有多种名称，包括<strong>else if</strong>,<strong>elseif</strong>或者<strong>elsif</strong>。</p>
+</blockquote>
+<h2 id="布尔逻辑"><a href="#布尔逻辑" class="headerlink" title="布尔逻辑"></a>布尔逻辑</h2><p>当<strong>if</strong>语句依赖多个条件时，使用<strong>布尔(Boolean)逻辑</strong>可以用来生成更复杂的条件。</p>
+<p>Python的布尔操作符是<strong>and</strong>，<strong>or</strong>和<strong>not</strong>。</p>
+<h3 id="布尔逻辑-and"><a href="#布尔逻辑-and" class="headerlink" title="布尔逻辑 and"></a>布尔逻辑 and</h3><p><strong>and</strong>操作符接受两个参数，并且当且仅当两个参数都为<strong>True</strong>时，计算结果才为<strong>True</strong>。否则，计算结果是<strong>False</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> == <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span> == <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> == <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span> == <span class="number">3</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> != <span class="number">1</span> <span class="keyword">and</span> <span class="number">2</span> == <span class="number">2</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> &lt; <span class="number">1</span> <span class="keyword">and</span> <span class="number">3</span> &gt;  <span class="number">6</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Python用直白的单词来表示布尔逻辑，而其他大多数编程语言使用<code>&amp;&amp;</code>、<code>||</code>、<code>!</code>这些符号来表示。</p>
+</blockquote>
+<h3 id="布尔逻辑-or"><a href="#布尔逻辑-or" class="headerlink" title="布尔逻辑 or"></a>布尔逻辑 or</h3><p><strong>or</strong>操作符也接受两个参数，当两个参数至少有一个为<strong>True</strong>时，计算结果就为<strong>True</strong>；否则，当两个参数都为<strong>False</strong>时，计算结果为<strong>False</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> == <span class="number">1</span> <span class="keyword">or</span> <span class="number">2</span> == <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> == <span class="number">1</span> <span class="keyword">or</span> <span class="number">2</span> == <span class="number">3</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span> != <span class="number">1</span> <span class="keyword">or</span> <span class="number">2</span> == <span class="number">2</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> &lt; <span class="number">1</span> <span class="keyword">or</span> <span class="number">3</span> &gt;  <span class="number">6</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="布尔逻辑-not"><a href="#布尔逻辑-not" class="headerlink" title="布尔逻辑 not"></a>布尔逻辑 not</h3><p>不像其他我们已经看到的操作符那样，<strong>not</strong>操作符只接受一个参数，并且计算结果是取反。<strong>True</strong>的<strong>not</strong>结果是<strong>False</strong>，而且<strong>not False</strong>的计算结果是<strong>True</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">not</span> <span class="number">1</span> == <span class="number">1</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">not</span> <span class="number">1</span> &gt; <span class="number">7</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过布尔逻辑，你可以在if的条件语句中连接多个条件。</p>
+</blockquote>
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><p><strong>运算符优先级</strong>是编程中非常重要的概念。这个概念是数学中运算顺序的一种延伸（例如前面提到的乘法操作），用于包含多个其他的操作符，例如布尔逻辑。</p>
+<p>下面的代码展示了<code>==</code>运算符拥有比<code>or</code>更高的优先级：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span> == <span class="literal">False</span> <span class="keyword">or</span> <span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">False</span> == (<span class="literal">False</span> <span class="keyword">or</span> <span class="literal">True</span>)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="literal">False</span> == <span class="literal">False</span>) <span class="keyword">or</span> <span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Python的运算符顺序与数学中的运算顺序是一致的：括号优先，然后是幂运算，然后是乘/除法运算，然后是加/减法运算。</p>
+</blockquote>
+<p>下面的表按照优先级从高到低展示了Python中所有的运算符。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">运算符</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>**</code></td>
+<td style="text-align:left">指数 (最高优先级)</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>~</code> <code>+</code> <code>-</code></td>
+<td style="text-align:left">按位翻转, 一元加号和减号 (最后两个的方法名为 +@ 和 -@)</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>*</code> <code>/</code> <code>%</code> <code>//</code></td>
+<td style="text-align:left">乘，除，取模和取整除</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>+</code> <code>-</code></td>
+<td style="text-align:left">加法减法</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>&gt;&gt;</code> <code>&lt;&lt;</code></td>
+<td style="text-align:left">右移，左移运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>&amp;</code></td>
+<td style="text-align:left">位 ‘AND’</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>^</code> &#124;</td>
+<td style="text-align:left">位运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>&lt;=</code> <code>&lt;</code> <code>&gt;</code> <code>&gt;=</code></td>
+<td style="text-align:left">比较运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>&lt;&gt;</code> <code>==</code> <code>!=</code></td>
+<td style="text-align:left">等于运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>=</code> <code>%=</code> <code>/=</code> <code>//=</code> <code>-=</code> <code>+=</code> <code>*=</code> <code>**=</code></td>
+<td style="text-align:left">赋值运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>is</code> <code>is not</code></td>
+<td style="text-align:left">身份运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>in</code> <code>not in</code></td>
+<td style="text-align:left">成员运算符</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>not</code> <code>or</code> <code>and</code></td>
+<td style="text-align:left">逻辑运算符</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h2><p>一个<strong>if</strong>语句在条件为<strong>True</strong>时会执行一次，如果为<strong>False</strong>则不执行。<strong>while</strong>语句会在条件满足时执行多次。只要条件为<strong>True</strong>，while内部的语句就会重复的执行下去。一旦条件为<strong>False</strong>，就会跳出循环，继续执行后面的代码。</p>
+<p>下面是一个<strong>while</strong>循环，包含一个从1到5自增长用来计数的变量，直到i的值达到了循环的终点就会跳出循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> i &lt;=<span class="number">5</span>:</span><br><span class="line">   print(i)</span><br><span class="line">   i = i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Finished!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">Finished!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>while</strong>内部循环执行的的代码被称为<strong>迭代(iteration)</strong>。</p>
+</blockquote>
+<h3 id="无限循环"><a href="#无限循环" class="headerlink" title="无限循环"></a>无限循环</h3><p><strong>无限循环</strong>是一种特殊的while循环；它永远都不会停止运行。它的判断条件一直是<strong>True</strong>    。</p>
+<p>下面是一个无限循环的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="number">1</span>==<span class="number">1</span>:</span><br><span class="line">  print(<span class="string">&quot;In the loop&quot;</span>) </span><br></pre></td></tr></table></figure>
+<p>这个程序会无限的打印<code>In the loop</code>。</p>
+<blockquote>
+<p>你可以通过按下快捷键<strong>Ctrl-C</strong>来终止程序的执行，从而中断这个无限循环。</p>
+</blockquote>
+<h3 id="break"><a href="#break" class="headerlink" title="break"></a>break</h3><p>通过使用<strong>break</strong>语句，可以提前跳出<strong>while</strong>循环的执行。<strong>break</strong>可以立刻中断<strong>while</strong>内部的循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>==<span class="number">1</span>:</span><br><span class="line">  print(i)</span><br><span class="line">  i = i + <span class="number">1</span></span><br><span class="line">  <span class="keyword">if</span> i &gt;= <span class="number">5</span>:</span><br><span class="line">    print(<span class="string">&quot;Breaking&quot;</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Finished&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">Breaking</span><br><span class="line">Finished</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在循环外使用<strong>break</strong>会产生错误。</p>
+</blockquote>
+<h3 id="continue"><a href="#continue" class="headerlink" title="continue"></a>continue</h3><p>另一个可以用在循环内的语句是<strong>continue</strong>。</p>
+<p>不同于<strong>break</strong>，<strong>continue</strong>会跳回到循环的顶部而不是停止循环的执行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   i = i +<span class="number">1</span></span><br><span class="line">   <span class="keyword">if</span> i == <span class="number">2</span>:</span><br><span class="line">      print(<span class="string">&quot;Skipping 2&quot;</span>)</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">   <span class="keyword">if</span> i == <span class="number">5</span>:</span><br><span class="line">      print(<span class="string">&quot;Breaking&quot;</span>)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">   print(i)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Finished&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">1</span></span><br><span class="line">Skipping <span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">Breaking</span><br><span class="line">Finished</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>continue</strong>语句会停止当前这一次的迭代项，并且继续执行下一次项。</p>
+<blockquote>
+<p>在循环外使用<strong>continue</strong>会产生错误。</p>
+</blockquote>
+<h2 id="列表-List"><a href="#列表-List" class="headerlink" title="列表(List)"></a>列表(List)</h2><p><strong>列表(List)</strong>是另一个Python对象，它可以用于存储条目的索引列表。<br>列表可以通过一个<strong>方括号(<code>[]</code>)</strong>来构建，内部的条目用<strong>逗号(<code>,</code>)</strong>隔开。</p>
+<p>可以通过使用其在方括号中的索引来访问列表中的特定项。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&quot;Hello&quot;</span>, <span class="string">&quot;world&quot;</span>, <span class="string">&quot;!&quot;</span>]</span><br><span class="line">print(words[<span class="number">0</span>])</span><br><span class="line">print(words[<span class="number">1</span>])</span><br><span class="line">print(words[<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;python</span><br><span class="line">Hello</span><br><span class="line">world</span><br><span class="line">!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一个列表项的索引值是<strong>0</strong>，而不是<strong>1</strong>。</p>
+</blockquote>
+<p>一个空的列表可以通过一对方括号来实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">empty_list = []</span><br><span class="line">print(empty_list)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>大多数情况下，列表的最后一个条目后是不用添加逗号的。但是如果你添加了逗号，那就表明在最后占了一个位置，在某些情况下这种做法也是被推荐的。</p>
+</blockquote>
+<p>列表通常包含着同一种类型的数据，但你也完全可以添加不同类型的数据到列表中。列表本身也可以嵌套在其他列表中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">number = <span class="number">3</span></span><br><span class="line">things = [<span class="string">&quot;string&quot;</span>, <span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>, number], <span class="number">4.56</span>]</span><br><span class="line">print(things[<span class="number">1</span>])</span><br><span class="line">print(things[<span class="number">2</span>])</span><br><span class="line">print(things[<span class="number">2</span>][<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">0</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="number">3</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>列表嵌套列表是通常用于表示二维网格，Python缺少像其他语言中的<strong>多维数组</strong>的结构，可以通过嵌套列表来实现。</p>
+</blockquote>
+<p>索引超出列表长度的边界会导致<strong>IndexError</strong>。</p>
+<p>有些类型，如<strong>字符串(strings)</strong>，可以像<strong>列表(List)</strong>一样被索引。索引字符串的行为就好像你在索引一个包含了每个字符的列表所组成的字符串。</p>
+<p>对于其他类型，例如<strong>整数(integers)</strong>，它们是不可以被索引的，如果对它使用索引会导致TypeError。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">str</span> = <span class="string">&quot;Hello world!&quot;</span></span><br><span class="line">print(<span class="built_in">str</span>[<span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">w</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="列表操作-List-Operations"><a href="#列表操作-List-Operations" class="headerlink" title="列表操作(List Operations)"></a>列表操作(List Operations)</h2><p>列表中的某个位置的条目可以重新赋值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>, <span class="number">7</span>]</span><br><span class="line">nums[<span class="number">2</span>] = <span class="number">5</span></span><br><span class="line">print(nums)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">7</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">7</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>列表可以像字符串一样执行<strong>加法</strong>和<strong>乘法</strong>操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(nums + [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">print(nums * <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>列表和字符串在很多情况下是相似的，字符串可以想象成是字符组成的不可变列表。</p>
+</blockquote>
+<hr>
+<p>可以通过<strong>in</strong>操作符来检测某个条目是否存在于某个列表中。如果当前条目在列表中存在一份或多份时，返回<strong>True</strong>，否则返回<strong>False</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&quot;spam&quot;</span>, <span class="string">&quot;egg&quot;</span>, <span class="string">&quot;spam&quot;</span>, <span class="string">&quot;sausage&quot;</span>]</span><br><span class="line">print(<span class="string">&quot;spam&quot;</span> <span class="keyword">in</span> words)</span><br><span class="line">print(<span class="string">&quot;egg&quot;</span> <span class="keyword">in</span> words)</span><br><span class="line">print(<span class="string">&quot;tomato&quot;</span> <span class="keyword">in</span> words)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>in</strong>操作符也可以用来判断某个字符串是否是另一个字符串的子字符串。</p>
+</blockquote>
+<hr>
+<p>可以通过<strong>not</strong>操作符来判断某个条目是否不在列表中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(<span class="keyword">not</span> <span class="number">4</span> <span class="keyword">in</span> nums)</span><br><span class="line">print(<span class="number">4</span> <span class="keyword">not</span> <span class="keyword">in</span> nums)</span><br><span class="line">print(<span class="keyword">not</span> <span class="number">3</span> <span class="keyword">in</span> nums)</span><br><span class="line">print(<span class="number">3</span> <span class="keyword">not</span> <span class="keyword">in</span> nums)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><h2 id="列表方法-List-Functions"><a href="#列表方法-List-Functions" class="headerlink" title="列表方法(List Functions)"></a>列表方法(List Functions)</h2><p>另外一种改变列表的方式是通过<strong>append</strong>函数。这个函数会添加一个元素到列表的末尾。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">nums.append(<span class="number">4</span>)</span><br><span class="line">print(nums)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><p>可以通过<strong>len</strong>函数来获取列表中元素的个数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line">print(<span class="built_in">len</span>(nums))</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-2"><a href="#-2" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">5</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><p><strong>insert</strong>方法和<strong>append</strong>类似，不同的是，它可以在列表的任何位置插入指定的元素，而不是仅仅跟在列表最后。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&quot;Python&quot;</span>, <span class="string">&quot;fun&quot;</span>]</span><br><span class="line">index = <span class="number">1</span></span><br><span class="line">words.insert(index, <span class="string">&quot;is&quot;</span>)</span><br><span class="line">print(words)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-3"><a href="#-3" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="string">&#x27;Python&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><p><strong>index</strong>方法会找到元素第一次出现的所在位置索引值，如果元素不在列表中，会抛出一个ValueError。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">letters = [<span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;u&#x27;</span>]</span><br><span class="line">print(letters.index(<span class="string">&#x27;r&#x27;</span>))</span><br><span class="line">print(letters.index(<span class="string">&#x27;p&#x27;</span>))</span><br><span class="line">print(letters.index(<span class="string">&#x27;z&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">ValueError: <span class="string">&#x27;z&#x27;</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">in</span> <span class="built_in">list</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>下面有几个列表的更有用的方法：</p>
+<ul>
+<li><strong>max</strong>(list): 返回列表中最大的元素。</li>
+<li><strong>min</strong>(list): 返回列表中最小的元素。</li>
+<li>list.<strong>count</strong>(obj): 返回列表中指定元素的出现次数。</li>
+<li>list.<strong>remove</strong>(obj): 移除列表中的一个指定元素。</li>
+<li>list.<strong>reverse</strong>(): 将列表中的元素顺序翻转。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="Range"><a href="#Range" class="headerlink" title="Range"></a>Range</h2><p><strong>range</strong>方法会创建一个包含数字序列的列表。下面的代码会生成一组0到10之间(包含0不包含10)的整数的序列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line">print(numbers)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-4"><a href="#-4" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><p>如果<strong>range</strong>方法传入一个参数，那么它将产生一组包含0到那个参数的数字序列。</p>
+<p>如果包含两个参数，那么它将产生第一个参数到第二个参数之间的数字序列。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">3</span>, <span class="number">8</span>))</span><br><span class="line">print(numbers)</span><br><span class="line"></span><br><span class="line">print(<span class="built_in">range</span>(<span class="number">20</span>) == <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-5"><a href="#-5" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line"></span><br><span class="line"><span class="literal">True</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><p><strong>range</strong>可以拥有第三个用来决定步数的参数。这个参数必须是一个<strong>整形(integer)</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">5</span>, <span class="number">20</span>, <span class="number">2</span>))</span><br><span class="line">print(numbers)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-6"><a href="#-6" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">[<span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">17</span>, <span class="number">19</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>有时，你需要对列表中的元素依次执行运算，这种操作叫做<strong>迭代(iteration)</strong>。迭代可以通过<strong>while</strong>循环以及一个条件变量来实现。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>, <span class="string">&quot;spam&quot;</span>, <span class="string">&quot;eggs&quot;</span>]</span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line">max_index = <span class="built_in">len</span>(words) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> counter &lt;= max_index:</span><br><span class="line">   word = words[counter]</span><br><span class="line">   print(word + <span class="string">&quot;!&quot;</span>)</span><br><span class="line">   counter = counter + <span class="number">1</span> </span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-7"><a href="#-7" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">hello!</span><br><span class="line">world!</span><br><span class="line">spam!</span><br><span class="line">eggs!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><h3 id="for循环-1"><a href="#for循环-1" class="headerlink" title="for循环"></a>for循环</h3><p>使用<strong>while</strong>来对列表进行迭代操作需要写的代码有点多，所以Python提供了一种<strong>for</strong>循环的方式来更简便的实现这一操作。</p>
+<p>同样的代码用<strong>for</strong>循环来实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">words = [<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>, <span class="string">&quot;spam&quot;</span>, <span class="string">&quot;eggs&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">  print(word + <span class="string">&quot;!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">hello!</span><br><span class="line">world!</span><br><span class="line">spam!</span><br><span class="line">eggs!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Python中的<strong>for</strong>循环，就像其他语言中的<strong>foreach</strong>循环一样。</p>
+</blockquote>
+<hr>
+<p><strong>for</strong>循环通常用于重复某一代码执行一定次数。这种操作可以通过与<strong>range</strong>对象结合使用来完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">  print(<span class="string">&quot;hello!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<h2 id="-8"><a href="#-8" class="headerlink" title=""></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;</span><br><span class="line">hello!</span><br><span class="line">hello!</span><br><span class="line">hello!</span><br><span class="line">hello!</span><br><span class="line">hello!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></h2><h2 id="一个简单的计算器"><a href="#一个简单的计算器" class="headerlink" title="一个简单的计算器"></a>一个简单的计算器</h2><h3 id="创建一个计算器"><a href="#创建一个计算器" class="headerlink" title="创建一个计算器"></a>创建一个计算器</h3><p>这节课介绍一个Python程序的示例：一个简单的计算器。</p>
+<p>第一部分是整体菜单部分。它将持续接受用户的输入，直到用户输入了“quit”为止，因此用到了一个<strong>while</strong>循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   print(<span class="string">&quot;Options:&quot;</span>)</span><br><span class="line">   print(<span class="string">&quot;Enter &#x27;add&#x27; to add two numbers&quot;</span>)</span><br><span class="line">   print(<span class="string">&quot;Enter &#x27;subtract&#x27; to subtract two numbers&quot;</span>)</span><br><span class="line">   print(<span class="string">&quot;Enter &#x27;multiply&#x27; to multiply two numbers&quot;</span>)</span><br><span class="line">   print(<span class="string">&quot;Enter &#x27;divide&#x27; to divide two numbers&quot;</span>)</span><br><span class="line">   print(<span class="string">&quot;Enter &#x27;quit&#x27; to end the program&quot;</span>)</span><br><span class="line">   user_input = <span class="built_in">input</span>(<span class="string">&quot;: &quot;</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> user_input == <span class="string">&quot;quit&quot;</span>:</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">   <span class="keyword">elif</span> user_input == <span class="string">&quot;add&quot;</span>:</span><br><span class="line">      ...</span><br><span class="line">   <span class="keyword">elif</span> user_input == <span class="string">&quot;subtract&quot;</span>:</span><br><span class="line">      ...</span><br><span class="line">   <span class="keyword">elif</span> user_input == <span class="string">&quot;multiply&quot;</span>:</span><br><span class="line">      ...</span><br><span class="line">   <span class="keyword">elif</span> user_input == <span class="string">&quot;divide&quot;</span>:</span><br><span class="line">      ...</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">      print(<span class="string">&quot;Unknown input&quot;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这部分代码是程序的开始部分。它将接受用户的输入，并且比较<strong>if/elif</strong>的条件语句。</p>
+<p>当用户输入了“quit”时，<strong>break</strong>语句用来终止while循环的执行。</p>
+</blockquote>
+<hr>
+<p>接下来一部分的代码是获取用户输入的数字。下面的代码展示了加法部分的逻辑。其他操作的代码也与此类似。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> user_input == <span class="string">&quot;add&quot;</span>:</span><br><span class="line">  num1 = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Enter a number: &quot;</span>))</span><br><span class="line">  num2 = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Enter another number: &quot;</span>))</span><br></pre></td></tr></table></figure>
+<p>现在，当用户输入了“add”时，程序提示输入两个数字，并且存储到相应的变量中。</p>
+<blockquote>
+<p>当提示输入数字时，如果用户输入了一个非数字的字符，那么会产生一个崩溃。我们会在后面的章节来修复这个类似的问题。</p>
+</blockquote>
+<hr>
+<p>最后一部分是处理用户输入，并且展示结果。</p>
+<p>加法部分的逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">elif</span> user_input == <span class="string">&quot;add&quot;</span>:</span><br><span class="line">  num1 = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Enter a number: &quot;</span>))</span><br><span class="line">  num2 = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Enter another number: &quot;</span>))</span><br><span class="line">  result = <span class="built_in">str</span>(num1 + num2)</span><br><span class="line">  print(<span class="string">&quot;The answer is &quot;</span> + result)</span><br></pre></td></tr></table></figure>
+<p>我们现在有了一个可以正常工作程序：提示用户输入，然后计算和打印输入的和。</p>
+<blockquote>
+<p>其他分支(减法，乘法，除法)的代码结构类似，可以自行补全。</p>
+<p>输出行可以放在<strong>if</strong>语句之外，以省略重复的代码。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/16/%E3%80%90Python3%E6%95%99%E7%A8%8B%20%E7%AC%AC1%E7%AB%A0%E3%80%91%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +879,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -456,7 +1113,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -817,7 +1474,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1011,7 +1668,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1116,7 +1773,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1201,7 +1858,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1351,7 +2008,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1515,7 +2172,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1554,265 +2211,6 @@
 <p>本课的课程将教你如何使用Android测试支持库中的工具和API来构建这些类型的自动化测试。在使用这些API开始构建测试之前，您必须安装<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html">Android Testing Support Library</a>，如在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#setup">下载Android Testing Support Library</a>中所描述的那样。</p>
 <h2 id="课程"><a href="#课程" class="headerlink" title="课程"></a>课程</h2><p><a href="/2017/01/13/【Android文档翻译】测试单个应用程序的UI/">测试单个应用程序的UI</a><br>    了解如何使用Espresso测试框架在单个应用中测试UI。</p>
 <p><a href="/2017/01/13/【Android文档翻译】测试多个应用程序的UI/">测试多个应用程序的UI</a><br>    了解如何使用UI Automator测试框架在多个应用中测试UI。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E4%BB%AA%E8%A1%A8%E5%8C%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">【Android文档翻译】构建仪表化单元测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-01-11 23:07:58" itemprop="dateCreated datePublished" datetime="2017-01-11T23:07:58+00:00">2017-01-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>仪表化单元测试是在物理设备和模拟器上运行的测试，它们可以利用Android框架API和support API，例如Android Testing Support Library。如果你的测试需要访问仪表信息(例如目标APP的Context信息)或者如果他们需要真正实现一个Android框架组件(例如一个Parcelable或者SharedPreferences对象)，你应该创建仪表化单元测试。</p>
-<p>使用仪表化单元测试还有助于减少编写和维护模拟代码所需的工作量。如果你想，你任然可以自由使用模拟框架，模拟任何依赖关系。</p>
-<h2 id="设置您的测试环境"><a href="#设置您的测试环境" class="headerlink" title="设置您的测试环境"></a>设置您的测试环境</h2><p>在你的Android Studio项目中，你必须将用于测试的源文件存储在<code>module-name/src/androidTest/java/</code>中。在创建新项目，并包含检测测试示例时，此目录已存在。</p>
-<p>在你开始之前，你应该<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#setup">下载Android测试支持库设置</a>，它提供的API允许您为您的应用程序快速构建和运行测试代码。这个测试库包含一个JUnit4测试运行器(<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#AndroidJUnitRunner">AndroidJUnitRunner</a>)以及针对UI功能性测试的API(<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#Espresso">Espresso</a>和<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#UIAutomator">UI Automator</a>)。</p>
-<p>您还需要为项目配置Android测试依赖关系，以使用测试支持库提供的测试运行器和规则API。为了简化测试开发，您还应该包含<a target="_blank" rel="noopener" href="https://github.com/hamcrest">Hamcrest库</a>，它允许您使用Hamcrest匹配器API创建更灵活的断言。</p>
-<p>在应用程序的顶级<code>build.gradle</code>文件中，您需要将这些库指定为依赖关系。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    androidTestCompile &#39;com.android.support:support-annotations:24.0.0&#39;</span><br><span class="line">    androidTestCompile &#39;com.android.support.test:runner:0.5&#39;</span><br><span class="line">    androidTestCompile &#39;com.android.support.test:rules:0.5&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- Hamcrest library</span><br><span class="line">    androidTestCompile &#39;org.hamcrest:hamcrest-library:1.3&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- UI testing with Espresso</span><br><span class="line">    androidTestCompile &#39;com.android.support.test.espresso:espresso-core:2.2.2&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- UI testing with UI Automator</span><br><span class="line">    androidTestCompile &#39;com.android.support.test.uiautomator:uiautomator-v18:2.1.2&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>警告：</strong>如果您的构建配置包括<code>support-annotations</code>库的编译依赖项<strong>和</strong><code>espresso-core</code>库的<code>androidTestCompile</code>依赖项，那么您的构建可能会由于依赖冲突而失败。为了解决这个问题，请更新<code>espresso-core</code>的依赖关系，如下所示：</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">androidTestCompile(&#39;com.android.support.test.espresso:espresso-core:2.2.2&#39;, &#123;</span><br><span class="line">    exclude group: &#39;com.android.support&#39;, module: &#39;support-annotations&#39;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>要使用JUnit4测试类，请确保在项目中将<code>AndroidJUnitRunner</code>指定为默认测试工具运行器，方法是在应用程序的模块级<code>build.gradle</code>文件中包含以下设置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="创建测试单元测试类"><a href="#创建测试单元测试类" class="headerlink" title="创建测试单元测试类"></a>创建测试单元测试类</h2><p>您的检测单元测试类应写为JUnit4测试类。要了解有关创建JUnit 4测试类和使用JUnit 4断言和注释的更多信息，请参阅创<a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/unit-testing/local-unit-tests.html#build">建本地单元测试类</a>。</p>
-<p>要创建一个检测的JUnit4测试类，请在测试类定义的开头添加<code>@RunWith(AndroidJUnit4.class)</code>注解。您还需要指定Android测试支持库中提供的<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/runner/AndroidJUnitRunner.html">AndroidJUnitRunner</a>类作为默认测试运行器。此步骤在“<a href="/2017/01/11/【Android文档翻译】入门测试/">测试入门</a>”中有更详细的描述。</p>
-<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/start/index.html#run-instrumented-tests">以下示例显示如何编写检测单元测试</a>，以测试Parcelable接口是否已正确实现LogHistory类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import android.os.Parcel;</span><br><span class="line">import android.support.test.runner.AndroidJUnit4;</span><br><span class="line">import android.util.Pair;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import java.util.List;</span><br><span class="line">import static org.hamcrest.Matchers.is;</span><br><span class="line">import static org.junit.Assert.assertThat;</span><br><span class="line"></span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">@SmallTest</span><br><span class="line">public class LogHistoryAndroidUnitTest &#123;</span><br><span class="line"></span><br><span class="line">    public static final String TEST_STRING &#x3D; &quot;This is a string&quot;;</span><br><span class="line">    public static final long TEST_LONG &#x3D; 12345678L;</span><br><span class="line">    private LogHistory mLogHistory;</span><br><span class="line"></span><br><span class="line">    @Before</span><br><span class="line">    public void createLogHistory() &#123;</span><br><span class="line">        mLogHistory &#x3D; new LogHistory();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void logHistory_ParcelableWriteRead() &#123;</span><br><span class="line">        &#x2F;&#x2F; Set up the Parcelable object to send and receive.</span><br><span class="line">        mLogHistory.addEntry(TEST_STRING, TEST_LONG);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Write the data.</span><br><span class="line">        Parcel parcel &#x3D; Parcel.obtain();</span><br><span class="line">        mLogHistory.writeToParcel(parcel, mLogHistory.describeContents());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; After you&#39;re done with writing, you need to reset the parcel for reading.</span><br><span class="line">        parcel.setDataPosition(0);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Read the data.</span><br><span class="line">        LogHistory createdFromParcel &#x3D; LogHistory.CREATOR.createFromParcel(parcel);</span><br><span class="line">        List&lt;Pair&lt;String, Long&gt;&gt; createdFromParcelData &#x3D; createdFromParcel.getData();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Verify that the received data is correct.</span><br><span class="line">        assertThat(createdFromParcelData.size(), is(1));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).first, is(TEST_STRING));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).second, is(TEST_LONG));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="创建一个测试套件"><a href="#创建一个测试套件" class="headerlink" title="创建一个测试套件"></a>创建一个测试套件</h3><p>要组织仪器化单元测试的执行，可以在测试套件类中对一组测试类进行分组，并一起运行这些测试。测试套件可以嵌套;您的测试套件可以将其他测试套件分组并将所有组件测试类一起运行。</p>
-<p>测试套件包含在测试包中，类似于主应用程序包。按照惯例，测试套件包名称通常以<code>.suite</code>后缀结尾（例如，<code>com.example.android.testing.mysample.suite</code>）。</p>
-<p>要为单元测试创​​建测试套件，请导入JUnit RunWith和Suite类。在您的测试套件中，添加<code>@RunWith(Suite.class)</code>和<code>@Suite.SuitClasses()</code>注解，列出单个测试类或测试套件作为参数。</p>
-<p>以下示例显示如何实现名为UnitTestSuite的测试套件，它将<code>CalculatorInstrumentationTest</code>和<code>CalculatorAddParameterizedTest</code>测试类组合并运行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import com.example.android.testing.mysample.CalculatorAddParameterizedTest;</span><br><span class="line">import com.example.android.testing.mysample.CalculatorInstrumentationTest;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import org.junit.runners.Suite;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Runs all unit tests.</span><br><span class="line">@RunWith(Suite.class)</span><br><span class="line">@Suite.SuiteClasses(&#123;CalculatorInstrumentationTest.class,</span><br><span class="line">        CalculatorAddParameterizedTest.class&#125;)</span><br><span class="line">public class UnitTestSuite &#123;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行仪表单元测试"><a href="#运行仪表单元测试" class="headerlink" title="运行仪表单元测试"></a>运行仪表单元测试</h2><p>要运行仪表化测试，请按照下列步骤操作：</p>
-<ul>
-<li>1.通过单击工具栏中的同步项目，确保您的项目与Gradle同步。</li>
-<li>2.使用以下方法之一运行测试：<ul>
-<li>要运行单个测试，请打开<strong>Project</strong>窗口，然后右键单击一个测试，然后单击<strong>Run</strong>。</li>
-<li>要测试类中的所有方法，请右键单击测试文件中的类或方法，然后单击<strong>Run</strong>。</li>
-<li>要在目录中运行所有测试，请右键单击目录并选择<strong>Run tests</strong>。</li>
-</ul>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/building/plugin-for-gradle.html">Gradle的Android插件</a>编译位于默认目录(<code>src/androidTest/java/</code>)中的测试代码，构建测试APK和生产APK，在连接的设备或模拟器上安装这两个APK，并运行测试。然后，Android Studio将在“运行”窗口中显示已检测的测试执行的结果。</p>
-<blockquote>
-<p><strong>注意：</strong>在运行或调试测试测试时，Android Studio不会注入“<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/run/index.html#instant-run">Instant Run</a>”所需的其他方法，并关闭此功能。</p>
-</blockquote>
-<h3 id="使用Firebase-Test-Lab运行测试"><a href="#使用Firebase-Test-Lab运行测试" class="headerlink" title="使用Firebase Test Lab运行测试"></a>使用Firebase Test Lab运行测试</h3><p>使用<a target="_blank" rel="noopener" href="https://firebase.google.cn/docs/test-lab/">Firebase Test Lab</a>，您可以在许多流行的Android设备和设备配置(区域设置，方向，屏幕大小和平台版本)上同时测试您的应用程序。这些测试在远程Google数据中心的物理和虚拟设备上运行。您可以直接从Android Studio或从命令行将应用程序部署到测试实验室。测试结果提供测试日志，并包括任何应用程序故障的详细信息。</p>
-<p>在开始使用Firebase Test Lab之前，您需要执行以下操作，除非您已经拥有Google帐户和Firebase项目：</p>
-<ul>
-<li>1.如果您还没有Google帐户，请<a target="_blank" rel="noopener" href="https://accounts.google.com/">创建一个Google帐户</a>。</li>
-<li>2.在<a target="_blank" rel="noopener" href="https://console.firebase.google.com/">Firebase控制台</a>中，单击<strong>Create New Project</strong>。 <ul>
-<li>使用测试实验室在Spark计划的免费每日配额内测试您的应用程序是免费的。</li>
-</ul>
-</li>
-</ul>
-<h4 id="配置测试矩阵并运行测试"><a href="#配置测试矩阵并运行测试" class="headerlink" title="配置测试矩阵并运行测试"></a>配置测试矩阵并运行测试</h4><p>Android Studio提供了集成工具，允许您配置如何将测试部署到Firebase测试实验室。使用Blaze计划计费创建Firebase项目后，您可以创建测试配置并运行测试：</p>
-<ul>
-<li>1.在主菜单下点击<strong>Run &gt; Edit Configurations</strong> 。</li>
-<li>2.点击<strong>Add New Configuration + </strong>然后选择<strong>Android Tests</strong>。</li>
-<li>3.在Android测试配置对话框中：<ul>
-<li>a.输入或选择测试的详细信息，例如测试名称，模块类型，测试类型和测试类别。</li>
-<li>b.从“部署目标选项”下的“目标”下拉菜单中，选择“<strong>Firebase Test Lab Device Matrix</strong>”。</li>
-<li>c.如果您尚未登录，请点击连接到Google云端平台，并允许Android Studio访问您的帐户。</li>
-<li>d.在Cloud Project旁边，单击设置按钮并从列表中选择您的Firebase项目。</li>
-</ul>
-</li>
-<li>4.创建和配置测试矩阵。<ul>
-<li>a.在<em>Matrix Configuration</em>下拉列表旁边，单击<strong>Open Dialog</strong>。</li>
-<li>b.点击<strong>Add New Configuration (+)</strong>。</li>
-<li>c.在<strong>Name</strong>字段中，输入新配置的名称。</li>
-<li>d.选择您要测试应用的设备，Android版本，地区和屏幕方向。 Firebase测试实验室将在生成测试结果时根据您的选择的每个组合来测试您的应用程序。</li>
-<li>e.单击<strong>OK</strong>保存配置</li>
-</ul>
-</li>
-<li>5.单击<em>Run/Debug Configurations</em>对话框中的<strong>OK</strong>退出。</li>
-<li>6.通过单击<strong>Run</strong>运行测试。</li>
-</ul>
-<p><img src="/img/17_01_11/002.png" alt=""></p>
-<p><strong>图1.</strong>为Firebase Test Lab创建测试配置。</p>
-<h4 id="分析测试结果"><a href="#分析测试结果" class="headerlink" title="分析测试结果"></a>分析测试结果</h4><p>当Firebase Test Lab完成运行测试时，运行窗口将打开以显示结果，如图2所示。您可能需要单击<strong>Show Passd</strong>以查看所有已执行的测试。</p>
-<p><img src="/img/17_01_11/003.png" alt=""></p>
-<p><strong>图2.</strong>使用Firebase Test Lab查看仪表化测试的结果。</p>
-<p>您还可以通过在<em>Run</em>窗口中的测试执行日志开头显示的链接来分析Web上的测试。</p>
-<p>要了解有关解释Web结果的详细信息，请参阅<a target="_blank" rel="noopener" href="https://firebase.google.cn/docs/test-lab/analyzing-results">分析Android结果的Firebase测试实验室</a>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%9E%84%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">【Android文档翻译】构建本地单元测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-01-11 22:48:58" itemprop="dateCreated datePublished" datetime="2017-01-11T22:48:58+00:00">2017-01-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/unit-testing/local-unit-tests.html#build">https://developer.android.google.cn/training/testing/unit-testing/local-unit-tests.html#build</a></p>
-<p>如果你的单元测试没有依赖或者只有Android上的简单依赖，你应该在本地开发机器上运行测试。这种测试方法是高效的，因为它可以帮助您避免每次运行测试时将目标应用程序和单元测试代码加载到物理设备或模拟器上的开销。因此，运行单元测试的执行时间大大减少。使用这种方法，你通常使用一个模拟框架，如<a target="_blank" rel="noopener" href="https://github.com/mockito/mockito">Mockito</a>，来实现任何依赖关系。</p>
-<h2 id="设置您的测试环境"><a href="#设置您的测试环境" class="headerlink" title="设置您的测试环境"></a>设置您的测试环境</h2><p>在您的Android Studio项目中，必须将用于本地单元测试的源文件存储在<code>module-name/src/test/java/</code>。创建新项目时，此目录已存在。</p>
-<p>您还需要为项目配置测试依赖关系，以使用JUnit 4框架提供的标准API。如果您的测试需要与Android依赖关系交互，请引入<a target="_blank" rel="noopener" href="https://github.com/mockito/mockito">Mockito</a>库以简化本地单元测试。要了解有关在本地单元测试中使用模拟对象的更多信息，请参阅<a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/unit-testing/local-unit-tests.html#mocking-dependencies">模拟Android依赖项</a>。</p>
-<p>在应用程序的顶级<code>build.gradle</code>文件中，您需要将这些库指定为依赖关系：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    &#x2F;&#x2F; Required -- JUnit 4 framework</span><br><span class="line">    testCompile &#39;junit:junit:4.12&#39;</span><br><span class="line">    &#x2F;&#x2F; Optional -- Mockito framework</span><br><span class="line">    testCompile &#39;org.mockito:mockito-core:1.10.19&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="创建本地单元测试类"><a href="#创建本地单元测试类" class="headerlink" title="创建本地单元测试类"></a>创建本地单元测试类</h2><p>你的本地单元测试类应该写成一个JUnit 4测试类。 JUnit是Java最受欢迎和广泛使用的单元测试框架。这个框架的最新版本，JUnit 4，允许你以比它的前身版本更清洁和更灵活的方式编写测试。与以前的基于JUnit 3的Android单元测试的方法不同，使用JUnit 4，您不需要扩展junit.framework.TestCase类。您也不需要在测试方法名称前加上’test’关键字，或者使用<code>junit.framework</code>或<code>junit.extensions</code>包中的任何类。</p>
-<p>要创建基本的JUnit 4测试类，请创建一个包含一个或多个测试方法的Java类。测试方法以<code>@Test</code>注解开始，包含练习和验证要测试的组件中的单个功能的代码。</p>
-<p>以下示例显示如何实现本地单元测试类。测试方法<code>emailValidator_CorrectEmailSimple_ReturnsTrue</code>验证被测应用程序中的<code>isValidEmail()</code>方法是否返回正确的结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import org.junit.Test;</span><br><span class="line">import java.util.regex.Pattern;</span><br><span class="line">import static org.junit.Assert.assertFalse;</span><br><span class="line">import static org.junit.Assert.assertTrue;</span><br><span class="line"></span><br><span class="line">public class EmailValidatorTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void emailValidator_CorrectEmailSimple_ReturnsTrue() &#123;</span><br><span class="line">        assertThat(EmailValidator.isValidEmail(&quot;name@email.com&quot;), is(true));</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要测试应用程序中的组件是否返回预期结果，请使用<a target="_blank" rel="noopener" href="http://junit.org/javadoc/latest/org/junit/Assert.html">junit.Assert</a>方法执行验证检查（或断言），以便将受测试组件的状态与某些预期值进行比较。为了使测试更可读，可以使用<a target="_blank" rel="noopener" href="https://github.com/hamcrest">Hamcrest匹配器</a>（例如<code>is()</code>和<code>equalTo()</code>方法）将返回的结果与预期结果进行匹配。</p>
-<h2 id="模拟Android依赖"><a href="#模拟Android依赖" class="headerlink" title="模拟Android依赖"></a>模拟Android依赖</h2><p>默认情况下，Gradle的Android插件针对android.jar库的修改版本执行您的本地单元测试，该版本不包含任何实际代码。相反，从单元测试中调用Android类的方法会抛出异常。这是为了确保你只测试你的代码，不依赖于Android平台的任何特定的行为（你没有明确的被模拟）。</p>
-<p>您可以使用模拟框架在代码中存根外部依赖关系，以便轻松测试您的组件是否按照预期的方式与依赖关系交互。通过用模拟对象替换Android依赖项，您可以将单元测试与Android系统的其余部分隔离，同时验证这些依赖关系中的正确方法是否被调用。Java的Mockito mocking框架（1.9.5及更高版本）提供了与Android单元测试的兼容性。使用<a target="_blank" rel="noopener" href="https://github.com/mockito/mockito">Mockito</a>，您可以配置模拟对象以在调用时返回一些特定值。</p>
-<p>要使用此框架将mock对象添加到本地单元测试，请遵循以下编程模型：</p>
-<ul>
-<li>1.在<code>build.gradle</code>文件中包含Mockito库依赖关系，如<a href="#设置您的测试环境">设置您的测试环境</a>中所述的那样。</li>
-<li>2.在单元测试类定义的开始，添加<code>@RunWith(MockitoJUnitRunner.class)</code>注解。这个注解告诉Mockito测试运行器验证你的框架的使用是正确的，并简化了你的模拟对象的初始化。</li>
-<li>3.要为Android依赖项创建模拟对象，请在字段声明之前添加<code>@Mock</code>注解。</li>
-<li>4.要存根依赖关系的行为，当条件满足使用<code>when()</code>和<code>thenReturn()</code>方法时，你可以指定一个条件和返回值。</li>
-</ul>
-<p>以下示例显示如何使用mock Context 对象创建单元测试。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import static org.hamcrest.MatcherAssert.assertThat;</span><br><span class="line">import static org.hamcrest.CoreMatchers.*;</span><br><span class="line">import static org.mockito.Mockito.*;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import org.mockito.Mock;</span><br><span class="line">import org.mockito.runners.MockitoJUnitRunner;</span><br><span class="line">import android.content.SharedPreferences;</span><br><span class="line"></span><br><span class="line">@RunWith(MockitoJUnitRunner.class)</span><br><span class="line">public class UnitTestSample &#123;</span><br><span class="line"></span><br><span class="line">    private static final String FAKE_STRING &#x3D; &quot;HELLO WORLD&quot;;</span><br><span class="line"></span><br><span class="line">    @Mock</span><br><span class="line">    Context mMockContext;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void readStringFromContext_LocalizedString() &#123;</span><br><span class="line">        &#x2F;&#x2F; Given a mocked Context injected into the object under test...</span><br><span class="line">        when(mMockContext.getString(R.string.hello_word))</span><br><span class="line">                .thenReturn(FAKE_STRING);</span><br><span class="line">        ClassUnderTest myObjectUnderTest &#x3D; new ClassUnderTest(mMockContext);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; ...when the string is returned from the object under test...</span><br><span class="line">        String result &#x3D; myObjectUnderTest.getHelloWorldString();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; ...then the result should be the expected one.</span><br><span class="line">        assertThat(result, is(FAKE_STRING));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要了解有关使用Mockito框架的更多信息，请参阅示<a target="_blank" rel="noopener" href="http://site.mockito.org/mockito/docs/current/org/mockito/Mockito.html">Mockito API参考</a>和<a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing/tree/master/unit/BasicSample">示例代码</a>中的<code>SharedPreferencesHelperTest</code>类。</p>
-<p>如果android.jar中Android API对你的测试问题抛出了异常，您可以更改行为，以使方法通过在项目的顶级<code>build.gradle</code>文件中添加以下配置来返回null或零：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">  ...</span><br><span class="line">  testOptions &#123;</span><br><span class="line">    unitTests.returnDefaultValues &#x3D; true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>警告</strong>:将<code>returnDefaultValues</code>属性设置为<code>true</code>应该小心。null/零返回值可以在测试中引入回归，这难以调试，并且可能允许失败的测试通过。只能使用它作为最后的手段。</p>
-</blockquote>
-<h2 id="运行本地单元测试"><a href="#运行本地单元测试" class="headerlink" title="运行本地单元测试"></a>运行本地单元测试</h2><p>要运行本地单元测试，请按照下列步骤操作：</p>
-<ul>
-<li>1.通过单击工具栏中的<strong>Sync Project</strong>，确保您的项目与Gradle同步。</li>
-<li>2.使用以下方法之一运行测试：<ul>
-<li>若要运行单个测试，请打开<strong>Project</strong>窗口，然后右击测试并单击<strong>Run</strong>。</li>
-<li>要在类中测试所有方法，请右击测试文件中的类或方法，然后单击<strong>Run</strong>。</li>
-<li>若要在目录中运行所有测试，请右击目录并选择<strong>Run tests</strong>。</li>
-</ul>
-</li>
-</ul>
-<p>Gradle的Android插件编译位于默认目录<code>(src/test/java/)</code>中的本地单元测试代码，并使用默认的测试运行器类在本地执行它。然后，Android Studio将在<strong>Run</strong>窗口中显示结果。</p>
 
       
     </div>
@@ -1899,18 +2297,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -2000,6 +2398,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

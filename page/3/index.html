@@ -191,6 +191,529 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/" class="post-title-link" itemprop="url">【翻译】图解信息论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-13 12:23:00" itemprop="dateCreated datePublished" datetime="2017-06-13T12:23:00+00:00">2017-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-09-Visual-Information/">原文地址</a></li>
+</ul>
+<p>我很喜欢那种获得一种新的方式来思考我们的世界时的那种感觉。尤其是在一些模糊的想法变成一个具体的概念的时候。<strong>信息论</strong>就是这样一种把模糊的概念具象化的典型的例子。</p>
+<p>信息理论为我们描述很多事情提供了准确的语言。关于某个问题我到底有多不确定？问题A的答案会告诉我们多少关于问题B的答案的信息？一组信息和另一组信息的相似度如何衡量？在我小的时候，我就已经形成了一些关于这些问题的模糊的想法，但是信息论将我的这些想法形成了精确的强大的理论。这些理论有着巨大的应用范围，例如数据压缩、量子物理学、机器学习以及其他更广泛的领域。</p>
+<p>不过，信息论看起来似乎有些不容易理解，但我不认为信息论应该是这样难以理解的。事实上，信息论中许多核心理论都可以完全用图解的方式来解释！</p>
+<h2 id="可视化概率分布"><a href="#可视化概率分布" class="headerlink" title="可视化概率分布"></a>可视化概率分布</h2><p>在我们深入信息理论之前，让我们考虑一下如何可视化简单的概率分布。</p>
+<p>我住在加利福尼亚州。有些时候这里是下雨天，但大多数时间里这里都是晴天！我们假设有75%的时间是晴天。我们很容易就可以将这些信息可视化的展示出来：</p>
+<p><img src="/img/17_06_13/001.png" width=100 height=100 /></p>
+<p>大多数的时间，我都穿T恤衫，但在某些时间，我会穿外套。那么假设我38%的时间里是穿外套的。可视化这个信息也很容易：</p>
+<p><img src="/img/17_06_13/002.png" width=100 height=100 /></p>
+<p>如果我想将这两件事同时可视化该怎么做呢？如果这两件事情相互不影响（相互独立），那么这很容易做到。例如，我穿T恤或者外套与下一周的天气并不相关。我们可以通过两个轴分别表示两种不同的变量的方式来可视化这些信息：</p>
+<p><img src="/img/17_06_13/003.png" width=300 height=300 /></p>
+<p>请注意水平方向和竖直方向上穿过的直线。<em>这就是独立性的标识！</em>我穿外套的概率并不受那一周天气都是下雨天而改变。换句话说，在下周要下雨并且我恰好也穿外套的概率，是我穿外套的概率与下雨天的概率之积。它们互不影响。</p>
+<p>当变量之间相互作用时，对于某组相互排斥的变量而言，他们组成的概率会减少；而某组相互促进影响的变量而言，他们组成的概率会增加。对于在下雨天我穿外套的这种情况，会有额外的概率增加，因为下雨天和外套这两个变量是相关的，它们使得彼此之间更有可能发生。在下雨天我穿外套的概率，比我在其他某天穿外套的概率高。</p>
+<p>可视化之后，这些看起来有肿胀的部分是因为额外增加的概率导致的，而其他收缩的部分，是因为这一对事件不太可能同时出现。</p>
+<p><img src="/img/17_06_13/004.png" width=300 height=300 /></p>
+<p>这张图虽然这看起来很酷，但对于理解具体发生了什么并不是很有帮助。</p>
+<p>相反，让我们焦点集中在其中的某一个变量上，例如天气。我们知道某天是晴天或者下雨天的可能性。对于是否穿外套的两种情况，我们可以看看<em>条件概率</em>。我在晴天穿外套的可能性有多大？如果是下雨天，那么我穿外套的可能性又是多大？</p>
+<p><img src="/img/17_06_13/005.png" width=500 height=300 /></p>
+<p>有25%的时间是下雨天。如果是下雨天，那么有75%的可能性我会穿外套。所以，我在下雨天穿外套的概率是25%乘以75%，结果大约是19%。下雨天的概率乘以我在下雨天的情况下穿外套的概率，就是在所有情况下，天气为下雨天并且我穿外套的概率。我们用这样的式子来描述：</p>
+<script type="math/tex; mode=display">
+p(\text{rain}, \text{coat}) = p(\text{rain}) \cdot p(\text{coat} ~|~ \text{rain})</script><p>这就是概率论的最基本的定理之一：</p>
+<script type="math/tex; mode=display">
+p(x,y) = p(x)\cdot p(y|x)</script><p>我们把一个整体的概率拆分成两部分来看。首先，我们来看其中一个变量的概率的值，例如不同天气的概率。然后我们观察另一个变量，例如我的穿衣情况，观察它在第一个变量的条件下的概率。</p>
+<p>具体选择哪个变量开始，是任意的。我们可以以我的穿衣情况为第一个被观察的条件，这也许会有点不直观，因为我们知道穿衣情况是受到天气情况影响的，而天气情况并不会受到我的穿衣情况影响的…但其实这里两种方式的效果是一样有效的！</p>
+<p>让我们来看一个例子。我已经知道穿外套的概率是38%。假设我已经知道我在某一天是穿外套的，那么这一天下雨的概率有多大呢？我在下雨天比在晴天穿外套的可能性更大，但在加州是很少下雨的，所以有50%的概率这一天是下雨天。因此，某天是雨天并且我穿了外套的概率就等于我穿外套的概率（38%）乘以我穿外套的情况下是下雨天的概率（50%），结果大约是19%。</p>
+<script type="math/tex; mode=display">
+p(\text{rain}, \text{coat}) = p(\text{coat}) \cdot p(\text{rain} ~|~ \text{coat})</script><p>这为我们提供了第二种来可视化这些概率分布的方法：</p>
+<p><img src="/img/17_06_13/006.png" width=300 height=500 /></p>
+<p>注意，这里的标签与之前图中稍有不同：T恤和外套现在是<em>边际概率</em>，我穿外套的概率是不需要考虑天气情况的。另一方面，现在有两个雨天和晴天的标签，分别来标识我穿T恤情况下的概率和我穿外套情况下的概率。</p>
+<blockquote>
+<p>你可能已经听说过<strong>贝叶斯定理</strong>。其实你也完全可以使用贝叶斯定理来解释这部分内容。</p>
+</blockquote>
+<h2 id="Aside：辛普森悖论"><a href="#Aside：辛普森悖论" class="headerlink" title="Aside：辛普森悖论"></a>Aside：辛普森悖论</h2><p>这些可视化概率分布的技巧真的很有用吗？我认为的确很有用！在我们图解信息论之前，我还需要一些时间来用可视化的技术探索一下辛普森悖论。辛普森悖论是一种非常不直观的统计状况。它真的很不容易被直观的理解。迈克尔·尼尔森（Michael Nielsen）撰写了一篇很有爱的文章：<a target="_blank" rel="noopener" href="http://michaelnielsen.org/reinventing_explanation/">“创新说明”</a>，探讨了不同方式来解释它。而我想尝试使用我们在上一节中学到的技巧来解释它。</p>
+<p>测试两种肾结石治疗方法。对一半的患者使用A治疗方案，而另一半则使用B治疗方案。接受治疗方案B的患者比接受治疗方案A的患者更容易存活。</p>
+<p><img src="/img/17_06_13/007.png" width=400 height=400 /></p>
+<p>然而，如果接受治疗方案A的话，患肾小结石的患者更有可能存活。然而大肾结石患者如果接受治疗方案A也更有可能存活！这怎么可能呢？</p>
+<p>这个问题的核心是因为患者样本没有被正确随机分组。接受治疗方案A的患者大部分可能患有大肾结石，而接受治疗方案B的患者大部分可能患有小肾结石。</p>
+<p><img src="/img/17_06_13/008.png" width=400 height=400 /></p>
+<p>事实证明，肾结石较小的患者通常更有可能生存。</p>
+<p>为了更好地理解这一点，我们可以将前两个图表组合为一个三维图，其中将小型和大型肾结石的存活率分开展示。</p>
+<p><img src="/img/17_06_13/009.png" width=400 height=400 /></p>
+<p>我们现在可以看到，在两种小肾结石和大肾结石的病例中，治疗方案A是超过治疗方案B的。治疗方案B看起来似乎更好，仅仅是因为应用它的患者本身更有可能存活！</p>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>现在我们有了可视化概率的方法，我们可以深入到信息论中了。</p>
+<p>首先我向你介绍一位我假想的朋友，Bob。Bob很喜欢动物。他一直不停在谈论动物。事实上，他只会说四个字：“dog”, “cat”, “fish” 和 “bird”。</p>
+<p>几周前（虽然这只是我的想象)Bob搬到了澳大利亚。另外，他决定只想要使用二进制来交流。来自Bob的所有（虚构的）消息都是这样的：</p>
+<p><img src="/img/17_06_13/010.png" width=300 height=100 /></p>
+<p>为了沟通，Bob和我必须建立一个编码，一种将单词映射成位序列的方式。</p>
+<p><img src="/img/17_06_13/011.png" width=300 height=300 /></p>
+<p>要发送消息，Bob用相应的编码字来替换每个单词，然后将它们连接在一起形成编码的字符串。</p>
+<p><img src="/img/17_06_13/012.png" width=300 height=150 /></p>
+<h3 id="可变长度码"><a href="#可变长度码" class="headerlink" title="可变长度码"></a>可变长度码</h3><p>不幸的是，在假想中的澳大利亚，通信服务是昂贵的。从Bob收到的每条消息中，每一位（bit）数据我都必须支付5美元。我是不是还没有提到Bob喜欢说很多话这件事？为了防止我破产，Bob和我决定来研究一些可以使我们的平均消息长度变得更短的方法。</p>
+<p>事实证明，并不是所有的词Bob都会经常说。Bob很喜欢狗，他一直在说“dog”。同时他也会不定期地说其他的动物，尤其是他的狗喜欢追的猫，但它大多数时间他还是在说“dog”。这是一个他的单词频率图：</p>
+<p><img src="/img/17_06_13/013.png" width=300 height=200 /></p>
+<p>这似乎看来是有优化空间的。因为我们可以看到，按照旧的编码方式，对于不同的词无论它们是多么常见，都在使用2位长的码字来表示。</p>
+<p>我们可以用下面这张图来可视化这些信息。在下面这张图中，我们使用竖直方向的坐标轴来表示每个词的概率$p(x)$，水平方向的坐标轴来表示相应的码字的长度$L(x)$。可以看到在这种情况下平均码字是2位。</p>
+<p><img src="/img/17_06_13/014.png" width=500 height=300 /></p>
+<p>也许我们可以用一种非常聪明的方式来制作一种可变长度的编码方式，使得其中常用单词对应的码字特别短。这样做的挑战就是码字之间是存在竞争关系的，我们需要让一部分词对应的码字变短，而另一部分则会变长。为了最大限度地减少消息长度，我们希望理想状态下所有的码字都很短，尤其是那些常用的词我们更希望它们能变短。因此，最终得到的编码对于常用词（例如“dog”）具有较短的码字，并且较长的码字被应用到了不常用的词之上（例如“bird”）。</p>
+<p><img src="/img/17_06_13/015.png" width=300 height=300 /></p>
+<p>让我们再次可视化这些信息。注意那些最常用的词变短了，那些不常用的词变长了。经过这样处理之后，对于传递与之前相同的信息，我们的流量开销的确变少了。平均来说，码字长度现在是1.75位！</p>
+<p><img src="/img/17_06_13/016.png" width=500 height=300 /></p>
+<blockquote>
+<p>你也许会好奇：为什么不用1来作为码字？因为可惜的是，如果我们这么做，当我们对编码的字符串进行解码时，会引起歧义。我们稍后会介绍这些内容。</p>
+</blockquote>
+<p>事实证明，这种编码方式是最好的。对于这个分配问题，没有其他的编码方式能带来平均码字长度小于1.75位的效果了。</p>
+<p>这是一个简单的基本限制。这要求我们传达的信息平均码字长度至少是1.75位。无论我们用多么聪明的代码，都不可能让平均消息长度变得更短。我们称这种限制为<strong>熵</strong>。关于熵的内容，我们将在稍后详细讨论。</p>
+<p><img src="/img/17_06_13/017.png" width=500 height=300 /></p>
+<p>如果我们想了解这个平均最短码字长度的限制，这个问题的关键在于理解如何在使得一些码字变短但同时其他码字变长的过程中进行权衡。一旦我们弄明白了如何进行这种权衡，我们就能够找出最好的编码方式了。</p>
+<h3 id="码字的空间"><a href="#码字的空间" class="headerlink" title="码字的空间"></a>码字的空间</h3><p>码字长度为1时，能表示2种编码：0和1的编码；码字长度为2时，能表示4中编码：00，01，10和11。下面是每增加一位码字长度，能表示的编码种类数量的递增情况：</p>
+<p><img src="/img/17_06_13/018.png" width=350 height=300 /></p>
+<p>但我们感兴趣的是那些可变长度编码。一种比较简单的情况是有八个长度为3位的码字。我们也可能有一些比较复杂的组合，比如长度为2的两个码字，与长度为3的四个码字的组合。那么究竟是什么决定了我们可以有不同长度的码字呢？</p>
+<p>回想一下，Bob通过用它的码字替换每个单词并将它们连接在一起，将他的消息转换成编码的字符串。</p>
+<p><img src="/img/17_06_13/019.png" width=300 height=200 /></p>
+<p>当制作可变长度代码时，需要注意一个微妙的问题。我们如何将编码过的字符串分割回码字呢？当所有的码字长度相同时，这很简单。我们只需将这个字符串按照固定的码字长度分割成不同的码字即可。但是由于存在不同长度的码字，所以我们需要关注编码过的字符串的内容。</p>
+<p>我们希望只有一种方式来解码编码过的字符串。我们不希望我们的编码方式在解码过程中变得含糊不清。如果我们有一些特殊的“码字结束”符号，这个问题这就会变得很容易。但其实我们没有这种符号，我们只能够发送0和1。因此，我们需要能够查看一系列连续的码字，并且说明每个码字应该停止的位置。</p>
+<p>而这，很可能出现编码不能被唯一解码的情况。例如，假设0和01都是码字，那么我们就会搞不清楚符串0100111的第一个码字到底是什么。因为这个字符串的第一个码字既可以是0也可以是01！因此，我们想要的效果是没有哪个码字是另一个码字的前缀。这称为<strong>前缀属性</strong>，遵守它的编码称为<strong>前缀编码</strong>。</p>
+<p>思考这个问题的一个好的方法是每个码字需要从可能的码字的空间中做出牺牲。如果我们取代码字01，那么我们就失去了使用任何以01前缀开头的码字的能力。我们不能使用010或011010110，因为会产生歧义。</p>
+<p><img src="/img/17_06_13/020.png" width=400 height=400 /></p>
+<p>由于所有码字中，有$\frac{1}{1}$都是从01开始，所以我们牺牲了$\frac{1}{1}$的所有可能的码字。这是我们付出的代价，而换来的结果只是使得其中一个码字的长度缩短到2位长！反过来，这种牺牲意味着所有其他码字需要更长一些。在不同码字的长度之间总是有这种折衷。为获取一个比较短的码字，需要你牺牲更多的其他码字的空间。而我们需要弄清楚，正确的权衡方式是什么？</p>
+<h3 id="最佳编码"><a href="#最佳编码" class="headerlink" title="最佳编码"></a>最佳编码</h3><p>可以理解为简短编码的长度是有一个限定的度量在里面，每减短一个bit的密文就会牺牲一些编码的可能性从而让其它密文的长度增长。 </p>
+<p>购买长度为0的码字的成本为1，会牺牲掉所有的码字空间，如果这样做，就不会有其他码字了。长度为1的码字（如“0”）的代价是$\frac{1}{2}$的码字空间，因为有一半的码字以“0”开始的。长度为2的码字的成本(例如“01”)是$\frac{1}{4}$码字空间，因为有$\frac{1}{4}$的码字以“01”开始的。一般来说，码字的代价随代码字的长度而呈指数减小。</p>
+<p><img src="/img/17_06_13/021.png" width=600 height=300 /></p>
+<p>如果代价是以指数衰减，那么这个高度和面积也是成指数衰减。</p>
+<p>我们想要通过得到比较短的码字来缩短平均消息长度。每个码字的期望长度是每个码字出现的概率乘以码字的长度。假设我们有一个4bit的密文，出现概率是50%，那么我们的期望就是4*50%=2bit。我们可以作图来表示。</p>
+<p><img src="/img/17_06_13/022.png" width=300 height=300 /></p>
+<p>这两个值（代价和期望长度）与码字的长度相关。信息的长度决定了码字的平均长度。我们可以把这两者画在一起，就像这样。</p>
+<p><img src="/img/17_06_13/023.png" width=600 height=300 /></p>
+<p>短码字减少了平均消息长度，但是越短的码字越昂贵，而长码字增加了平均消息长度，但长码字相对便宜。</p>
+<p><img src="/img/17_06_13/024.png" width=600 height=300 /></p>
+<p>使用有限预算的最佳方法是什么？我们应该在每个事件的码字上投入多少花费呢？</p>
+<p>就像一个人想要把较多的钱投入在经常定期使用的工具上一样，我们更愿意对那些频繁使用的码字支付更高的花费。有一种特别顺其自然的处理方式：按照事件的普遍程度分配我们的预算。如果一个事件发生的概率是50％，那么我们就花费预算的50％来购买这个短的码字。但是，如果一个事件的发生概率只有1％，那么我们就只花1％的预算，因为我们并不是很在意这个不常见的码字变得很长。</p>
+<p>这是一件很顺其自然的解决方案，但它是最优解吗？没错，它是，我接下来会证明它！</p>
+<p><em>以下是可视化的证明过程，应该是可以理解的，但理解起来有一定难度，而这部分绝对是这篇文章中最难的部分。读者应该自由地选择是否默认接受这一结论跳过这一部分。</em></p>
+<p>我们来看一个具体的例子，我们需要比较两个可能发生的事件。事件a发生的概率是$p(a)$，事件b发生的概率是$p(b)$。我们按照上述自然的方式分配预算，花费$p(a)$的预算在a获得一个较短的码字上，花费$p(b)$的预算在b获得较短的码字上。</p>
+<p><img src="/img/17_06_13/025.png" width=600 height=300 /></p>
+<p>花费的成本和对应的长度贡献的边界完美的对齐了，这是否意味着什么？</p>
+<p>那么，请考虑一个问题，如果我们稍微改变码字的长度，会对花费的成本和码字长度贡献值有什么样的影响呢？如果我们稍微增加码字的长度，则消息长度的贡献值将与其边界的高度成比例地增加，而成本则会与边界的高度成正比。</p>
+<p><img src="/img/17_06_13/026.png" width=600 height=300 /></p>
+<p>所以，使码字a缩短的代价的值是$p(a)$。同时，我们不关心每个码字的具体长度，我们关心的是使用它们的占比。在a这种情况下，占比就是$p(a)$。对我们来说，就是$p(a)$使码字a的长度变得更短一些。</p>
+<p>然而有趣的是，这两者的导数都是一样的。这意味着我们的初始预算有一个有趣的属性，如果你花费了一些用于缩短码字的投入，那么这个投入对于投在任何码字上，效果都是一样的。我们真正关心的是最终的利益/成本比例 - 这就决定了我们应该投资多少。在这种情况下，这个比例是$\frac{p(a)}{p(a)}$等于1。这与$p(a)$的值无关，因为这个结果总是1。我们也可以将相同的参数应用于其他事件。利益/成本总是一，所以在其中任何一方投资更多是平等的。</p>
+<p><img src="/img/17_06_13/027.png" width=600 height=300 /></p>
+<p>无论如何，改变预算是没有意义的。但这不证明这是最好的预算。为了证明这一点，我们会考虑使用一个不同的预算。我们将在$b$中投资$ε$，并在$a$中投资相反的花费。这使得a的码字稍短一些，而b的码字稍长一些。</p>
+<p>现在为a购买一个较短的码字的成本是$p(a)+ε$，为b购买较短码字的费用b是$p(b)-ε$。但收益还是一样的。这导致了购买$a$的收益成本比例为一个小于1的值：$\frac{p(a)}{p(a) + ε}$。而另一边，对于购买$b$的收益成本比例是一个大于1的值：$\frac{p(b)}{p(b) - ε}$</p>
+<p><img src="/img/17_06_13/028.png" width=600 height=300 /></p>
+<p>价格不再保持平衡。b相对于a来说是一笔更好的交易。投资者们尖叫道：“买b！卖a！”我们通过这样做，结束了我们原来的预算计划。所有预算都可以通过转向原始预算的方式来得到改进。</p>
+<p>原始预算 - 按照我们使用频率的比例投入每个码字 - 这不仅仅是自然而然的事情，而且这是最好的方法。（虽然这个证明仅适用于两个码字，但它很容易泛化为更多的情况。）</p>
+<blockquote>
+<p>认真的读者可能已经注意到，我们的最优预算有可能提出码字具有分数长度的编码，这似乎很有用！这是意味着什么呢？当然，在实践中，如果你想通过发送一个单码字，你必须取整，但是我们稍后会看到，当我们一次发送很多码字时，可以发送分数码字！现在请你耐心的看我现在的讲解！</p>
+</blockquote>
+<h3 id="计算熵"><a href="#计算熵" class="headerlink" title="计算熵"></a>计算熵</h3><p>回想一下，一个长度为$L$的消息代价是$\frac{1}{2^L}$。再做一个简单的变换后，这个信息的长度就是：$\log_2\left(\frac{1}{\text{cost}}\right)$。因为我们对每个码字$x$花费$p(x)$的成本，长度是$\log_2\left(\frac{1}{p(x)}\right)$。这是长度的最佳选择。</p>
+<p><img src="/img/17_06_13/029.png" width=600 height=300 /></p>
+<p>早些时候，我们讨论了如何从一个特定的概率分布$p$中获取平均消息来传达事件的基本限制。这个将平均消息长度缩短到最优的编码的限制，我们称之为$p$的熵，$H(p)$。现在我们知道了码字的最佳长度，而且我们可以精确的计算出来！</p>
+<script type="math/tex; mode=display">
+H(p) = \sum_x p(x)\log_2\left(\frac{1}{p(x)}\right)</script><blockquote>
+<p>人们通常将熵写作$H(p) = - \sum p(x)\log_2(p(x))$这种形式，因为$\log(1/a) = -\log(a)$。但我认为第一种写法更直观，并且我在这篇文章的后续部分会继续使用这种形式。</p>
+</blockquote>
+<p>无论我做什么，平均来说，如果我想要进行通信交流，信息平均长度最少都是这个值。</p>
+<p>这个需要发送的信息的平均长度对信息的压缩有明显的影响，这个熵还有其它方面的意义吗？当然！它描述了随机性，并且提供了一种量化信息的方式。</p>
+<p>如果我确实知道会发生什么事件，我根本就不必发消息！如果有两件可能发生的概率为50％，我只需要发送1bit的数据。如果有64个不同的事情可能以相等的概率发生，我必须发送6bit。发生的概率越集中在某一件事上，就越能用巧妙的编码方式来减少信息的平均长度。概率扩散的范围越大，信息越长。发生的概率越分散到不同事情上，我需要发送的信息平均长度就越长。</p>
+<p>结果越不明确，在发生事情时就能学到越多的东西。</p>
+<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><p>在Bob搬到澳大利亚不久之后，他和我假想的另一个女孩Alice结婚了(让我惊讶的是，我脑海里居然还有其他角色)。然而Alice并不是一个狗狗爱好者。她是一个猫猫爱好者。尽管如此，他们俩也可以在仅有非常有限的关于动物的词汇的情况下，找到共同话题。</p>
+<p><img src="/img/17_06_13/030.png" width=300 height=300 /></p>
+<p>他们两以不同的频率说着相同的话。Bob总是谈论狗，而Alice却总是谈论猫。</p>
+<p>最初，Alice使用Bob的编码向我发送消息。不幸的是，她的消息比他们实际需要的要长。Bob的编码是按照Bob的概率分布优化得到的。而Alice与Bob有不同的信息概率分布，并且Bob编码对她来说并不是最佳的。当Bob使用自己的编码时，码字的平均长度是1.75，但Alice在使用这组编码时，她的码字平均长度是2.25。如果他们两的概率密度越不相似，这个结果就越糟糕。</p>
+<p>这种根据一边信息概率分布优化过的编码方式来传输另一种概率分布不同的信息时，消息的平均长度称为交叉熵。关于交叉熵，更正式的定义如下：</p>
+<script type="math/tex; mode=display">
+H_p(q) = \sum_x q(x)\log_2\left(\frac{1}{p(x)}\right)</script><p>在这种情况下，Alice的猫爱好者的词频与Bob的狗爱好者词频存在交叉熵。</p>
+<p><img src="/img/17_06_13/031.png" width=300 height=300 /></p>
+<p>为了让我们的通信的花费减少，我让Alice来使用她自己的编码。让我感到安慰的是，这使得她的平均消息长度变短了。但是，这也引入了一个新的问题：有时Bob会不小心使用Alice的编码。令人惊讶的是，Bob使用Alice的编码时，Bob信息的平均长度比Alice用Bob编码时的最优方式还长</p>
+<p>所以，现在我们有四种可能的情况：</p>
+<ul>
+<li>Bob使用它自己的编码$(H(p) = 1.75 ~\text{bits})$</li>
+<li>Alice使用Bob的编码$(H_p(q) = 2.25 ~\text{bits})$</li>
+<li>Alice使用她自己的编码$(H(q) = 1.75 ~\text{bits})$</li>
+<li>Bob使用Alice的编码$(H_q(p) = 2.375 ~\text{bits})$</li>
+</ul>
+<p>这并不能直观的展示出这种值之间的关联关系。我们可以使用下图来寻找它们之间的关系。</p>
+<p>在下图中，每个子图分别表示这四种情况之一。每个子图以与之前相同的方式来显示平均消息长度。处于同一行的两种情况有相同的概率分布，处于同一列的两种情况有相同的编码方式。通过这种方式，可以可视化的观测到概率分布和编码方式的关系。</p>
+<p><img src="/img/17_06_13/032.png" width=500 height=500 /></p>
+<p>你能看出来为什么$H_p(q) \neq H_q(p)$吗？$H_q(p)$比较大因为在概率分布$p$之下有一个非常常见的码字比较长的事件（蓝色），因为这个事件在概率分布$q$的情况下并不常见。然而，另一边，在$q$的情况下比较常见的事件，在$p$的情况下比较少见，但差异较小，所以$H_p(q)$不是很高。</p>
+<p>因此我们发现交叉熵是不对称的。</p>
+<p>那么，为什么要关心交叉熵呢？交叉熵给我们一种表达两种概率分布不同的方法。概率分布$p$和$q$的差异越大，那么$p$关于$q$的交叉熵就比$p$的熵越大。</p>
+<p><img src="/img/17_06_13/033.png" width=300 height=300 /></p>
+<p>同样的，概率分布$p$和$q$差异越大，$q$关于$p$的交叉熵就比$q$本身的熵越大。</p>
+<p><img src="/img/17_06_13/034.png" width=300 height=300 /></p>
+<p>真正有趣的东西是熵与交叉熵之间的差异。差异在于我们的信息具体长多少，因为我们对不同的概率分布使用了同一套优化过的编码方式。如果概率分布相同，那么这个差异将为零。随着差异的增长，这个差值将变得更大。</p>
+<p>我们称这种差异为Kullback-Leibler分歧，或者简称为KL分歧。概率分布$p$关于$q$的KL分歧$D_q(p)$定义如下：</p>
+<script type="math/tex; mode=display">
+D_q(p) = H_q(p) - H(p)</script><p>关于KL分歧真正在做的事情，其实就像是在衡量不同概率分布之间的差异程度。（如果继续研究这个概念就会进入信息几何的领域。）</p>
+<p>交叉熵和KL分歧在机器学习中有着难以置信的用处。通常，我们希望一个分布与另一个分布相互靠近。例如，我们希望一个用于预测的概率分布与真实情况更接近。KL分歧为我们提供了一种很自然的方式来做到这一点，所以它在任何地方都有用武之地。</p>
+<h2 id="熵和多变量"><a href="#熵和多变量" class="headerlink" title="熵和多变量"></a>熵和多变量</h2><p>让我回到之前关于天气和穿着的例子：</p>
+<p><img src="/img/17_06_13/035.png" width=300 height=300 /></p>
+<p>我的妈妈，就像大多数的家长一样，都会担心我的衣着跟天气不搭配。（她的这种担心不是没有道理的，因为我在冬天经常不穿外套。）所以她总是想要知道我这边有关天气和穿衣的信息。我需要发送几个bit的数据来传达这些信息呢？</p>
+<p>为了更方便的分析这个问题，我们把概率扁平化分析：</p>
+<p><img src="/img/17_06_13/036.png" width=600 height=300 /></p>
+<p>现在我们可以找出这些概率的事件的最优码字，并计算平均消息长度：</p>
+<p><img src="/img/17_06_13/037.png" width=600 height=300 /></p>
+<p>我们把这个称之为$X$和$Y$的联合熵，定义如下：</p>
+<script type="math/tex; mode=display">
+H(X,Y) = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x,y)}\right)</script><p>这与我们关于熵的正规定义完全相同，唯一的区别就是这里有两个变量，而之前是一个。</p>
+<p>我们再把这个图形表现得更形象话一些，加入码字长度作为第三个维度，让图形更立体。现在，熵的大小就是体积的大小。</p>
+<p><img src="/img/17_06_13/038.png" width=300 height=600 /></p>
+<p>假设我的妈妈已经知道了天气信息（她可以通过新闻知道这些信息）。那么现在我需要提供多少的信息量呢？</p>
+<p>似乎我需要发送很多信息来传达我的穿衣情况。但实际情况，我发送的信息比之前要少，因为天气与我的衣着有着密切的联系！我们来分别思考关于下雨天和晴天下的两种情况。</p>
+<p><img src="/img/17_06_13/039.png" width=400 height=400 /></p>
+<p>在这两种情况下，平均来看，我不需要发送特别多的信息，因为天气信息对我的穿衣情况有着很好的预示。当阳光明媚的晴天，我可以使用一个特定的“晴天优化版”编码，对于下雨天，我可以使用一个特定的“雨天优化版”编码。分别在这两种情况下用不同的编码会比用同一种通用编码的长度少很多。为了得到我需要发送给我妈妈的平均信息量，我把这两个例子放在一起…</p>
+<p><img src="/img/17_06_13/040.png" width=200 height=300 /></p>
+<p>我们称之为条件熵。可以把它写成如下的数学表达式：</p>
+<script type="math/tex; mode=display">
+H(X|Y) = \sum_y p(y) \sum_x p(x|y) \log_2\left(\frac{1}{p(x|y)}\right)</script><script type="math/tex; mode=display">
+~~~~ = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x|y)}\right)</script><h2 id="交互信息"><a href="#交互信息" class="headerlink" title="交互信息"></a>交互信息</h2><p>在上一节，我们得到一个结论，那就是在知道一个变量的情况下，可能会意味着导致传达另一个变量需要更少的信息。</p>
+<p>一种思考这种情况的很好方式是将信息的总量想象成一个条。如果不同的消息之间在共享信息，就叠加显示。例如，$X$和$Y$存在一部分共享信息，因此$H(X)$和$H(Y)$是有重叠部分。并且$H(X,Y)$是两者的共同信息，是$H(X)$和$H(Y)$的集合。</p>
+<p><img src="/img/17_06_13/041.png" width=300 height=200 /></p>
+<p>一旦我们开始以这种方式思考事情，很多事情就变得简单了。</p>
+<p>例如，我们之前注意到同时传递$X$和$Y$（“联合熵”$H(X,Y)$）比仅仅使用$X$来通信（“边际熵”$H(X)$）需要更多的信息。如果你已经知道了$Y$，那么它会用更少的信息来对$X$进行通信（“条件熵”$H(X|Y)$）。</p>
+<p><img src="/img/17_06_13/042.png" width=500 height=400 /></p>
+<p>这听起来有点复杂，但从条状显示图来看，就很简单了。$H(X|Y)$是指我们在向已经知道$Y$的信息的人在传达$X$的信息时的熵，蕴含在$X$中的信息并不包含在$Y$中。从视觉上来看，这意味着$H(X|Y)$是$H(X)$的条中，不与$H(Y)$重叠的那一部分。</p>
+<p>你可以从下图中得出这个不等式:$H(X,Y) \geq H(X) \geq H(X|Y)$。</p>
+<p><img src="/img/17_06_13/043.png" width=300 height=200 /></p>
+<p>另一个特性：$H(X,Y) = H(Y) + H(X|Y)$。也就是说$X$和$Y$的信息也就是$Y$的信息加上不在$Y$中的$X$的信息。</p>
+<p><img src="/img/17_06_13/044.png" width=500 height=400 /></p>
+<p>从方程中很难看出这些信息，但如果你将这些信息用条状图显示出来，就变得容易了。</p>
+<p>在这里，我们以多种方式组织了$X$和$Y$的信息。我们有每个变量所包含的信息$H(X)$和$H(Y)$。我们有着两种信息的交集$H(X,Y)$。我们有只存在与一个变量但不存在与另一个变量的信息$H(X|Y)$和$H(Y|X)$。还有很多这些围绕着变量之间共享的信息，即他们之间信息的交集。我们称之为“相互信息”$I(X,Y)$，定义如下：</p>
+<script type="math/tex; mode=display">
+I(X,Y) = H(X) + H(Y) - H(X,Y)</script><p>这个定义是有效的，因为$H(X) + H(Y)$存在有两个相互信息的副本，因为他们同时蕴含在$X$中以及$Y$中，而$H(X,Y)$只有一份。(想想上一个条形图。)</p>
+<p>与信息密切相关的是信息的变化。信息的变化是变量之间不共享的信息。我们可以这样定义它：</p>
+<script type="math/tex; mode=display">
+V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了我们一个不同变量之间度量距离的概念。两个变量如果知道一个值的值可以得出另一个变量的值，那么这两者之间的信息变化是零，并且这个信息变化的值随着他们彼此之间变得更加独立而增加。</p>
+<p>这和同样可以告诉我们距离信息的KL分歧之间的关系是什么呢？KL分歧给了我们两个分布之间在同一个变量或一组变量上的距离。相反，信息的变化给我们两个相同分布的变量之间的距离。KL分歧是应用在不同信息的概率分布中的，标识这概率分布中的信息变化。</p>
+<p>我们可以将所有这些信息全部汇集成一个单独的图表：</p>
+<p><img src="/img/17_06_13/045.png" width=400 height=400 /></p>
+<h2 id="分数形式的位"><a href="#分数形式的位" class="headerlink" title="分数形式的位"></a>分数形式的位</h2><p>关于信息理论的一个非常不直观的事情是我们可以拥有小数位数。这看起来很奇怪，半个位(0.5bit)意味着什么？</p>
+<p>有一种简单的答案：通常，我们对消息的平均长度感兴趣，而不是任何特定的消息长度。如果一半的时间发送一个位的长度，一半时间发送两个位的长度，那么平均发送的长度是1.5位。对于平均数是小数的情况并没有什么奇怪的。</p>
+<p>但是，这个答案其实是在避开这个问题。通常，码字的最佳长度都是分数形式。这意味着什么呢？</p>
+<p>具体来说，让我们考虑一个概率分布，其中事件$a$发生的概率是$71%$，另一个事件$b$发生的概率为$29%$。</p>
+<p><img src="/img/17_06_13/046.png" width=300 height=300 /></p>
+<p>最佳编码将使用0.5位来表示$a$，用1.7位来表示$b$。那么，如果我们要发送这些码字中的任何一个，都是不可能的。我们会强制被安排发送整数位数的信息，并且发送的平均消息长度是1位。</p>
+<p>但是，如果我们一次性发送多条消息，我们可以处理的更好。让我们来考虑按照这种概率分布的情况下来同时传递两个事件。如果我们每次只发送一个事件，那么我们需要发送两位的长度。我们可以处理的更好吗？</p>
+<p><img src="/img/17_06_13/047.png" width=300 height=300 /></p>
+<p>有一半的概率，我们需要传递$aa$的信息，有21%的概率我们需要发送$ab$或者$ba$，而我们传递$bb$的概率只有8%。我们再一次把编码优化到理想的小数位数的形式。</p>
+<p><img src="/img/17_06_13/048.png" width=500 height=300 /></p>
+<p>如果我们对码字长度取整，我们将得到这样的结果：</p>
+<p><img src="/img/17_06_13/049.png" width=500 height=300 /></p>
+<p>这个编码给我们带来的平均消息长度为1.8位。这比我们每次分别只传递一个事件的平均消息长度2位要小。另一种思考这个问题的方式是我们平均每个事件发送的信息是0.9位。如果我们一次发送更多的事件，那么这个值会更小。由于$n$趋向于无穷大，取整造成的损失将逐渐减少，并且每个码字的位数将接近熵。</p>
+<p>另外，请注意，$a$的理想码字为0.5位，$aa$的理想码字是1位。即使理想码字的长度是小数，它们的长度也在增加！所以，如果我们一次传达很多事件时，长度会增加。</p>
+<p>即使在实际的编码中，只能使用整数长度的码字，这里也有使用小数位数码字的实际的意义。</p>
+<blockquote>
+<p>在实践中，人们使用在不同程度上有效的特定编码方案。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Huffman_coding">霍夫曼编码</a>，是一种基本类似于我们在这里草拟的这种编码，并没有非常优雅地处理小数位。你必须像上面那样对符号进行分组，或者使用更复杂的技巧来处理熵限制。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Arithmetic_coding">算术编码</a>有点不同，它优雅地处理了小数位以渐近最优。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果我们关心如何使用最少数量数据进行通信，那么这些想法显然是最基本的。如果我们关心压缩数据，信息理论将可以解决数据压缩的核心问题，并给出我们从根本上正确的抽象。但是，如果我们不在乎这些问题，那么除了好奇，我们还有其他什么原因呢？</p>
+<p>来自信息理论的观点在很多情况下都会出现：机器学习，量子物理学，遗传学，热力学，甚至赌博。这些领域的从业者通常不关心信息理论。量子纠缠可以用熵来描述，通过假定关于你不知道的事物的最大熵，可以得出统计力学和热力学中的许多结果。赌徒的胜利或损失与KL分歧直接相关，特别是迭代设置。</p>
+<p>信息理论在所有这些地方出现，因为它为许多我们需要表达的事情提供了具体的，有原则的形式化表示。它给了我们衡量和表达不确定性的方法，两组数据有多么的不同，不同概率分布之间的距离是多少，以及但对于某个问题的答案中蕴含了多少其他问题的信息：扩散概率是怎样的，概率分布之间的距离以及相互依赖的两个变量是怎样的。有其他类似的理论或者观点吗？当然。但是信息论的思想是干净的，它们具有很好的性质和原则性的起源。在某些情况下，它们正是你所关心的，而在其他情况下，它是混乱世界中的一个方便的代理。</p>
+<p>机器学习是我最了解的领域，所以我们来谈一下。在机器学习中，分类是一种非常常见的问题。假设我们想看一张图片，并预测它是一只狗还是一只猫。我们的模型可能会告诉我们“这张图片中有80%的概率是一只狗，有20%的概率是一只猫”。那么我们就说正确答案是狗，那么我们以80%的概率做出的判断是好还是坏呢？以85%的概率做出的判断会比80%好多少呢？</p>
+<p>这是一个重要的问题，因为我们需要一些衡量我们模型好坏的概念，以便把它优化的更好。我们应该优化什么呢？正确的答案确实取决于我们使用的模型：我们是只关心最顶部的猜测是否正确呢，还是关心我们在获取正确答案中的信心呢？错误的自信会有多糟？没有一个正确的答案。而且通常不可能知道正确的答案，因为我们不知道如何以精确的方式使用模型来形式化我们最终关心的内容。然而很多问题中，交叉熵都是我们真正需要在意的，但并不总是如此。更常见的情况是我们并不知道我们关心什么，而交叉熵就是解决这些问题的一个很好的工具。</p>
+<p>信息为我们提供了一个强大的新框架来思考我们的世界。有时它能完美的解决一些问题，而有时并不可以，但它依然很有用。这篇文章仅仅是对信息论的一个概览，而信息论中还有许多其他主要的概念，例如我们没有提到的纠错码，但我希望我已经展示出了信息论是一个很美丽的主题，它并不是那么高不可攀。</p>
+<h2 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h2><p>这里是<strong>克劳德·香农（Claude Shannon）</strong>关于信息论的原创论文<a target="_blank" rel="noopener" href="http://worrydream.com/refs/Shannon%20-%20A%20Mathematical%20Theory%20of%20Communication.pdf">通信数学理论</a>。（这在早期的信息论论文中，似乎是一个重复的模式。是时代原因吗？还是因为缺少页面限制？或者是来自贝尔实验室的文化？）</p>
+<p>封面和托马斯的信息要素理论似乎是标准参考。我觉得很有帮助。</p>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>我非常感谢<a target="_blank" rel="noopener" href="https://github.com/danmane">Dan Mané</a>，<a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~dga/">David Andersen</a>，<a target="_blank" rel="noopener" href="http://obsessionwithregression.blogspot.com/">Emma Pierson</a>和Dario Amodei抽出时间来给出这篇文章令人难以置信的详细和广泛征求意见。我也很感激<a target="_blank" rel="noopener" href="http://michaelnielsen.org/">Michael Nielsen</a>，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/GregCorrado.html">Greg Corrado</a>，<a target="_blank" rel="noopener" href="http://www.iro.umontreal.ca/~bengioy/yoshua_en/index.html">Yoshua Bengio</a>，<a target="_blank" rel="noopener" href="https://aaroncourville.wordpress.com/">Aaron Courville</a>，<a target="_blank" rel="noopener" href="http://www.nickbeckstead.com/">Nick Beckstead</a>，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/JonathonShlens.html">Jon Shlens</a>，Andrew Dai，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/ChristianHoward.html">Christian Howard</a>和<a target="_blank" rel="noopener" href="http://www.bewitched.com/">Martin Wattenberg</a>的评论。</p>
+<p>还感谢我的前两个神经网络研讨会系列作为这些想法的豚鼠。</p>
+<p>最后，感谢读者发现错误和遗漏。尤其感谢Connor Zwick，Kai Arulkumaran，Jonathan Heusser，Otavio Good，以及匿名评论者。</p>
+<h2 id="更多的文章"><a href="#更多的文章" class="headerlink" title="更多的文章"></a>更多的文章</h2><p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-07-Understanding-Convolutions/">了解卷积</a></p>
+<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-12-Groups-Convolution/">分组和分组卷积</a></p>
+<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">神经网络，歧管和拓扑</a></p>
+<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-01-Visualizing-Representations/">可视化展示深度学习和人类</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">斯坦福机器学习课程汇总</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-05 23:37:00" itemprop="dateCreated datePublished" datetime="2017-06-05T23:37:00+00:00">2017-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先感谢<strong>吴恩达</strong>建立<a target="_blank" rel="noopener" href="https://www.coursera.org">Coursera</a>这样一个优秀的在线学习平台，以及他发布在这个平台上的<a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/">机器学习</a>课程。</p>
+<p>这门课程将整个机器学习领域的基础知识，用浅显易懂的方式，深入浅出的进行了介绍。使得一个拥有高中数学知识的学生也能听得明白。</p>
+<p>如果你想要涉足机器学习、人工智能领域，或者对这一领域有浓厚的兴趣想要深入了解，那么你会发现很多机器学习入门课程推荐的资料中，都有吴恩达老师的这一系列课程。甚至在大多数资料中，都把这门课放在了首选的位置上。</p>
+<p>因此，我把吴恩达老师的课程整理成了MarkDown的格式，方便查阅学习。以下是具体章节的目录，其中每篇文章都有对应的视频连接地址：</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>第一周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1bwH">欢迎来到机器学习</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1Ju5">监督学习</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1XxR">无监督学习</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1onR">一元线性回归</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1N6G">参数学习-梯度下降算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1WEE">线性代数复习</a></li>
+</ul>
+</li>
+<li>第二周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1T2O">编程环境设置-Octave:MATLAB</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1RnN">多元线性回归分析</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1nj4">参数的计算分析</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1BP3">Octave/Matlab 使用说明</a></li>
+</ul>
+</li>
+<li>第三周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1epl">分类和表达式</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBwf7">分类</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCB4bV">假设函数表达式</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBhNP">决策边界</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBccU">Logistic回归模型</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBMeK">逻辑回归的代价函数</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBogn">简化代价函数以及梯度下降</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBpkr">高级优化</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBWU1">多类别分类问题：一对多</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBjW6">正则化：解决过拟合问题</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBT6v">解决过拟合问题</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCB8Vt">代价函数</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBELF">正则化线性回归</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第四周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBBZe">神经网络引入</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBDHu">非线性假设</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBsN4">神经网络和大脑</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrZ1M">神经网络</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrUfK">神经网络应用实例</a></li>
+</ul>
+</li>
+<li>第五周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr5m2">训练神经网络</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrf4H">代价函数</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCriIb">反向传播(B-P)</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr9Rc">反向传播算法的直观介绍</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr0yH">BP算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrHqO">神经网络实现自动驾驶</a></li>
+</ul>
+</li>
+<li>第六周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCruh7">评价一个学习算法</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr1gH">如何少走弯路？</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrd7a">评估假设函数</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCruh7">多项式模型的选择以及训练集/验证集/测试集的划分</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdL5Q">偏差VS方差</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdL5Q">偏差VS方差</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd6C0">正则化和偏差/方差</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdo2l">学习曲线(Learning Curves)</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdCvC">重新审视决定下一步做什么</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd0fl">机器学习系统设计</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd0fl">构建垃圾邮件分类器</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdH6b">误差分析</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSh83NE">操作偏斜数据</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdBSe">偏移类的错误度量</a></li>
+<li><a target="_blank" rel="noopener" href="http://sina.lt/eXAz">查准率和召回率练习</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgyhD">使用大数据集</a></li>
+</ul>
+</li>
+<li>第七周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP">大间距分类 SVM</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#优化目标">优化目标</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#大间距的直觉">大间距的直觉</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#大间距分类器背后的数学原理(选学">大间距分类器背后的数学原理(选学)</a>)</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgJw1">核函数</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgXmt">使用SVM</a></li>
+</ul>
+</li>
+<li>第八周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS">聚类</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#">无监督学习介绍</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#K-Means算法">K-Means算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#优化目标">优化目标</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#随机初始化">随机初始化</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#选择簇的数量">选择簇的数量</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg8PK">PCA 降维</a></li>
+</ul>
+</li>
+<li>第九周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgubu">密度估计&amp;异常检测</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgBQV">构建一个异常检测系统</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgDCU">多元高斯分布（选学）</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6">预测电影评分</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#预测电影评分">预测电影评分</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#协同过滤">协同过滤</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#低秩矩阵分解">低秩矩阵分解</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第十周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk">大数据集梯度下降</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#处理大数据的学习算法">处理大数据的学习算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#随机梯度下降">随机梯度下降</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#小批量梯度下降">小批量梯度下降</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#随机梯度下降的收敛">随机梯度下降的收敛</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5">高级主题</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5#在线学习">在线学习</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5#MapReduce和数据并行">Map Reduce 和数据并行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第十一周<ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv">照片OCR</a><ul>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#问题描述和流水线（Pipeline）">问题描述和流水线（Pipeline）</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#滑动窗体">滑动窗体</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#获取大量数据和人工数据">获取大量数据和人工数据</a></li>
+<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#上限分析：流水线上的下一步工作是什么">上限分析：流水线上的下一步工作是什么</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%8D%81%E4%B8%80%E5%91%A8%20(1)%E7%85%A7%E7%89%87OCR/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +745,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -720,7 +1243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -887,7 +1410,7 @@ p(y=1|x;\theta)</script><p>你知道的，特征$x$获取了手机的特点以�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1107,7 +1630,7 @@ cost(\theta,(x^{(i)},y^{(i)}))=
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1988,7 +2511,7 @@ Y=\left[
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2332,7 +2855,7 @@ exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))</script><h3 id="何时使用多元高斯�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2587,7 +3110,7 @@ x\_6=\frac{(CPU 负载)^2}{流量消耗}</script><p>其实，解决这类问题�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2897,7 +3420,7 @@ p(x)=p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)</script><p>那么有了这个表
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3379,437 +3902,6 @@ h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/04/26/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91TextRank-%E5%AF%B9%E6%96%87%E6%9C%AC%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/04/26/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91TextRank-%E5%AF%B9%E6%96%87%E6%9C%AC%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">【翻译】TextRank:对文本排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-04-26 22:12:58" itemprop="dateCreated datePublished" datetime="2017-04-26T22:12:58+00:00">2017-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>本文翻译自：<a target="_blank" rel="noopener" href="http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf">http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf</a></p>
-</blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>本篇论文中，我们将介绍TextRank算法，这是一种针对于文本处理的基于图的排序模型算法，并且展示这个模型是如何能够被成功的应用在自然语言应用中。特别的，我们提出了两个创新的无监督方法用于关键词和句子提取，并且展示我们得到的测试结果与先前公布的基准结果的对比。</p>
-<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>基于图的排序算法，像Kleinberg的HITS算法（Kleinberg，1999）或Google的PageRank算法（Brin和Page，1998）已成功应用于引文分析，社交网络和万维网链接结构分析。可以说，这些算法通过提供一种依靠Web架构师的集体知识而不是网页的单独内容分析的网页排名机制,可以作为网页搜索技术领域触发的范式转换的关键要素。简而言之，基于图的排序算法是通过考虑从整个图形递归计算的全局信息，而不是仅依赖于局部顶点特定信息来决定图中的顶点的重要性的一种方式。</p>
-<p>对从自然语言文档中提取的词汇或语义图，使用类似的思路，可以得出一种基于图形的排名模型，这种模型可以应用于各种自然语言处理的应用程序中，其中从整个文本中获取的知识用于得出本地 排名/选择 的决策。 这种面向文本的排序方法，可以应用于关键短语的自动提取，摘要提取，以及词义消歧的任务（Mihalcea et等等，2004）。</p>
-<p>在这篇论文中，我们会介绍基于从自然语言文本中提取的图形，来介绍TextRank图的排序模型。我们调查并评估了TextRank对于由无监督关键词和句子提取，这两种语言处理任务的应用，并展示使用TextRank获得的结果与在这些领域开发的最先进的系统进行比较。</p>
-<h2 id="2-TextRank模型"><a href="#2-TextRank模型" class="headerlink" title="2 TextRank模型"></a>2 TextRank模型</h2><p>基于图的排序算法本质上是基于从整个图形递归绘制的全局信息，来决定图中顶点的重要性的一种方式。基于图表的排名模式实现的基本思想是“投票”或“推荐”。当一个顶点链接到另一个顶点时，它主要是在为另一个顶点投票。顶点投射的投票数越多，顶点的重要性就越高。此外，顶点投票的重要性决定了投票本身的重要性，而这一信息也被排名模型考虑在内。因此，与顶点相关联的分数，取决于为其投的票，以及投射这些投票的顶点的分数来确定。</p>
-<p>正式的，令集合$G=(V,E)$是具有顶点$V$和边$E$集合的有向图，其中$E$是$V×V$的子集。对于给定的顶点$V_i$，令$In(V_i)$是指向它的顶点集（前辈），并且令$Out(V_i)$是顶点$V_i$指向（后继）的顶点集合。顶点$V_i$的分数定义如下（Brin和Page，1998）：</p>
-<p><img src="/img/17_04_26/001.png" alt=""></p>
-<p>其中$d$是0和1之间的阻尼因子，它作用于将从给定顶点跳转到图中的另一个随机顶点的概率集成到模型中。在网页浏览的上下文中，这种基于图表的排名算法实现了“随机冲浪者模型”，其中用户以概率$d$随机点击链接，并以概率$1-d$跳转到一个全新的页面。因子$d$通常设置为0.85（Brin和Page，1998），这也是我们在具体实现中所使用的值。</p>
-<p>从图中分配给每个节点的任意值开始，迭代计算直到达到低于给定的阈值。运行算法之后，得到一个与每个顶点相关联的分数，这表示图中顶点的“重要性”。请注意，TextRank运行到完成后获得的最终值，不受初始值的选择的影响，初始值的选择只会影响到收敛的迭代次数。</p>
-<p>重要的是要注意，尽管本文中描述的TextRank应用程序依赖于从Google的PageRank（Brin和Page，1998）导出的算法，但是其他基于图表的排序算法，例如 HITS（Kleinberg，1999）或位置函数（Herings等，2001）也可以轻松地整合到TextRank模型中（Mihalcea，2004）。</p>
-<h3 id="2-1-无向图"><a href="#2-1-无向图" class="headerlink" title="2.1 无向图"></a>2.1 无向图</h3><p>虽然传统上应用于有向图，但是也可以将基于递归图的排序算法应用于无向图，在这种情况下，顶点的出度（out-degree）等于顶点的入度（in-degree）。对于松散连接的图形，随着边缘数量与顶点数量成比例，无向图趋向于具有更多的逐渐收敛曲线。</p>
-<p>图1绘制了具有250个顶点和250个边缘的随机生成图的收敛曲线，收敛阈值为0.0001。随着图形的连通性增加（即较大数量的边缘），通常在较少迭代之后实现收敛，并且有向和无向图的收敛曲线实际上是重叠的。</p>
-<p><img src="/img/17_04_26/002.png" alt=""></p>
-<p>图1：基于图的收敛曲线排名：有向/无向，加权/未加权图，250个顶点，250个边。</p>
-<h3 id="2-2-权重图"><a href="#2-2-权重图" class="headerlink" title="2.2 权重图"></a>2.2 权重图</h3><p>在网页浏览的上下文中，页面中包含多个或部分链接到另一个页面是不寻常的，因此，基于图的原始PageRank定义是假设未加权的图。</p>
-<p>然而，在我们的模型中的图是由自然语言文本构造的，并且也可以由包括从文本中提取的单元（顶点）之间的多个或部分链接构造。因此，可以在模型中指示并将两个顶点$V_i$和$V_j$之间的连接的“强度”作为加到连接两个顶点的对应边缘的权重$w_{ij}$来指示并合并到该模型中。因此，我们引入了一个新的基于图的排名公式，在计算与图中顶点相关的分数时考虑了边权重。请注意，可以定义类似的公式来整合顶点权重。</p>
-<p><img src="/img/17_04_26/003.png" alt=""></p>
-<p>图1绘制了2.1节中相同样本图的收敛曲线，其中对边进行了0到10的随机加权。尽管与未加权相比，最终顶点得分（因此排名）显着不同，但是对于加权和未加权图，收敛次数和收敛曲线的形状几乎相同。</p>
-<h3 id="2-3-文本作为图"><a href="#2-3-文本作为图" class="headerlink" title="2.3 文本作为图"></a>2.3 文本作为图</h3><p>为了使基于图的排序算法能够应用于自然语言文本，我们必须构建一个表示文本的图形，并将具有有意义关系的单词或其他文本实体进行互连。 根据手头的应用，各种尺寸和特征的文本单位可以作为图中的顶点添加，例如。 单词，搭配，整个句子或其他。 类似地，它是指示用于绘制任何两个这样的顶点之间的连接的关系的类型，例如。 词汇或语义关系，语境重叠等。</p>
-<p>无论添加到图形中的元素的类型和特征如何，将基于图的排序算法应用于自然语言文本包括以下主要步骤：</p>
-<ul>
-<li>1.识别最佳定义手头任务的文本单位，并将其作为顶点添加到图形中。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/04/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(1)%E8%81%9A%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/04/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(1)%E8%81%9A%E7%B1%BB/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第八周 (1)聚类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-04-20 22:32:58" itemprop="dateCreated datePublished" datetime="2017-04-20T22:32:58+00:00">2017-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="无监督学习介绍"><a href="#无监督学习介绍" class="headerlink" title="无监督学习介绍"></a>无监督学习介绍</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/czmip/unsupervised-learning-introduction">视频地址</a></p>
-<blockquote>
-<p>接下来，我将介绍<strong>聚类</strong>这一概念。保证精彩！因为这是我们第一个<strong>无监督学习算法</strong>。我们要从未标记的数据中进行学习, 而不是从已标记的数据。 </p>
-</blockquote>
-<p>什么是无监督学习算法呢？</p>
-<p>之前，在本课程的开始阶段，我曾简短介绍过无监督学习算法。现在，我想将<strong>无监督学习算法</strong>与<strong>监督学习算法</strong>做个对照。</p>
-<h3 id="无监督学习算法与监督学习算法对比"><a href="#无监督学习算法与监督学习算法对比" class="headerlink" title="无监督学习算法与监督学习算法对比"></a>无监督学习算法与监督学习算法对比</h3><p>下面是一个监督学习的例子：</p>
-<p><img src="/img/17_04_20/001.png" alt=""></p>
-<script type="math/tex; mode=display">
-训练集：｛(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),(x^{(3)},y^{(3)}),...,(x^{(m)},y^{(m)})｝</script><p>这是一组附有标记的训练数据集，我们想要找出一个决策边界，来将两者分开：</p>
-<p><img src="/img/17_04_20/002.png" alt=""></p>
-<p>在这种监督式学习中，我们针对一组标记的训练数据提出一个适当的假设。</p>
-<hr>
-<p>相比之下，在无监督学习案例中，我们面对的是一组<strong>无标记</strong>的训练数据，数据之间不具任何关联的标记。</p>
-<p>所以我们得到的数据看起来是下面这样的：</p>
-<p><img src="/img/17_04_20/003.png" alt=""></p>
-<script type="math/tex; mode=display">
-训练集：｛x^{(1)},x^{(2)},x^{(3)},...,x^{(m)}｝</script><p>所以，在无监督学习中，我们将这种未标记的训练数据送入特定的算法，然后我们要求算法替我们分析出数据的结构。</p>
-<p>就此数据而言，其中一种可能的结构是所有的数据大致地划分成两个类（或组），这种划分的算法称为<strong>聚类算法()</strong>：</p>
-<p><img src="/img/17_04_20/004.png" alt=""></p>
-<p>除此之外，无监督学习还包含其他各式各样的算法，用以寻找其他类型的结构。我们下面将会一一介绍。目前，我们先介绍聚类。</p>
-<h3 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h3><p>稍早前，我已经提到几个应用实例：</p>
-<p><img src="/img/17_04_20/005.png" alt=""></p>
-<ul>
-<li>图1是细分市场，将所有用户划分至不同的细分市场组，以便于营销或服务。</li>
-<li>图2是社交分析体系，比如在社交网络中观察一群人，看他们和谁有电子邮件来往，或者查找一群相互有联系的人。</li>
-<li>图3是用聚类来组织运算集群或组织数据中心，因为，如果你知道在集群中，哪些计算机的数据中心倾向于一起工作，你可以用它重新组织你的资源，网络的布局，以及数据中心和通信。</li>
-<li>图4是使用聚类算法来试图理解星系的形成，和其中的天文细节。</li>
-</ul>
-<p>总之，聚类是我们学到的第一个无监督学习算法。在接下来的内容中，我将谈论聚类的具体实现方式。</p>
-<h2 id="K-Means-算法"><a href="#K-Means-算法" class="headerlink" title="K-Means 算法"></a>K-Means 算法</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/93VPG/k-means-algorithm">视频地址</a></p>
-<blockquote>
-<p>在聚类问题中，我们有未加标签的数据。我们希望有一个算法能够自动的把这些数据分成<strong>有紧密关系的子集</strong>，或是<strong>簇</strong>。<strong>K均值 (K-means)算法</strong>是现在最为广泛使用的聚类方法。那么在这个视频中，我将会告诉你，什么是K均值算法以及它是怎么运作的。</p>
-</blockquote>
-<p>K均值算法最好用图来表达。如图所示：</p>
-<p><img src="/img/17_04_20/006.png" alt=""></p>
-<p>现在有一些<strong>没加标签</strong>的数据，而我想将这些数据分成两个<strong>簇</strong>。</p>
-<p>现在我执行K均值算法 方法是这样的 </p>
-<p>首先我随机选择两个点，这两个点叫做<strong>聚类中心 (cluster centroids) </strong>:</p>
-<p><img src="/img/17_04_20/007.png" alt=""></p>
-<p>为什么要两个点呢？因为我希望聚出两个类。</p>
-<p>K均值是一个迭代方法，它要做两件事情：</p>
-<ul>
-<li>第一是<strong>簇分配</strong>。</li>
-<li>第二个是<strong>移动聚类中心</strong>。</li>
-</ul>
-<p>接下来介绍这两个步骤具体是在做什么。</p>
-<h3 id="K-Means-第一步：簇分配"><a href="#K-Means-第一步：簇分配" class="headerlink" title="K-Means 第一步：簇分配"></a>K-Means 第一步：簇分配</h3><p>在K均值算法的每次循环中，第一步是要进行<strong>簇分配</strong>。这就是说，我要遍历所有的样本（就是图上所有的绿色的点），然后依据每一个点是更接近红色的这个中心、还是蓝色的这个中心，来将每个数据点分配到两个不同的聚类中心中。</p>
-<p>具体来讲，就是对数据集中的所有点，依据他们更接近红色这个中心、还是蓝色这个中心，进行染色。染色之后的结果如图所示：</p>
-<p><img src="/img/17_04_20/008.png" alt=""></p>
-<p>以上就是簇分配的步骤。</p>
-<h3 id="K-Means-第二步：移动聚类中心"><a href="#K-Means-第二步：移动聚类中心" class="headerlink" title="K-Means 第二步：移动聚类中心"></a>K-Means 第二步：移动聚类中心</h3><p>K均值的另一部分，是要<strong>移动聚类中心</strong>。</p>
-<p>具体的操作方法是这样的：我们将两个聚类中心（也就是红色的叉和蓝色的叉）移动到和它一样颜色的那堆点的均值处。</p>
-<p>那么我们要做的是找出所有红色的点，计算出它们的均值位置，然后我们就把红色点的聚类中心移动到这里。对蓝色的点也同样计算平均位置，然后移动蓝色聚类中心到该平均位置处。</p>
-<p><img src="/img/17_04_20/009.png" alt=""></p>
-<h3 id="K-Means-第三步：重复执行上面两步"><a href="#K-Means-第三步：重复执行上面两步" class="headerlink" title="K-Means 第三步：重复执行上面两步"></a>K-Means 第三步：重复执行上面两步</h3><p>然后我们就会进入下一个<strong>簇分配</strong>。我们重新检查所有没有标签的样本，依据它离红色中心还是蓝色中心更近一些，重新将它染成红色或是蓝色。</p>
-<p><img src="/img/17_04_20/010.png" alt=""></p>
-<p>然后我们再次<strong>移动聚类中心</strong>。计算蓝色点的均值，以及红色点的均值，然后移动两个聚类中心：</p>
-<p><img src="/img/17_04_20/011.png" alt=""></p>
-<p>然后再做一遍<strong>簇分配</strong>和<strong>移动聚类中心</strong>操作：</p>
-<p><img src="/img/17_04_20/012.png" alt=""></p>
-<p>实际上，如果你从这一步开始，一直迭代下去，聚类中心是不会变的；并且 那些点的颜色也不会变。在这时，我们就能说<strong>K均值方法已经收敛了</strong>。</p>
-<h3 id="K-Means的规范化描述"><a href="#K-Means的规范化描述" class="headerlink" title="K-Means的规范化描述"></a>K-Means的规范化描述</h3><p>我们来用更加规范的格式描述K均值算法。</p>
-<p>K均值算法接受两个输入：</p>
-<ul>
-<li>第一个是参数$K$，表示你想从数据中聚类出的簇的个数。</li>
-</ul>
-<blockquote>
-<p>稍后会讲到选择$K$的方法</p>
-</blockquote>
-<ul>
-<li>第二个输入参数是训练集$｛x^{(1)},x^{(2)},…,x^{(m)}｝$</li>
-</ul>
-<blockquote>
-<p>因为这是非监督学习，我们的数据集中不需要$y$，同时在非监督学习的 K均值算法里，我们约定$x^{(i)}$是一个$n$维向量，这就是“训练样本是$n$维而不是$n+1$维”的原因（按照惯例，排除$x_0=1$这一项）。</p>
-</blockquote>
-<p><strong>K均值算法：</strong></p>
-<p><img src="/img/17_04_20/013.png" alt=""></p>
-<ul>
-<li><p>第一步：随机初始化$K$个<strong>聚类中心</strong>，记作$μ_1$,$μ_2$一直到$μ_K$。 </p>
-</li>
-<li><p>第二步：</p>
-<ul>
-<li><p>K均值内部循环执行以下步骤：</p>
-<ul>
-<li><p>簇分配</p>
-<p> 首先对于每个训练样本，我们用变量$c^{(i)}$表示$K$个聚类中心中最接近$x^{(i)}$的那个中心的下标（具体的类别），这就是簇分配。</p>
-<blockquote>
-<p>大写的$K$表示所有聚类中心的个数，小写的$k$则表示某个聚类中心的下标。</p>
-</blockquote>
-<p>  我们希望的是：<strong>在所有K个中心中，找到一个$k$使得$x_i$到$μ_k$的距离是$x^{(i)}$到所有的聚类中心的距离中最小的那个</strong>，这就是计算$c_i$的方法。</p>
-<p>  这里还有另外的表示$c_i$的方法：我用<strong>范数</strong>的形式$||x^{(i)}-μ_k||$来表示，这是第$i$个训练样本到聚类中心$μ_k$的距离。</p>
-<p>  接下来我要做的是找出$k$的值，让这个式子$||x^{(i)}-μ_k||$最小，然后将 $c^{(i)}$ 赋值为$k$。</p>
-<p>  出于惯例，人们更喜欢用距离的平方$||x^{(i)}-μ_k||^2$来表示$x^{(i)}$距聚类中心$μ_k$的距离。所以我们可以认为 $c^{(i)}$ 的类别是属于距样本$x^{(i)}$的距离的平方最小的那个聚类中心的。 当然使距离的平方最小或是距离最小，都能让我们得到相同的$c^{(i)}$，但是我们通常还是使用距离的平方，因为这是约定俗成的。</p>
-</li>
-<li><p>移动聚类中心</p>
-<p>  对于每个聚类中心：$k$从1循环到$K$，将$μ_k$赋值为这个簇的均值。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong>举个栗子：</strong></p>
-<p>某一个聚类中心，比如说是$μ_2$被分配了一些训练样本：1,5,6,10 这个表明$c^{(1)}=2$，$c^{(5)}=2$，$c^{(6)}=2$，$c^{(10)}=2$。如果我们从<strong>簇分配</strong>那一步得到了这些结果，这表明，样本1,5,6,10被分配给了聚类中心2；然后在移动聚类中心这一步中，我们计算出这四个的平均值，即计算$x_{(1)}+x_{(5)}+x_{(6)}+x_{(10)}$，然后计算它们的平均值。这时$μ_2$就是一个$n$维的向量，因为$x^{(1)}$，$x^{(5)}$，$x^{(6)}$，$x^{(10)}$ 都是$n$维的向量。这样聚类中心$μ_2$的移动就结束了。</p>
-<h3 id="异常情况"><a href="#异常情况" class="headerlink" title="异常情况"></a>异常情况</h3><p>现在，我要问的问题是：</p>
-<p>既然我们要让$μ_k$移动到分配给它的那些点的均值处，那么如果存在一个没有点分配给它的聚类中心，那怎么办? </p>
-<p>通常在这种情况下，我们就直接移除那个聚类中心。如果这么做了，最终将会得到$K-1$个簇，而不是$K$个簇。</p>
-<p>但如果你就是需要$K$个簇，尽管存在没有点分配给它的聚类中心，你所要做的是，重新随机找一个聚类中心。（但是直接移除那个中心，是更为常见的方法。不过在实际过程中，这个问题不会经常出现。）</p>
-<hr>
-<p>在这个视频结束之前，我还想告诉你<strong>K均值算法</strong>的另外一个常见应用：<strong>应对没有很好分开的簇(non-separated clusters)</strong>。</p>
-<p>到目前为止，我们的K均值算法都是基于一些像图中所示的数据：</p>
-<p><img src="/img/17_04_20/014.png" alt=""></p>
-<p>有很好的隔离开来的三个簇，但是事实情况是，K均值经常会用于一些这样的数据：</p>
-<p><img src="/img/17_04_20/015.png" alt=""></p>
-<p>看起来并没有很好的分开几个簇。</p>
-<p>这是一个关于T恤的大小的应用的例子。假设你是T恤制造商，你找到了一些人，想把T恤卖给他们，然后你搜集了一些这些人的身高和体重的数据。我猜，身高体重更重要一些。然后你可能收集到了上图中一些关于人们身高和体重的样本，然后你想确定一下T恤的大小。</p>
-<p>假设我们要设计三种不同大小的t恤：小号、中号、和大号，那么小号应该是多大的?中号呢?大号呢?</p>
-<p>使用K均值算法进行聚类，是一种解决这个问题的方法。就像我展示的那样，而且K均值可能将这些数据聚成三个簇：</p>
-<p><img src="/img/17_04_20/016.png" alt=""></p>
-<p>所以说，尽管这些数据原本看起来并没有三个分开的簇，但是从某种程度上讲，K均值仍然能将数据分成几个类。你能做的就是看这第一群人，然后查看他们的身高和体重，试着去设计对这群人来说比较合身的小号衣服；以及设计一个中号的衣服；设计一个大号的衣服。</p>
-<p>这就是一种<strong>市场细分</strong>的例子。当你用K均值方法将你的市场分为三个不同的部分，你就能够区别对待你三类不同的顾客群体，从而更好的适应他们不同的需求。就像大、中、小，三种不同大小的衣服那样。</p>
-<p><img src="/img/17_04_20/017.png" alt=""></p>
-<p>这就是K均值算法，而且你现在应该已经知道如果去实现，K均值算法并且利用它解决一些问题。在下面的视频中，我想把K均值算法 研究的更深入一些，然后讨论一下如何能让K均值表现得更好一些的问题。</p>
-<h2 id="优化目标"><a href="#优化目标" class="headerlink" title="优化目标"></a>优化目标</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/G6QWt/optimization-objective">视频地址</a></p>
-<p>在大多数我们已经学到的<strong>监督学习</strong>算法中(例如线性回归，逻辑回归，以及更多的算法）都有一个优化目标函数，即需要通过算法进行最小化的代价函数。</p>
-<p>事实上，<strong>K均值</strong>也有这样一个<strong>优化目标函数</strong>（或者说是代价函数）。</p>
-<p>了解和使用这个<strong>K均值</strong>的优化目标函数有两方面的目的：</p>
-<ul>
-<li>首先这将能帮助我们调试学习算法，确保K均值算法是在正确运行中。</li>
-<li>第二个也是最重要的一个目的是，<strong>K均值</strong>优化目标函数将帮助我们找到更好的簇，并且避免局部最优解。（后面会讲到）</li>
-</ul>
-<hr>
-<p>另外顺便提一下，当K均值正在运行时，我们将对两组变量进行跟踪：</p>
-<p>首先是$c^{(i)}$:</p>
-<script type="math/tex; mode=display">
-c^{(i)}=表示 K 个聚类中心中最接近x^{(i)}的那个中心的索引（即当前样本x^{(i)}所归为的那个簇的索引）</script><p>其次是$μ_k$:</p>
-<script type="math/tex; mode=display">
-μ\_k=表示 第k个簇的聚类中心 （μ\_k\in R^n）</script><p>顺便再提一句，K均值中我们用大写$K$来表示<strong>簇的总数</strong>，用小写$k$来表示<strong>聚类中心的序号</strong>。因此，小写$k$的范围如下：</p>
-<script type="math/tex; mode=display">
-k\in｛1,2,...,K｝</script><p>除此以外，还有另一个符号，我们用$μ_c^{(i)}$：</p>
-<script type="math/tex; mode=display">
-μ\_c^{(i)}=表示x^{(i)}所属的那个簇的聚类中心</script><p>举个例子来解释：</p>
-<p>假如说$x^{(i)}$被划为了第5个簇，这就是说$x^{(i)}$被分配到了第5个簇，也就是$c^{(i)}=5$。因此$μ_c^{(i)}=μ_5$。所以这里的 $μ_c^{(i)}$就是第5个簇的聚类中心。</p>
-<p>而也正是我的样本$x^{(i)}$所属的第5个簇有了这样的符号表示，现在我们就能写出K均值聚类算法的优化目标了。</p>
-<h3 id="K均值的代价函数"><a href="#K均值的代价函数" class="headerlink" title="K均值的代价函数"></a>K均值的代价函数</h3><p>以下便是K均值算法需要最小化的<strong>代价函数</strong>：</p>
-<script type="math/tex; mode=display">
-J(c^{(1)},...,c^{(m)},μ\_1,...,μ\_K)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-μ\_c^{(i)}||^2</script><p>代价函数$J$的参数$c^{(1)},…,c^{(m)}$以及$μ_1,…,μ_K$，随着算法的执行过程，这些参数将不断变化。</p>
-<p>函数的右边给出了优化目标，即每个样本$x^{(i)}$到它所属的聚类中心距离的平方值。$x^{(i)}$就是训练样本的位置，$μ_c^{(i)}$是$x^{(i)}$样本所属的聚类中心的位置。</p>
-<p>例如:</p>
-<p><img src="/img/17_04_20/018.png" alt=""></p>
-<p>如图，图中$x^{(i)}$样本被划分到了$μ_5$这个聚类中心，那么$||x^{(i)}-μ_c^{(i)}||^2$这个距离的平方，也就是在求样本点$x^{(i)}$到$μ_5$之间的距离的平方。</p>
-<hr>
-<p>K均值的目标就是要最小化代价函数：</p>
-<script type="math/tex; mode=display">
-\min\limits_{c^{(1)},...,c^{(m)},\\\\μ\_1,...,μ\_K}
-J(c^{(1)},...,c^{(m)},μ\_1,...,μ\_K)</script><p>在K均值算法中，有时候也叫做<strong>失真代价函数(distortion cost function)</strong>。</p>
-<hr>
-<p>现在，我们已经理解了K均值算法的原理就是最小化代价函数$J$的过程。我们也可以用这个原理，来试着调试我们的学习算法，保证我们对K均值算法的实现过程是正确的。</p>
-<p>在下一节视频中，我们将一起看看如何帮助K均值找到更好的簇，同时避免局部最优解。</p>
-<h2 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/drcBh/random-initialization">视频地址</a></p>
-<blockquote>
-<p>在本节课中，我们讨论一下如何初始化K均值聚类方法。</p>
-<p>更重要的是，这将引导我们讨论<strong>如何避开局部最优来构建K均值聚类方法</strong>。</p>
-</blockquote>
-<p>对于我们之前讨论过的K均值聚类算法：</p>
-<p><img src="/img/17_04_20/019.png" alt=""></p>
-<p>其中我们之前没有讨论得太多的是这一步：</p>
-<p><img src="/img/17_04_20/020.png" alt=""></p>
-<p>即随机初始化聚类中心$μ_1,μ_2,…,μ_{K} \in R^n$。</p>
-<p>如何初始化聚类中心这一步，有几种不同的方法可以用来随机初始化聚类中心。但是，事实证明，有一种可能是效果最好的方法。接下来我就将这个方法介绍给你。</p>
-<hr>
-<p>这里展示了我通常是如何初始化我的聚类中心的。</p>
-<ul>
-<li><p>1.确保$K&lt;m$</p>
-<ul>
-<li>当运行K均值方法时，你需要有一个聚类中心数值$K$，$K$值要比训练样本的数量$m$小，即$K&lt;m$。</li>
-</ul>
-</li>
-<li><p>2.随机初始化</p>
-<ul>
-<li>随机挑选$K$个训练样本，然后我要做的是设定$μ_1,…,μ_k$让它们等于这$K$个样本。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<p>下面用一个具体例子来说明：</p>
-<p>我们假设$K=2$，那么我们就需要找到两个聚类中心。为了初始化聚类中心，我要做的是随机挑选几个样本。比如说，我挑选了下面这两个点作为聚类中心：</p>
-<p><img src="/img/17_04_20/021.png" alt=""></p>
-<p>此时的这个例子看起来划分的相当不错，但是有时候我可能不会那么幸运。也许我最后会挑选到下面这样的两个点作为聚类中心：</p>
-<p><img src="/img/17_04_20/022.png" alt=""></p>
-<p>通过对上面两种初始化情况的对比，你可能会猜到K均值算法在它们两种情况下，会得到不同的结果。这取决于聚类簇的随机初始化方法。K均值方法最后可能得到不同的结果，尤其是如果K均值方法落在局部最优的时候。</p>
-<p>如果给你一些这样的数据：</p>
-<p><img src="/img/17_04_20/023.png" alt=""></p>
-<p>这看起来好像有3个聚类：</p>
-<p><img src="/img/17_04_20/024.png" alt=""></p>
-<p>那么，如果你运行K均值方法，如果它最后得到一个局部最优，这可能是真正的全局最优，你可能会得到这样的聚类结果：</p>
-<p><img src="/img/17_04_20/025.png" alt=""></p>
-<p>但是如果你运气特别不好，随机初始化K均值方法也可能会卡在不同的局部最优上面：</p>
-<p><img src="/img/17_04_20/026.png" alt=""></p>
-<p>对于左边的这种情况，相当于将左下方和上方的样本分为了一类，将右下方的样本分了两类：</p>
-<p><img src="/img/17_04_20/027.png" alt=""></p>
-<p>对于右边的这种情况，相当于将下面的样本整体的分为了一类，将上方的样本分为了两类。</p>
-<p>因此，如果你担心K均值方法会遇到上面这种局部最优的问题，并且你想提高K均值方法找到最有可能的聚类的几率的话，我们能做的就是尝试多次随机的初始化，而不是仅仅初始化一次K均值方法就希望它会得到很好的结果。</p>
-<p>我们能做的是：<strong>初始化K均值很多次，并运行K均值方法很多次，通过多次尝试来保证我们最终能得到一个足够好的结果。一个尽可能局部或全局最优的结果。</strong></p>
-<p>这才是正确的随机初始化聚类中心的方法。</p>
-<h3 id="具体介绍"><a href="#具体介绍" class="headerlink" title="具体介绍"></a>具体介绍</h3><p>具体来说，假如我决定运行K均值方法一百次，那么我就需要执行这个循环100次。这是一个相当典型的次数数字，有时会是从50到1000之间的数字。</p>
-<p>假设说有决定运行K均值方法100次，那么这就意味着我们要随机初始化K均值方法100次。对于这100次随机初始化的每一次，我们都需要运行K均值方法。我们会得到一系列聚类结果和一系列聚类中心之后，我们可以计算<strong>失真函数</strong>$J$。用我们得到的这些聚类结果和聚类中心来计算这样一个结果函数。</p>
-<p>完成整个100次迭代之后，你会得到这100种聚类数据的这些方法。最后你要做的是，在所有这100种用于聚类的方法中，选取能够给我们代价最小的一个，给我们最低畸变值的一个。</p>
-<p>事实证明，如果你运行K均值方法时，所用的聚类数相当小。比如聚类数是从2到10之间的任何数的话，做多次的随机初始化，通常能够保证你能有一个较好的局部最优解，保证你能找到更好的聚类数据。但是如果K非常大的话，比如K比10大很多，就不太可能会有太大的影响。事实上，这种情况下有可能你的第一次随机初始化就会给你相当好的结果。</p>
-<p>做多次随机初始化可能会给你稍微好一点的结果，但是不会好太多。但是在这样一个聚类数相对较小的体系里，特别是如果你有2个或者3个或者4个聚类的话，随机初始化会有较大的影响。可以保证你在最小化失真函数的时候，得到一个很小的值。并且能得到一个很好的聚类结果。</p>
-<p>这就是K均值的随机初始化的方法。</p>
-<h2 id="选择簇的数量"><a href="#选择簇的数量" class="headerlink" title="选择簇的数量"></a>选择簇的数量</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/Ks0E9/choosing-the-number-of-clusters">视频地址</a></p>
-<blockquote>
-<p>在本节中，我想讨论一下K-均值聚类的最后一个细节，就是确定聚类的数目，即如何去选择$K$的值。</p>
-<p>说实话，这个问题没有一个非常标准的解答。目前用来决定聚类数目的最常用的方法，仍然是通过看可视化的图，或者看聚类算法的输出结果，或者其他一些东西来手动地决定聚类的数目。</p>
-<p>但是，我确实经常被别人问到这样的问题：“你是如何来选择聚类的数目的？” 我只能告诉你一些人们现在对这个问题的思考，人们现在对这个问题的最为常见的做法，实际上仍是手动选择聚类的数目。</p>
-</blockquote>
-<hr>
-<p>选择聚类的数目可能不总是那么容易，大部分情况下，对于数据集中有多少个聚类中心通常是模棱两可的。</p>
-<p>看到这样一个数据集：</p>
-<p><img src="/img/17_04_20/028.png" alt=""></p>
-<p>有些人可能会看到四个聚类，那么这就意味着需要使用$K=4$：</p>
-<p><img src="/img/17_04_20/029.png" alt=""></p>
-<p>或者有些人可能会看到两个聚类，这就意味着$K=2$：</p>
-<p><img src="/img/17_04_20/030.png" alt=""></p>
-<p>可能其他人会看到3个聚类。</p>
-<p>在我看来它的真实的类别数实际上确实是模棱两可的，所以我并不认为这里有一个正确答案。这就是无监督学习的一部分。没有给我们标签，所以不会总有一个清晰的答案。这就是为什么，做一个能够自动选择聚类数目的算法，是非常困难的原因之一。</p>
-<h3 id="肘部法则-Elbow-Method"><a href="#肘部法则-Elbow-Method" class="headerlink" title="肘部法则 (Elbow Method)"></a>肘部法则 (Elbow Method)</h3><p>当人们讨论选择聚类数目的方法时，可能会提及一个叫做<strong>肘部法则 (Elbow Method)</strong>的方法。现在我来介绍一下它，之后会提及到它的一些优点和缺点。</p>
-<h4 id="肘部法则引入"><a href="#肘部法则引入" class="headerlink" title="肘部法则引入"></a>肘部法则引入</h4><p>那么对于肘部法则，我们所需要做的是改变K的值（也就是聚类类别的总数）。</p>
-<p>我们用K值为1来运行K-均值聚类算法。这就意味着所有的数据都会分到一个类里。然后计算代价函数（或者说计算畸变）$J$，并将其画在这儿：</p>
-<p><img src="/img/17_04_20/031.png" alt=""></p>
-<p>然后我们选用两个聚类来运行K-均值聚类算法。可能用了多个随机的初始中心，也可能没用。那么有两个聚类的话，我们很可能得到一个较小的畸变值，把它画在这儿：</p>
-<p><img src="/img/17_04_20/032.png" alt=""></p>
-<p>然后用三个聚类来运行K-均值聚类。你很有可能得到更小的畸变值，把它画在这儿：</p>
-<p><img src="/img/17_04_20/033.png" alt=""></p>
-<p>之后再让聚类数目等于4、5来运行K-均值聚类，最后我们就能得到一条曲线，它展示了随着聚类数量的增多，畸变值是如何下降的。我们可能会得到一条这样的曲线：</p>
-<p><img src="/img/17_04_20/034.png" alt=""></p>
-<p>看到这条曲线，肘部法则会说：“我们来看这个图，这里看起来像是一个很清楚的肘点”。</p>
-<p><img src="/img/17_04_20/035.png" alt=""></p>
-<p>这就类比于人的手臂。这就是肘部法则。</p>
-<p>在这里，你会发现这样一种模式：K从1变化到2、再从2到3时，畸变值迅速下降；然后在3的时候，到达一个肘点。此后畸变值就下降得非常慢。这样看起来，也许使用3个类是聚类数目的正确选择。这是因为那个点是曲线的肘点。就是说畸变值快速地下降，直到$K=3$这个点，在这之后就下降得非常慢，那么我们就选$K=3$。</p>
-<h4 id="肘部法则局限性"><a href="#肘部法则局限性" class="headerlink" title="肘部法则局限性"></a>肘部法则局限性</h4><p>当你应用肘部法则的时候，如果你得到了一个像上面这样的图，那么这非常好，这是一种用来选择聚类个数的合理方法。而事实证明肘部法则并不那么常用，其中一个原因是如果你把这种方法用到一个聚类问题上，事实上你最后得到的曲线通常看起来是更加模棱两可的，就像这样：</p>
-<p><img src="/img/17_04_20/036.png" alt=""></p>
-<p>如果你看到这条曲线，也许没有一个清晰的肘点，而畸变值像是连续下降的，也许3是一个好选择，也许4是一个好选择，也许5也不差。如果实际情况中，你遇到的肘点的位置并不明确，这使得用这个方法来选择聚类数目变得较为困难。</p>
-<h4 id="肘部法则小结"><a href="#肘部法则小结" class="headerlink" title="肘部法则小结"></a>肘部法则小结</h4><p>简单小结一下肘部法则：它是一个值得尝试的方法，但是我不会期待它在任何问题上都有很高的表现。</p>
-<h3 id="通过下游来决定聚类数量"><a href="#通过下游来决定聚类数量" class="headerlink" title="通过下游来决定聚类数量"></a>通过下游来决定聚类数量</h3><p>最后，有另外一种方法来考虑如何选择K的值。</p>
-<p>通常人们使用K-均值聚类算法是为了某些后面的用途，或者说某种下游的目的。而要求得一些聚类也许你会用K-均值聚类算法来做市场分割。例如我们之前谈论的T恤尺寸的例子，也许你会用K-均值聚类来让电脑的聚类变得更好，或者可能为了某些别的目的学习聚类，等等。如果那个后续下游的目的（比如市场分割）能给你一个评估标准，那么通常来说决定聚类数量的 更好的办法是，看不同的聚类数量能为后续下游的目的提供多好的结果。</p>
-<p>我们来看一个具体的例子：</p>
-<p>我们再看一下T恤尺寸这个例子。我想要决定“我是需要3种T恤尺寸么吗？”</p>
-<p>所以我选择$K=3$。我可能有小号、中号、大号三类T恤，或者我可以选择$K=5$，那么我可能有特小号、小号、中号、大号和特大号尺寸的T恤。所以，你可能有3种、4种或者5种T恤尺寸。</p>
-<p>因此如果我用$K=3$来运行K-均值聚类，我得到的结果可能是这样的：</p>
-<p><img src="/img/17_04_20/037.png" alt=""></p>
-<p>然而，果我用$K=5$来运行K-均值聚类的话，我得到的结果可能是这样的：</p>
-<p><img src="/img/17_04_20/038.png" alt=""></p>
-<p>这个例子给了我们对于选择聚类数目问题的另一种方法。</p>
-<p>具体来说，你要做的是从T恤生意的角度来思考这个事情，然后问“如果我有5个分段 ，那么我的T恤有多适合我的顾客？那么我的T恤有多适合我的顾客？我可以卖出多少T恤？我的顾客将会有多高兴呢？”</p>
-<p>从T恤生意的角度去考虑，其中真正有意义的是：我是需要更多的T恤尺寸 来更好地满足我的顾客？还是说我需要更少的T恤尺寸，我制造的T恤尺码就更少，我就可以将它们更便宜地卖给顾客？因此T恤的销售业务的观点 可能会提供给你一个决定采用3个类还是5个类的方法。</p>
-<h3 id="簇数量选择-总结"><a href="#簇数量选择-总结" class="headerlink" title="簇数量选择 总结"></a>簇数量选择 总结</h3><p>总结一下：大部分时候聚类数目仍然是通过手动人工输入或我们的洞察力来决定，一种可以尝试的方法是使用肘部法则，使用肘部法则但是我不会总是 期望它能表现得好。选择聚类数目的更好方法是去问一下你运行K-均值聚类是为了什么目的？然后想一想聚类的数目是多少才适合你运行K-均值聚类的后续目的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3881,18 +3973,18 @@ J(c^{(1)},...,c^{(m)},μ\_1,...,μ\_K)</script><p>在K均值算法中，有时�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

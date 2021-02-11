@@ -191,6 +191,356 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/09/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(3)%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%80%E5%AF%B9%E5%A4%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/09/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(3)%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%80%E5%AF%B9%E5%A4%9A/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第三周 (3)多类别分类问题：一对多</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-09-04 23:00:00" itemprop="dateCreated datePublished" datetime="2016-09-04T23:00:00+00:00">2016-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="一对多分类问题"><a href="#一对多分类问题" class="headerlink" title="一对多分类问题"></a>一对多分类问题</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/68Pol/multiclass-classification-one-vs-all">视频地址</a></p>
+<blockquote>
+<p>在本节视频中，我们将谈到如何使用<strong>逻辑回归来解决多类别分类问题</strong>。具体来说，我想通过一个叫做<strong>“一对多”(one-vs-all)</strong>的分类算法，让你了解什么是多类别分类问题。</p>
+</blockquote>
+<p>先看这样一些例子：</p>
+<ul>
+<li>邮件分类器自动将邮件按照以下标签分类：工作，朋友，家庭，兴趣</li>
+<li>医学根据病人的得病类型分类：没有病，感冒，流感</li>
+<li>天气预报根据天气类型分类：晴天，多云，雨天，雪天</li>
+</ul>
+<p>我们可以分别对这些类别打上数值标签，比如天气分类中：晴天代表<code>y=1</code>，多云代表<code>y=2</code>，雨天代表<code>y=3</code>，雪天代表<code>y=4</code>。</p>
+<p>以上这些例子都属于多类别分类问题。</p>
+<hr>
+<p>二元分类问题和多类别分类问题的比较：</p>
+<p><img src="/img/16_09_04/001.png" alt=""></p>
+<p>二元分类问题中，我们只有两个类别需要处理，而在多类别分类问题中，我们有多种类别需要处理。这里我们用三种不同的符号代表三种类别。</p>
+<p>在二元分类中，我们知道我们可以使用逻辑回归来将两种类别的数据集一分为二：</p>
+<p><img src="/img/16_09_04/002.png" alt=""></p>
+<p>对于一对多的分类问题，我们也可以借鉴二元分类的思想。下面就来介绍一些如何进行一对多分类工作(有时也被称为“一对余”方法)。</p>
+<p><img src="/img/16_09_04/003.png" alt=""></p>
+<p>如图，我们现在有一组由三个类别元素组成的训练集。接下来我们要做的就是使用一个训练集将其分成三个二元分类问题。我们先从三角形开始，将其他两种类型视为同一种类型：</p>
+<p><img src="/img/16_09_04/004.png" alt=""></p>
+<p>实际上这是一个新的“伪类型集”，类型2和类型3被定义为负类(值为0)，类型1定义为正类(值为1)。我们要拟合出一个合适的分类器，来区分正类和负类。我们称这个分类器为$h_{\theta}^{(1)}(x)$</p>
+<p><img src="/img/16_09_04/005.png" alt=""></p>
+<p>同理，对类型2也做同样的处理，得到分类器$h_{\theta}^{(2)}(x)$：</p>
+<p><img src="/img/16_09_04/006.png" alt=""></p>
+<p>最后，对类型三也做同样处理，得到分类器$h_{\theta}^{(3)}(x)$：</p>
+<p><img src="/img/16_09_04/007.png" alt=""></p>
+<p>这样我们就得到了三个分类器，通过这些分类器来估算出给出$x$和先验$\theta$时，$y=i$的概率：</p>
+<script type="math/tex; mode=display">
+h\_{\theta}^{(i)}(x) = P(y=i|x;\theta)    \qquad  (i=1,2,3)</script><p>总之，现在我们要做的就是训练这个逻辑回归分类器$h_{\theta}^{(i)}(x)$，其中$i$对应每一个可能的$y=i$。</p>
+<p>最后，为了做出预测，我们给定一个新的输入值$x$，用来做预测，我们要做的就是在我们的三个分类器里输入$x$，然后我们选择一个让$h_{\theta}^{(i)}(x)$最大的$i$，这就是预测出的类别。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第三周 (2)Logistic回归模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-08-25 23:54:00" itemprop="dateCreated datePublished" datetime="2016-08-25T23:54:00+00:00">2016-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="逻辑回归的代价函数"><a href="#逻辑回归的代价函数" class="headerlink" title="逻辑回归的代价函数"></a>逻辑回归的代价函数</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/1XG8G/cost-function">视频地址</a></p>
+<p>这节课将讲解逻辑回归中，如何定义用来拟合参数的<strong>代价函数</strong>。</p>
+<p><img src="/img/16_08_25/001.png" alt=""></p>
+<p>如上图所示，我们现在有一组训练集，其中有$m$个训练样本，由于是一个分类问题，我们的$y$取值范围就是0和1。并且我们给出了假设函数$h_{\theta}(x)$。现在的问题就是，我们如何确定我们的参数$\theta$的值呢？也就是说如何<strong>拟合参数$\theta$</strong>呢？</p>
+<p><img src="/img/16_08_25/002.png" alt=""></p>
+<p>上图是之前求线性回归问题时的代价函数，现在我将上图的公式进行改写：</p>
+<script type="math/tex; mode=display">
+Cost(h\_{\theta}(x^{(i)}),y^{(i)})=
+\frac{1}{2}(h\_{θ}(x^{(i)})-y^{(i)})^{2}</script><p>为了简写方便，去掉上标之后的代价函数如下：</p>
+<script type="math/tex; mode=display">
+Cost(h\_{\theta}(x),y)=
+\frac{1}{2}(h\_{θ}(x)-y)^{2}</script><p>在线性回归问题中，代价函数会被定义为以上这种形式，但在逻辑回归里，如果我们最小化代价函数后，使用这个最小代价的值也是可以正常工作的，但是我们的这个代价函数会变成参数$\theta$的非凸函数。</p>
+<p>因为这里：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+h\_{\theta}(x)
+= \frac{1}{1+e^{-\theta^{T}x}}
+\end{align*}</script><p>$h_{\theta}(x)$是非线性的，如果将这个值带入Cost函数，然后在求代价函数$J(\theta)$，我们会得到如下的有多个局部最优的函数：</p>
+<p><img src="/img/16_08_25/003.png" alt=""></p>
+<p>这种函数的官方名称叫做：<strong>非凸函数</strong>。</p>
+<p>你大概可以感觉到如果把梯度下降算法用在这样一个函数上，不能保证它会收敛到全局最小值。</p>
+<p>相应的，我们期望我们的代价函数$J(\theta)$是一个凸函数：</p>
+<p><img src="/img/16_08_25/004.png" alt=""></p>
+<p>对于这样的函数，我们使用梯度下降算法，才能够保证顺利的收敛到最小值。</p>
+<p>这里导致我们的代价函数是非凸函数的根本原因就在于使用逻辑回归的那一步：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+h\_{\theta}(x)
+= \frac{1}{1+e^{-\theta^{T}x}}
+\end{align*}</script><p>所以我们想做的就是，<strong>另找一个是凸函数的代价函数</strong>使得我们能够方便的找到代价函数的全局最小值。</p>
+<p>因此对于<strong>逻辑回归的代价函数</strong>，形式如下：</p>
+<p><img src="/img/16_08_25/005.png" alt=""></p>
+<p>对应的函数的图形如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$y=1$时</th>
+<th style="text-align:center">$y=0$时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/16_08_25/006.png" alt=""></td>
+<td style="text-align:center"><img src="/img/16_08_25/007.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>现在这种形式的代价函数，有着很多很有趣的性质：</p>
+<ul>
+<li>在$y=1$的情况下：<ul>
+<li>如果假设函数$h_{\theta}(x) = 1$，那么代价函数为0:$Cost=0$。</li>
+<li>如果假设函数$h_{\theta}(x) \rightarrow 0$，那么代价函数趋近于∞:$Cost \rightarrow ∞$</li>
+</ul>
+</li>
+<li>在$y=0$的情况下：<ul>
+<li>如果假设函数$h_{\theta}(x) \rightarrow 1$，那么代价函数为0:$Cost \rightarrow ∞ $。</li>
+<li>如果假设函数$h_{\theta}(x) = 0$，那么代价函数等于0:$Cost = 0$</li>
+</ul>
+</li>
+</ul>
+<p>这就是我们所期望的效果：<strong>当假设函数和期望值越接近时，代价函数值越小，反之越大。</strong></p>
+<h2 id="简化代价函数以及梯度下降"><a href="#简化代价函数以及梯度下降" class="headerlink" title="简化代价函数以及梯度下降"></a>简化代价函数以及梯度下降</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/MtEaZ/simplified-cost-function-and-gradient-descent">视频地址</a></p>
+<p>这节课我们来讲解一种<strong>稍微简单一些的方式来写代价函数</strong>，来替代我们现有的方法。同时也要讲清楚，<strong>如何运用梯度下降法来拟合出逻辑回归的参数$\theta$</strong>。因此，听了这节课，你应该就能够实现一个完整的逻辑回归算法了。</p>
+<h3 id="简化单个样本的代价函数-Cost-h-theta-x-y"><a href="#简化单个样本的代价函数-Cost-h-theta-x-y" class="headerlink" title="简化单个样本的代价函数$Cost(h_{\theta}(x),y)$"></a>简化单个样本的代价函数$Cost(h_{\theta}(x),y)$</h3><p>之前我们讲解了逻辑回归中的代价函数：</p>
+<p><img src="/img/16_08_25/008.png" alt=""></p>
+<p>上图中有：</p>
+<ul>
+<li>我们定义的逻辑回归的整体的代价函数$J(\theta)$</li>
+<li>针对于单个样本的代价函数$Cost(h_{\theta}(x),y)$</li>
+<li>并且我们知道，作为分类问题，我们的$y$的取值永远都是0或者1。</li>
+</ul>
+<p>其中对于单个样本的代价函数$Cost(h_{\theta}(x),y)$，我们可以把$y=0$和$y=1$的两种情况合二为一，写成一个统一的式子：</p>
+<script type="math/tex; mode=display">
+Cost(h\_{\theta}(x),y)=-ylog(h\_{\theta}(x))-(1-y)log(1-h\_{\theta}(x))</script><p>这个表达式和我们之前写的代价函数的表达式，效果是完全一样的，但后者更加紧凑。</p>
+<blockquote>
+<p>我们知道在上面的式子中，$y$的取值非0即1，如果$y=1$那么$Cost(h_{\theta}(x),y)=-log(h_{\theta}(x))$，如果$y=0$那么$Cost(h_{\theta}(x),y)=-log(1-h_{\theta}(x))$。效果和分开写是完全一样的。</p>
+</blockquote>
+<h3 id="拟合逻辑回归的参数-theta"><a href="#拟合逻辑回归的参数-theta" class="headerlink" title="拟合逻辑回归的参数$\theta$"></a>拟合逻辑回归的参数$\theta$</h3><p>这样一来，我们就可以写出完整的逻辑回归的代价函数了：</p>
+<p><img src="/img/16_08_25/009.png" alt=""></p>
+<blockquote>
+<p>似乎我们有其他方式来表示单个样本的代价函数$Cost(h_{\theta}(x),y)$，但在这里不做详细的说明，但是我可以告诉你，现在我们使用的这种形式的代价函数的式子，是从统计学中的<strong>极大似然法</strong>得来的。不过如果你不理解什么是<strong>极大似然法</strong>，以及逻辑回归中的代价函数为什么是这种形式，也没关系，也不会影响你后面的学习。</p>
+</blockquote>
+<p>接下来的问题就是找到使得代价函数$j(\theta)$最小的参数$\theta$了：</p>
+<p><img src="/img/16_08_25/010.png" alt=""></p>
+<p>一旦我们得到了这个合适的$\theta$那么我们就可以对一个给定的样本进行预测了：</p>
+<p><img src="/img/16_08_25/011.png" alt=""></p>
+<blockquote>
+<p>注意：$p(y=1|x;\theta)$就是指关于$x$以$\theta$为参数，$y=1$的概率。</p>
+</blockquote>
+<p>由此可见，我们问题的核心在于求解最小化代价函数：</p>
+<p><img src="/img/16_08_25/012.png" alt=""></p>
+<p>上图就是逻辑回归问题中最小化代价函数的方法，是通过梯度下降算法来实现。</p>
+<p>对上图中的偏导数项展开后就是下面的形式：</p>
+<p><img src="/img/16_08_25/013.png" alt=""></p>
+<p>如果你把上面的式子放到线性回归问题中进行对比的话，<strong>你会发现这个式子正是用来做线性回归梯度下降的。</strong></p>
+<p>那么我们不禁要问一下自己，线性回归算法和逻辑回归算法是一样的吗？</p>
+<p>要回答这个问题，就要看从线性回归，到逻辑回归，到底发生了哪些变化。</p>
+<p>实际上对于假设函数$h_{\theta}(x)$的定义发生了变化：</p>
+<ul>
+<li>线性回归中，假设函数定义为$h_{\theta}(x)=\theta^{T}x$</li>
+<li>在逻辑回归中，假设函数的定义为$h_{\theta}(x)= \frac{1}{1+e^{-\theta^{T}x}}$</li>
+</ul>
+<p>由于假设函数的不同，实际上线性回归和逻辑回归的梯度下降是两个完全不同的东西。</p>
+<p>当我们在讨论线性回归的梯度下降算法时，我们谈到了如何监控梯度下降法以确保其收敛。其实我们通常也把这种方法运用在逻辑回归中，来检测梯度下降，以确保其正常收敛。这里就不多做介绍，可以参考<strong>斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法</strong>来实现。</p>
+<h2 id="高级优化"><a href="#高级优化" class="headerlink" title="高级优化"></a>高级优化</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/licwf/advanced-optimization">视频地址</a></p>
+<p>这节课中会介绍一些高级优化概念和技巧。利用这些技巧，我们就使通过梯度下降进行逻辑回归的速度大大提高，这也将使得算法更加适合解决大型的机器学习问题。</p>
+<h3 id="优化算法概念引入"><a href="#优化算法概念引入" class="headerlink" title="优化算法概念引入"></a>优化算法概念引入</h3><p>现在我们换个角度来看看什么是梯度下降：</p>
+<p>我们有个代价函数$J(\theta)$，并且我们希望最小化代价函数$min_{\theta}J(\theta)$。</p>
+<p>为了得到最小化代价函数$min_{\theta}J(\theta)$，我们需要计算出$J(\theta)$关于每一项$\theta$的偏导：</p>
+<p><img src="/img/16_08_25/014.png" alt=""></p>
+<p>有了上面的$J(\theta)$关于每一项$\theta$的偏导，为了求得合适的$\theta$，我们就可以利用梯度下降算法来递减$\theta$，使其接近全局最小值了：</p>
+<p><img src="/img/16_08_25/015.png" alt=""></p>
+<p>但事实上，<strong>梯度下降并不是我们可以使用的唯一算法</strong>，下面是我们常用的几种算法：</p>
+<ul>
+<li><strong>梯度下降算法(Gradient descent)</strong></li>
+<li><strong>共轭梯度法(Conjugate gradient)</strong></li>
+<li><strong>变尺度法(BFGS)</strong></li>
+<li><strong>限制变尺度法(L-BFGS)</strong></li>
+</ul>
+<p>除了我们常说的梯度下降算法外的其他三种算法，都有着更复杂的方式来求最小化代价函数。但是这三种算法的细节，超出了本门课程的范畴(实际上如果你想要研究这些算法，可能你需要花费几周的时间，你可以专门学一门课程来提高数值计算能力)。不过我会告诉你他们的一些特性。</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>这三种算法有许多优点：</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>不需要手动选择学习率$a$<ul>
+<li>所以对这些算法的一种思路是 给出计算导数项和代价函数$J(\theta)$的方法，你可以认为算法有一个智能的内部循环，这种智能的内部循环被称为<strong>线性搜索(line search)</strong>算法，它可以自动尝试不同的学习速率$a$，并自动选择一个好的学习速率$a$。因此它甚至可以在每次迭代时都选择不同的学习速率，那么你就不需要自己选择$a$了。</li>
+</ul>
+</li>
+<li>通常情况下收敛速度比梯度下降算法更快<ul>
+<li>这些算法实际上在做更复杂的事情，而不仅仅是选择一个好的学习速率$a$，所以他们往往最终收敛的远远快于梯度下降。不过关于它们是如何做到的细节，已经超过了本门课程的范畴。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>实际上，我过去十年我都在相当频繁的使用这几种算法。但直到前几年，我才真正搞清楚共轭梯度法、BFGS和L-BFGS的细节。因此，实际上你完全可以在不了解这些算法的内环间在做什么的的情况下使用这些算法，并应用于许多不同的学习问题。</p>
+</blockquote>
+<p>如果说这些算法优缺点的话，那么它的缺点就是：</p>
+<p><strong>缺点</strong></p>
+<ul>
+<li>比梯度下降法复杂多了<ul>
+<li>如果你不是数值计算方面的专家，不建议你亲自去写共轭梯度法、BFGS和L-BFGS，而是去使用一些现成的库。实际上Octave和Matlab都有很理想的库来实现这些先进的优化算法。值得一提的是，这些算法在不同语言上的实现，是有差别的，有的语言上的库可能会表现的不太好。所以建议对比选择合适的实现。</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><p>接下来来举例说明如何使用这些算法。</p>
+<p>比如你有一个包含两个参数的问题：</p>
+<p><img src="/img/16_08_25/016.png" alt=""></p>
+<p>对于上图中的代价函数，我们可以求得当$\theta_{1}=5$,$\theta_{2}=5$时，$J(\theta)$的值最小。</p>
+<p>下面就看看怎么使用Octave程序来计算$\theta_{1}$和$\theta_{2}$吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function [jVal, gradient] &#x3D; costFunction(theta)</span><br><span class="line"></span><br><span class="line">jVal &#x3D; (theta(1)-5)^2 + (theta(2)-5)^2;</span><br><span class="line"></span><br><span class="line">gradient &#x3D; zeros(2,1);</span><br><span class="line">gradient(1) &#x3D; 2*(theta(1)-5);</span><br><span class="line">gradient(2) &#x3D; 2*(theta(2)-5);</span><br></pre></td></tr></table></figure>
+<p>上面这段代码定义了一个函数<code>costFunction(theta)</code>，参数是一个<code>theta</code>向量，包含$\theta_{1}$和$\theta_{2}$，返回值是<code>jVal</code>和<code>gradient</code>。通过函数的定义，我们可以看出来<code>jVal</code>表示的是代价函数$J(\theta)$：</p>
+<p><img src="/img/16_08_25/018.png" alt=""></p>
+<p><code>gradient</code>是一个列量，其中两个值分别代表对$\theta_{1}$和$\theta_{2}$的偏导：</p>
+<p><img src="/img/16_08_25/019.png" alt=""></p>
+<p>接下来，调用高级优化函数<code>fminunc</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">options &#x3D; optimset(&#39;GradObj&#39;, &#39;on&#39;, &#39;MaxIter&#39;, &#39;100&#39;);</span><br><span class="line">initialTheta &#x3D; zeros(2,1);</span><br><span class="line">[optTheta, functionVal, exitFlag] &#x3D; fminunc(@costFunction, initialTheta, options);</span><br></pre></td></tr></table></figure>
+<p><code>fminunc</code>表示Octave里无约束最小化函数，调用这个函数时，需要传入一个存有配置信息的变量<code>options</code>。上面的代码中，我们的设置项中<code>&#39;GradObj&#39;, &#39;on&#39;,</code>代表设置梯度目标参数为打开状态(on)，这也意味着你现在确实要给这个算法提供一个梯度。<code>&#39;MaxIter&#39;, &#39;100&#39;</code>代表设置最大迭代次数为100次。<code>initialTheta</code>代表我们给出的一个$\theta$的猜测初始值。</p>
+<p>然后我们调用<code>fminunc</code>这个函数，传入三个参数，其中第一个参数<code>@costFunction</code>这里的<code>@</code>符号代表指向之前我们定义的<code>costFunction</code>函数的指针。后面两个参数分别是我们定义的$theta$初始值和配置信息<code>options</code>。</p>
+<p>当我们调用这个<code>fminunc</code>函数时，它会自动的从众多高级优化算法中挑选一个来使用(你也可以把它当做一个可以自动选择合适的学习速率$a$的梯度下降算法)。</p>
+<p>最终我们会得到三个返回值，分别是满足最小化代价函数$J(\theta)$的$\theta$值<code>optTheta</code>，<code>costFunction</code>中定义的<code>jVal</code>的值<code>functionVal</code>，以及标记是否已经收敛的状态值<code>exitFlag</code>，如果已收敛，标记为<code>1</code>，否则为<code>0</code>。</p>
+<p>下面我们看看在Octave中具体怎么操作：</p>
+<p>首先在当前工作目录下创建costFunction.m脚本，写入costFunction函数:</p>
+<p><img src="/img/16_08_25/020.png" alt=""></p>
+<p>然后在Octave终端下带入<code>fminunc</code>函数：</p>
+<p><img src="/img/16_08_25/021.png" alt=""></p>
+<h3 id="在逻辑回归中使用优化算法"><a href="#在逻辑回归中使用优化算法" class="headerlink" title="在逻辑回归中使用优化算法"></a>在逻辑回归中使用优化算法</h3><p>上面的例子是一个简单的二次函数中使用优化算法的例子，下面我们介绍一些在逻辑回归中使用这些算法：</p>
+<p><img src="/img/16_08_25/022.png" alt=""></p>
+<p>上图就是逻辑回归问题的代价函数的求解代码。可以看到大体流程和之前的例子是一致的，你只需要把相应的计算<code>jVal</code>以及各个<code>gradient</code>的代码，按照逻辑回归的规则填写完整即可。</p>
+<blockquote>
+<p>使用了这些复杂的优化算法之后，虽然它将使得调试变得更为困难，但是这些算法的速度远远大于普通的梯度下降算法的速度，因此可以用来处理很大的机器学习问题的时候，可以使用这些高级算法，而不是梯度下降算法。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/08/21/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(1)%E5%88%86%E7%B1%BB%E5%92%8C%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +572,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -467,7 +817,7 @@ g(\theta\_{0}+\theta\_{1}x\_{1}+\theta\_{2}x\_{2}+\theta\_{3}x\_{1}^{2}+\theta\_
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -894,7 +1244,7 @@ x^{(i)}\_{2}
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1242,7 +1592,7 @@ y^{m} \\\\
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1575,7 +1925,7 @@ h\_{θ}(x) = θ\_{0} + θ\_{1}(size) + θ\_{2}\sqrt{(size)}</script><p>这样的
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1856,7 +2206,7 @@ h\_{θ}(x) = θ\_{0} + θ\_{1}(size) + θ\_{2}\sqrt{(size)}</script><p>这样的
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2113,7 +2463,7 @@ A^{T} =
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2333,7 +2683,7 @@ j = 1 时: \frac{∂}{∂θ\_{1}}J(θ\_{0},θ\_{1})
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2398,517 +2748,6 @@ j = 1 时: \frac{∂}{∂θ\_{1}}J(θ\_{0},θ\_{1})
 <p>  这为你提供了另一种方式推出Gradle的命令。如果你的项目需要一些额外的设置，这将会很有用，这是在一个批处理文件或脚本（如指定init脚本）内完成的。</p>
 </li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第一周 (4)一元线性回归</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-07-22 12:07:00" itemprop="dateCreated datePublished" datetime="2016-07-22T12:07:00+00:00">2016-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>线性回归预测一个输入值的一个真值输出。我们讨论了线性回归在住房价格预测中的应用，提出了成本函数的概念，并介绍了学习的梯度下降法。</p>
-</blockquote>
-<h2 id="模型与成本函数-Model-and-Cost-Function"><a href="#模型与成本函数-Model-and-Cost-Function" class="headerlink" title="模型与成本函数(Model and Cost Function)"></a>模型与成本函数(Model and Cost Function)</h2><h3 id="模型表示"><a href="#模型表示" class="headerlink" title="模型表示"></a>模型表示</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/db3jS/model-representation">视频地址</a></p>
-<p>我们的第一个学习算法是<strong>线性回归算法</strong>，在这段视频中，你会看到这个算法的概况。更重要的是你将会了解监督学习过程完整的流程，让我们通过一个例子来开始。</p>
-<p>这个例子是预测住房价格的，我们要使用一个数据集，数据集包含俄勒冈州波特兰市的住房价格。</p>
-<p><img src="/img/16_07_22/001.png" alt=""></p>
-<p>在这里我要根据不同房屋尺寸所售出的价格 画出我的数据集，比方说，我们来看这个数据集，你有一个朋友正想出售自己的房子。如果你朋友的房子是1250平方尺大小，你要告诉他们这房子能卖多少钱，那么你可以做的一件事就是，构建一个模型，也许是条直线，从这个数据模型上来看。也许你可以告诉你的朋友，他能以大约220000(美元)左右的价格卖掉这个房子。</p>
-<p><img src="/img/16_07_22/002.png" alt=""></p>
-<p>那么这就是监督学习算法的一个例子，<strong>它被称作监督学习是因为对于每个数据来说，我们给出了“正确的答案”</strong>，即告诉我们根据我们的数据来说，房子实际的价格是多少，而且更具体来说，这是一个<strong>回归问题</strong>。回归一词指的是我们根据之前的数据预测出一个准确的输出值。对于这个例子就是价格。</p>
-<p>同时，还有另一种最常见的监督学习方式，叫做<strong>分类问题</strong>。当我们想要预测离散的输出值，例如，如果我们正在寻找癌症肿瘤并想要确定肿瘤是良性的还是恶性的，这就是0/1离散输出的问题。</p>
-<p>更进一步来说，在监督学习中我们有一个数据集，这个数据集被称训练集，因此对于房价的例子，我们有一个训练集，包含不同的房屋价格。我们的任务就是从这个数据中学习预测房屋价格。</p>
-<p><img src="/img/16_07_22/003.png" alt=""></p>
-<p>现在我们给出这门课中经常使用的一些符号定义，我们要定义颇多符号，不过没关系，现在你记不住所有的符号也没关系，随着课程的进展，你会发现记住这些符号会很有用。我将在整个课程中<strong>用小写的m来表示训练样本的数目</strong>。</p>
-<p><img src="/img/16_07_22/004.png" alt=""></p>
-<p>因此 在这个数据集中，如果表中有47行，那么我们就有47组训练样本，$m$就等于47。让我用小写字母$x$来表示输入变量，往往也被称为<strong>特征量</strong>，这就是用$x$表示输入的特征，并且我们将用$y$来表示输出变量或者目标变量，也就是我的预测结果。那么这就是第二列，在这里我要使用$(x,y)$来表示一个训练样本，所以在这个表格中的单独的一行对应于一个训​​练样本，为了表示某个训练样本，我将使用$x^{(i)}$与$y^{(i)}$来表示。并且用这个表示第$i$个训练样本，所以这个上标$i$不是求幂运算，这个$(x^{(i)},y^{(i)})$括号里的上标$i$只是一个索引，表示我的训练集里的第i行。这里不是x的i和y的i次方，仅仅是指$(x^{(i)},y^{(i)})$是在此表中的第$i$行。</p>
-<p>举个例子$x^{(1)}$指的是第一个训练集里值为2104的输入值，这个就是第一行里的$x$，$x^{(2)}$ 等于1416吧?这是第二个$x$，$y^{(1)}$等于460，这是我第一个训练集样本的$y$值，这就是$^{(1)}$所代表的含义。</p>
-<p><img src="/img/16_07_22/005.png" alt=""></p>
-<p>像之前一样，我会问你一个问题，需要几秒的时间检查一下你的理解程度，在这个视频片段中，有时会有视频选择题弹出,当它弹出的时候,请使用鼠标来选择你认为正确的答案。这就是一个监督学习算法的工作方式。我们可以看到这里有我们的训练集里房屋价格，我们把它喂给我们的学习算法，这就是学习算法的工作了。然后输出一个函数，按照惯例，通常表示为小写h，<strong>$h$代表hypothesis(假设)</strong>，$h$表示一个函数，输入是房屋尺寸大小。就像你朋友想出售的房屋。因此 h 根据输入的$x$值来得出$y$值，$y$值对应房子的价格，因此，$h$是一个从$x$到$y$的函数映射。</p>
-<p><img src="/img/16_07_22/006.png" alt=""></p>
-<p>人们经常问我为什么这个函数被称作假设(hypothesis)，你们中有些人可能知道hypothesis的意思，从字典或者其它什么方式可以查到。其实在机器学习中这是一个在早期被用于机器学习的名称，它有点绕口。对这类函数来说，这可能不是一个很恰当的名字，对表示从房屋的大小到价格的函数映射，我认为这个词“hypothesis”可能不是最好的名称，但是这是人们在机器学习中使用的标准术语。所以不用太纠结人们为什么这么叫它。</p>
-<p>当设计学习算法的时候，我们接下来需要去思考的是怎样得到这个假设$h$，对于这一点在接下来的几个视频中我将选择最初的使用规则，$h$代表hypothesis。我们将会这么写：</p>
-<script type="math/tex; mode=display">
-h\_{θ}(x) = θ_0 + θ_1 * x</script><p>为了方便有时非书面形式也可以这么写：$h_{θ}(x)$，我就写成$h(x)$，这是缩写方式。但一般来说我会保留这个下标$θ$。所以这就是数据集和函数的作用：用来预测。有时候我们会有更复杂的函数，也许是非线性函数，但是由于线性方程是简单的形式，我们将先从线性方程的例子入手。当然最终我们将会建立更复杂的模型，以及更复杂的学习算法。好吧，让我们也给这模型起一个名字，这个模型被称为线性回归<strong>(linear regression)</strong>模型。另外，这实际上是关于单个变量的线性回归，这个变量就是x。根据x来预测所有的价格函数，同时 对于这种模型有另外一个名称，称作<strong>单变量线性回归</strong>，单变量是对一个变量的一种特别的表述方式，总而言之这就是线性回归，在接下来的视频中我们将开始讨论如何去实现这种模型。</p>
-<h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/rkTp3/cost-function">视频地址</a></p>
-<p>在这段视频中我们将定义<strong>代价函数</strong>的概念，这有助于我们弄清楚如何把最有可能的直线与我们的数据相拟合。在线性回归中我们有一个像这样的训练集，记住，$M$代表了训练样本的数量。所以，比如$M = 47$。而我们的假设函数，也就是用来进行预测的函数，是这样的线性函数形式。</p>
-<p><img src="/img/16_07_22/007.png" alt=""></p>
-<p>接下来我们会引入一些术语，这些$θ_{0}$和$θ_{1}$，这些$θ_{i}$我把它们称为<strong>模型参数</strong>。在这个视频中，我们要做的就是谈谈如何选择这两个参数值$θ_{0}$和$θ_{1}$。选择不同的参数$θ_{0}$和$θ_{1}$，我们会得到不同的假设，不同的假设函数，我知道你们中的有些人可能已经知道我在这张幻灯片上要讲的，但我们还是用这几个例子来复习回顾一下。如果$θ_{0}=1.5$，$θ_{1}=0$ 那么假设函数会看起来是这样:</p>
-<p><img src="/img/16_07_22/008.png" alt=""></p>
-<p>因为你的假设函数是$h(x) = 1.5 + 0 * x$是这样一个常数函数 <code>恒等于1.5</code>。 </p>
-<p>如果$θ_{0} = 0$并且$θ_{1} = 0.5$， 那么假设会看起来像这样:</p>
-<p><img src="/img/16_07_22/009.png" alt=""></p>
-<p>它会通过点$(2,1)$。这样你又得到了$h(x)$或者$h_{θ}(x)$。但是有时我们为了简洁会省略$θ$。因此$h(x)$将等于$0.5$倍的$x$。就像这样。</p>
-<p>最后，如果$θ_{0} = 1$并且$θ_{1} = 0.5$。我们最后得到的假设会看起来像这样:</p>
-<p><img src="/img/16_07_22/010.png" alt=""></p>
-<p>让我们来看看它应该通过点$(2,2)$，这是我的新的$h(x)$或者写作$h_{θ}(x)$。你还记得之前我们提到过$h_{θ}(x)$的。但作为简写，我们通常只把它写作$h(x)$。</p>
-<p>在线性回归中，我们有一个训练集，可能就像我在这里绘制的。我们要做的就是得出$θ_{0}$、$θ_{1}$这两个参数的值，来让假设函数表示的直线尽量地与这些数据点很好的拟合。也许就像这里的这条线一样：</p>
-<p><img src="/img/16_07_22/011.png" alt=""></p>
-<p>那么我们如何得出$θ_{0}$、$θ_{1}$的值来使它很好地拟合数据的呢？我们的想法是我们要选择能使$h(x)$，也就是输入$x$时我们预测的值，最接近该样本对应的$y$值的参数$θ_{0}$、$θ_{1}$。所以，在我们的训练集中我们会得到一定数量的样本。我们知道$x$表示卖出哪所房子,并且知道这所房子的实际价格。所以我们要尽量选择合适的参数值，使得在训练集中给出的$x$值，我们能合理准确地预测$y$的值。</p>
-<blockquote>
-<p>Idea: Choose $θ_{0}$、$θ_{1}$ so that $h_{θ}(x)$ is close to $y$ for our training examples $(x,y)$.</p>
-</blockquote>
-<p>让我们给出标准的定义:在线性回归中我们要解决的是一个最小化问题。所以我要写出关于$θ_{0}$、$θ_{1}$的最小化，而且我希望这个式子极其小，我想要$h(x)$和$y$之间的差异要小。我要做的事情是尽量减少假设的输出与房子真实价格之间的差的平方。</p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}} 
-(h_{θ}(x) - y)^{2}</script><p>接下来我会详细的阐述。</p>
-<p>别忘了，我用符号$(x^{(i)},y^{(i)})$代表第i个样本，所以我想要做的是对所有训练样本进行一个求和，对$i = 1$到$i = m$的样本将对假设进行预测得到的结果，此时的$x^{i}$输入是第$i$号房子的面积。将第$i$号对应的预测结果减去第$i$号房子的实际价格，所得的差的平方相加得到总和而我希望尽量减小这个值，也就是预测值和实际值的差的平方误差和，或者说预测价格和实际卖出价格的差的平方。</p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}} 
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p>我说了这里的$m$指的是训练集的样本容量。而为了让表达式的数学意义变得容易理解一点，我们实际上考虑的是这个数的$1/m$。因此我们要尝试尽量减少我们的平均误差，也就是尽量减少其$1/2m$。通常是这个数的一半。</p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}} 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p>前面的这些只是为了使数学更直白一点，因此对这个求和值的二分之一求最小值应该得出相同的$θ_{0}$值和相同的$θ_{1}$值来，在这里</p>
-<script type="math/tex; mode=display">h\_{θ}(x^{(i)})=θ\_{0} + θ\_{1} * x^{(i)}</script><p>而这个表达式</p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}}</script><p>意味着我们要找到$θ_{0}$和$θ_{1}$的值来使这个表达式的值最小。这个表达式因$θ_{0}$和$θ_{1}$的变化而变化。</p>
-<p>因此，简单地说，我们正在把这个问题变成：找到能使我的训练集中预测值和真实值的差的平方的和的$1/2m$最小的$θ_{0}$和$θ_{1}$的值。因此，这将是我的线性回归的整体目标函数。为了使它更明确一点，我们要改写这个函数。</p>
-<p>按照惯例我要定义一个代价函数：</p>
-<script type="math/tex; mode=display">
-J(θ\_{0},θ\_{1}) = 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p>正如屏幕中所示，这里的这个公式我们想要做的就是关于$θ_{0}$和$θ_{1}$对函数$J(θ_{0}$,$θ_{1})$求最小值。这就是我的代价函数。代价函数也被称作<strong>平方误差函数</strong>，有时也被称为<strong>平方误差代价函数</strong>。事实上我们之所以要求出误差的平方和，是因为误差平方代价函数对于大多数问题，特别是回归问题，都是一个合理的选择。还有其他的代价函数也能很好地发挥作用，但是平方误差代价函数可能是解决回归问题最常用的手段了。</p>
-<p>在后续课程中，我们还会谈论其他的代价函数。但我们刚刚讲的选择是对于大多数线性回归问题非常合理的。好吧，所以这是代价函数，到目前为止我们已经介绍了代价函数的数学定义，也许这个函数$J(θ_{0}$,$θ_{1})$有点抽象，可能你仍然不知道它的内涵，在接下来的几个视频里我们要更进一步解释代价函数$J$的工作原理，并尝试更直观地解释它在计算什么，以及我们使用它的目的。</p>
-<h3 id="代价函数-实例1"><a href="#代价函数-实例1" class="headerlink" title="代价函数 实例1"></a>代价函数 实例1</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/N09c6/cost-function-intuition-i">视频地址</a></p>
-<p>在上一个视频中我们给了代价函数一个数学上的定义，在这个视频里 让我们通过一些例子来获取一些直观的感受，看看代价函数到底是在干什么。</p>
-<p>回顾一下，这是我们上次所讲过的内容：我们想找一条直线来拟合我们的数据，所以我们用θ0，θ1等参数得到了这个假设，而且通过选择不同的参数，我们会得到不同的直线拟合。然后我们还有一个代价函数，这就是我们的优化目标。</p>
-<p><strong>假设(Hypothesis):</strong></p>
-<script type="math/tex; mode=display">
-h\_{θ}(x) = θ_0 + θ_1 * x</script><p><strong>参数(Parameters):</strong></p>
-<script type="math/tex; mode=display">
-θ_0 , θ_1</script><p><strong>代价函数(Cost Function):</strong></p>
-<script type="math/tex; mode=display">
-J(θ\_{0},θ\_{1}) = 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p><strong>目标(Goal):</strong></p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}} 
-J(θ\_{0},θ\_{1})</script><p>在这个视频里，为了更好地将代价函数可视化，我将使用一个简化表示方法来表示假设函数、参数、代价函数以及目标：</p>
-<p><strong>简化的假设函数(Hypothesis):</strong></p>
-<script type="math/tex; mode=display">
-h\_{θ}(x) = θ_1 * x</script><p><strong>简化的参数(Parameters):</strong></p>
-<script type="math/tex; mode=display">
-θ_1</script><p><strong>简化的代价函数(Cost Function):</strong></p>
-<script type="math/tex; mode=display">
-J(θ\_{1}) = 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p><strong>简化的目标(Goal):</strong></p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{1}} 
-J(θ\_{1})</script><p>我们可以将这个假设函数看成是把$θ_{0}$设为0，所以我只有一个参数，也就是$θ_{1}$。代价函数看起来与之前的很像，唯一的区别是现在$h(x) = θ_{1} * x$，只有一个参数$θ_{1}$，所以我的优化目标是将$J(θ_{1})$最小化。用图形来表示就是，如果$θ_{0}$等于零，也就意味这我们选择的假设函数会经过原点，也就是经过坐标$(0,0)$。通过利用简化的假设得到的代价函数 我们可以试着更好地理解代价函数这个概念。</p>
-<p>我们要理解的是这两个重要的函数：第一个是假设函数，第二个是代价函数。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$h_{θ}(x)$ :假设函数</th>
-<th style="text-align:center">$J(θ_{1})$ :代价函数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">(for fixed $θ_{1}$,this is a function of x)</td>
-<td style="text-align:center">(function of the parameter $θ_{1}$)</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/img/16_07_22/012.png" alt=""></td>
-<td style="text-align:center"><img src="/img/16_07_22/013.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>注意这个假设函数$h_{θ}(x)$对于一个固定的$θ_{1}$是一个关于$x$的函数。所以这个假设函数就是一个关于$x$这个房子大小的函数。与此不同的是，代价函数$J$是一个关于参数$θ_{1}$的函数，而$θ_{1}$控制着这条直线的斜率。通过上图我们可以很好的理解，比如说这里是我的训练样本，它包含了三个点$(1,1)$，$(2,2)$和$(3,3)$。现在我们选择一个值$θ_{1}$，所以当$θ_{1} = 1$，如果这是我选择的$θ_{1}$，那么我的假设函数看起来就会像是这条直线。我将要指出的是，X轴是表示房子大小的量。现在暂时把$θ_{1}$定为1，我想要做的就是算出在$θ_{1} = 1$的时候$J(θ_{1})$等于多少。所以我们按照这个思路来计算代价函数的大小，和之前一样，代价函数定义如下:</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-J(θ\_{1}) &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(θ\_1x^{(i)} - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-(0^2 + 0^2 + 0^2)\\\\
- &= 0
-\end{align*}</script><p>对这个误差平方项进行求和，这就等于这样一个形式，简化以后就等于三个0的平方和，当然还是0。现在，在代价函数里，我们发现所有这些值都等于0。因为对于我所选定的这三个训练样本$(1,1)$，$(2,2)$和$(3,3)$，如果$θ_{1} = 1$，那么$h_{θ}(x^{(i)})$就会正好等于$y^{(i)}$。所以$h(x) - y$所有的这些值都会等于零。这也就是为什么$J(1) = 0$。所以我们现在知道了$J(1) = 0$，如下图，要注意的是，因为我的代价函数是关于参数$θ_{1}$的函数，当我描绘我的代价函数时，$X$轴就是$θ_{1}$。</p>
-<p><img src="/img/16_07_22/014.png" alt=""></p>
-<p>现在我有$J(1) = 0$，让我们继续把函数画出来，结果我们会得到这样一个点。</p>
-<p>现在我们来看其它一些样本$θ_{1}$可以被设定为某个范围内各种可能的取值，所以$θ_{1}$可以取负数、0或者正数。所以如果$θ_{1} = 0.5$会发生什么呢？继续把它画出来:</p>
-<p><img src="/img/16_07_22/015.png" alt=""></p>
-<p>这条线的斜率等于0.5，现在让我们计算$J(0.5)$。</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-J(θ\_{1}) &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(θ\_1x^{(i)} - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-((0.5 - 1)^2 + (1 - 2)^2 + (1.5 - 3)^2)\\\\
- &\approx 0.58
-\end{align*}</script><p>让我们把点画出来：</p>
-<p><img src="/img/16_07_22/016.png" alt=""></p>
-<p>让我们试试$θ_{1}$等于0，$J(0)$会等于多少呢？如果$θ_{1} = 0$，那么$h(x)$就会等于一条水平的线。如下图：</p>
-<p><img src="/img/16_07_22/017.png" alt=""></p>
-<p>计算$J(0)$：</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-J(θ\_{1}) &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h\_{θ}(x^{(i)}) - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(θ\_1x^{(i)} - y^{(i)})^{2}\\\\
- &= 
-\frac{1}{2m}
-((0 - 1)^2 + (0 - 2)^2 + (0 - 3)^2)\\\\
- &\approx 2.33
-\end{align*}</script><p>所以让我们接着把这个点也画出来，所以这个点最后是2.3：</p>
-<p><img src="/img/16_07_22/018.png" alt=""></p>
-<p>当然我们可以接着设定$θ_{1}$等于别的值进行计算，你也可以把$θ_{1}$设定成一个负数，所以如果$θ_{1}$是负数，那么h(x)将会等于，打个比方说－0.5乘以x然后$θ_{1}$就是-0.5，那么这将会对应着一个斜率为-0.5的假设函数，而且你可以 继续计算这些误差。结果你会发现对于0.5结果会是非常大的误差，最后会得到一个较大的数值，类似于5.25，等等。对于不同的$θ_{1}$，你可以计算出这些对应的值，结果你会发现，你算出来的这些值，你得到一条这样的曲线，通过计算这些值，你可以慢慢地得到这条线，这就是$J(θ)$的样子了。</p>
-<p><img src="/img/16_07_22/019.png" alt=""></p>
-<p>我们来回顾一下，任何一个$θ_{1}$的取值对应着一个不同的假设函数，或者说对应着左边一条不同的拟合直线。对于任意的$θ_{1}$你可以算出一个不同的$J(θ1)$的取值。举个例子，你知道的$θ_{1} = 1$时对应着穿过这些数据的那条直线，当$θ_{1} = 0.5$，对应着上面斜率为0.5的那条直线，然后$θ_{1} = 0$，对应着过原点的水平的线。所以对于任意一个$θ_{1}$的取值，我们会得到一个不同的$J(θ_{1})$，而且我们可以利用这些来描出上边的这条曲线。</p>
-<p><img src="/img/16_07_22/013.png" alt=""></p>
-<p>现在你还记得学习算法的优化目标，是我们想找到一个$θ_{1}$的值来将$J(θ_{1})$最小化，这是我们线性回归的目标函数。嗯，看这条曲线，让$J(θ_{1})$最小化的值 是$θ_{1} = 1$，然后你看，这个确实就对应着最佳的通过了数据点的拟合直线，这条直线就是由$θ_{1} = 1$的设定而得到的，然后，对于这个特定的训练样本，我们最后能够完美地拟合。这就是为什么最小化$J(θ_{1})$对应着寻找一个最佳拟合直线的目标。总结一下，在这个视频里我们看到了一些图形来理解代价函数，要做到这个，我们简化了算法，让这个函数只有一个参数$θ_{1}$，也就是说我们把$θ_{0}$设定为0，在下一个视频里我们将回到原来的问题的公式，然后看一些带有$θ_{0}$和$θ_{1}$的图形，也就是说不把$θ_{0}$设置为0了，希望这会让你更好地理解在原来的线性回归公式里代价函数$J$的意义。</p>
-<h3 id="代价函数-实例2"><a href="#代价函数-实例2" class="headerlink" title="代价函数 实例2"></a>代价函数 实例2</h3><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/nwpe2/cost-function-intuition-ii">视频地址</a></p>
-<p>这节课中，我们将更深入地学习代价函数的作用。这段视频的内容假设你已经认识轮廓图，如果你对轮廓图不太熟悉的话，这段视频中的某些内容你可能会听不懂。但不要紧，如果你跳过这段视频的话，也没什么关系。不听这节课对后续课程理解影响不大。</p>
-<p>和之前一样，这是我们的几个重要公式：</p>
-<p><strong>假设(Hypothesis):</strong></p>
-<script type="math/tex; mode=display">
-h\_{θ}(x) = θ_0 + θ_1 * x</script><p><strong>参数(Parameters):</strong></p>
-<script type="math/tex; mode=display">
-θ_0 , θ_1</script><p><strong>代价函数(Cost Function):</strong></p>
-<script type="math/tex; mode=display">
-J(θ\_{0},θ\_{1}) = 
-\frac{1}{2m}
-\sum\_{i=1}^{m}
-(h_{θ}(x^{(i)}) - y^{(i)})^{2}</script><p><strong>目标(Goal):</strong></p>
-<script type="math/tex; mode=display">
-\mathop{minimze}\limits\_{θ\_{0}θ\_{1}} 
-J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写成$θ_{0}$、$θ_{1}$的形式，便于这里我们要对代价函数进行的可视化。和上次一样，首先来理解假设$h$和代价函数$J$。</p>
-<p>这是房价数据组成的训练集数据:</p>
-<p><img src="/img/16_07_22/020.png" alt=""></p>
-<p>让我们来构建某种假设：如果我假设$θ_{0} = 50$，$θ_{1} = 0.06$的话，那么我将得到这样一个假设函数：</p>
-<p><img src="/img/16_07_22/021.png" alt=""></p>
-<p>那么现在的代价函数图像要怎么画呢？上一节我们只有一个$θ$，我们画出来的图形是一个倒过来的抛物线图，可是现在我们有了两个变量：$θ_{0}$和$θ_{1}$，我们的代价函数图就成了一个三维曲面图，水平方向的两个轴分别表示$θ_{0}$和$θ_{1}$，我们要在下面画出代价函数的图像：</p>
-<p><img src="/img/16_07_22/022.png" alt=""></p>
-<p>随着你改变$θ_{0}$和$θ_{1}$的大小，你会得到不同的代价函数 $J(θ_{0}$,$θ_{1})$对于某个特定的点$(θ_{0}$,$θ_{1})$这个曲面的高度，也就是竖直方向的高度，就表示代价函数$J(θ_{0}$,$θ_{1})$的值。</p>
-<p>不难发现这是一个弓形曲面。我们来看看三维图，旋转一下这个图你就更能理解这个弓形曲面所表示的代价函数了：</p>
-<p><img src="/img/16_07_22/023.gif" alt=""></p>
-<p>在这段视频的后半部分，为了描述方便，我将不再像这样给你用三维曲面图的方式解释代价函数$J$，而是用<strong>轮廓图(contour plot)</strong>来表示，下边就是一个轮廓图</p>
-<p><img src="/img/16_07_22/024.png" alt=""></p>
-<p>两个轴分别表示$θ_{0}$和$θ_{1}$，而这些一圈一圈的椭圆形，每一个圈就表示$J(θ_{0}$,$θ_{1})$相同的所有点的集合。如果你之前没怎么接触轮廓图的话，你就这么想：一个弓形的函数从屏幕里冒出来，因此最小值也就是这个弓形的最低点就是这个点，也就是这一系列同心椭圆的中心点。因此轮廓图是一种很方便的方法 能够直观地观察代价函数$J$。</p>
-<p>接下来让我们看几个例子：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$h_{θ}(x)$ :假设函数</th>
-<th style="text-align:center">$J(θ_{1})$ :代价函数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
-<td style="text-align:center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/img/16_07_22/025.png" alt=""></td>
-<td style="text-align:center"><img src="/img/16_07_22/026.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>在代价函数的图上这一点表示$θ_{0} = 800$，$θ_{1} = -0.15$，坐标为$(800,-0.15)$。而这个点也对应于左边这样一条线，$θ_{0} = 800$也就是跟纵轴相交于大约800，斜率大概是-0.15。当然，这条线并不能很好地拟合数据。并且你也发现了，这个代价值，距离最小值点还很远。也就是说这个代价值还是算比较大的，因此不能很好拟合数据。</p>
-<p>让我们再来看另一个假设：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$h_{θ}(x)$ :假设函数</th>
-<th style="text-align:center">$J(θ_{1})$ :代价函数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
-<td style="text-align:center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/img/16_07_22/027.png" alt=""></td>
-<td style="text-align:center"><img src="/img/16_07_22/028.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>你不难发现，这依然不是一个好的拟合，但比刚才稍微好一点。这里$θ_{0} = 360$，$θ_{1} = 0$。因此这组$θ$值对应的假设是:$h(x) = 360 + 0 × x$，这个假设同样也有某个代价值，而这个代价值就对应于这个代价函数在这一点的高度。</p>
-<p>让我们再来看另一个例子：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$h_{θ}(x)$ :假设函数</th>
-<th style="text-align:center">$J(θ_{1})$ :代价函数</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">(for fixed $θ_{0}$,$θ_{1}$,this is a function of x)</td>
-<td style="text-align:center">(function of the parameter $θ_{0}$,$θ_{1}$)</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/img/16_07_22/029.png" alt=""></td>
-<td style="text-align:center"><img src="/img/16_07_22/030.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>这个点其实不是最小值，但已经非常靠近最小值点了。这个点对数据的拟合就很不错。这个点虽然不在最小值点，但非常接近了。因此误差平方和，或者说训练样本和假设的距离的平方和，非常接近于最小值。尽管它还不是最小值。</p>
-<p>通过这些图形我希望你能更好地理解这些代价函数$J$所表达的值，它们是什么样的，它们对应的假设是什么样的，以及什么样的假设对应的点更接近于代价函数$J$的最小值。当然我们真正需要的是一种有效的算法，能够自动地找出这些使代价函数$J$取最小值的参数$θ_{0}$和$θ_{1}$来。我想我们也不希望编个程序，把这些点画出来，然后人工的方法来读出这些点的数值。这很明显不是一个好办法。事实上我们后面就会学到，我们会遇到更复杂、更高维度、更多参数的情况，这在我们在后面的视频中很快就会遇到。而这些情况是很难画出图的，因此更无法将其可视化。因此我们真正需要的是编写程序来找出这些最小化代价函数的$θ_{0}$和$θ_{1}$的值。在下一节视频中 我们将介绍一种算法<strong>能够自动地找出能使代价函数$J$最小化的参数$θ_{0}$和$θ_{1}$的值</strong>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(3)%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/07/20/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(3)%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第一周 (3)无监督学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-07-20 12:22:00" itemprop="dateCreated datePublished" datetime="2016-07-20T12:22:00+00:00">2016-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/olRZo/unsupervised-learning">视频地址</a></p>
-<p>在这段视频中我们要讲第二种主要的机器学习问题，叫做无监督学习.</p>
-<p>在上一节视频中，我们已经讲过了监督学习。回想起上次的数据集，每个样本，都已经被标明为正样本或者负样本，即良性或恶性肿瘤。</p>
-<p><img src="/img/16_07_20/001.png" alt=""></p>
-<p>因此，对于监督学习中的每一个样本，我们已经被清楚地告知了什么是所谓的正确答案，即它们是良性还是恶性。在无监督学习中，我们用的数据会和监督学习里的看起来有些不一样。在无监督学习中，没有属性或标签这一概念，也就是说所有的数据都是一样的，没有区别。</p>
-<p><img src="/img/16_07_20/002.png" alt=""></p>
-<p>所以在无监督学习中我们只有一个数据集，没人告诉我们该怎么做，我们也不知道，每个数据点究竟是什么意思。相反，它只告诉我们现在有一个数据集，你能在其中找到某种结构吗？对于给定的数据集，无监督学习算法可能判定该数据集包含两个不同的聚类。</p>
-<p>你看，这是第一个聚类。</p>
-<p><img src="/img/16_07_20/003.png" alt=""></p>
-<p>然后这是另一个聚类。</p>
-<p><img src="/img/16_07_20/004.png" alt=""></p>
-<p>你猜对了，无监督学习算法会把这些数据分成两个不同的聚类。</p>
-<p>所以这就是所谓的聚类算法，实际上它被用在许多地方。</p>
-<p>我们来举一个聚类算法的栗子。Google新闻的例子，如果你还没见过这个页面的话，你可以到这个URL <a target="_blank" rel="noopener" href="http://news.google.com">news.google.com</a>去看看。谷歌新闻每天都在干什么呢？他们每天会去收集成千上万的网络上的新闻，然后将他们分组，组成一个个新闻专题。</p>
-<p><img src="/img/16_07_20/005.png" alt=""></p>
-<p>比如让我们来看看这里：</p>
-<p><img src="/img/16_07_20/006.png" alt=""></p>
-<p>这里的URL链接连接着不同的有关BP油井事故的报道。所以让我们点击这些URL中的一个，然后我们会来到这样一个网页。</p>
-<p><img src="/img/16_07_20/007.png" alt=""></p>
-<p>这是一篇来自华尔街日报的，有关BP油井泄漏事故的报道，标题为《BP杀死了Macondo》。Macondo是个地名，就是那个漏油事故的地方。如果你从这个组里点击一个不同的URL，那么你可能会得到不同的新闻：这里是一则CNN的新闻，是一个有关BP石油泄漏的视频。</p>
-<p><img src="/img/16_07_20/008.png" alt=""></p>
-<p>如果你再点击第三个链接，又会出现不同的新闻。这边是英国卫报的报道，也是关于BP石油泄漏。</p>
-<p><img src="/img/16_07_20/009.png" alt=""></p>
-<p>所以，谷歌新闻所做的就是，去搜索成千上万条新闻，然后自动的将他们聚合在一起。因此，有关同一主题的新闻被显示在一起。</p>
-<p>实际上聚类算法和无监督学习算法也可以被用于许多其他的问题。这里我们举个它在基因组学中的应用。</p>
-<p>下面是一个关于基因芯片的例子，基本的思想是：给定一组不同的个体 对于每个个体，检测它们是否拥有某个特定的基因。也就是说，你要去分析有多少基因显现出来了。因此，这些颜色：红、绿、灰等等，它们 展示了这些不同的个体是否拥有一个特定基因的不同程度。</p>
-<p><img src="/img/16_07_20/010.png" alt=""></p>
-<p>然后你能做的就是，运行一个聚类算法，把不同的个体归入不同的类或归为不同类型的人。</p>
-<p><img src="/img/16_07_20/011.png" alt=""></p>
-<p>这就是无监督学习。我们没有提前告知这个算法：这些是第一类的人，这些是第二类的人，这些是第三类的人等等。相反我们只是告诉算法：你看！这儿有一堆数据，我不知道这个数据是什么东东，我不知道里面都有些什么类型，叫什么名字，我甚至不知道都有哪些类型。但是，请问你可以自动的找到这些数据中的类型吗？然后自动的按得到的类型把这些个体分类。虽然事先我并不知道哪些类型。因为对于这些数据样本来说，我们没有给算法一个正确答案，所以，这就是无监督学习。</p>
-<p>无监督学习或聚类算法在其他领域也有着大量的应用，它被用来组织大型的计算机集群。</p>
-<p>我有一些朋友在管理大型数据中心，也就是大型计算机集群，并试图找出哪些机器趋向于协同工作，如果你把这些机器放在一起，你就可以让你的数据中心更高效地工作。</p>
-<p><img src="/img/16_07_20/012.png" alt=""></p>
-<p>第二种应用是用于社交网络的分析 </p>
-<p>如果可以得知哪些朋友你用email联系的最多，或者知道你的Facebook好友或者你Google+里的朋友，知道了这些之后，我们是否可以自动识别哪些是很要好的朋友组，哪些仅仅是互相认识的朋友组。</p>
-<p><img src="/img/16_07_20/013.png" alt=""></p>
-<p>还有在市场分割中的应用中，许多公司拥有庞大的客户信息数据库。那么，给你一个客户数据集，你能否自动找出不同的市场分割，并自动将你的客户分到不同的细分市场中，从而有助于我在不同的细分市场中进行更有效的销售。</p>
-<p><img src="/img/16_07_20/014.png" alt=""></p>
-<p>这也是无监督学习。我们现在有这些客户数据，但我们预先并不知道 有哪些细分市场。而且，对于我们数据集的某个客户，我们也不能预先知道谁属于细分市场一、谁又属于细分市场二等等。但我们必须让这个算法自己去从数据中发现这一切。</p>
-<p>最后，事实上无监督学习也被用于天文数据分析。通过这些聚类算法我们发现了许多惊人的、有趣的，以及实用的，关于星系是如何诞生的理论。</p>
-<p><img src="/img/16_07_20/015.png" alt=""></p>
-<p>所有这些都是聚类算法的例子。而聚类只是无监督学习的一种，现在让我来告诉你另一种，我先来介绍一下鸡尾酒宴问题：</p>
-<p>恩，我想你参加过鸡尾酒会的，是吧？嗯，想象一下，有一个宴会，有一屋子的人，大家都坐在一起，而且在同时说话，有许多声音混杂在一起。因为每个人都是在同一时间说话的，在这种情况下你很难听清楚你面前的人说的话。</p>
-<p>因此，比如有这样一个场景：宴会上只有两个人，两个人同时说话。恩，这是个很小的鸡尾酒宴会，我们准备好了两个麦克风，把它们放在房间里，然后，因为这两个麦克风距离这两个人的距离是不同的，每个麦克风都记录下了来自两个人的声音的不同组合。也许A的声音在第一个麦克风里的声音会响一点，也许B的声音在第二个麦克风里会比较响一些。因为两个麦克风的位置相对于两个说话者的位置是不同的，但每个麦克风都会录到来自两个说话者的重叠部分的声音。</p>
-<p><img src="/img/16_07_20/016.png" alt=""></p>
-<p>这里有一个来自一个研究员录下的两个说话者的声音，让我先放给你听。第一个这是第一个麦克风录到的录音： </p>
-<p><a href="/audio/16_07_20/001.mp3">Microphone #1</a><br>一 (UNO) 二 (DOS) 三 (TRES) 四 (CUATRO) 五 (CINCO) 六 (SEIS) 七 (SIETE) 八 (ocho) 九 (NUEVE) 十 (Y DIEZ) </p>
-<p>好吧 这大概不是什么有趣的酒会…… ……在这个酒会上，有两个人，各自从1数到10。但用的是两种不同语言。你刚才听到的是第一个麦克风的录音，这里是第二个的： </p>
-<p><a href="/audio/16_07_20/001.mp3">Microphone #2</a></p>
-<p>一 (UNO) 二 (DOS) 三 (TRES) 四 (CUATRO) 五 (CINCO) 六 (SEIS) 七 (SIETE) 八 (ocho) 九 (NUEVE) 十 (Y DIEZ) </p>
-<p>所以，我们能做的就是把这两个录音输入一种无监督学习算法中，称为“鸡尾酒会算法”，让这个算法帮你找出其中蕴含的分类，然后这个算法就会去听这些录音，并且你知道这听起​​来像两个音频录音被叠加在一起，所以我们才能听到这样的效果。此外这个算法还会分离出这两个被 叠加到一起的音频源。事实上，这是我们的鸡尾酒会算法的第一个输出：</p>
-<p><a href="/audio/16_07_20/003.mp3">Output #1</a> </p>
-<p>一 二 三 四 五 六 七 八 九 十 </p>
-<p>所以我在一个录音中分离出了英文声音。这是第二个输出：</p>
-<p><a href="/audio/16_07_20/002.mp3">Output #2</a></p>
-<p>Uno dos tres quatro cinco seis siete ocho nueve y diez </p>
-<p>听起来不错嘛。再举一个例子，这是另一个录音，也是在一个类似的场景下，这是第一个麦克风的录音：</p>
-<p><a href="/audio/16_07_20/004.mp3">Microphone #1</a></p>
-<p> 一 二 三 四 五 六 七 八 九 十 </p>
-<p>OK，这个可怜的家伙从鸡尾酒会回家了，他现在独自一人坐在屋里对着录音机自言自语，这是第二个麦克风的录音：</p>
-<p><a href="/audio/16_07_20/005.mp3">Microphone #2</a></p>
-<p>一 二 三 四 五 六 七 八 九 十 </p>
-<p>当你把这两个麦克风录音送给与刚刚相同的算法处理，它所做的还是 告诉你这听起来有两种音频源，并且算法说，这里是我找到的第一个音频源：</p>
-<p><a href="/audio/16_07_20/006.mp3">Output #1</a></p>
-<p>一 二 三 四 五 六 七 八 九 十 </p>
-<p>恩，不是太完美，提取到了人声，但还有一点音乐没有剔除掉。这是算法的第二个输出：</p>
-<p><a href="/audio/16_07_20/007.mp3">Output #2</a></p>
-<p>还好，在第二个输出中，它设法剔除掉了整个人声，只是清理了下音乐剔除了从一到十的计数。</p>
-<p>所以，你可以看到，像这样的无监督学习算法，也许你想问，要实现这样的算法很复杂吧？ 看起来为了构建这个应用程序做这个音频处理似乎需要写好多代码啊，或者需要链接到一堆处理音频的Java库，貌似需要一个非常复杂的程序分离出音频等。</p>
-<p>实际上，要实现你刚刚听到的效果，只需要一行代码就可以了。写在这里呢。</p>
-<p><img src="/img/16_07_20/017.png" alt=""></p>
-<p>当然，研究人员花了很长时间才想出这行代码的^-^，我不是说这是一个简单的问题，但事实上，如果你使用正确的编程环境，许多学习算法是用很短的代码写出来的。所以这也是为什么在这门课中我们要使用Octave的编程环境。</p>
-<p>Octave是一个免费的、开放源码的软件。使用Octave或Matlab这类的工具，许多学习算法都可以用几行代码就可以实现。在后续课程中，我会教你如何使用Octave。你会学到如何在Octave中实现这些算法，或者如果你有Matlab，你可以用它。</p>
-<p>事实上，在硅谷，很多的机器学习算法，我们都是先用Octave写一个程序原型。因为在Octave中实现这些学习算法的速度快得让你无法想象。</p>
-<p>在这里每一个函数，例如：SVD意思是奇异值分解，但这其实是解线性方程的一个惯例，它被内置在Octave软件中了。</p>
-<p>如果你试图在C++或Java中做这个，将需要写N多代码，并且还要连接复杂的C++或Java库。所以，你可以在C++或Java或Python中实现这个算法，只是会更加复杂而已。</p>
-<p>在教授机器学习将近10年后，我得出的一个经验就是，如果你使用Octave的话，会学的更快。并且如果你用Octave作为你的学习工具 和开发原型的工具，你的学习和开发过程会变得更快。而事实上在硅谷 很多人会这样做。他们会先用Octave来实现这样一个学习算法原型，只有在确定这个算法可以工作后，才开始迁移到C++、Java或其它编译环境。事实证明，这样做实现的算法，比你一开始就用C++实现的算法要快多了。</p>
-<p>所以我知道，作为一个老师，我不能老是念叨：“在这个问题上相信我“ 但对于那些从来没有用过这种类似Octave的编程环境的童鞋，我还是要请你相信我这一次，我认为你的时间，研发时间，是你最宝贵的资源之一。</p>
-<p>当见过很多的人这样做以后，我觉得如果你也这样做，作为一个机器学习的研究者和开发者，你会更有效率。如果你学会先用Octave开发原型，而不是先用其他的编程语言来开发。</p>
-<p>最后，总结一下。这里有一个问题需要你来解答：</p>
-<p>我们谈到了无监督学习，它是一种学习机制，你给算法大量的数据，要求它找出数据中蕴含的类型结构，以下的四个例子中，哪一个您认为是 无监督学习算法，而不是监督学习问题？</p>
-<ul>
-<li>通过标记邮件是否为垃圾邮件来实现的垃圾邮件过滤器。</li>
-<li>从网络中爬取一些新闻，按照相同的类别进行自动分组。</li>
-<li>通过一个市场数据库，来自动的发现市场细分类别。</li>
-<li>通过一系列糖尿病患者的数据信息来学习，达到能分辨一个新的患者是否得了糖尿病。</li>
-</ul>
-<p>恩，没忘记垃圾邮件文件夹问题吧？如果你已经标记过数据，那么就有垃圾邮件和非垃圾邮件的区别，我们会将此视为一个监督学习问题。</p>
-<p>新闻故事的例子正是我们在本课中讲到的谷歌新闻的例子。我们介绍了你可以如何使用聚类算法这些文章聚合在一起，所以这是无监督学习问题。</p>
-<p>市场细分的例子，我之前有说过这也是一个无监督学习问题。因为我是要拿到数据，然后要求它自动发现细分市场。</p>
-<p>最后一个例子，糖尿病。这实际上就像我们上节课讲到的乳腺癌的例子 只不过这里不是好的或坏的癌细胞，良性或恶性肿瘤。我们现在是有糖尿病或没有糖尿病。所以这是有监督的学习问题，像处理那个乳腺癌的问题一样。我们会把它作为一个有监督的学习问题来处理。</p>
-<p>好了，关于无监督学习问题就讲这么多了，下一节课中我们会涉及到更具体的学习算法，并开始讨论这些算法是如何工作的，以及我们如何来实现它们。</p>
 
       
     </div>
@@ -2995,18 +2834,18 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

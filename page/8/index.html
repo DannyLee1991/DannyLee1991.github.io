@@ -191,6 +191,411 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/30/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%881%EF%BC%89-%E6%90%9C%E6%88%BF%E7%BD%91%E6%95%B0%E6%8D%AE%E7%88%AC%E5%8F%96/" class="post-title-link" itemprop="url">房价预测（1）-搜房网数据爬取</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-30 22:21:58" itemprop="dateCreated datePublished" datetime="2016-11-30T22:21:58+00:00">2016-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="搜房网数据爬取"><a href="#搜房网数据爬取" class="headerlink" title="搜房网数据爬取"></a>搜房网数据爬取</h2><blockquote>
+<p>如今<strong>房事</strong>牵动着每家每户的心，所以以搜房网数据为例，用程序员的角度去客观分析一下房价走势，并对房价数据进行预测，也顺便对学到的<strong>机器学习</strong>相关知识练练手。</p>
+</blockquote>
+<h3 id="爬虫Scrapy"><a href="#爬虫Scrapy" class="headerlink" title="爬虫Scrapy"></a>爬虫Scrapy</h3><p>数据分析的第一步，当然是数据的采集。这里我使用的是<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/">Scrpy</a>。这是一个开源的python爬虫框架，可以很方便的处理很多爬虫方面的工作，而且中文的文档写的也比较明确。</p>
+<p>安装好python环境后，通过pip即可安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Scrapy</span><br></pre></td></tr></table></figure>
+<p>具体使用方式，可以看一下这个<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/intro/tutorial.html">Scrapy入门教程</a>，也不难，这里就不做过多的介绍了。</p>
+<h3 id="fang-com从何处入手呢？"><a href="#fang-com从何处入手呢？" class="headerlink" title="fang.com从何处入手呢？"></a>fang.com从何处入手呢？</h3><p>大致了解了Scrapy的用法之后，我们就可以实际操作一把了。那么我们面对搜房网这个庞然大物到底要从何处开始爬呢？</p>
+<p>首先，先声明一下我的目的：目的是分析房价数据，所以要爬取的数据主要是每个房源信息的数据咯。</p>
+<p>想要拿到每条房源信息的url，通常我们是拿到每个列表页的数据。</p>
+<p>那么我们第一个要爬取的数据就是房源列表信息了。</p>
+<h4 id="列表爬取"><a href="#列表爬取" class="headerlink" title="列表爬取"></a>列表爬取</h4><p>所谓列表页，就是这个页面：<a target="_blank" rel="noopener" href="http://esf.sh.fang.com/housing/">上海二手房</a>，下面“全部小区”部分的列表信息就是我们想要的。</p>
+<p>通过观察搜房网，我发现还有另外一个列表页入口，看起来似乎更容易爬取一些，就是：<a target="_blank" rel="noopener" href="http://esf.sh.fang.com/map/">地图页</a>。</p>
+<p>在这个页面左侧有个列表：</p>
+<p><img src="/img/16_11_30/001.png" alt=""></p>
+<p>进一步点击这个列表，最后我们可以得到这个页面：</p>
+<p><img src="/img/16_11_30/002.png" alt=""></p>
+<p>通过抓包工具，我们可以看到这个列表通过Ajax发送get请求，得到一段json数据：</p>
+<p><img src="/img/16_11_30/003.png" alt=""></p>
+<p>我们真正想要的数据在这段json中最后的<code>item</code>中：</p>
+<p><img src="/img/16_11_30/004.png" alt=""></p>
+<p>这里藏的就是这个列表的html代码。</p>
+<p>回过头来，再来看看我们请求的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;district&#x3D;996&amp;subwayline&#x3D;&amp;subwaystation&#x3D;&amp;price&#x3D;&amp;room&#x3D;&amp;area&#x3D;&amp;towards&#x3D;&amp;floor&#x3D;&amp;hage&#x3D;&amp;equipment&#x3D;&amp;keyword&#x3D;&amp;comarea&#x3D;21929&amp;orderby&#x3D;30&amp;isyouhui&#x3D;&amp;x1&#x3D;120.798&amp;y1&#x3D;30.926054&amp;x2&#x3D;122.177798&amp;y2&#x3D;31.571157&amp;newCode&#x3D;&amp;houseNum&#x3D;&amp;schoolDist&#x3D;&amp;schoolid&#x3D;&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;1&amp;zoom&#x3D;16&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan</span><br></pre></td></tr></table></figure>
+<p>这里需要凭借直觉来剔除掉一些多余的参数的，至少满足请求到的数据不是局限于<strong>崇明区</strong>的，而是全上海的。</p>
+<p>经过一些尝试之后，我发现下面这个url可以请求到全部的列表数据，其中<code>PageNo</code>参数是页数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;2&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan</span><br></pre></td></tr></table></figure>
+<p>我们可以先通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scrapy shell &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;2&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>来找出房源详情页的url。</p>
+<p>最终，我发现通过<code>response.xpath(&quot;//a/@href&quot;).extract()</code>可以提取出所有的链接地址，其中如果url中包含<code>&quot;esf&quot;</code>字符串，是二手房房源的url地址。所以<code>parse()</code>的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def parse(self, response):</span><br><span class="line"></span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样我们就得到了所有二手房房源详情页面的url了。</p>
+<blockquote>
+<p>这里有一个小坑：</p>
+<p>这一行代码<code>i_str = str(i).encode(&quot;utf-8&quot;)</code>中，由于i默认没有解码成utf-8的格式，所以不能直接和字符串<code>&quot;esf&quot;</code>进行运算，所以需要一部encode操作。</p>
+</blockquote>
+<h4 id="详情页爬取"><a href="#详情页爬取" class="headerlink" title="详情页爬取"></a>详情页爬取</h4><p>对于详情页，我主要想爬取的数据如下：</p>
+<p><img src="/img/16_11_30/005.png" alt=""></p>
+<p>这个页面似乎没有什么取巧的方式了，只能硬着头皮去看他的源码，一层层的抽取了。下面是详情页解析的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line">def parse_details(self, response):</span><br><span class="line"></span><br><span class="line">        # path</span><br><span class="line">        xpath &#x3D; &quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;main clearfix&#39;]&#x2F;div[@class&#x3D;&#39;mainBoxL&#39;]&quot;</span><br><span class="line">        div_title &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;title&#39;]&quot;</span><br><span class="line">        p_gray9 &#x3D; &quot;&#x2F;p[@class&#x3D;&#39;gray9&#39;]&quot;</span><br><span class="line">        h1 &#x3D; &quot;&#x2F;h1&quot;</span><br><span class="line">        span_mr10 &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;mr10&#39;]&quot;</span><br><span class="line">        div_houseInfor_clearfix &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;houseInfor clearfix&#39;]&quot;</span><br><span class="line">        div_inforTxt &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;inforTxt&#39;]&quot;</span><br><span class="line">        dl &#x3D; &quot;&#x2F;dl&quot;</span><br><span class="line">        dt_gray6_zongjia1 &#x3D; &quot;&#x2F;dt[@class&#x3D;&#39;gray6 zongjia1&#39;]&quot;</span><br><span class="line">        span_red20b &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;red20b&#39;]&quot;</span><br><span class="line">        dd_gray6 &#x3D; &quot;&#x2F;dd[@class&#x3D;&#39;gray6&#39;]&quot;</span><br><span class="line">        dd &#x3D; &quot;&#x2F;dd&quot;</span><br><span class="line">        dt &#x3D; &quot;&#x2F;dt&quot;</span><br><span class="line"></span><br><span class="line">        item &#x3D; ESFItem()</span><br><span class="line">        item[&#39;id&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                    div_title +</span><br><span class="line">                                    p_gray9 +</span><br><span class="line">                                    span_mr10).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;publish_time&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                              div_title +</span><br><span class="line">                                              p_gray9).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;title&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                       div_title +</span><br><span class="line">                                       h1).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;total_price&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                             div_houseInfor_clearfix +</span><br><span class="line">                                             div_inforTxt +</span><br><span class="line">                                             dl +</span><br><span class="line">                                             dt_gray6_zongjia1 +</span><br><span class="line">                                             span_red20b).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        dd_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dd).extract()</span><br><span class="line">        huxing_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;户&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;型：&quot;</span><br><span class="line">        jzmj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;建筑面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        symj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;使用面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        nd_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;年&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;代：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;朝&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;向：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        lc_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;楼&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;层：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jg_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;结&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;构：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;装&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;修：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;住宅类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;建筑类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cqxz_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;产权性质：&lt;&#x2F;span&gt;&quot;</span><br><span class="line"></span><br><span class="line">        for i in dd_infos:</span><br><span class="line">            if huxing_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_type&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif jzmj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_build_area&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif symj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_use_area&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">            elif nd_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_age&#39;] &#x3D; i.strip()</span><br><span class="line">               </span><br><span class="line">            elif cx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;orientation&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif lc_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;floor&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif jg_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;structure&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif zx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;decoration&#39;] &#x3D; i</span><br><span class="line">                </span><br><span class="line">            elif zzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;residential_category&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif jzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;building_class&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif cqxz_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_right&#39;] &#x3D; i.strip()</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">        dt_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dt + &quot;&#x2F;a&quot;).extract()</span><br><span class="line">        for i in dt_infos:</span><br><span class="line">            if &quot;查看此楼盘的更多二手房房源&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_name&#39;] &#x3D; i.strip()</span><br><span class="line">                </span><br><span class="line">            elif &quot;&lt;span class&#x3D;\&quot;gray6 floatl\&quot;&gt;学&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;校：&lt;&#x2F;span&gt;&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;school&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样我们就可以得到详情页的信息了。</p>
+<p>接下来，把上面两个爬取的操作链接在一起：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def parse(self, response):</span><br><span class="line">       infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">       for i in infos:</span><br><span class="line">           i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">           if &quot;esf&quot; in i_str:</span><br><span class="line">               url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line">               </span><br><span class="line">               # 执行下一个request，回去自动调用callback函数，去解析详情页</span><br><span class="line">               yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br></pre></td></tr></table></figure>
+<h4 id="设置起始url"><a href="#设置起始url" class="headerlink" title="设置起始url"></a>设置起始url</h4><p>由于要爬取的不仅仅是一页数据，所以我们的<code>start_urls</code>列表不能只有一个url，我们需要有一个<code>PageNo</code>自增长的url的list。</p>
+<p>直接上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">base_url &#x3D; &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;$&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line">    start_urls &#x3D; []</span><br><span class="line">    # 可以把10设置成一个比较大的数字，由于测试使用，所以写死一个较小的数</span><br><span class="line">    for i in range(2, 10):</span><br><span class="line">        start_urls.append(str(base_url).replace(&quot;$&quot;, str(i)))</span><br></pre></td></tr></table></figure>
+<h4 id="可以开始了吗？"><a href="#可以开始了吗？" class="headerlink" title="可以开始了吗？"></a>可以开始了吗？</h4><p>列表爬取和详情爬取，以及起始url都设置ok了，那么我们是不是可以让我们的蜘蛛行动起来了呢？</p>
+<p>且慢，这里也有坑。</p>
+<p>这里我将页面数设置了200页，开始爬取，结果悲剧就发生了，由于短时间内访问量过大，搜房网的二手房页面似乎把我的ip屏蔽了：</p>
+<p><img src="/img/16_11_30/006.png" alt=""></p>
+<p>这里我参考了<a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/VRfQR3U">这篇文章</a>，通过</p>
+<ul>
+<li>设置随机UserAgent</li>
+<li>添加代理IP</li>
+<li>禁用cookies</li>
+<li>设置加载延迟</li>
+</ul>
+<p>这些方式来防止被屏蔽。</p>
+<p>设置完毕后，就可以愉快的开始爬取了~</p>
+<h4 id="蜘蛛代码"><a href="#蜘蛛代码" class="headerlink" title="蜘蛛代码"></a>蜘蛛代码</h4><p>最终蜘蛛的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"># coding&#x3D;utf-8</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">import scrapy</span><br><span class="line">from ..items import ESFItem</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(&#39;utf-8&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ESFListSpider(scrapy.Spider):</span><br><span class="line">    name &#x3D; &quot;esflist&quot;</span><br><span class="line"></span><br><span class="line">    # allowed_domains &#x3D; [&quot;fang.com&quot;]</span><br><span class="line"></span><br><span class="line">    base_url &#x3D; &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;map&#x2F;?mapmode&#x3D;y&amp;orderby&#x3D;30&amp;ecshop&#x3D;ecshophouse&amp;PageNo&#x3D;$&amp;a&#x3D;ajaxSearch&amp;city&#x3D;sh&amp;searchtype&#x3D;loupan&quot;</span><br><span class="line">    start_urls &#x3D; []</span><br><span class="line">    for i in range(2, 4):</span><br><span class="line">        start_urls.append(str(base_url).replace(&quot;$&quot;, str(i)))</span><br><span class="line"></span><br><span class="line">    def __init__(self, user_agent&#x3D;&#39;&#39;):</span><br><span class="line">        self.user_agent &#x3D; user_agent</span><br><span class="line"></span><br><span class="line">    def process_request(self, request, spider):</span><br><span class="line">        # 这句话用于随机选择user-agent</span><br><span class="line">        ua &#x3D; random.choice(self.user_agent_list)</span><br><span class="line">        if ua:</span><br><span class="line">            request.headers.setdefault(&#39;User-Agent&#39;, ua)</span><br><span class="line"></span><br><span class="line">    user_agent_list &#x3D; [</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;22.0.1207.1 Safari&#x2F;537.1&quot; \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; CrOS i686 2268.111.0) AppleWebKit&#x2F;536.11 (KHTML, like Gecko) Chrome&#x2F;20.0.1132.57 Safari&#x2F;536.11&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.6 (KHTML, like Gecko) Chrome&#x2F;20.0.1092.0 Safari&#x2F;536.6&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.6 (KHTML, like Gecko) Chrome&#x2F;20.0.1090.0 Safari&#x2F;536.6&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2; WOW64) AppleWebKit&#x2F;537.1 (KHTML, like Gecko) Chrome&#x2F;19.77.34.5 Safari&#x2F;537.1&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; Linux x86_64) AppleWebKit&#x2F;536.5 (KHTML, like Gecko) Chrome&#x2F;19.0.1084.9 Safari&#x2F;536.5&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.0) AppleWebKit&#x2F;536.5 (KHTML, like Gecko) Chrome&#x2F;19.0.1084.36 Safari&#x2F;536.5&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 5.1) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1063.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1062.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1062.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.1) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.1 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2) AppleWebKit&#x2F;536.3 (KHTML, like Gecko) Chrome&#x2F;19.0.1061.0 Safari&#x2F;536.3&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (X11; Linux x86_64) AppleWebKit&#x2F;535.24 (KHTML, like Gecko) Chrome&#x2F;19.0.1055.1 Safari&#x2F;535.24&quot;, \</span><br><span class="line">        &quot;Mozilla&#x2F;5.0 (Windows NT 6.2; WOW64) AppleWebKit&#x2F;535.24 (KHTML, like Gecko) Chrome&#x2F;19.0.1055.1 Safari&#x2F;535.24&quot;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    def parse(self, response):</span><br><span class="line"></span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line"></span><br><span class="line">                yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br><span class="line"></span><br><span class="line">    def parse_details(self, response):</span><br><span class="line">        print &quot;+++++++++++++被执行了+++++++++++++++++++&quot;</span><br><span class="line"></span><br><span class="line">        # path</span><br><span class="line">        xpath &#x3D; &quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;main clearfix&#39;]&#x2F;div[@class&#x3D;&#39;mainBoxL&#39;]&quot;</span><br><span class="line">        div_title &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;title&#39;]&quot;</span><br><span class="line">        p_gray9 &#x3D; &quot;&#x2F;p[@class&#x3D;&#39;gray9&#39;]&quot;</span><br><span class="line">        h1 &#x3D; &quot;&#x2F;h1&quot;</span><br><span class="line">        span_mr10 &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;mr10&#39;]&quot;</span><br><span class="line">        div_houseInfor_clearfix &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;houseInfor clearfix&#39;]&quot;</span><br><span class="line">        div_inforTxt &#x3D; &quot;&#x2F;div[@class&#x3D;&#39;inforTxt&#39;]&quot;</span><br><span class="line">        dl &#x3D; &quot;&#x2F;dl&quot;</span><br><span class="line">        dt_gray6_zongjia1 &#x3D; &quot;&#x2F;dt[@class&#x3D;&#39;gray6 zongjia1&#39;]&quot;</span><br><span class="line">        span_red20b &#x3D; &quot;&#x2F;span[@class&#x3D;&#39;red20b&#39;]&quot;</span><br><span class="line">        dd_gray6 &#x3D; &quot;&#x2F;dd[@class&#x3D;&#39;gray6&#39;]&quot;</span><br><span class="line">        dd &#x3D; &quot;&#x2F;dd&quot;</span><br><span class="line">        dt &#x3D; &quot;&#x2F;dt&quot;</span><br><span class="line"></span><br><span class="line">        item &#x3D; ESFItem()</span><br><span class="line">        item[&#39;id&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                    div_title +</span><br><span class="line">                                    p_gray9 +</span><br><span class="line">                                    span_mr10).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;publish_time&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                              div_title +</span><br><span class="line">                                              p_gray9).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;title&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                       div_title +</span><br><span class="line">                                       h1).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        item[&#39;total_price&#39;] &#x3D; response.xpath(xpath +</span><br><span class="line">                                             div_houseInfor_clearfix +</span><br><span class="line">                                             div_inforTxt +</span><br><span class="line">                                             dl +</span><br><span class="line">                                             dt_gray6_zongjia1 +</span><br><span class="line">                                             span_red20b).extract_first().strip()</span><br><span class="line"></span><br><span class="line">        dd_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dd).extract()</span><br><span class="line">        huxing_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;户&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;型：&quot;</span><br><span class="line">        jzmj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;建筑面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        symj_str &#x3D; &quot;&lt;dd class&#x3D;\&quot;gray6\&quot;&gt;使用面积：&lt;span class&#x3D;\&quot;black \&quot;&gt;&quot;</span><br><span class="line">        nd_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;年&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;代：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;朝&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;向：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        lc_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;楼&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;层：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jg_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;结&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;构：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zx_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;装&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;修：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        zzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;住宅类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        jzlb_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6\&quot;&gt;建筑类别：&lt;&#x2F;span&gt;&quot;</span><br><span class="line">        cqxz_str &#x3D; &quot;&lt;span class&#x3D;\&quot;gray6 \&quot;&gt;产权性质：&lt;&#x2F;span&gt;&quot;</span><br><span class="line"></span><br><span class="line">        for i in dd_infos:</span><br><span class="line">            if huxing_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_type&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jzmj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_build_area&#39;] &#x3D; i.strip()</span><br><span class="line">            elif symj_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_use_area&#39;] &#x3D; i.strip()</span><br><span class="line">            elif nd_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;house_age&#39;] &#x3D; i.strip()</span><br><span class="line">            elif cx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;orientation&#39;] &#x3D; i.strip()</span><br><span class="line">            elif lc_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;floor&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jg_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;structure&#39;] &#x3D; i.strip()</span><br><span class="line">            elif zx_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;decoration&#39;] &#x3D; i</span><br><span class="line">            elif zzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;residential_category&#39;] &#x3D; i.strip()</span><br><span class="line">            elif jzlb_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;building_class&#39;] &#x3D; i.strip()</span><br><span class="line">            elif cqxz_str in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_right&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br><span class="line">        dt_infos &#x3D; response.xpath(xpath + div_houseInfor_clearfix + div_inforTxt + dl + dt + &quot;&#x2F;a&quot;).extract()</span><br><span class="line">        for i in dt_infos:</span><br><span class="line">            if &quot;查看此楼盘的更多二手房房源&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;property_name&#39;] &#x3D; i.strip()</span><br><span class="line">            elif &quot;&lt;span class&#x3D;\&quot;gray6 floatl\&quot;&gt;学&lt;span class&#x3D;\&quot;padl27\&quot;&gt;&lt;&#x2F;span&gt;校：&lt;&#x2F;span&gt;&quot; in str(i).encode(&quot;utf-8&quot;):</span><br><span class="line">                item[&#39;school&#39;] &#x3D; i.strip()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="what-s-next"><a href="#what-s-next" class="headerlink" title="what`s next?"></a>what`s next?</h3><p>接下来我会将爬取到的数据进行加工后持久化到本地，不过今天就先到这里吧~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(1)%E8%AF%84%E4%BB%B7%E4%B8%80%E4%B8%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(1)%E8%AF%84%E4%BB%B7%E4%B8%80%E4%B8%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第六周 (1)评价一个学习算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-24 22:28:58" itemprop="dateCreated datePublished" datetime="2016-10-24T22:28:58+00:00">2016-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="如何少走弯路？"><a href="#如何少走弯路？" class="headerlink" title="如何少走弯路？"></a>如何少走弯路？</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/OVM4M/deciding-what-to-try-next">视频地址</a></p>
+<h3 id="这些坑可能会耽误你几个月"><a href="#这些坑可能会耽误你几个月" class="headerlink" title="这些坑可能会耽误你几个月"></a>这些坑可能会耽误你几个月</h3><blockquote>
+<p>到目前为止，我们已经介绍了许多不同的学习算法。如果你一直跟着这些视频的进度学习，你会发现自己已经不知不觉地成为一个了解许多先进机器学习技术的专家了。</p>
+<p>然而，在懂机器学习的人当中，依然存在着很大的差距。一部分人确实掌握了怎样高效有力地运用这些学习算法，而另一些人他们可能对我马上要讲的东西就不那么熟悉了，他们可能没有完全理解怎样运用这些算法，因此总是把时间浪费在毫无意义的尝试上。</p>
+<p>我想做的是，确保你在设计机器学习的系统时，你能够明白怎样选择一条最合适、最正确的道路。</p>
+<p>因此，在这节视频和之后的几段视频中，我将向你介绍一些实用的建议和指导，帮助你明白怎样进行选择。</p>
+<p>具体来讲，我将重点关注的问题是：假如你在开发一个机器学习系统，或者想试着改进一个机器学习系统的性能，你应如何决定接下来应该选择哪条道路？</p>
+</blockquote>
+<p>以预测房价为例：</p>
+<p>假如在预测房价的例子中，你已经完成了正则化线性回归，也就是最小化代价函数$J$的值。</p>
+<p><img src="/img/16_10_24/001.png" alt=""></p>
+<p>假如在你得到你的学习参数以后，如果你要将你的假设函数放到一组新的房屋样本上进行测试，假如说你发现在预测房价时产生了巨大的误差，现在的问题是要想改进这个算法接下来该怎么办？</p>
+<p>实际上你可以想出很多方法来改进这个算法的性能。</p>
+<p>通常情况下我们会使用这几种方法：</p>
+<ul>
+<li>通过使用更多的训练样本</li>
+</ul>
+<blockquote>
+<p>但有的时候，更多的训练样本并不能解决问题。</p>
+</blockquote>
+<ul>
+<li>尝试选用更少的特征集</li>
+</ul>
+<blockquote>
+<p>你可以从众多的特征集中仔细挑选一小部分来防止<strong>过拟合</strong>。</p>
+</blockquote>
+<ul>
+<li>尝试选用更多的特征集</li>
+</ul>
+<blockquote>
+<p>也许目前的特征集对你来讲并不是很有帮助，你希望获取更多有用的特征数据</p>
+</blockquote>
+<ul>
+<li>也可以尝试增加多项式特征的方法($x_{1}^{2}$,$x_{2}^{2}$,$x_{1}x_{2}$,etc.)</li>
+<li>通过增大正则化参数$\lambda$</li>
+<li>通过减小正则化参数$\lambda$</li>
+</ul>
+<p>上面的这些方法，都可以扩展开来，都可能是一个花费6个月甚至更长时间的项目。</p>
+<p>遗憾的是，大多数人用来选择这些方法的标准是凭感觉的。而且很多人都会错误的选择其中一种方法花费大量的时间和精力，走上了“不归路”。</p>
+<p>幸运的是，有一系列简单的方法，能让你事半功倍，排除掉上面的那个优化清单上的至少一半的方法，留下真正有用的方法。同时也有一种很简单的方法，可以很轻松的排除掉很多选择从而为你节省大量不必要花费的时间。</p>
+<h3 id="机器学习诊断法引入"><a href="#机器学习诊断法引入" class="headerlink" title="机器学习诊断法引入"></a>机器学习诊断法引入</h3><p>在接下来的视频中，我首先介绍<strong>怎样评估机器学习算法的性能</strong>，然后在之后的几段视频中，我们将开始讨论这些方法，它们也被称为<strong>“机器学习诊断法(Machine learning diagnostic)”</strong>。</p>
+<blockquote>
+<p>Diagnostic:A test that you can run to gain insight what is/isn’t working with a learning algorithm, and gain guidance as to how best to improve its performance.</p>
+<p>诊断法：这是一种测试法，你通过执行这种测试能够深入了解某种算法到底是否有用，并且也可以告诉你如何改进算法的效果。</p>
+</blockquote>
+<p>诊断法是一种很有用的方法，可以更有效率地利用好你的时间，但同时也会花费一些时间来实现。</p>
+<h2 id="评估假设函数"><a href="#评估假设函数" class="headerlink" title="评估假设函数"></a>评估假设函数</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/yfbJY/evaluating-a-hypothesis">视频地址</a></p>
+<p>当我们确定学习算法的参数的时候，我们考虑的是选择参量来使训练误差最小化。有人认为，得到一个非常小的训练误差一定是一件好事，但我们已经知道，仅仅是因为这个假设具有很小的训练误差并不能说明它就一定是一个好的假设函数，而且我们也学习了过拟合假设函数的例子。所以这推广到新的训练集上是不适用的。</p>
+<p>那么，你该如何判断一个假设函数是过拟合的呢？对于这个简单的例子，我们可以对假设函数$h(x)$进行画图，然后观察图形趋势：</p>
+<p><img src="/img/16_10_24/002.png" alt=""></p>
+<p>但对于特征变量不止一个的这种一般情况：</p>
+<p><img src="/img/16_10_24/003.png" alt=""></p>
+<p>想要通过画出假设函数来进行观察，就会变得很难甚至是不可能实现的。</p>
+<p>因此我们需要另一种方法来评估我们的假设函数。</p>
+<h3 id="评估假设函数的方法"><a href="#评估假设函数的方法" class="headerlink" title="评估假设函数的方法"></a>评估假设函数的方法</h3><p>如下给出了一种评估假设函数的标准方法：</p>
+<p>假设我们有这样一组数据组：</p>
+<p><img src="/img/16_10_24/004.png" alt=""></p>
+<p>虽然这里只有十组数据，但通常情况下我们都有成百上千组训练样本。</p>
+<p>为了确保我们可以评估我们的假设函数，我们要做的是将这些数据进行三七分：</p>
+<p><img src="/img/16_10_24/005.png" alt=""></p>
+<p>第一部分（70%）将成为我们的<strong>训练集(Training Set)</strong></p>
+<p>第二部分（30%）将成为我们的<strong>测试集(Test Set)</strong></p>
+<blockquote>
+<p>将所有数据按照7:3的比例划分，是一种常见的划分比例</p>
+</blockquote>
+<p>现在我们有了一部分训练数据集：</p>
+<script type="math/tex; mode=display">
+(x^{(1)},y^{(1)})\\\\
+(x^{(2)},y^{(2)})\\\\
+......\\\\
+(x^{(m)},y^{(m)})</script><blockquote>
+<p>这里的$m$依然表示训练样本的总数</p>
+</blockquote>
+<p>剩下的部分数据将被用作测试数据：</p>
+<script type="math/tex; mode=display">
+(x^{(1)}\_{test},y^{(1)}\_{test})\\\\
+(x^{(2)}\_{test},y^{(2)}\_{test})\\\\
+......\\\\
+(x^{(m\_{test})}\_{test},y^{(m\_{test})}\_{test})</script><blockquote>
+<p>这里$m_{test}$表示测试样本的总数，$_{test}$表示这些样本是来自测试集。</p>
+<p><strong>注意</strong>：如果说我们的数据是有某种规律的话，那么我们按照7:3的比例取数据时，应该是随机选取的。</p>
+</blockquote>
+<h3 id="评估步骤详解"><a href="#评估步骤详解" class="headerlink" title="评估步骤详解"></a>评估步骤详解</h3><h4 id="线性回归中"><a href="#线性回归中" class="headerlink" title="线性回归中"></a>线性回归中</h4><p>在线性回归中，的训练/测试流程：</p>
+<ul>
+<li>1.需要对训练集进行学习，得到参数$\theta$。</li>
+</ul>
+<blockquote>
+<p>具体来讲就是最小化训练误差$J(\theta)$。这里的是使用那70%的数据训练得出的结果。</p>
+</blockquote>
+<ul>
+<li>2.计算出测试误差</li>
+</ul>
+<blockquote>
+<p>使用$J_{test}(\theta)$来表示测试误差，我们要做的是取出之前从训练集中学习得到的参数$\theta$带入到$J_{test}(\theta)$来计算我们的测试误差。可以写成如下形式：</p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{align\*}
+J\_{test}(\theta)= \frac{1}{2m\_{test}}\sum\_{i=1}^{m\_{test}}(
+ h\_{\theta}(x\_{test}^{(i)}) - y\_{test}^{(i)}
+ )^{2}
+\end{align\*}</script><blockquote>
+<p>这实际上是测试集平方误差的平均值。</p>
+</blockquote>
+<hr>
+<h4 id="分类问题中"><a href="#分类问题中" class="headerlink" title="分类问题中"></a>分类问题中</h4><p>当然，这是当我们使用线性回归和平方误差标准时测试误差的定义，那么如果是分类问题，比如说使用逻辑回归的时候呢？</p>
+<p>训练和测试逻辑回归与之前所说的非常类似：</p>
+<ul>
+<li>1.首先我们要从训练数据中（前70%）学习得到参数$\theta$</li>
+<li>2.然后用下面的式子计算测试数据的误差值:</li>
+</ul>
+<p><img src="/img/16_10_24/006.png" alt=""></p>
+<p>在分类问题中的测试误差$J_{test}(\theta)$其实也被称作<strong>误分类率</strong>（也被称为<strong>0/1错分率</strong>）。表示你预测到的正确或错误样本的情况。</p>
+<p>比如说可以这样定义一次预测的误差：</p>
+<ul>
+<li><p>当$h_{\theta}\ge0.5$时$y=0$</p>
+</li>
+<li><p>或者当$h_{\theta}\lt0.5$时$y=1$</p>
+</li>
+</ul>
+<p>这两种情况下我们的假设都对样本进行另外误判，否则其他情况下假设值都能正确的对样本$y$进行分类。</p>
+<script type="math/tex; mode=display">
+err(h\_{\theta}^{(x)},y)
+=\\{
+\begin{align\*}
+&= 1 \ \ if\ h\_{\theta}(x)\ge0.5,\ y=0 
+        \ or\ if\ h\_{\theta}(x)\le0.5,\ y=1 \\\\
+&= 0 \ otherwise
+\end{align\*}</script><p>然后我们就能应用错分率误差来定义测试误差，也就是：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+Test\ error = 
+ \frac{1}{m\_{test}}\sum\_{i=1}^{m\_{test}}err(
+ h\_{\theta}(x\_{test}^{(i)}), y\_{test}^{(i)}
+ )
+\end{align\*}</script><blockquote>
+<p>以上我们介绍了一套标准技术来评价一个已经学习过的假设，在下一段视频中，我们要应用这些方法来帮助我们进行诸如特征选择一类的问题（比如多项式次数的选择，或者正则化参数的选择）。</p>
+</blockquote>
+<h2 id="多项式模型的选择以及训练集-验证集-测试集的划分"><a href="#多项式模型的选择以及训练集-验证集-测试集的划分" class="headerlink" title="多项式模型的选择以及训练集/验证集/测试集的划分"></a>多项式模型的选择以及训练集/验证集/测试集的划分</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/QGKbr/model-selection-and-train-validation-test-sets">视频地址</a></p>
+<blockquote>
+<p>假如你想要确定对于某组数据最合适的多项式次数是几次，怎样选用正确的特征来构造学习算法，这些问题我们称之为<strong>”模型选择问题“</strong>。</p>
+<p>在我们对于这一问题的讨论中，我们还将提到如何将数据分为三组：也就是<strong>训练集、验证集和测试集</strong>，而不仅仅是前面提到的两组数据。</p>
+<p>这一节中，我们将会介绍这些内容的含义。</p>
+</blockquote>
+<h3 id="选择合适的模型解决过拟合问题"><a href="#选择合适的模型解决过拟合问题" class="headerlink" title="选择合适的模型解决过拟合问题"></a>选择合适的模型解决过拟合问题</h3><p>在过拟合的情况中，学习算法在适用于训练集时表现非常完美，但这并不代表此时的假设也很完美。</p>
+<p>更一般的说，这也是为什么训练集误差通常不能正确预测出该假设是否能很好地拟合新样本的原因。</p>
+<p>具体来讲，如果你把这些参数集，比如$\theta_{0}$,$\theta_{1}$,$\theta_{2}$…调整到尽量拟合你的训练集，那么结果就是你的假设会在训练集上表现地很好，但这并不能确定当你的假设推广到训练集之外的新的样本上时，预测结果是怎样的。</p>
+<p>而更为普遍的规律是，只要你的参数非常拟合某个数据组，比如说非常拟合训练集（当然也可以是其他数据集）：</p>
+<p><img src="/img/16_10_24/007.png" alt=""></p>
+<p>那么你的假设对于相同数据组的预测误差（比如说训练误差）是不能够用来推广到一般情况的，或者说，是不能作为实际的泛化误差的（也就是说，不能说明你的假设对于新样本的效果）。</p>
+<hr>
+<p>接下来具体来说说模型选择问题：</p>
+<p>假如说你现在要选择能最好地拟合你数据的多项式次数，那么下面的式子你应该选择哪一个呢？</p>
+<p><img src="/img/16_10_24/008.png" alt=""></p>
+<p>假设$d$代表我们应该选择的多项式的次数(上面的式子次数依次为从1到10)，我们除了需要确定参数$\theta$之外，还要考虑如何确定这个多项式的次数$d$。</p>
+<p>因此，我们需要确定参数$d$最适当的取值。</p>
+<p>具体地说，比如你想要选择一个模型，那就从这10个模型中，选择一个最适当的多项式次数，并且用这个模型进行估计，预测你的假设能否很好地推广到新的样本上。</p>
+<p>那么你可以这样做：</p>
+<ul>
+<li>你可以先选择第一个模型，然后求训练误差的最小值。这样你就会得到一个参数向量$\theta$。</li>
+<li>然后你再选择第二个模型，进行同样的过程，这样你会得到另一个参数向量$\theta$。</li>
+<li>拟合三次函数模型时，同理，也能得到一个参数向量$\theta$。</li>
+<li>…</li>
+<li>用相同的方式得到第10个模型的向量$\theta$。</li>
+</ul>
+<p><img src="/img/16_10_24/009.png" alt=""></p>
+<p>如果一次模型训练后得到的参数向量为$\theta^{(1)}$,二次模型训练后得到的参数向量为$\theta^{(2)}$，依次类推，十次模型训练后得到的参数向量为$\theta^{(10)}$。</p>
+<p>接下来，我们要做的是对所有这些模型求出<strong>测试集误差</strong>。因此，我们可以算出每一个模型的$Jtest(\theta^{(1)})$、$Jtest(\theta^{(2)})$、$Jtest(\theta^{(3)})$…$Jtest(\theta^{(10)})$。</p>
+<p>接下来为了确定哪一个模型最好，我们可以找出<strong>测试集误差最小的模型</strong>。</p>
+<p>假设我们最终选择了五次多项式模型:</p>
+<script type="math/tex; mode=display">
+Choose \ \ \theta\_{0} + ... \theta\_{5}x^{5}</script><h3 id="正确的评价某个假设函数的预测能力"><a href="#正确的评价某个假设函数的预测能力" class="headerlink" title="正确的评价某个假设函数的预测能力"></a>正确的评价某个假设函数的预测能力</h3><blockquote>
+<p>由于我们使用的是<strong>测试结果集</strong>来衡量的代价函数，从而得到多项式次数$d$这个参数的值为5，所以这样任然不能公平地说明这个假设可以推广到一般情况。</p>
+<p>也就是说我们选择了一个能最好地拟合测试集的参数$d$的值，因此我们的参数向量$\theta^{(5)}$在拟合测试集时的结果很可能导致一个比实际泛化误差更完美的预测结果。（因为我们找到的是一个最能拟合测试集的参数$d$）。因此我们再用测试集来评价我们的假设就显得不公平了。</p>
+<p>而我们其实更关心的是对新样本的拟合效果，所以我们之前说到的如果我们用训练集来拟合参数$\theta_{0}$,$\theta_{1}$等参数时，拟合后的模型在作用于训练集上的效果是不能预测出我们将这个假设推广到新样板上时效果如何的。这是因为这些参数能够很好地拟合训练集，因此它们很有可能在对训练集的预测中表现的很好，但对其他的新样本来说就不一定那么好了。</p>
+</blockquote>
+<p>我们要做的实际上是用测试集来拟合参数$d$，但是这同样也意味着这并不能较为公平地预测出假设函数在遇到新样本时的表现。</p>
+<h4 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h4><p>为了解决这一问题在模型选择中，如果我们要评价某个假设，我们通常采用以下的方法：</p>
+<p>给定某个数据集，这里我们要将其分为三段：训练集、<strong>交叉验证集（cross validation set）</strong>、测试集。</p>
+<p><img src="/img/16_10_24/010.png" alt=""></p>
+<p>一种典型的分割比例是：训练集60%，交叉验证集20%，测试集20%。（这个比例可稍作调整）</p>
+<p><img src="/img/16_10_24/011.png" alt=""></p>
+<blockquote>
+<p>$m$是训练集个数，$m_{cv}$是交叉验证集个数，$m_{test}$是测试集个数。</p>
+</blockquote>
+<p>我们可以得到 训练集/交叉验证集/测试集 的误差：</p>
+<p><img src="/img/16_10_24/012.png" alt=""></p>
+<p>现在我们的模型选择问题是这样的：我们现在要使用交叉验证集来选择合适的模型：</p>
+<p><img src="/img/16_10_24/013.png" alt=""></p>
+<p>即通过使用<strong>训练集</strong>对每一个假设函数依次去求最小化的代价函数$minJ(\theta)$，并求得对应的参数向量$\theta^{(d)}$。</p>
+<p>然后我们要做的是在<strong>交叉验证集</strong>中测试这些假设的表现，测出$J_{cv}$来看看这些假设在交叉验证集中表现如何。</p>
+<p>然后我们要选择<strong>交叉验证集</strong>误差最小的那个假设模型，假如这个模型是$J_{cv}(\theta^{(4)})$对应的那个模型，因此我们就选择这个四次多项式模型：</p>
+<script type="math/tex; mode=display">
+\theta\_{0} + \theta\_{1}x^{1} + ... + \theta\_{4}x^{4}</script><p>我们得到了拟合出最好的系数$d=4$。</p>
+<p>这个过程中，我们没有使用<strong>测试集</strong>进行拟合，这样我们就回避了<strong>测试集</strong>的嫌疑。这样我们就可以光明正大的使用<strong>测试集</strong>来估计所选模型的泛化误差了。</p>
+<p>最后，我们可以使用<strong>测试集</strong>来评价模型的表现。</p>
+<p>但最后还是要提醒大家的一点是，在如今的机器学习应用中，确实也有很多人是像我之前介绍的那样做的（用测试集来选择模型，然后用同样的测试集来评价模型的表现，报告测试误差，看起来好像还能得到比较不错的泛化误差），我说过这并不是一个好的方法，但不幸的是，现在还有很多人这样做。如果测试集足够多的话，这也许还能行得通，但大多数的机器学习开发人员是不会这么做的，因为最佳做法还是把数据分成 训练集、验证集、测试集。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/10/24/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(2)%E5%81%8F%E5%B7%AEVS%E6%96%B9%E5%B7%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +627,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -532,7 +937,7 @@ h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + ... + \theta\_{100}x^{100}</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -617,7 +1022,7 @@ h\_{\theta}(x) = \theta\_{0} + \theta\_{1}x + ... + \theta\_{100}x^{100}</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -980,7 +1385,7 @@ h\_{Θ}(x^{(i)})≈y^{(i)}</script><p>那么如果是这样的话，那么我们
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1291,7 +1696,7 @@ cost(i) = y^{(i)}log h\_{Θ}(x^{(i)}) + (1 - y^{(i)})logh\_{Θ}(x^{(i)})</script
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1687,7 +2092,7 @@ h\_{Θ}(x)\approx
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1955,7 +2360,7 @@ h\_{Θ}(x)=g(Θ\_{10}^{(2)}a\_{0}^{(2)} + Θ\_{11}^{(2)}a\_{1}^{(2)} + Θ\_{12}^
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2107,7 +2512,7 @@ x\_{1}^{2},x\_{1}x\_{2},x\_{1}x\_{3},x\_{1}x\_{4}...x\_{1}x\_{100},x\_{2}^{2},x\
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2373,356 +2778,6 @@ X^{T}X + \lambda
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/09/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(3)%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%80%E5%AF%B9%E5%A4%9A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/09/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(3)%E5%A4%9A%E7%B1%BB%E5%88%AB%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%80%E5%AF%B9%E5%A4%9A/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第三周 (3)多类别分类问题：一对多</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-09-04 23:00:00" itemprop="dateCreated datePublished" datetime="2016-09-04T23:00:00+00:00">2016-09-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一对多分类问题"><a href="#一对多分类问题" class="headerlink" title="一对多分类问题"></a>一对多分类问题</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/68Pol/multiclass-classification-one-vs-all">视频地址</a></p>
-<blockquote>
-<p>在本节视频中，我们将谈到如何使用<strong>逻辑回归来解决多类别分类问题</strong>。具体来说，我想通过一个叫做<strong>“一对多”(one-vs-all)</strong>的分类算法，让你了解什么是多类别分类问题。</p>
-</blockquote>
-<p>先看这样一些例子：</p>
-<ul>
-<li>邮件分类器自动将邮件按照以下标签分类：工作，朋友，家庭，兴趣</li>
-<li>医学根据病人的得病类型分类：没有病，感冒，流感</li>
-<li>天气预报根据天气类型分类：晴天，多云，雨天，雪天</li>
-</ul>
-<p>我们可以分别对这些类别打上数值标签，比如天气分类中：晴天代表<code>y=1</code>，多云代表<code>y=2</code>，雨天代表<code>y=3</code>，雪天代表<code>y=4</code>。</p>
-<p>以上这些例子都属于多类别分类问题。</p>
-<hr>
-<p>二元分类问题和多类别分类问题的比较：</p>
-<p><img src="/img/16_09_04/001.png" alt=""></p>
-<p>二元分类问题中，我们只有两个类别需要处理，而在多类别分类问题中，我们有多种类别需要处理。这里我们用三种不同的符号代表三种类别。</p>
-<p>在二元分类中，我们知道我们可以使用逻辑回归来将两种类别的数据集一分为二：</p>
-<p><img src="/img/16_09_04/002.png" alt=""></p>
-<p>对于一对多的分类问题，我们也可以借鉴二元分类的思想。下面就来介绍一些如何进行一对多分类工作(有时也被称为“一对余”方法)。</p>
-<p><img src="/img/16_09_04/003.png" alt=""></p>
-<p>如图，我们现在有一组由三个类别元素组成的训练集。接下来我们要做的就是使用一个训练集将其分成三个二元分类问题。我们先从三角形开始，将其他两种类型视为同一种类型：</p>
-<p><img src="/img/16_09_04/004.png" alt=""></p>
-<p>实际上这是一个新的“伪类型集”，类型2和类型3被定义为负类(值为0)，类型1定义为正类(值为1)。我们要拟合出一个合适的分类器，来区分正类和负类。我们称这个分类器为$h_{\theta}^{(1)}(x)$</p>
-<p><img src="/img/16_09_04/005.png" alt=""></p>
-<p>同理，对类型2也做同样的处理，得到分类器$h_{\theta}^{(2)}(x)$：</p>
-<p><img src="/img/16_09_04/006.png" alt=""></p>
-<p>最后，对类型三也做同样处理，得到分类器$h_{\theta}^{(3)}(x)$：</p>
-<p><img src="/img/16_09_04/007.png" alt=""></p>
-<p>这样我们就得到了三个分类器，通过这些分类器来估算出给出$x$和先验$\theta$时，$y=i$的概率：</p>
-<script type="math/tex; mode=display">
-h\_{\theta}^{(i)}(x) = P(y=i|x;\theta)    \qquad  (i=1,2,3)</script><p>总之，现在我们要做的就是训练这个逻辑回归分类器$h_{\theta}^{(i)}(x)$，其中$i$对应每一个可能的$y=i$。</p>
-<p>最后，为了做出预测，我们给定一个新的输入值$x$，用来做预测，我们要做的就是在我们的三个分类器里输入$x$，然后我们选择一个让$h_{\theta}^{(i)}(x)$最大的$i$，这就是预测出的类别。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/08/25/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%89%E5%91%A8%20(2)Logistic%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第三周 (2)Logistic回归模型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-08-25 23:54:00" itemprop="dateCreated datePublished" datetime="2016-08-25T23:54:00+00:00">2016-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="逻辑回归的代价函数"><a href="#逻辑回归的代价函数" class="headerlink" title="逻辑回归的代价函数"></a>逻辑回归的代价函数</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/1XG8G/cost-function">视频地址</a></p>
-<p>这节课将讲解逻辑回归中，如何定义用来拟合参数的<strong>代价函数</strong>。</p>
-<p><img src="/img/16_08_25/001.png" alt=""></p>
-<p>如上图所示，我们现在有一组训练集，其中有$m$个训练样本，由于是一个分类问题，我们的$y$取值范围就是0和1。并且我们给出了假设函数$h_{\theta}(x)$。现在的问题就是，我们如何确定我们的参数$\theta$的值呢？也就是说如何<strong>拟合参数$\theta$</strong>呢？</p>
-<p><img src="/img/16_08_25/002.png" alt=""></p>
-<p>上图是之前求线性回归问题时的代价函数，现在我将上图的公式进行改写：</p>
-<script type="math/tex; mode=display">
-Cost(h\_{\theta}(x^{(i)}),y^{(i)})=
-\frac{1}{2}(h\_{θ}(x^{(i)})-y^{(i)})^{2}</script><p>为了简写方便，去掉上标之后的代价函数如下：</p>
-<script type="math/tex; mode=display">
-Cost(h\_{\theta}(x),y)=
-\frac{1}{2}(h\_{θ}(x)-y)^{2}</script><p>在线性回归问题中，代价函数会被定义为以上这种形式，但在逻辑回归里，如果我们最小化代价函数后，使用这个最小代价的值也是可以正常工作的，但是我们的这个代价函数会变成参数$\theta$的非凸函数。</p>
-<p>因为这里：</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-h\_{\theta}(x)
-= \frac{1}{1+e^{-\theta^{T}x}}
-\end{align*}</script><p>$h_{\theta}(x)$是非线性的，如果将这个值带入Cost函数，然后在求代价函数$J(\theta)$，我们会得到如下的有多个局部最优的函数：</p>
-<p><img src="/img/16_08_25/003.png" alt=""></p>
-<p>这种函数的官方名称叫做：<strong>非凸函数</strong>。</p>
-<p>你大概可以感觉到如果把梯度下降算法用在这样一个函数上，不能保证它会收敛到全局最小值。</p>
-<p>相应的，我们期望我们的代价函数$J(\theta)$是一个凸函数：</p>
-<p><img src="/img/16_08_25/004.png" alt=""></p>
-<p>对于这样的函数，我们使用梯度下降算法，才能够保证顺利的收敛到最小值。</p>
-<p>这里导致我们的代价函数是非凸函数的根本原因就在于使用逻辑回归的那一步：</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-h\_{\theta}(x)
-= \frac{1}{1+e^{-\theta^{T}x}}
-\end{align*}</script><p>所以我们想做的就是，<strong>另找一个是凸函数的代价函数</strong>使得我们能够方便的找到代价函数的全局最小值。</p>
-<p>因此对于<strong>逻辑回归的代价函数</strong>，形式如下：</p>
-<p><img src="/img/16_08_25/005.png" alt=""></p>
-<p>对应的函数的图形如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$y=1$时</th>
-<th style="text-align:center">$y=0$时</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="/img/16_08_25/006.png" alt=""></td>
-<td style="text-align:center"><img src="/img/16_08_25/007.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>现在这种形式的代价函数，有着很多很有趣的性质：</p>
-<ul>
-<li>在$y=1$的情况下：<ul>
-<li>如果假设函数$h_{\theta}(x) = 1$，那么代价函数为0:$Cost=0$。</li>
-<li>如果假设函数$h_{\theta}(x) \rightarrow 0$，那么代价函数趋近于∞:$Cost \rightarrow ∞$</li>
-</ul>
-</li>
-<li>在$y=0$的情况下：<ul>
-<li>如果假设函数$h_{\theta}(x) \rightarrow 1$，那么代价函数为0:$Cost \rightarrow ∞ $。</li>
-<li>如果假设函数$h_{\theta}(x) = 0$，那么代价函数等于0:$Cost = 0$</li>
-</ul>
-</li>
-</ul>
-<p>这就是我们所期望的效果：<strong>当假设函数和期望值越接近时，代价函数值越小，反之越大。</strong></p>
-<h2 id="简化代价函数以及梯度下降"><a href="#简化代价函数以及梯度下降" class="headerlink" title="简化代价函数以及梯度下降"></a>简化代价函数以及梯度下降</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/MtEaZ/simplified-cost-function-and-gradient-descent">视频地址</a></p>
-<p>这节课我们来讲解一种<strong>稍微简单一些的方式来写代价函数</strong>，来替代我们现有的方法。同时也要讲清楚，<strong>如何运用梯度下降法来拟合出逻辑回归的参数$\theta$</strong>。因此，听了这节课，你应该就能够实现一个完整的逻辑回归算法了。</p>
-<h3 id="简化单个样本的代价函数-Cost-h-theta-x-y"><a href="#简化单个样本的代价函数-Cost-h-theta-x-y" class="headerlink" title="简化单个样本的代价函数$Cost(h_{\theta}(x),y)$"></a>简化单个样本的代价函数$Cost(h_{\theta}(x),y)$</h3><p>之前我们讲解了逻辑回归中的代价函数：</p>
-<p><img src="/img/16_08_25/008.png" alt=""></p>
-<p>上图中有：</p>
-<ul>
-<li>我们定义的逻辑回归的整体的代价函数$J(\theta)$</li>
-<li>针对于单个样本的代价函数$Cost(h_{\theta}(x),y)$</li>
-<li>并且我们知道，作为分类问题，我们的$y$的取值永远都是0或者1。</li>
-</ul>
-<p>其中对于单个样本的代价函数$Cost(h_{\theta}(x),y)$，我们可以把$y=0$和$y=1$的两种情况合二为一，写成一个统一的式子：</p>
-<script type="math/tex; mode=display">
-Cost(h\_{\theta}(x),y)=-ylog(h\_{\theta}(x))-(1-y)log(1-h\_{\theta}(x))</script><p>这个表达式和我们之前写的代价函数的表达式，效果是完全一样的，但后者更加紧凑。</p>
-<blockquote>
-<p>我们知道在上面的式子中，$y$的取值非0即1，如果$y=1$那么$Cost(h_{\theta}(x),y)=-log(h_{\theta}(x))$，如果$y=0$那么$Cost(h_{\theta}(x),y)=-log(1-h_{\theta}(x))$。效果和分开写是完全一样的。</p>
-</blockquote>
-<h3 id="拟合逻辑回归的参数-theta"><a href="#拟合逻辑回归的参数-theta" class="headerlink" title="拟合逻辑回归的参数$\theta$"></a>拟合逻辑回归的参数$\theta$</h3><p>这样一来，我们就可以写出完整的逻辑回归的代价函数了：</p>
-<p><img src="/img/16_08_25/009.png" alt=""></p>
-<blockquote>
-<p>似乎我们有其他方式来表示单个样本的代价函数$Cost(h_{\theta}(x),y)$，但在这里不做详细的说明，但是我可以告诉你，现在我们使用的这种形式的代价函数的式子，是从统计学中的<strong>极大似然法</strong>得来的。不过如果你不理解什么是<strong>极大似然法</strong>，以及逻辑回归中的代价函数为什么是这种形式，也没关系，也不会影响你后面的学习。</p>
-</blockquote>
-<p>接下来的问题就是找到使得代价函数$j(\theta)$最小的参数$\theta$了：</p>
-<p><img src="/img/16_08_25/010.png" alt=""></p>
-<p>一旦我们得到了这个合适的$\theta$那么我们就可以对一个给定的样本进行预测了：</p>
-<p><img src="/img/16_08_25/011.png" alt=""></p>
-<blockquote>
-<p>注意：$p(y=1|x;\theta)$就是指关于$x$以$\theta$为参数，$y=1$的概率。</p>
-</blockquote>
-<p>由此可见，我们问题的核心在于求解最小化代价函数：</p>
-<p><img src="/img/16_08_25/012.png" alt=""></p>
-<p>上图就是逻辑回归问题中最小化代价函数的方法，是通过梯度下降算法来实现。</p>
-<p>对上图中的偏导数项展开后就是下面的形式：</p>
-<p><img src="/img/16_08_25/013.png" alt=""></p>
-<p>如果你把上面的式子放到线性回归问题中进行对比的话，<strong>你会发现这个式子正是用来做线性回归梯度下降的。</strong></p>
-<p>那么我们不禁要问一下自己，线性回归算法和逻辑回归算法是一样的吗？</p>
-<p>要回答这个问题，就要看从线性回归，到逻辑回归，到底发生了哪些变化。</p>
-<p>实际上对于假设函数$h_{\theta}(x)$的定义发生了变化：</p>
-<ul>
-<li>线性回归中，假设函数定义为$h_{\theta}(x)=\theta^{T}x$</li>
-<li>在逻辑回归中，假设函数的定义为$h_{\theta}(x)= \frac{1}{1+e^{-\theta^{T}x}}$</li>
-</ul>
-<p>由于假设函数的不同，实际上线性回归和逻辑回归的梯度下降是两个完全不同的东西。</p>
-<p>当我们在讨论线性回归的梯度下降算法时，我们谈到了如何监控梯度下降法以确保其收敛。其实我们通常也把这种方法运用在逻辑回归中，来检测梯度下降，以确保其正常收敛。这里就不多做介绍，可以参考<strong>斯坦福机器学习课程 第一周 (5)参数学习-梯度下降算法</strong>来实现。</p>
-<h2 id="高级优化"><a href="#高级优化" class="headerlink" title="高级优化"></a>高级优化</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/licwf/advanced-optimization">视频地址</a></p>
-<p>这节课中会介绍一些高级优化概念和技巧。利用这些技巧，我们就使通过梯度下降进行逻辑回归的速度大大提高，这也将使得算法更加适合解决大型的机器学习问题。</p>
-<h3 id="优化算法概念引入"><a href="#优化算法概念引入" class="headerlink" title="优化算法概念引入"></a>优化算法概念引入</h3><p>现在我们换个角度来看看什么是梯度下降：</p>
-<p>我们有个代价函数$J(\theta)$，并且我们希望最小化代价函数$min_{\theta}J(\theta)$。</p>
-<p>为了得到最小化代价函数$min_{\theta}J(\theta)$，我们需要计算出$J(\theta)$关于每一项$\theta$的偏导：</p>
-<p><img src="/img/16_08_25/014.png" alt=""></p>
-<p>有了上面的$J(\theta)$关于每一项$\theta$的偏导，为了求得合适的$\theta$，我们就可以利用梯度下降算法来递减$\theta$，使其接近全局最小值了：</p>
-<p><img src="/img/16_08_25/015.png" alt=""></p>
-<p>但事实上，<strong>梯度下降并不是我们可以使用的唯一算法</strong>，下面是我们常用的几种算法：</p>
-<ul>
-<li><strong>梯度下降算法(Gradient descent)</strong></li>
-<li><strong>共轭梯度法(Conjugate gradient)</strong></li>
-<li><strong>变尺度法(BFGS)</strong></li>
-<li><strong>限制变尺度法(L-BFGS)</strong></li>
-</ul>
-<p>除了我们常说的梯度下降算法外的其他三种算法，都有着更复杂的方式来求最小化代价函数。但是这三种算法的细节，超出了本门课程的范畴(实际上如果你想要研究这些算法，可能你需要花费几周的时间，你可以专门学一门课程来提高数值计算能力)。不过我会告诉你他们的一些特性。</p>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>这三种算法有许多优点：</p>
-<p><strong>优点</strong>：</p>
-<ul>
-<li>不需要手动选择学习率$a$<ul>
-<li>所以对这些算法的一种思路是 给出计算导数项和代价函数$J(\theta)$的方法，你可以认为算法有一个智能的内部循环，这种智能的内部循环被称为<strong>线性搜索(line search)</strong>算法，它可以自动尝试不同的学习速率$a$，并自动选择一个好的学习速率$a$。因此它甚至可以在每次迭代时都选择不同的学习速率，那么你就不需要自己选择$a$了。</li>
-</ul>
-</li>
-<li>通常情况下收敛速度比梯度下降算法更快<ul>
-<li>这些算法实际上在做更复杂的事情，而不仅仅是选择一个好的学习速率$a$，所以他们往往最终收敛的远远快于梯度下降。不过关于它们是如何做到的细节，已经超过了本门课程的范畴。</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>实际上，我过去十年我都在相当频繁的使用这几种算法。但直到前几年，我才真正搞清楚共轭梯度法、BFGS和L-BFGS的细节。因此，实际上你完全可以在不了解这些算法的内环间在做什么的的情况下使用这些算法，并应用于许多不同的学习问题。</p>
-</blockquote>
-<p>如果说这些算法优缺点的话，那么它的缺点就是：</p>
-<p><strong>缺点</strong></p>
-<ul>
-<li>比梯度下降法复杂多了<ul>
-<li>如果你不是数值计算方面的专家，不建议你亲自去写共轭梯度法、BFGS和L-BFGS，而是去使用一些现成的库。实际上Octave和Matlab都有很理想的库来实现这些先进的优化算法。值得一提的是，这些算法在不同语言上的实现，是有差别的，有的语言上的库可能会表现的不太好。所以建议对比选择合适的实现。</li>
-</ul>
-</li>
-</ul>
-<h3 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h3><p>接下来来举例说明如何使用这些算法。</p>
-<p>比如你有一个包含两个参数的问题：</p>
-<p><img src="/img/16_08_25/016.png" alt=""></p>
-<p>对于上图中的代价函数，我们可以求得当$\theta_{1}=5$,$\theta_{2}=5$时，$J(\theta)$的值最小。</p>
-<p>下面就看看怎么使用Octave程序来计算$\theta_{1}$和$\theta_{2}$吧。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function [jVal, gradient] &#x3D; costFunction(theta)</span><br><span class="line"></span><br><span class="line">jVal &#x3D; (theta(1)-5)^2 + (theta(2)-5)^2;</span><br><span class="line"></span><br><span class="line">gradient &#x3D; zeros(2,1);</span><br><span class="line">gradient(1) &#x3D; 2*(theta(1)-5);</span><br><span class="line">gradient(2) &#x3D; 2*(theta(2)-5);</span><br></pre></td></tr></table></figure>
-<p>上面这段代码定义了一个函数<code>costFunction(theta)</code>，参数是一个<code>theta</code>向量，包含$\theta_{1}$和$\theta_{2}$，返回值是<code>jVal</code>和<code>gradient</code>。通过函数的定义，我们可以看出来<code>jVal</code>表示的是代价函数$J(\theta)$：</p>
-<p><img src="/img/16_08_25/018.png" alt=""></p>
-<p><code>gradient</code>是一个列量，其中两个值分别代表对$\theta_{1}$和$\theta_{2}$的偏导：</p>
-<p><img src="/img/16_08_25/019.png" alt=""></p>
-<p>接下来，调用高级优化函数<code>fminunc</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">options &#x3D; optimset(&#39;GradObj&#39;, &#39;on&#39;, &#39;MaxIter&#39;, &#39;100&#39;);</span><br><span class="line">initialTheta &#x3D; zeros(2,1);</span><br><span class="line">[optTheta, functionVal, exitFlag] &#x3D; fminunc(@costFunction, initialTheta, options);</span><br></pre></td></tr></table></figure>
-<p><code>fminunc</code>表示Octave里无约束最小化函数，调用这个函数时，需要传入一个存有配置信息的变量<code>options</code>。上面的代码中，我们的设置项中<code>&#39;GradObj&#39;, &#39;on&#39;,</code>代表设置梯度目标参数为打开状态(on)，这也意味着你现在确实要给这个算法提供一个梯度。<code>&#39;MaxIter&#39;, &#39;100&#39;</code>代表设置最大迭代次数为100次。<code>initialTheta</code>代表我们给出的一个$\theta$的猜测初始值。</p>
-<p>然后我们调用<code>fminunc</code>这个函数，传入三个参数，其中第一个参数<code>@costFunction</code>这里的<code>@</code>符号代表指向之前我们定义的<code>costFunction</code>函数的指针。后面两个参数分别是我们定义的$theta$初始值和配置信息<code>options</code>。</p>
-<p>当我们调用这个<code>fminunc</code>函数时，它会自动的从众多高级优化算法中挑选一个来使用(你也可以把它当做一个可以自动选择合适的学习速率$a$的梯度下降算法)。</p>
-<p>最终我们会得到三个返回值，分别是满足最小化代价函数$J(\theta)$的$\theta$值<code>optTheta</code>，<code>costFunction</code>中定义的<code>jVal</code>的值<code>functionVal</code>，以及标记是否已经收敛的状态值<code>exitFlag</code>，如果已收敛，标记为<code>1</code>，否则为<code>0</code>。</p>
-<p>下面我们看看在Octave中具体怎么操作：</p>
-<p>首先在当前工作目录下创建costFunction.m脚本，写入costFunction函数:</p>
-<p><img src="/img/16_08_25/020.png" alt=""></p>
-<p>然后在Octave终端下带入<code>fminunc</code>函数：</p>
-<p><img src="/img/16_08_25/021.png" alt=""></p>
-<h3 id="在逻辑回归中使用优化算法"><a href="#在逻辑回归中使用优化算法" class="headerlink" title="在逻辑回归中使用优化算法"></a>在逻辑回归中使用优化算法</h3><p>上面的例子是一个简单的二次函数中使用优化算法的例子，下面我们介绍一些在逻辑回归中使用这些算法：</p>
-<p><img src="/img/16_08_25/022.png" alt=""></p>
-<p>上图就是逻辑回归问题的代价函数的求解代码。可以看到大体流程和之前的例子是一致的，你只需要把相应的计算<code>jVal</code>以及各个<code>gradient</code>的代码，按照逻辑回归的规则填写完整即可。</p>
-<blockquote>
-<p>使用了这些复杂的优化算法之后，虽然它将使得调试变得更为困难，但是这些算法的速度远远大于普通的梯度下降算法的速度，因此可以用来处理很大的机器学习问题的时候，可以使用这些高级算法，而不是梯度下降算法。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2794,18 +2849,18 @@ Cost(h\_{\theta}(x),y)=-ylog(h\_{\theta}(x))-(1-y)log(1-h\_{\theta}(x))</script>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

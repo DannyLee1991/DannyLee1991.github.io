@@ -191,6 +191,337 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/" class="post-title-link" itemprop="url">Docker入门Part2-容器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-25 16:43:00" itemprop="dateCreated datePublished" datetime="2018-04-25T16:43:00+00:00">2018-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">安装Docker1.13或更高版本</a>。</li>
+<li>阅读Part1部分。</li>
+<li>让您的环境快速测试运行，以确保您全部设置完毕：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>现在是开始以Docker方式构建应用程序的时候了。我们从这种应用程序的层次结构的容器的底部开始，进行详细介绍。在这个层次上面是一个服务，它定义了容器在生产中的行为方式，如Part3部分所述。最后，在顶层的堆栈部分定义了Part5部分中涵盖的所有服务的交互。</p>
+<ul>
+<li>Stack （堆栈）</li>
+<li>Services （服务）</li>
+<li><strong>Container</strong>（容器，你在这里）</li>
+</ul>
+<h2 id="您的新开发环境"><a href="#您的新开发环境" class="headerlink" title="您的新开发环境"></a>您的新开发环境</h2><p>之前，如果您要开始编写Python应用程序，您第一个要做的事情就是在您的机器上安装Python运行环境。但是，这会造成您的计算机上的环境需要完美适合您的应用程序按预期运行，并且还需要与您的生产环境相匹配。</p>
+<p>使用Docker，您可以将一个可移植的Python运行环境作为一个镜像获取，无需安装。然后，您的构建可以将基础Python镜像与应用程序代码一起包括在内，确保您的应用程序，依赖项和运行环境都在一起。</p>
+<p>这些可移植的镜像是由称为<code>Dockerfile</code>的东西定义的。</p>
+<h2 id="通过Dockerfile定义一个容器"><a href="#通过Dockerfile定义一个容器" class="headerlink" title="通过Dockerfile定义一个容器"></a>通过<code>Dockerfile</code>定义一个容器</h2><p><code>Dockerfile</code>定义了容器内的环境发生的事情。像访问网络接口以及磁盘驱动器等资源是在此环境内虚拟化的，这与系统的其余部分是隔离开的，因此您需要将端口映射到外部世界，并明确指定要将哪些文件“复制”到该环境中。但是，在完成这些之后，您可以预期，在此<code>Dockerfile</code>中定义的应用程序构建在运行时的行为完全相同。</p>
+<h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a><code>Dockerfile</code></h3><p>创建一个空目录。改变目录(<code>cd</code>)到这个新的目录下，创建一个叫做<code>Dockerfile</code>的文件，将下面的内容复制粘贴到这个文件中，并保存。注意记下<code>Dockerfile</code>中的注释部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># Use an official Python runtime as a parent image</span><br><span class="line"># 使用一个官方的Python运行时环境作为父镜像</span><br><span class="line">FROM python:2.7-slim</span><br><span class="line"></span><br><span class="line"># Set the working directory to &#x2F;app</span><br><span class="line"># 设置工作目录到&#x2F;app目录下</span><br><span class="line">WORKDIR &#x2F;app</span><br><span class="line"></span><br><span class="line"># Copy the current directory contents into the container at &#x2F;app</span><br><span class="line"># 复制当前目录内容到容器的&#x2F;app目录下</span><br><span class="line">ADD . &#x2F;app</span><br><span class="line"></span><br><span class="line"># Install any needed packages specified in requirements.txt</span><br><span class="line"># 安装所有requirements.txt中指定的需要的包</span><br><span class="line">RUN pip install --trusted-host pypi.python.org -r requirements.txt</span><br><span class="line"></span><br><span class="line"># Make port 80 available to the world outside this container</span><br><span class="line"># 使得该容器的80端口对外可用</span><br><span class="line">EXPOSE 80</span><br><span class="line"></span><br><span class="line"># Define environment variable</span><br><span class="line"># 定义环境变量</span><br><span class="line">ENV NAME World</span><br><span class="line"></span><br><span class="line"># Run app.py when the container launches</span><br><span class="line"># 当容器加载时，运行app.py</span><br><span class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</span><br></pre></td></tr></table></figure>
+<p>这个<code>Dockerfile</code>提到了我们尚未创建的两个文件，名叫<code>app.py</code>和<code>requirements.txt</code>。接下来让我们来创建出来。</p>
+<h2 id="应用程序本身"><a href="#应用程序本身" class="headerlink" title="应用程序本身"></a>应用程序本身</h2><p>创建两个文件<code>requirements.txt</code>和<code>app.py</code>，并把他们放在和<code>Dockerfile</code>相同的目录下。这就完成了我们的应用程序，正如你看到的一样，非常简单。当上面的<code>Dockerfile</code>被内置到镜像中时，由于<code>Dockerfile</code>的<code>ADD</code>命令，<code>app.py</code>和<code>requirements.txt</code>存在，并且<code>app.py</code>的输出可以通过HTTP访问，这要归功于<code>EXPOSE</code>命令。</p>
+<h3 id="requirements-txt"><a href="#requirements-txt" class="headerlink" title="requirements.txt"></a><code>requirements.txt</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flask</span><br><span class="line">Redis</span><br></pre></td></tr></table></figure>
+<h3 id="app-py"><a href="#app-py" class="headerlink" title="app.py"></a><code>app.py</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">from redis import Redis, RedisError</span><br><span class="line">import os</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line"># Connect to Redis</span><br><span class="line">redis &#x3D; Redis(host&#x3D;&quot;redis&quot;, db&#x3D;0, socket_connect_timeout&#x3D;2, socket_timeout&#x3D;2)</span><br><span class="line"></span><br><span class="line">app &#x3D; Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(&quot;&#x2F;&quot;)</span><br><span class="line">def hello():</span><br><span class="line">    try:</span><br><span class="line">        visits &#x3D; redis.incr(&quot;counter&quot;)</span><br><span class="line">    except RedisError:</span><br><span class="line">        visits &#x3D; &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;&#x2F;i&gt;&quot;</span><br><span class="line"></span><br><span class="line">    html &#x3D; &quot;&lt;h3&gt;Hello &#123;name&#125;!&lt;&#x2F;h3&gt;&quot; \</span><br><span class="line">           &quot;&lt;b&gt;Hostname:&lt;&#x2F;b&gt; &#123;hostname&#125;&lt;br&#x2F;&gt;&quot; \</span><br><span class="line">           &quot;&lt;b&gt;Visits:&lt;&#x2F;b&gt; &#123;visits&#125;&quot;</span><br><span class="line">    return html.format(name&#x3D;os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname&#x3D;socket.gethostname(), visits&#x3D;visits)</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    app.run(host&#x3D;&#39;0.0.0.0&#39;, port&#x3D;80)</span><br></pre></td></tr></table></figure>
+<p>现在我们看到<code>pip install -r requirements.txt</code>命令安装了Python的Flask和Redis库，并且应用打印出了环境变量<code>NAME</code>，同时输出了方法<code>socket.gethostname()</code>输出的内容。最后，因为Redis没有运行（因为我们只安装了Python库，而不是Redis本身），所以这里应该会失败，并产生错误消息。</p>
+<blockquote>
+<p>注意：在容器内部访问主机的名称将检索容器ID，这与正在运行的可执行文件的进程ID相似。</p>
+</blockquote>
+<p>就是这样！你的系统上不需要Python或者任何<code>requirements.txt</code>文件，也不需要在你的系统上安装或运行此镜像。这看起来你并没有真正用Python和Flask建立一个运行环境，但事实上已经建立好了。</p>
+<h2 id="构建一个应用"><a href="#构建一个应用" class="headerlink" title="构建一个应用"></a>构建一个应用</h2><p>我们准备构建应用程序。确保您仍然处于新目录的顶层。以下是<code>ls</code>命令应该显示的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">Dockerfile		app.py			requirements.txt</span><br></pre></td></tr></table></figure>
+<p>现在运行build命令。这会创建一个Docker镜像，我们将使用<code>-t</code>标记它，这样可以给它指定一个友好的名称。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t friendlyhello .</span><br></pre></td></tr></table></figure>
+<p>你构建的镜像在哪里？它在你的机器的本地Docker镜像注册表中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br><span class="line"></span><br><span class="line">REPOSITORY            TAG                 IMAGE ID</span><br><span class="line">friendlyhello         latest   </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Linux用户的故障排除</p>
+<p><em>DNS设置</em></p>
+<p>代理服务器在启动并运行后可以阻止与您的网络应用程序的连接。如果您位于代理服务器的后面，请使用<code>ENV</code>命令为您的代理服务器指定主机和端口，将以下行添加到<code>Dockerfile</code>中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Set proxy server, replace host:port with values for your servers</span><br><span class="line">ENV http_proxy host:port</span><br><span class="line">ENV https_proxy host:port</span><br></pre></td></tr></table></figure>
+<p><em>代理服务设置</em></p>
+<p>DNS错误配置可能会导致<code>pip</code>出现问题。您需要设置您自己的DNS服务器地址以使<code>pip</code>正常工作。您可能需要更改Docker守护程序的DNS设置。您可以按照以下方式来编辑（或者创建）带有<code>dns</code>信息的配置文件<code>/etc/docker/daemon.json</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> &quot;dns&quot;: [&quot;your_dns_address&quot;, &quot;8.8.8.8&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，列表的第一个元素是你的DNS服务器的地址。第二项是Google的DNS，当第一项不可用时可以使用它。</p>
+<p>在继续之前，保存`daemon.json并重新启动docker服务。</p>
+<p><code>sudo service docker restart</code></p>
+<p>修复后，重试运行<code>build</code>命令。</p>
+</blockquote>
+<h2 id="运行app"><a href="#运行app" class="headerlink" title="运行app"></a>运行app</h2><p>运行应用程序，使用<code>-p</code>将机器的端口4000映射到容器的已发布端口<code>80</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure>
+<p>你可以在<code>http://0.0.0.0:80</code>看到一条消息，Python正在为你的应用程序提供服务。但是，该消息来自容器内部，它不知道您将该容器的端口<code>80</code>映射到<code>4000</code>，从而制作正确的URL<code>http://localhost:4000</code>。</p>
+<p>在网络浏览器中转到该URL以查看网页上显示的显示内容。</p>
+<p><img src="/img/18_04_25/004.png" alt=""></p>
+<blockquote>
+<p>注意：如果你正在在Windows7上使用Docker Toolbox，使用Docker Machine IP来替代<code>localhost</code>。例如：<a target="_blank" rel="noopener" href="http://192.168.99.100:4000/。要查找IP地址，请使用该命令`docker-machine">http://192.168.99.100:4000/。要查找IP地址，请使用该命令`docker-machine</a> ip`。</p>
+</blockquote>
+<p>您也可以在shell中使用<code>curl</code>命令来查看相同的内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl http:&#x2F;&#x2F;localhost:4000</span><br><span class="line"></span><br><span class="line">&lt;h3&gt;Hello World!&lt;&#x2F;h3&gt;&lt;b&gt;Hostname:&lt;&#x2F;b&gt; 8fc990912a14&lt;br&#x2F;&gt;&lt;b&gt;Visits:&lt;&#x2F;b&gt; &lt;i&gt;cannot connect to Redis, counter disabled&lt;&#x2F;i&gt;</span><br></pre></td></tr></table></figure>
+<p>这个<code>4000:80</code>的端口重映射是为了演示<code>Dockerfile</code>中的<code>EXPOSE</code>与使用<code>docker run -p</code>发布的内容之间的区别。在后面的步骤中，我们只需将主机上的端口80映射到容器中的端口80并使用<code>http://localhost</code>。</p>
+<p>在终端中点击<code>CTRL + C</code>退出。</p>
+<blockquote>
+<p><strong>在Windows下，显式的停止容器</strong></p>
+<p>在Windows系统下，<code>CTRL+C</code>不会停止容器。到目前为止，首先键入<code>CTRL+C</code>以获取提示（或打开另一个shell），然后输入<code>docker container ls</code>来列出运行中的容器，其次是<code>docker container stop &lt;Container NAME or ID&gt;</code>来停止容器。否则，你会在下一步重新运行容器时得到一个来自守护进程的错误消息。</p>
+</blockquote>
+<p>现在让我们以分离模式在后台运行应用程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 4000:80 friendlyhello</span><br></pre></td></tr></table></figure>
+<p>您可以获取应用的长容器ID，然后将其显示到终端。你的容器在后台运行。你也可以通过<code>docker container ls</code>来看到简短的容器ID（并且在运行命令时可以互换使用）。</p>
+<p>注意到<code>CONTAINER ID</code>与<code>http://localhost:4000</code>上的内容匹配。</p>
+<p>现在我们使用<code>docker container stop</code>来结束指定<code>CONTAINER ID</code><br>的进程，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container stop 1fa4ab2cf395</span><br></pre></td></tr></table></figure>
+<h2 id="分享你的image"><a href="#分享你的image" class="headerlink" title="分享你的image"></a>分享你的image</h2><p>为了演示我们刚才创建的可移植性，我们上传我们构建的镜像并在其他地方运行它。毕竟，当您想要将容器部署到生产环境时，您需要知道如何推送注册表。</p>
+<p>注册表是存储库的集合，而存储库是镜像的集合 - 有点像GitHub存储库，但不同的是这里代码已经创建。注册表上的帐户可以创建许多存储库。 <code>docker</code> CLI默认使用Docker的公共注册表。</p>
+<blockquote>
+<p>注意：我们在这里使用Docker的公共注册表仅仅是因为它是免费和预先配置的，但是有许多公共选项可供选择，您甚至可以使用<a target="_blank" rel="noopener" href="https://docs.docker.com/datacenter/dtr/2.2/guides/">Docker Trusted Registry</a>设置您自己的私有注册表。</p>
+</blockquote>
+<h3 id="登录你的Docker-ID"><a href="#登录你的Docker-ID" class="headerlink" title="登录你的Docker ID"></a>登录你的Docker ID</h3><p>如果你没有Docker账号，需要在<a href="cloud.docker.com">cloud.docker.com</a>上注册一个。记下你的用户名。</p>
+<p>登录到本地计算机上的Docker公共注册表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker login</span><br></pre></td></tr></table></figure>
+<h3 id="给镜像打标签"><a href="#给镜像打标签" class="headerlink" title="给镜像打标签"></a>给镜像打标签</h3><p>将本地镜像与注册表中的存储库相关联的符号是<code>username/repository:tag</code>。该tag是可选的，但建议使用，因为它是注册管理机构用于为Docker镜像提供版本的机制。为该上下文提供存储库并标记有意义的名称，例如<code>get-started:part2</code>。这将镜像置于启动存储库中，并将其标记为<code>part2</code>。</p>
+<p>现在，给镜像整体的打上标签。带入你的用户名、仓库名、和标签名运行<code>docker tag image</code>以便将镜像上传到你想要的地址。命令的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag image username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag friendlyhello john&#x2F;get-started:part2</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker image ls</code>来查看你的新的带有标签信息的镜像：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker image ls</span><br><span class="line"></span><br><span class="line">REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">friendlyhello            latest              d9e555c53008        3 minutes ago       195MB</span><br><span class="line">john&#x2F;get-started         part2               d9e555c53008        3 minutes ago       195MB</span><br><span class="line">python                   2.7-slim            1c7128a655f6        5 days ago          183MB</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="发布镜像"><a href="#发布镜像" class="headerlink" title="发布镜像"></a>发布镜像</h3><p>上传带有标签信息的镜像到仓库中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>完成后，此上传的结果将公开发布。如果你登录到<a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>，你会在那里看到带有pull命令的新的镜像文件。</p>
+<h3 id="从远程仓库中下拉并且运行镜像"><a href="#从远程仓库中下拉并且运行镜像" class="headerlink" title="从远程仓库中下拉并且运行镜像"></a>从远程仓库中下拉并且运行镜像</h3><p>截止到目前，你可以使用<code>docker run</code>命令来在任何机器上运行你的应用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 4000:80 username&#x2F;repository:tag</span><br></pre></td></tr></table></figure>
+<p>如果镜像在本地机器上不可用，Docker会从远程仓库中下拉到本地。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -p 4000:80 john&#x2F;get-started:part2</span><br><span class="line">Unable to find image &#39;john&#x2F;get-started:part2&#39; locally</span><br><span class="line">part2: Pulling from john&#x2F;get-started</span><br><span class="line">10a267c67f42: Already exists</span><br><span class="line">f68a39a6a5e4: Already exists</span><br><span class="line">9beaffc0cf19: Already exists</span><br><span class="line">3c1fe835fb6b: Already exists</span><br><span class="line">4c9f1fa8fcb8: Already exists</span><br><span class="line">ee7d8f576a14: Already exists</span><br><span class="line">fbccdcced46e: Already exists</span><br><span class="line">Digest: sha256:0601c866aab2adcc6498200efd0f754037e909e5fd42069adeff72d1e2439068</span><br><span class="line">Status: Downloaded newer image for john&#x2F;get-started:part2</span><br><span class="line"> * Running on http:&#x2F;&#x2F;0.0.0.0:80&#x2F; (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure>
+<p>不管<code>docker run</code>在哪里运行，它都会将你的镜像以及Python和<code>requirements.txt</code>中所有的依赖关系一起提取出来，并运行您的代码。它们都在一个整洁的小包中一起旅行，并且Docker不需要您在主机上安装任何东西来运行它。</p>
+<h2 id="Part2结论"><a href="#Part2结论" class="headerlink" title="Part2结论"></a>Part2结论</h2><p>这里列出了这个页面的基本Docker命令，以及一些相关的命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">docker build -t friendlyhello .  # Create image using this directory&#39;s Dockerfile</span><br><span class="line">docker run -p 4000:80 friendlyhello  # Run &quot;friendlyname&quot; mapping port 4000 to 80</span><br><span class="line">docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode</span><br><span class="line">docker container ls                                # List all running containers</span><br><span class="line">docker container ls -a             # List all containers, even those not running</span><br><span class="line">docker container stop &lt;hash&gt;           # Gracefully stop the specified container</span><br><span class="line">docker container kill &lt;hash&gt;         # Force shutdown of the specified container</span><br><span class="line">docker container rm &lt;hash&gt;        # Remove specified container from this machine</span><br><span class="line">docker container rm $(docker container ls -a -q)         # Remove all containers</span><br><span class="line">docker image ls -a                             # List all images on this machine</span><br><span class="line">docker image rm &lt;image id&gt;            # Remove specified image from this machine</span><br><span class="line">docker image rm $(docker image ls -a -q)   # Remove all images from this machine</span><br><span class="line">docker login             # Log in this CLI session using your Docker credentials</span><br><span class="line">docker tag &lt;image&gt; username&#x2F;repository:tag  # Tag &lt;image&gt; for upload to registry</span><br><span class="line">docker push username&#x2F;repository:tag            # Upload tagged image to registry</span><br><span class="line">docker run username&#x2F;repository:tag                   # Run image from a registry</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/25/Docker%E5%85%A5%E9%97%A8Part1-%E5%AE%9A%E4%BD%8D%E5%92%8C%E8%AE%BE%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/25/Docker%E5%85%A5%E9%97%A8Part1-%E5%AE%9A%E4%BD%8D%E5%92%8C%E8%AE%BE%E7%BD%AE/" class="post-title-link" itemprop="url">Docker入门Part1-定位和设置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-25 12:17:00" itemprop="dateCreated datePublished" datetime="2018-04-25T12:17:00+00:00">2018-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>翻译自<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/">docker官方文档</a>。</p>
+</blockquote>
+<p>欢迎！我们很高兴您来学习Docker。 Docker入门教程将教你如何：</p>
+<ul>
+<li>1.设置您的Docker环境（本节内容）</li>
+<li>2.构建一个镜像，并将其作为一个容器运行</li>
+<li>3.通过运行多个容器来缩放你的应用</li>
+<li>4.通过集群来分发你的应用</li>
+<li>5.通过添加后端数据库来堆叠服务</li>
+<li>6.发布你的应用到生产环境</li>
+</ul>
+<h2 id="Docker的概念"><a href="#Docker的概念" class="headerlink" title="Docker的概念"></a>Docker的概念</h2><p>Docker是开发人员和系统管理员使用容器<strong>开发</strong>、<strong>部署</strong>和<strong>运行</strong>应用程序的平台。使用Linux容器来部署应用程序称为<em>集装箱化</em>(Containerization)。容器的概念并不新，但它们用于部署应用程序会很轻松。</p>
+<p>集装箱化越来越受欢迎，因为集装箱是：</p>
+<ul>
+<li>灵活：即使是最复杂的应用也可以被集装箱化。</li>
+<li>轻量级：容器利用并共享主机内核。</li>
+<li>通用：您可以即时部署更新和升级。</li>
+<li>轻便：你可以在本地构建，发布到云端，并且在任何地方运行。</li>
+<li>可扩展：您可以增加和自动分发容器副本。</li>
+<li>可堆叠：您可以及时的纵向堆叠服务。</li>
+</ul>
+<p><img src="/img/18_04_25/001.png" alt=""></p>
+<h3 id="镜像和容器"><a href="#镜像和容器" class="headerlink" title="镜像和容器"></a>镜像和容器</h3><p>一个容器通过运行一个镜像来启动。一个<strong>镜像</strong>是一个可执行的程序包，其中包含运行该程序所需的所有内容，包括代码，运行时，库，环境变量和配置文件。</p>
+<p><strong>容器</strong>是镜像的运行时实例 - 即执行时将镜像加载到内存中，这个内存中的部分就是容器（即具有状态或用户进程的镜像）。Linux环境下，你可以通过命令<code>docker ps</code>来查看你当前正在运行的容器。</p>
+<h3 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h3><p>一个<strong>容器</strong>在Linux的<em>本地</em>运行，并与其他容器共享主机的内核。它运行在一个独立的进程，不占用任何其他可执行文件的内存，从而达到轻量化。</p>
+<p>对比之下，<strong>虚拟机（VM）</strong>运行一个完整的“guest”操作系统，通过虚拟机管理程序虚拟访问主机资源。一般来说，虚拟机提供的环境比大多数应用程序需要的资源更多。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/18_04_25/002.png" alt=""></td>
+<td style="text-align:center"><img src="/img/18_04_25/003.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="准备你的Docker环境"><a href="#准备你的Docker环境" class="headerlink" title="准备你的Docker环境"></a>准备你的Docker环境</h2><p>在支持的平台上安装Docker社区版本(CE)或者企业版(EE)。</p>
+<blockquote>
+<p>对于完整的Kubernetes集成</p>
+<ul>
+<li><p>Docker for Mac上的Kubernetes在17.12 Edge（mac45）或17.12 Stable（mac46）及更高版本中可用。</p>
+</li>
+<li><p>Docker for Windows上的Kubernetes仅在18.02 Edge（win50）和更高边缘通道中可用。</p>
+</li>
+</ul>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">安装Docker</a></p>
+<h3 id="测试Docker版本号"><a href="#测试Docker版本号" class="headerlink" title="测试Docker版本号"></a>测试Docker版本号</h3><ul>
+<li>1.运行<code>docker --version</code>并确保您拥有支持的Docker版本：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker --version</span><br><span class="line"></span><br><span class="line">Docker version 17.12.0-ce, build c97c6d6</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.运行<code>docker info</code>或者(<code>docker version</code>没有<code>--</code>)来查看关于您的Docker安装的更多细节：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker info</span><br><span class="line"></span><br><span class="line">Containers: 0</span><br><span class="line"> Running: 0</span><br><span class="line"> Paused: 0</span><br><span class="line"> Stopped: 0</span><br><span class="line">Images: 0</span><br><span class="line">Server Version: 17.12.0-ce</span><br><span class="line">Storage Driver: overlay2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为了避免权限错误（以及<code>sudo</code>的使用），将您的用户添加到<code>docker</code>组。<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/linux/linux-postinstall/">更多</a>。</p>
+</blockquote>
+<h3 id="测试Docker的安装"><a href="#测试Docker的安装" class="headerlink" title="测试Docker的安装"></a>测试Docker的安装</h3><ul>
+<li>1.通过运行简单的Docker镜像<a target="_blank" rel="noopener" href="https://hub.docker.com/_/hello-world/">hello-world</a>来测试您的安装是否工作正常：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br><span class="line"></span><br><span class="line">Unable to find image &#39;hello-world:latest&#39; locally</span><br><span class="line">latest: Pulling from library&#x2F;hello-world</span><br><span class="line">ca4f61b1923c: Pull complete</span><br><span class="line">Digest: sha256:ca0eeb6fb05351dfc8759c20733c91def84cb8007aa89a5bf606bc8b315b9fc7</span><br><span class="line">Status: Downloaded newer image for hello-world:latest</span><br><span class="line"></span><br><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.列出下载到你机器上的<code>hello-world</code>镜像：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.列出显示其消息后退出的<code>hello-world</code>容器（由镜像生成）。如果它仍在运行，则不需要<code>--all</code>选项：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker container ls --all</span><br><span class="line"></span><br><span class="line">CONTAINER ID     IMAGE           COMMAND      CREATED            STATUS</span><br><span class="line">54f4984ed6a8     hello-world     &quot;&#x2F;hello&quot;     20 seconds ago     Exited (0) 19 seconds ago</span><br></pre></td></tr></table></figure>
+<h2 id="本节回顾"><a href="#本节回顾" class="headerlink" title="本节回顾"></a>本节回顾</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">## List Docker CLI commands</span><br><span class="line">docker</span><br><span class="line">docker container --help</span><br><span class="line"></span><br><span class="line">## Display Docker version and info</span><br><span class="line">docker --version</span><br><span class="line">docker version</span><br><span class="line">docker info</span><br><span class="line"></span><br><span class="line">## Execute Docker image</span><br><span class="line">docker run hello-world</span><br><span class="line"></span><br><span class="line">## List Docker images</span><br><span class="line">docker image ls</span><br><span class="line"></span><br><span class="line">## List Docker containers (running, all, all in quiet mode)</span><br><span class="line">docker container ls</span><br><span class="line">docker container ls --all</span><br><span class="line">docker container ls -aq</span><br></pre></td></tr></table></figure>
+<h2 id="Part1结论"><a href="#Part1结论" class="headerlink" title="Part1结论"></a>Part1结论</h2><p>容器化使<a target="_blank" rel="noopener" href="https://www.docker.com/use-cases/cicd">CI/CD</a>无缝衔接。例如：</p>
+<ul>
+<li>应用程序没有系统依赖关系</li>
+<li>更新可以推送到分布式应用程序的任何部分</li>
+<li>资源密度可以被优化。</li>
+</ul>
+<p>使用Docker，扩展应用程序的过程就是启动新的可执行文件，而不是运行繁重的VM主机。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2018/03/09/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91kaggle%E7%AB%9E%E8%B5%9B%20%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +553,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1081,7 +1412,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1245,7 +1576,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1506,7 +1837,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1631,7 +1962,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1716,7 +2047,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1829,7 +2160,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2018,7 +2349,7 @@ P(y\_i \mid x\_i; W) = \frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j} }</script><p>这个
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
+                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2192,529 +2523,6 @@ d\_2 (I\_1, I\_2) = \sqrt{\sum\_{p} \left( I^p\_1 - I^p\_2 \right)^2}</script><p
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/" class="post-title-link" itemprop="url">【翻译】图解信息论</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-13 12:23:00" itemprop="dateCreated datePublished" datetime="2017-06-13T12:23:00+00:00">2017-06-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-09-Visual-Information/">原文地址</a></li>
-</ul>
-<p>我很喜欢那种获得一种新的方式来思考我们的世界时的那种感觉。尤其是在一些模糊的想法变成一个具体的概念的时候。<strong>信息论</strong>就是这样一种把模糊的概念具象化的典型的例子。</p>
-<p>信息理论为我们描述很多事情提供了准确的语言。关于某个问题我到底有多不确定？问题A的答案会告诉我们多少关于问题B的答案的信息？一组信息和另一组信息的相似度如何衡量？在我小的时候，我就已经形成了一些关于这些问题的模糊的想法，但是信息论将我的这些想法形成了精确的强大的理论。这些理论有着巨大的应用范围，例如数据压缩、量子物理学、机器学习以及其他更广泛的领域。</p>
-<p>不过，信息论看起来似乎有些不容易理解，但我不认为信息论应该是这样难以理解的。事实上，信息论中许多核心理论都可以完全用图解的方式来解释！</p>
-<h2 id="可视化概率分布"><a href="#可视化概率分布" class="headerlink" title="可视化概率分布"></a>可视化概率分布</h2><p>在我们深入信息理论之前，让我们考虑一下如何可视化简单的概率分布。</p>
-<p>我住在加利福尼亚州。有些时候这里是下雨天，但大多数时间里这里都是晴天！我们假设有75%的时间是晴天。我们很容易就可以将这些信息可视化的展示出来：</p>
-<p><img src="/img/17_06_13/001.png" width=100 height=100 /></p>
-<p>大多数的时间，我都穿T恤衫，但在某些时间，我会穿外套。那么假设我38%的时间里是穿外套的。可视化这个信息也很容易：</p>
-<p><img src="/img/17_06_13/002.png" width=100 height=100 /></p>
-<p>如果我想将这两件事同时可视化该怎么做呢？如果这两件事情相互不影响（相互独立），那么这很容易做到。例如，我穿T恤或者外套与下一周的天气并不相关。我们可以通过两个轴分别表示两种不同的变量的方式来可视化这些信息：</p>
-<p><img src="/img/17_06_13/003.png" width=300 height=300 /></p>
-<p>请注意水平方向和竖直方向上穿过的直线。<em>这就是独立性的标识！</em>我穿外套的概率并不受那一周天气都是下雨天而改变。换句话说，在下周要下雨并且我恰好也穿外套的概率，是我穿外套的概率与下雨天的概率之积。它们互不影响。</p>
-<p>当变量之间相互作用时，对于某组相互排斥的变量而言，他们组成的概率会减少；而某组相互促进影响的变量而言，他们组成的概率会增加。对于在下雨天我穿外套的这种情况，会有额外的概率增加，因为下雨天和外套这两个变量是相关的，它们使得彼此之间更有可能发生。在下雨天我穿外套的概率，比我在其他某天穿外套的概率高。</p>
-<p>可视化之后，这些看起来有肿胀的部分是因为额外增加的概率导致的，而其他收缩的部分，是因为这一对事件不太可能同时出现。</p>
-<p><img src="/img/17_06_13/004.png" width=300 height=300 /></p>
-<p>这张图虽然这看起来很酷，但对于理解具体发生了什么并不是很有帮助。</p>
-<p>相反，让我们焦点集中在其中的某一个变量上，例如天气。我们知道某天是晴天或者下雨天的可能性。对于是否穿外套的两种情况，我们可以看看<em>条件概率</em>。我在晴天穿外套的可能性有多大？如果是下雨天，那么我穿外套的可能性又是多大？</p>
-<p><img src="/img/17_06_13/005.png" width=500 height=300 /></p>
-<p>有25%的时间是下雨天。如果是下雨天，那么有75%的可能性我会穿外套。所以，我在下雨天穿外套的概率是25%乘以75%，结果大约是19%。下雨天的概率乘以我在下雨天的情况下穿外套的概率，就是在所有情况下，天气为下雨天并且我穿外套的概率。我们用这样的式子来描述：</p>
-<script type="math/tex; mode=display">
-p(\text{rain}, \text{coat}) = p(\text{rain}) \cdot p(\text{coat} ~|~ \text{rain})</script><p>这就是概率论的最基本的定理之一：</p>
-<script type="math/tex; mode=display">
-p(x,y) = p(x)\cdot p(y|x)</script><p>我们把一个整体的概率拆分成两部分来看。首先，我们来看其中一个变量的概率的值，例如不同天气的概率。然后我们观察另一个变量，例如我的穿衣情况，观察它在第一个变量的条件下的概率。</p>
-<p>具体选择哪个变量开始，是任意的。我们可以以我的穿衣情况为第一个被观察的条件，这也许会有点不直观，因为我们知道穿衣情况是受到天气情况影响的，而天气情况并不会受到我的穿衣情况影响的…但其实这里两种方式的效果是一样有效的！</p>
-<p>让我们来看一个例子。我已经知道穿外套的概率是38%。假设我已经知道我在某一天是穿外套的，那么这一天下雨的概率有多大呢？我在下雨天比在晴天穿外套的可能性更大，但在加州是很少下雨的，所以有50%的概率这一天是下雨天。因此，某天是雨天并且我穿了外套的概率就等于我穿外套的概率（38%）乘以我穿外套的情况下是下雨天的概率（50%），结果大约是19%。</p>
-<script type="math/tex; mode=display">
-p(\text{rain}, \text{coat}) = p(\text{coat}) \cdot p(\text{rain} ~|~ \text{coat})</script><p>这为我们提供了第二种来可视化这些概率分布的方法：</p>
-<p><img src="/img/17_06_13/006.png" width=300 height=500 /></p>
-<p>注意，这里的标签与之前图中稍有不同：T恤和外套现在是<em>边际概率</em>，我穿外套的概率是不需要考虑天气情况的。另一方面，现在有两个雨天和晴天的标签，分别来标识我穿T恤情况下的概率和我穿外套情况下的概率。</p>
-<blockquote>
-<p>你可能已经听说过<strong>贝叶斯定理</strong>。其实你也完全可以使用贝叶斯定理来解释这部分内容。</p>
-</blockquote>
-<h2 id="Aside：辛普森悖论"><a href="#Aside：辛普森悖论" class="headerlink" title="Aside：辛普森悖论"></a>Aside：辛普森悖论</h2><p>这些可视化概率分布的技巧真的很有用吗？我认为的确很有用！在我们图解信息论之前，我还需要一些时间来用可视化的技术探索一下辛普森悖论。辛普森悖论是一种非常不直观的统计状况。它真的很不容易被直观的理解。迈克尔·尼尔森（Michael Nielsen）撰写了一篇很有爱的文章：<a target="_blank" rel="noopener" href="http://michaelnielsen.org/reinventing_explanation/">“创新说明”</a>，探讨了不同方式来解释它。而我想尝试使用我们在上一节中学到的技巧来解释它。</p>
-<p>测试两种肾结石治疗方法。对一半的患者使用A治疗方案，而另一半则使用B治疗方案。接受治疗方案B的患者比接受治疗方案A的患者更容易存活。</p>
-<p><img src="/img/17_06_13/007.png" width=400 height=400 /></p>
-<p>然而，如果接受治疗方案A的话，患肾小结石的患者更有可能存活。然而大肾结石患者如果接受治疗方案A也更有可能存活！这怎么可能呢？</p>
-<p>这个问题的核心是因为患者样本没有被正确随机分组。接受治疗方案A的患者大部分可能患有大肾结石，而接受治疗方案B的患者大部分可能患有小肾结石。</p>
-<p><img src="/img/17_06_13/008.png" width=400 height=400 /></p>
-<p>事实证明，肾结石较小的患者通常更有可能生存。</p>
-<p>为了更好地理解这一点，我们可以将前两个图表组合为一个三维图，其中将小型和大型肾结石的存活率分开展示。</p>
-<p><img src="/img/17_06_13/009.png" width=400 height=400 /></p>
-<p>我们现在可以看到，在两种小肾结石和大肾结石的病例中，治疗方案A是超过治疗方案B的。治疗方案B看起来似乎更好，仅仅是因为应用它的患者本身更有可能存活！</p>
-<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>现在我们有了可视化概率的方法，我们可以深入到信息论中了。</p>
-<p>首先我向你介绍一位我假想的朋友，Bob。Bob很喜欢动物。他一直不停在谈论动物。事实上，他只会说四个字：“dog”, “cat”, “fish” 和 “bird”。</p>
-<p>几周前（虽然这只是我的想象)Bob搬到了澳大利亚。另外，他决定只想要使用二进制来交流。来自Bob的所有（虚构的）消息都是这样的：</p>
-<p><img src="/img/17_06_13/010.png" width=300 height=100 /></p>
-<p>为了沟通，Bob和我必须建立一个编码，一种将单词映射成位序列的方式。</p>
-<p><img src="/img/17_06_13/011.png" width=300 height=300 /></p>
-<p>要发送消息，Bob用相应的编码字来替换每个单词，然后将它们连接在一起形成编码的字符串。</p>
-<p><img src="/img/17_06_13/012.png" width=300 height=150 /></p>
-<h3 id="可变长度码"><a href="#可变长度码" class="headerlink" title="可变长度码"></a>可变长度码</h3><p>不幸的是，在假想中的澳大利亚，通信服务是昂贵的。从Bob收到的每条消息中，每一位（bit）数据我都必须支付5美元。我是不是还没有提到Bob喜欢说很多话这件事？为了防止我破产，Bob和我决定来研究一些可以使我们的平均消息长度变得更短的方法。</p>
-<p>事实证明，并不是所有的词Bob都会经常说。Bob很喜欢狗，他一直在说“dog”。同时他也会不定期地说其他的动物，尤其是他的狗喜欢追的猫，但它大多数时间他还是在说“dog”。这是一个他的单词频率图：</p>
-<p><img src="/img/17_06_13/013.png" width=300 height=200 /></p>
-<p>这似乎看来是有优化空间的。因为我们可以看到，按照旧的编码方式，对于不同的词无论它们是多么常见，都在使用2位长的码字来表示。</p>
-<p>我们可以用下面这张图来可视化这些信息。在下面这张图中，我们使用竖直方向的坐标轴来表示每个词的概率$p(x)$，水平方向的坐标轴来表示相应的码字的长度$L(x)$。可以看到在这种情况下平均码字是2位。</p>
-<p><img src="/img/17_06_13/014.png" width=500 height=300 /></p>
-<p>也许我们可以用一种非常聪明的方式来制作一种可变长度的编码方式，使得其中常用单词对应的码字特别短。这样做的挑战就是码字之间是存在竞争关系的，我们需要让一部分词对应的码字变短，而另一部分则会变长。为了最大限度地减少消息长度，我们希望理想状态下所有的码字都很短，尤其是那些常用的词我们更希望它们能变短。因此，最终得到的编码对于常用词（例如“dog”）具有较短的码字，并且较长的码字被应用到了不常用的词之上（例如“bird”）。</p>
-<p><img src="/img/17_06_13/015.png" width=300 height=300 /></p>
-<p>让我们再次可视化这些信息。注意那些最常用的词变短了，那些不常用的词变长了。经过这样处理之后，对于传递与之前相同的信息，我们的流量开销的确变少了。平均来说，码字长度现在是1.75位！</p>
-<p><img src="/img/17_06_13/016.png" width=500 height=300 /></p>
-<blockquote>
-<p>你也许会好奇：为什么不用1来作为码字？因为可惜的是，如果我们这么做，当我们对编码的字符串进行解码时，会引起歧义。我们稍后会介绍这些内容。</p>
-</blockquote>
-<p>事实证明，这种编码方式是最好的。对于这个分配问题，没有其他的编码方式能带来平均码字长度小于1.75位的效果了。</p>
-<p>这是一个简单的基本限制。这要求我们传达的信息平均码字长度至少是1.75位。无论我们用多么聪明的代码，都不可能让平均消息长度变得更短。我们称这种限制为<strong>熵</strong>。关于熵的内容，我们将在稍后详细讨论。</p>
-<p><img src="/img/17_06_13/017.png" width=500 height=300 /></p>
-<p>如果我们想了解这个平均最短码字长度的限制，这个问题的关键在于理解如何在使得一些码字变短但同时其他码字变长的过程中进行权衡。一旦我们弄明白了如何进行这种权衡，我们就能够找出最好的编码方式了。</p>
-<h3 id="码字的空间"><a href="#码字的空间" class="headerlink" title="码字的空间"></a>码字的空间</h3><p>码字长度为1时，能表示2种编码：0和1的编码；码字长度为2时，能表示4中编码：00，01，10和11。下面是每增加一位码字长度，能表示的编码种类数量的递增情况：</p>
-<p><img src="/img/17_06_13/018.png" width=350 height=300 /></p>
-<p>但我们感兴趣的是那些可变长度编码。一种比较简单的情况是有八个长度为3位的码字。我们也可能有一些比较复杂的组合，比如长度为2的两个码字，与长度为3的四个码字的组合。那么究竟是什么决定了我们可以有不同长度的码字呢？</p>
-<p>回想一下，Bob通过用它的码字替换每个单词并将它们连接在一起，将他的消息转换成编码的字符串。</p>
-<p><img src="/img/17_06_13/019.png" width=300 height=200 /></p>
-<p>当制作可变长度代码时，需要注意一个微妙的问题。我们如何将编码过的字符串分割回码字呢？当所有的码字长度相同时，这很简单。我们只需将这个字符串按照固定的码字长度分割成不同的码字即可。但是由于存在不同长度的码字，所以我们需要关注编码过的字符串的内容。</p>
-<p>我们希望只有一种方式来解码编码过的字符串。我们不希望我们的编码方式在解码过程中变得含糊不清。如果我们有一些特殊的“码字结束”符号，这个问题这就会变得很容易。但其实我们没有这种符号，我们只能够发送0和1。因此，我们需要能够查看一系列连续的码字，并且说明每个码字应该停止的位置。</p>
-<p>而这，很可能出现编码不能被唯一解码的情况。例如，假设0和01都是码字，那么我们就会搞不清楚符串0100111的第一个码字到底是什么。因为这个字符串的第一个码字既可以是0也可以是01！因此，我们想要的效果是没有哪个码字是另一个码字的前缀。这称为<strong>前缀属性</strong>，遵守它的编码称为<strong>前缀编码</strong>。</p>
-<p>思考这个问题的一个好的方法是每个码字需要从可能的码字的空间中做出牺牲。如果我们取代码字01，那么我们就失去了使用任何以01前缀开头的码字的能力。我们不能使用010或011010110，因为会产生歧义。</p>
-<p><img src="/img/17_06_13/020.png" width=400 height=400 /></p>
-<p>由于所有码字中，有$\frac{1}{1}$都是从01开始，所以我们牺牲了$\frac{1}{1}$的所有可能的码字。这是我们付出的代价，而换来的结果只是使得其中一个码字的长度缩短到2位长！反过来，这种牺牲意味着所有其他码字需要更长一些。在不同码字的长度之间总是有这种折衷。为获取一个比较短的码字，需要你牺牲更多的其他码字的空间。而我们需要弄清楚，正确的权衡方式是什么？</p>
-<h3 id="最佳编码"><a href="#最佳编码" class="headerlink" title="最佳编码"></a>最佳编码</h3><p>可以理解为简短编码的长度是有一个限定的度量在里面，每减短一个bit的密文就会牺牲一些编码的可能性从而让其它密文的长度增长。 </p>
-<p>购买长度为0的码字的成本为1，会牺牲掉所有的码字空间，如果这样做，就不会有其他码字了。长度为1的码字（如“0”）的代价是$\frac{1}{2}$的码字空间，因为有一半的码字以“0”开始的。长度为2的码字的成本(例如“01”)是$\frac{1}{4}$码字空间，因为有$\frac{1}{4}$的码字以“01”开始的。一般来说，码字的代价随代码字的长度而呈指数减小。</p>
-<p><img src="/img/17_06_13/021.png" width=600 height=300 /></p>
-<p>如果代价是以指数衰减，那么这个高度和面积也是成指数衰减。</p>
-<p>我们想要通过得到比较短的码字来缩短平均消息长度。每个码字的期望长度是每个码字出现的概率乘以码字的长度。假设我们有一个4bit的密文，出现概率是50%，那么我们的期望就是4*50%=2bit。我们可以作图来表示。</p>
-<p><img src="/img/17_06_13/022.png" width=300 height=300 /></p>
-<p>这两个值（代价和期望长度）与码字的长度相关。信息的长度决定了码字的平均长度。我们可以把这两者画在一起，就像这样。</p>
-<p><img src="/img/17_06_13/023.png" width=600 height=300 /></p>
-<p>短码字减少了平均消息长度，但是越短的码字越昂贵，而长码字增加了平均消息长度，但长码字相对便宜。</p>
-<p><img src="/img/17_06_13/024.png" width=600 height=300 /></p>
-<p>使用有限预算的最佳方法是什么？我们应该在每个事件的码字上投入多少花费呢？</p>
-<p>就像一个人想要把较多的钱投入在经常定期使用的工具上一样，我们更愿意对那些频繁使用的码字支付更高的花费。有一种特别顺其自然的处理方式：按照事件的普遍程度分配我们的预算。如果一个事件发生的概率是50％，那么我们就花费预算的50％来购买这个短的码字。但是，如果一个事件的发生概率只有1％，那么我们就只花1％的预算，因为我们并不是很在意这个不常见的码字变得很长。</p>
-<p>这是一件很顺其自然的解决方案，但它是最优解吗？没错，它是，我接下来会证明它！</p>
-<p><em>以下是可视化的证明过程，应该是可以理解的，但理解起来有一定难度，而这部分绝对是这篇文章中最难的部分。读者应该自由地选择是否默认接受这一结论跳过这一部分。</em></p>
-<p>我们来看一个具体的例子，我们需要比较两个可能发生的事件。事件a发生的概率是$p(a)$，事件b发生的概率是$p(b)$。我们按照上述自然的方式分配预算，花费$p(a)$的预算在a获得一个较短的码字上，花费$p(b)$的预算在b获得较短的码字上。</p>
-<p><img src="/img/17_06_13/025.png" width=600 height=300 /></p>
-<p>花费的成本和对应的长度贡献的边界完美的对齐了，这是否意味着什么？</p>
-<p>那么，请考虑一个问题，如果我们稍微改变码字的长度，会对花费的成本和码字长度贡献值有什么样的影响呢？如果我们稍微增加码字的长度，则消息长度的贡献值将与其边界的高度成比例地增加，而成本则会与边界的高度成正比。</p>
-<p><img src="/img/17_06_13/026.png" width=600 height=300 /></p>
-<p>所以，使码字a缩短的代价的值是$p(a)$。同时，我们不关心每个码字的具体长度，我们关心的是使用它们的占比。在a这种情况下，占比就是$p(a)$。对我们来说，就是$p(a)$使码字a的长度变得更短一些。</p>
-<p>然而有趣的是，这两者的导数都是一样的。这意味着我们的初始预算有一个有趣的属性，如果你花费了一些用于缩短码字的投入，那么这个投入对于投在任何码字上，效果都是一样的。我们真正关心的是最终的利益/成本比例 - 这就决定了我们应该投资多少。在这种情况下，这个比例是$\frac{p(a)}{p(a)}$等于1。这与$p(a)$的值无关，因为这个结果总是1。我们也可以将相同的参数应用于其他事件。利益/成本总是一，所以在其中任何一方投资更多是平等的。</p>
-<p><img src="/img/17_06_13/027.png" width=600 height=300 /></p>
-<p>无论如何，改变预算是没有意义的。但这不证明这是最好的预算。为了证明这一点，我们会考虑使用一个不同的预算。我们将在$b$中投资$ε$，并在$a$中投资相反的花费。这使得a的码字稍短一些，而b的码字稍长一些。</p>
-<p>现在为a购买一个较短的码字的成本是$p(a)+ε$，为b购买较短码字的费用b是$p(b)-ε$。但收益还是一样的。这导致了购买$a$的收益成本比例为一个小于1的值：$\frac{p(a)}{p(a) + ε}$。而另一边，对于购买$b$的收益成本比例是一个大于1的值：$\frac{p(b)}{p(b) - ε}$</p>
-<p><img src="/img/17_06_13/028.png" width=600 height=300 /></p>
-<p>价格不再保持平衡。b相对于a来说是一笔更好的交易。投资者们尖叫道：“买b！卖a！”我们通过这样做，结束了我们原来的预算计划。所有预算都可以通过转向原始预算的方式来得到改进。</p>
-<p>原始预算 - 按照我们使用频率的比例投入每个码字 - 这不仅仅是自然而然的事情，而且这是最好的方法。（虽然这个证明仅适用于两个码字，但它很容易泛化为更多的情况。）</p>
-<blockquote>
-<p>认真的读者可能已经注意到，我们的最优预算有可能提出码字具有分数长度的编码，这似乎很有用！这是意味着什么呢？当然，在实践中，如果你想通过发送一个单码字，你必须取整，但是我们稍后会看到，当我们一次发送很多码字时，可以发送分数码字！现在请你耐心的看我现在的讲解！</p>
-</blockquote>
-<h3 id="计算熵"><a href="#计算熵" class="headerlink" title="计算熵"></a>计算熵</h3><p>回想一下，一个长度为$L$的消息代价是$\frac{1}{2^L}$。再做一个简单的变换后，这个信息的长度就是：$\log_2\left(\frac{1}{\text{cost}}\right)$。因为我们对每个码字$x$花费$p(x)$的成本，长度是$\log_2\left(\frac{1}{p(x)}\right)$。这是长度的最佳选择。</p>
-<p><img src="/img/17_06_13/029.png" width=600 height=300 /></p>
-<p>早些时候，我们讨论了如何从一个特定的概率分布$p$中获取平均消息来传达事件的基本限制。这个将平均消息长度缩短到最优的编码的限制，我们称之为$p$的熵，$H(p)$。现在我们知道了码字的最佳长度，而且我们可以精确的计算出来！</p>
-<script type="math/tex; mode=display">
-H(p) = \sum_x p(x)\log_2\left(\frac{1}{p(x)}\right)</script><blockquote>
-<p>人们通常将熵写作$H(p) = - \sum p(x)\log_2(p(x))$这种形式，因为$\log(1/a) = -\log(a)$。但我认为第一种写法更直观，并且我在这篇文章的后续部分会继续使用这种形式。</p>
-</blockquote>
-<p>无论我做什么，平均来说，如果我想要进行通信交流，信息平均长度最少都是这个值。</p>
-<p>这个需要发送的信息的平均长度对信息的压缩有明显的影响，这个熵还有其它方面的意义吗？当然！它描述了随机性，并且提供了一种量化信息的方式。</p>
-<p>如果我确实知道会发生什么事件，我根本就不必发消息！如果有两件可能发生的概率为50％，我只需要发送1bit的数据。如果有64个不同的事情可能以相等的概率发生，我必须发送6bit。发生的概率越集中在某一件事上，就越能用巧妙的编码方式来减少信息的平均长度。概率扩散的范围越大，信息越长。发生的概率越分散到不同事情上，我需要发送的信息平均长度就越长。</p>
-<p>结果越不明确，在发生事情时就能学到越多的东西。</p>
-<h2 id="交叉熵"><a href="#交叉熵" class="headerlink" title="交叉熵"></a>交叉熵</h2><p>在Bob搬到澳大利亚不久之后，他和我假想的另一个女孩Alice结婚了(让我惊讶的是，我脑海里居然还有其他角色)。然而Alice并不是一个狗狗爱好者。她是一个猫猫爱好者。尽管如此，他们俩也可以在仅有非常有限的关于动物的词汇的情况下，找到共同话题。</p>
-<p><img src="/img/17_06_13/030.png" width=300 height=300 /></p>
-<p>他们两以不同的频率说着相同的话。Bob总是谈论狗，而Alice却总是谈论猫。</p>
-<p>最初，Alice使用Bob的编码向我发送消息。不幸的是，她的消息比他们实际需要的要长。Bob的编码是按照Bob的概率分布优化得到的。而Alice与Bob有不同的信息概率分布，并且Bob编码对她来说并不是最佳的。当Bob使用自己的编码时，码字的平均长度是1.75，但Alice在使用这组编码时，她的码字平均长度是2.25。如果他们两的概率密度越不相似，这个结果就越糟糕。</p>
-<p>这种根据一边信息概率分布优化过的编码方式来传输另一种概率分布不同的信息时，消息的平均长度称为交叉熵。关于交叉熵，更正式的定义如下：</p>
-<script type="math/tex; mode=display">
-H_p(q) = \sum_x q(x)\log_2\left(\frac{1}{p(x)}\right)</script><p>在这种情况下，Alice的猫爱好者的词频与Bob的狗爱好者词频存在交叉熵。</p>
-<p><img src="/img/17_06_13/031.png" width=300 height=300 /></p>
-<p>为了让我们的通信的花费减少，我让Alice来使用她自己的编码。让我感到安慰的是，这使得她的平均消息长度变短了。但是，这也引入了一个新的问题：有时Bob会不小心使用Alice的编码。令人惊讶的是，Bob使用Alice的编码时，Bob信息的平均长度比Alice用Bob编码时的最优方式还长</p>
-<p>所以，现在我们有四种可能的情况：</p>
-<ul>
-<li>Bob使用它自己的编码$(H(p) = 1.75 ~\text{bits})$</li>
-<li>Alice使用Bob的编码$(H_p(q) = 2.25 ~\text{bits})$</li>
-<li>Alice使用她自己的编码$(H(q) = 1.75 ~\text{bits})$</li>
-<li>Bob使用Alice的编码$(H_q(p) = 2.375 ~\text{bits})$</li>
-</ul>
-<p>这并不能直观的展示出这种值之间的关联关系。我们可以使用下图来寻找它们之间的关系。</p>
-<p>在下图中，每个子图分别表示这四种情况之一。每个子图以与之前相同的方式来显示平均消息长度。处于同一行的两种情况有相同的概率分布，处于同一列的两种情况有相同的编码方式。通过这种方式，可以可视化的观测到概率分布和编码方式的关系。</p>
-<p><img src="/img/17_06_13/032.png" width=500 height=500 /></p>
-<p>你能看出来为什么$H_p(q) \neq H_q(p)$吗？$H_q(p)$比较大因为在概率分布$p$之下有一个非常常见的码字比较长的事件（蓝色），因为这个事件在概率分布$q$的情况下并不常见。然而，另一边，在$q$的情况下比较常见的事件，在$p$的情况下比较少见，但差异较小，所以$H_p(q)$不是很高。</p>
-<p>因此我们发现交叉熵是不对称的。</p>
-<p>那么，为什么要关心交叉熵呢？交叉熵给我们一种表达两种概率分布不同的方法。概率分布$p$和$q$的差异越大，那么$p$关于$q$的交叉熵就比$p$的熵越大。</p>
-<p><img src="/img/17_06_13/033.png" width=300 height=300 /></p>
-<p>同样的，概率分布$p$和$q$差异越大，$q$关于$p$的交叉熵就比$q$本身的熵越大。</p>
-<p><img src="/img/17_06_13/034.png" width=300 height=300 /></p>
-<p>真正有趣的东西是熵与交叉熵之间的差异。差异在于我们的信息具体长多少，因为我们对不同的概率分布使用了同一套优化过的编码方式。如果概率分布相同，那么这个差异将为零。随着差异的增长，这个差值将变得更大。</p>
-<p>我们称这种差异为Kullback-Leibler分歧，或者简称为KL分歧。概率分布$p$关于$q$的KL分歧$D_q(p)$定义如下：</p>
-<script type="math/tex; mode=display">
-D_q(p) = H_q(p) - H(p)</script><p>关于KL分歧真正在做的事情，其实就像是在衡量不同概率分布之间的差异程度。（如果继续研究这个概念就会进入信息几何的领域。）</p>
-<p>交叉熵和KL分歧在机器学习中有着难以置信的用处。通常，我们希望一个分布与另一个分布相互靠近。例如，我们希望一个用于预测的概率分布与真实情况更接近。KL分歧为我们提供了一种很自然的方式来做到这一点，所以它在任何地方都有用武之地。</p>
-<h2 id="熵和多变量"><a href="#熵和多变量" class="headerlink" title="熵和多变量"></a>熵和多变量</h2><p>让我回到之前关于天气和穿着的例子：</p>
-<p><img src="/img/17_06_13/035.png" width=300 height=300 /></p>
-<p>我的妈妈，就像大多数的家长一样，都会担心我的衣着跟天气不搭配。（她的这种担心不是没有道理的，因为我在冬天经常不穿外套。）所以她总是想要知道我这边有关天气和穿衣的信息。我需要发送几个bit的数据来传达这些信息呢？</p>
-<p>为了更方便的分析这个问题，我们把概率扁平化分析：</p>
-<p><img src="/img/17_06_13/036.png" width=600 height=300 /></p>
-<p>现在我们可以找出这些概率的事件的最优码字，并计算平均消息长度：</p>
-<p><img src="/img/17_06_13/037.png" width=600 height=300 /></p>
-<p>我们把这个称之为$X$和$Y$的联合熵，定义如下：</p>
-<script type="math/tex; mode=display">
-H(X,Y) = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x,y)}\right)</script><p>这与我们关于熵的正规定义完全相同，唯一的区别就是这里有两个变量，而之前是一个。</p>
-<p>我们再把这个图形表现得更形象话一些，加入码字长度作为第三个维度，让图形更立体。现在，熵的大小就是体积的大小。</p>
-<p><img src="/img/17_06_13/038.png" width=300 height=600 /></p>
-<p>假设我的妈妈已经知道了天气信息（她可以通过新闻知道这些信息）。那么现在我需要提供多少的信息量呢？</p>
-<p>似乎我需要发送很多信息来传达我的穿衣情况。但实际情况，我发送的信息比之前要少，因为天气与我的衣着有着密切的联系！我们来分别思考关于下雨天和晴天下的两种情况。</p>
-<p><img src="/img/17_06_13/039.png" width=400 height=400 /></p>
-<p>在这两种情况下，平均来看，我不需要发送特别多的信息，因为天气信息对我的穿衣情况有着很好的预示。当阳光明媚的晴天，我可以使用一个特定的“晴天优化版”编码，对于下雨天，我可以使用一个特定的“雨天优化版”编码。分别在这两种情况下用不同的编码会比用同一种通用编码的长度少很多。为了得到我需要发送给我妈妈的平均信息量，我把这两个例子放在一起…</p>
-<p><img src="/img/17_06_13/040.png" width=200 height=300 /></p>
-<p>我们称之为条件熵。可以把它写成如下的数学表达式：</p>
-<script type="math/tex; mode=display">
-H(X|Y) = \sum_y p(y) \sum_x p(x|y) \log_2\left(\frac{1}{p(x|y)}\right)</script><script type="math/tex; mode=display">
-~~~~ = \sum_{x,y} p(x,y) \log_2\left(\frac{1}{p(x|y)}\right)</script><h2 id="交互信息"><a href="#交互信息" class="headerlink" title="交互信息"></a>交互信息</h2><p>在上一节，我们得到一个结论，那就是在知道一个变量的情况下，可能会意味着导致传达另一个变量需要更少的信息。</p>
-<p>一种思考这种情况的很好方式是将信息的总量想象成一个条。如果不同的消息之间在共享信息，就叠加显示。例如，$X$和$Y$存在一部分共享信息，因此$H(X)$和$H(Y)$是有重叠部分。并且$H(X,Y)$是两者的共同信息，是$H(X)$和$H(Y)$的集合。</p>
-<p><img src="/img/17_06_13/041.png" width=300 height=200 /></p>
-<p>一旦我们开始以这种方式思考事情，很多事情就变得简单了。</p>
-<p>例如，我们之前注意到同时传递$X$和$Y$（“联合熵”$H(X,Y)$）比仅仅使用$X$来通信（“边际熵”$H(X)$）需要更多的信息。如果你已经知道了$Y$，那么它会用更少的信息来对$X$进行通信（“条件熵”$H(X|Y)$）。</p>
-<p><img src="/img/17_06_13/042.png" width=500 height=400 /></p>
-<p>这听起来有点复杂，但从条状显示图来看，就很简单了。$H(X|Y)$是指我们在向已经知道$Y$的信息的人在传达$X$的信息时的熵，蕴含在$X$中的信息并不包含在$Y$中。从视觉上来看，这意味着$H(X|Y)$是$H(X)$的条中，不与$H(Y)$重叠的那一部分。</p>
-<p>你可以从下图中得出这个不等式:$H(X,Y) \geq H(X) \geq H(X|Y)$。</p>
-<p><img src="/img/17_06_13/043.png" width=300 height=200 /></p>
-<p>另一个特性：$H(X,Y) = H(Y) + H(X|Y)$。也就是说$X$和$Y$的信息也就是$Y$的信息加上不在$Y$中的$X$的信息。</p>
-<p><img src="/img/17_06_13/044.png" width=500 height=400 /></p>
-<p>从方程中很难看出这些信息，但如果你将这些信息用条状图显示出来，就变得容易了。</p>
-<p>在这里，我们以多种方式组织了$X$和$Y$的信息。我们有每个变量所包含的信息$H(X)$和$H(Y)$。我们有着两种信息的交集$H(X,Y)$。我们有只存在与一个变量但不存在与另一个变量的信息$H(X|Y)$和$H(Y|X)$。还有很多这些围绕着变量之间共享的信息，即他们之间信息的交集。我们称之为“相互信息”$I(X,Y)$，定义如下：</p>
-<script type="math/tex; mode=display">
-I(X,Y) = H(X) + H(Y) - H(X,Y)</script><p>这个定义是有效的，因为$H(X) + H(Y)$存在有两个相互信息的副本，因为他们同时蕴含在$X$中以及$Y$中，而$H(X,Y)$只有一份。(想想上一个条形图。)</p>
-<p>与信息密切相关的是信息的变化。信息的变化是变量之间不共享的信息。我们可以这样定义它：</p>
-<script type="math/tex; mode=display">
-V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了我们一个不同变量之间度量距离的概念。两个变量如果知道一个值的值可以得出另一个变量的值，那么这两者之间的信息变化是零，并且这个信息变化的值随着他们彼此之间变得更加独立而增加。</p>
-<p>这和同样可以告诉我们距离信息的KL分歧之间的关系是什么呢？KL分歧给了我们两个分布之间在同一个变量或一组变量上的距离。相反，信息的变化给我们两个相同分布的变量之间的距离。KL分歧是应用在不同信息的概率分布中的，标识这概率分布中的信息变化。</p>
-<p>我们可以将所有这些信息全部汇集成一个单独的图表：</p>
-<p><img src="/img/17_06_13/045.png" width=400 height=400 /></p>
-<h2 id="分数形式的位"><a href="#分数形式的位" class="headerlink" title="分数形式的位"></a>分数形式的位</h2><p>关于信息理论的一个非常不直观的事情是我们可以拥有小数位数。这看起来很奇怪，半个位(0.5bit)意味着什么？</p>
-<p>有一种简单的答案：通常，我们对消息的平均长度感兴趣，而不是任何特定的消息长度。如果一半的时间发送一个位的长度，一半时间发送两个位的长度，那么平均发送的长度是1.5位。对于平均数是小数的情况并没有什么奇怪的。</p>
-<p>但是，这个答案其实是在避开这个问题。通常，码字的最佳长度都是分数形式。这意味着什么呢？</p>
-<p>具体来说，让我们考虑一个概率分布，其中事件$a$发生的概率是$71%$，另一个事件$b$发生的概率为$29%$。</p>
-<p><img src="/img/17_06_13/046.png" width=300 height=300 /></p>
-<p>最佳编码将使用0.5位来表示$a$，用1.7位来表示$b$。那么，如果我们要发送这些码字中的任何一个，都是不可能的。我们会强制被安排发送整数位数的信息，并且发送的平均消息长度是1位。</p>
-<p>但是，如果我们一次性发送多条消息，我们可以处理的更好。让我们来考虑按照这种概率分布的情况下来同时传递两个事件。如果我们每次只发送一个事件，那么我们需要发送两位的长度。我们可以处理的更好吗？</p>
-<p><img src="/img/17_06_13/047.png" width=300 height=300 /></p>
-<p>有一半的概率，我们需要传递$aa$的信息，有21%的概率我们需要发送$ab$或者$ba$，而我们传递$bb$的概率只有8%。我们再一次把编码优化到理想的小数位数的形式。</p>
-<p><img src="/img/17_06_13/048.png" width=500 height=300 /></p>
-<p>如果我们对码字长度取整，我们将得到这样的结果：</p>
-<p><img src="/img/17_06_13/049.png" width=500 height=300 /></p>
-<p>这个编码给我们带来的平均消息长度为1.8位。这比我们每次分别只传递一个事件的平均消息长度2位要小。另一种思考这个问题的方式是我们平均每个事件发送的信息是0.9位。如果我们一次发送更多的事件，那么这个值会更小。由于$n$趋向于无穷大，取整造成的损失将逐渐减少，并且每个码字的位数将接近熵。</p>
-<p>另外，请注意，$a$的理想码字为0.5位，$aa$的理想码字是1位。即使理想码字的长度是小数，它们的长度也在增加！所以，如果我们一次传达很多事件时，长度会增加。</p>
-<p>即使在实际的编码中，只能使用整数长度的码字，这里也有使用小数位数码字的实际的意义。</p>
-<blockquote>
-<p>在实践中，人们使用在不同程度上有效的特定编码方案。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Huffman_coding">霍夫曼编码</a>，是一种基本类似于我们在这里草拟的这种编码，并没有非常优雅地处理小数位。你必须像上面那样对符号进行分组，或者使用更复杂的技巧来处理熵限制。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Arithmetic_coding">算术编码</a>有点不同，它优雅地处理了小数位以渐近最优。</p>
-</blockquote>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果我们关心如何使用最少数量数据进行通信，那么这些想法显然是最基本的。如果我们关心压缩数据，信息理论将可以解决数据压缩的核心问题，并给出我们从根本上正确的抽象。但是，如果我们不在乎这些问题，那么除了好奇，我们还有其他什么原因呢？</p>
-<p>来自信息理论的观点在很多情况下都会出现：机器学习，量子物理学，遗传学，热力学，甚至赌博。这些领域的从业者通常不关心信息理论。量子纠缠可以用熵来描述，通过假定关于你不知道的事物的最大熵，可以得出统计力学和热力学中的许多结果。赌徒的胜利或损失与KL分歧直接相关，特别是迭代设置。</p>
-<p>信息理论在所有这些地方出现，因为它为许多我们需要表达的事情提供了具体的，有原则的形式化表示。它给了我们衡量和表达不确定性的方法，两组数据有多么的不同，不同概率分布之间的距离是多少，以及但对于某个问题的答案中蕴含了多少其他问题的信息：扩散概率是怎样的，概率分布之间的距离以及相互依赖的两个变量是怎样的。有其他类似的理论或者观点吗？当然。但是信息论的思想是干净的，它们具有很好的性质和原则性的起源。在某些情况下，它们正是你所关心的，而在其他情况下，它是混乱世界中的一个方便的代理。</p>
-<p>机器学习是我最了解的领域，所以我们来谈一下。在机器学习中，分类是一种非常常见的问题。假设我们想看一张图片，并预测它是一只狗还是一只猫。我们的模型可能会告诉我们“这张图片中有80%的概率是一只狗，有20%的概率是一只猫”。那么我们就说正确答案是狗，那么我们以80%的概率做出的判断是好还是坏呢？以85%的概率做出的判断会比80%好多少呢？</p>
-<p>这是一个重要的问题，因为我们需要一些衡量我们模型好坏的概念，以便把它优化的更好。我们应该优化什么呢？正确的答案确实取决于我们使用的模型：我们是只关心最顶部的猜测是否正确呢，还是关心我们在获取正确答案中的信心呢？错误的自信会有多糟？没有一个正确的答案。而且通常不可能知道正确的答案，因为我们不知道如何以精确的方式使用模型来形式化我们最终关心的内容。然而很多问题中，交叉熵都是我们真正需要在意的，但并不总是如此。更常见的情况是我们并不知道我们关心什么，而交叉熵就是解决这些问题的一个很好的工具。</p>
-<p>信息为我们提供了一个强大的新框架来思考我们的世界。有时它能完美的解决一些问题，而有时并不可以，但它依然很有用。这篇文章仅仅是对信息论的一个概览，而信息论中还有许多其他主要的概念，例如我们没有提到的纠错码，但我希望我已经展示出了信息论是一个很美丽的主题，它并不是那么高不可攀。</p>
-<h2 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h2><p>这里是<strong>克劳德·香农（Claude Shannon）</strong>关于信息论的原创论文<a target="_blank" rel="noopener" href="http://worrydream.com/refs/Shannon%20-%20A%20Mathematical%20Theory%20of%20Communication.pdf">通信数学理论</a>。（这在早期的信息论论文中，似乎是一个重复的模式。是时代原因吗？还是因为缺少页面限制？或者是来自贝尔实验室的文化？）</p>
-<p>封面和托马斯的信息要素理论似乎是标准参考。我觉得很有帮助。</p>
-<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>我非常感谢<a target="_blank" rel="noopener" href="https://github.com/danmane">Dan Mané</a>，<a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~dga/">David Andersen</a>，<a target="_blank" rel="noopener" href="http://obsessionwithregression.blogspot.com/">Emma Pierson</a>和Dario Amodei抽出时间来给出这篇文章令人难以置信的详细和广泛征求意见。我也很感激<a target="_blank" rel="noopener" href="http://michaelnielsen.org/">Michael Nielsen</a>，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/GregCorrado.html">Greg Corrado</a>，<a target="_blank" rel="noopener" href="http://www.iro.umontreal.ca/~bengioy/yoshua_en/index.html">Yoshua Bengio</a>，<a target="_blank" rel="noopener" href="https://aaroncourville.wordpress.com/">Aaron Courville</a>，<a target="_blank" rel="noopener" href="http://www.nickbeckstead.com/">Nick Beckstead</a>，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/JonathonShlens.html">Jon Shlens</a>，Andrew Dai，<a target="_blank" rel="noopener" href="http://research.google.com/pubs/ChristianHoward.html">Christian Howard</a>和<a target="_blank" rel="noopener" href="http://www.bewitched.com/">Martin Wattenberg</a>的评论。</p>
-<p>还感谢我的前两个神经网络研讨会系列作为这些想法的豚鼠。</p>
-<p>最后，感谢读者发现错误和遗漏。尤其感谢Connor Zwick，Kai Arulkumaran，Jonathan Heusser，Otavio Good，以及匿名评论者。</p>
-<h2 id="更多的文章"><a href="#更多的文章" class="headerlink" title="更多的文章"></a>更多的文章</h2><p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-07-Understanding-Convolutions/">了解卷积</a></p>
-<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-12-Groups-Convolution/">分组和分组卷积</a></p>
-<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">神经网络，歧管和拓扑</a></p>
-<p><a target="_blank" rel="noopener" href="http://colah.github.io/posts/2015-01-Visualizing-Representations/">可视化展示深度学习和人类</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/05/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">斯坦福机器学习课程汇总</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-05 23:37:00" itemprop="dateCreated datePublished" datetime="2017-06-05T23:37:00+00:00">2017-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-10 17:18:20" itemprop="dateModified" datetime="2021-02-10T17:18:20+00:00">2021-02-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>首先感谢<strong>吴恩达</strong>建立<a target="_blank" rel="noopener" href="https://www.coursera.org">Coursera</a>这样一个优秀的在线学习平台，以及他发布在这个平台上的<a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/">机器学习</a>课程。</p>
-<p>这门课程将整个机器学习领域的基础知识，用浅显易懂的方式，深入浅出的进行了介绍。使得一个拥有高中数学知识的学生也能听得明白。</p>
-<p>如果你想要涉足机器学习、人工智能领域，或者对这一领域有浓厚的兴趣想要深入了解，那么你会发现很多机器学习入门课程推荐的资料中，都有吴恩达老师的这一系列课程。甚至在大多数资料中，都把这门课放在了首选的位置上。</p>
-<p>因此，我把吴恩达老师的课程整理成了MarkDown的格式，方便查阅学习。以下是具体章节的目录，其中每篇文章都有对应的视频连接地址：</p>
-<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
-<li>第一周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1bwH">欢迎来到机器学习</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1Ju5">监督学习</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1XxR">无监督学习</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1onR">一元线性回归</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1N6G">参数学习-梯度下降算法</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1WEE">线性代数复习</a></li>
-</ul>
-</li>
-<li>第二周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1T2O">编程环境设置-Octave:MATLAB</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1RnN">多元线性回归分析</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1nj4">参数的计算分析</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1BP3">Octave/Matlab 使用说明</a></li>
-</ul>
-</li>
-<li>第三周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSC1epl">分类和表达式</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBwf7">分类</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCB4bV">假设函数表达式</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBhNP">决策边界</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBccU">Logistic回归模型</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBMeK">逻辑回归的代价函数</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBogn">简化代价函数以及梯度下降</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBpkr">高级优化</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBWU1">多类别分类问题：一对多</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBjW6">正则化：解决过拟合问题</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBT6v">解决过拟合问题</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCB8Vt">代价函数</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBELF">正则化线性回归</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>第四周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBBZe">神经网络引入</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBDHu">非线性假设</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCBsN4">神经网络和大脑</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrZ1M">神经网络</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrUfK">神经网络应用实例</a></li>
-</ul>
-</li>
-<li>第五周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr5m2">训练神经网络</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrf4H">代价函数</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCriIb">反向传播(B-P)</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr9Rc">反向传播算法的直观介绍</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr0yH">BP算法</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrHqO">神经网络实现自动驾驶</a></li>
-</ul>
-</li>
-<li>第六周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCruh7">评价一个学习算法</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCr1gH">如何少走弯路？</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCrd7a">评估假设函数</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCruh7">多项式模型的选择以及训练集/验证集/测试集的划分</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdL5Q">偏差VS方差</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdL5Q">偏差VS方差</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd6C0">正则化和偏差/方差</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdo2l">学习曲线(Learning Curves)</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdCvC">重新审视决定下一步做什么</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd0fl">机器学习系统设计</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCd0fl">构建垃圾邮件分类器</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdH6b">误差分析</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSh83NE">操作偏斜数据</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCdBSe">偏移类的错误度量</a></li>
-<li><a target="_blank" rel="noopener" href="http://sina.lt/eXAz">查准率和召回率练习</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgyhD">使用大数据集</a></li>
-</ul>
-</li>
-<li>第七周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP">大间距分类 SVM</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#优化目标">优化目标</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#大间距的直觉">大间距的直觉</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg4WP#大间距分类器背后的数学原理(选学">大间距分类器背后的数学原理(选学)</a>)</li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgJw1">核函数</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgXmt">使用SVM</a></li>
-</ul>
-</li>
-<li>第八周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS">聚类</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#">无监督学习介绍</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#K-Means算法">K-Means算法</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#优化目标">优化目标</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#随机初始化">随机初始化</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgKuS#选择簇的数量">选择簇的数量</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCg8PK">PCA 降维</a></li>
-</ul>
-</li>
-<li>第九周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgubu">密度估计&amp;异常检测</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgBQV">构建一个异常检测系统</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCgDCU">多元高斯分布（选学）</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6">预测电影评分</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#预测电影评分">预测电影评分</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#协同过滤">协同过滤</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCevr6#低秩矩阵分解">低秩矩阵分解</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>第十周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk">大数据集梯度下降</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#处理大数据的学习算法">处理大数据的学习算法</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#随机梯度下降">随机梯度下降</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#小批量梯度下降">小批量梯度下降</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeLpk#随机梯度下降的收敛">随机梯度下降的收敛</a></li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5">高级主题</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5#在线学习">在线学习</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCeii5#MapReduce和数据并行">Map Reduce 和数据并行</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>第十一周<ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv">照片OCR</a><ul>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#问题描述和流水线（Pipeline）">问题描述和流水线（Pipeline）</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#滑动窗体">滑动窗体</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#获取大量数据和人工数据">获取大量数据和人工数据</a></li>
-<li><a target="_blank" rel="noopener" href="http://t.cn/RSCe9Bv#上限分析：流水线上的下一步工作是什么">上限分析：流水线上的下一步工作是什么</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2786,18 +2594,18 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">136</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
