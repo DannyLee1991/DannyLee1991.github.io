@@ -191,6 +191,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 迪米特法则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-09-18 14:06:55" itemprop="dateCreated datePublished" datetime="2015-09-18T14:06:55+00:00">2015-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>迪米特原则（<strong>Law of Demeter, LoD</strong>）也称为最少知识原则(<strong>Least Knowledge Principle, LKP</strong>)，虽然名字不同，但描述的是同一个规则：一个对象应该对其他对象有做少的了解。</p>
+<p>通俗的讲，一个类应该对自己需要耦合或调用的类知道的最少，你（被耦合或调用的类）的内部是如何复杂都和我没关系，那是你的事情，我就知道你提供的这么多public方法，我就调用这么多，其他的我一概不关心。</p>
+<h2 id="进一步解释"><a href="#进一步解释" class="headerlink" title="进一步解释"></a>进一步解释</h2><h3 id="1-只和朋友交流"><a href="#1-只和朋友交流" class="headerlink" title="1.只和朋友交流"></a>1.只和朋友交流</h3><p>迪米特法则还有一个英文释义是：Only talk to your immediate friends(只与直接的朋友通信。)每个对象都必然会与其他对象有耦合关系，两个对象之间的耦合就成为朋友关系，这种关系的类型有很多，例如组合、聚合、依赖等。</p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>老师命令班长清点一下班级里所有女生的数量</p>
+<p>代码实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//老师类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span> </span>&#123;</span><br><span class="line">	<span class="comment">//老师对学生发布命令，清一下女生</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commond</span><span class="params">(GroupLeader groupLeader)</span></span>&#123;</span><br><span class="line">		List listGirls = <span class="keyword">new</span> ArrayList();</span><br><span class="line">		<span class="comment">//初始化女生</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">			listGirls.add(<span class="keyword">new</span> Girl());</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//告诉体育委员开始执行清查任务</span></span><br><span class="line">		groupLeader.countGirls(listGirls);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//班长类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GroupLeader</span></span>&#123;</span><br><span class="line">	<span class="comment">//清查女生数量</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countGirls</span><span class="params">(List&lt;Girl&gt; listGirls)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;女生数量是：&quot;</span>+ listGirls.size());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//女生类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Girl</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//场景类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		Teacher teacher = <span class="keyword">new</span> Teacher();</span><br><span class="line">		<span class="comment">//老师发布命令</span></span><br><span class="line">		teacher.commond(<span class="keyword">new</span> GroupLeader());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">女生数量是：20</span><br></pre></td></tr></table></figure>
+<p>仔细思考，这个程序是有问题的，老师的朋友类是班长，班长的朋友类是女生类，女生不属于老师类的朋友类，因为朋友类的定义是：<strong>出现在成员变量、方法的输入输出参数中的类称为成员朋友类，而出现在方法体内的类不属于朋友类。</strong>而迪米特法则告诉我们，一个类只和朋友类交流，但是刚才的commond方法和Girl类有了交流，这样破坏了Teacher类的健壮性。</p>
+<p>修改后的程序，把Girl类从Teacher类中进行抽取,修改如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Teacher</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commond</span><span class="params">(GroupLeader groupLeader)</span></span>&#123;</span><br><span class="line">		groupLeader.countGirls();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GroupLeader</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> List&lt;Girl&gt; listGirls;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">GroupLeader</span><span class="params">(List&lt;Girl&gt; _listGirls)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.listGirls = _listGirls;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countGirls</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.print(<span class="string">&quot;女生数量是：&quot;</span>+<span class="keyword">this</span>.listGirls.size());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		List&lt;Girl&gt; listGirls = <span class="keyword">new</span> ArrayList&lt;Girl&gt;();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++)&#123;</span><br><span class="line">			listGirls.add(<span class="keyword">new</span> Girl());</span><br><span class="line">		&#125;</span><br><span class="line">		Teacher teacher = <span class="keyword">new</span> Teacher();</span><br><span class="line">		teacher.commond(<span class="keyword">new</span> GroupLeader(listGirls));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-朋友间也是有距离的"><a href="#2-朋友间也是有距离的" class="headerlink" title="2.朋友间也是有距离的"></a>2.朋友间也是有距离的</h3><p>迪米特法则定义即使是朋友，也不能无话不说，无所不知。</p>
+<p>一个类公开的public属性或方法越多，修改时涉及的面也就越大，变更引起的风险扩散。因此，为了保持朋友类间的距离，在设计时需要反复衡量：是否还可以再减少public方法和属性，是否可以修改为private／protected等访问权限，是否可以加上final关键字等。</p>
+<p>迪米特法则要求类“羞涩”一点，尽量不要对外公布太多的public方法和非静态的public变量，尽量内敛，多使用private、protected等访问权限。</p>
+<h4 id="举例-1"><a href="#举例-1" class="headerlink" title="举例"></a>举例</h4><p>场景：模拟软件安装的过程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向导类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wizard</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Random rand = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">	<span class="comment">//第一步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">first</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第一个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第二步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">second</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第二个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第三步</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">third</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第三个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//软件安装类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstallSoftware</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">(Wizard wizard)</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> first = wizard.first();</span><br><span class="line">		<span class="keyword">if</span>(first&gt;<span class="number">50</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> second = wizard.second();</span><br><span class="line">			<span class="keyword">if</span>(second&gt;<span class="number">50</span>)&#123;</span><br><span class="line">				<span class="keyword">int</span> third = wizard.third();</span><br><span class="line">				<span class="keyword">if</span>(third&gt;<span class="number">50</span>)&#123;</span><br><span class="line">					wizard.first();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//场景类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">		InstallSoftware invoker = <span class="keyword">new</span> InstallSoftware();</span><br><span class="line">		invoker.installWizard(<span class="keyword">new</span> Wizard());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序虽然简单，但仔细思考一下，<strong>Wizard类将太多的方法暴露给了InstallSoftware类，两者之间的朋友关系太过亲密了，耦合关系变得异常牢固，如果业务有变更，更改Wizard的同时，必须考虑InstallSoftware是否也需要做修改</strong>，从而扩大了变更的风险。因此我们需要进行重构。重构之后的代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向导类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wizard</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Random rand = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">	<span class="comment">//第一步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">first</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第一个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第二步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">second</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第二个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//第三步</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">third</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;执行第三个方法...&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> rand.nextInt(<span class="number">100</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//软件安装过程</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">int</span> first = <span class="keyword">this</span>.first();</span><br><span class="line">		<span class="keyword">if</span>(first&gt;<span class="number">50</span>)&#123;</span><br><span class="line">			<span class="keyword">int</span> second = wizard.second();</span><br><span class="line">			<span class="keyword">if</span>(second&gt;<span class="number">50</span>)&#123;</span><br><span class="line">				<span class="keyword">int</span> third = wizard.third();</span><br><span class="line">				<span class="keyword">if</span>(third&gt;<span class="number">50</span>)&#123;</span><br><span class="line">					wizard.first();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将三个步骤的访问权限修改为private，同时把installWizard方法从InstallSoftware中移动到Wizard中。Wizard只对外暴露一个installWizard方法，这体现了类的高内聚特性。</p>
+<p>修改后的InstallSoftware类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//软件安装类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstallSoftware</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">installWizard</span><span class="params">(Wizard wizard)</span></span>&#123;</span><br><span class="line">		wizard.installWizard();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-如何衡量一个方法是否应该出现在当前类中？"><a href="#3-如何衡量一个方法是否应该出现在当前类中？" class="headerlink" title="3.如何衡量一个方法是否应该出现在当前类中？"></a>3.如何衡量一个方法是否应该出现在当前类中？</h3><p>在实际应用中经常会出现这样一个方法：放在本类中也可以，放在其他类中也没有错，那怎么去衡量呢？你可以坚持这样一个原则：</p>
+<blockquote>
+<p>如果一个方法放在本类中，既不增加类间关系，也对本类不产生负面影响，那就放置在本类中。</p>
+</blockquote>
+<h2 id="一个原则"><a href="#一个原则" class="headerlink" title="一个原则"></a>一个原则</h2><p>如果一个项目中，我和我需要调用的类之间超过了两次，就要考虑重构了。</p>
+<p>迪米特法则要求类间解耦，但解耦是有限度的，在实际项目中需要适度的考虑这个原则，别为了套用原则而做项目。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/17/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +329,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -332,7 +439,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -450,7 +557,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -640,7 +747,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -775,7 +882,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -919,7 +1026,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1029,7 +1136,7 @@ IComplexBookSearcher
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -191,6 +191,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/22/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/22/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2/" class="post-title-link" itemprop="url">gradle学习笔记-使用gradle图形界面</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-22 15:06:55" itemprop="dateCreated datePublished" datetime="2016-07-22T15:06:55+00:00">2016-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/gradle/" itemprop="url" rel="index"><span itemprop="name">gradle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>除了支持传统的命令行界面，Gradle提供了一个图形用户界面。可以通过<code>--gui</code>选项来开启。</p>
+</blockquote>
+<p><strong>Example 10.1. Launching the GUI</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle --gui</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>请注意这条命令会阻塞进程直到关闭GUI，在*nix下，使用<code>gradle --gui&amp;</code>这条命令，使得它运行在一个后台任务中是一个更好的选择。</p>
+</blockquote>
+<p>如果你在你的gradle工作目录下运行了这个命令，你将看到一个task树。</p>
+<p><strong>Figure 10.1. GUI Task Tree</strong></p>
+<p><img src="/img/gradle/guiTaskTree.png" alt=""></p>
+<p>最好在你的gradle项目下运行这条命令，以便于用户界面的设置将存储在您的项目目录中。你也可以运行这条命令后通过用户界面中的“设置”选项卡更改工作目录。</p>
+<p>用户界面顶部有4个tab，底部有一个输出窗口。</p>
+<h2 id="10-1-Task-Tree"><a href="#10-1-Task-Tree" class="headerlink" title="10.1. Task Tree"></a>10.1. Task Tree</h2><p>任务树显示了所有项目和它们的任务的分层显示。双击一个任务可以执行它</p>
+<p>顶部有一个过滤器按钮，您可以通过过滤器按钮切换过滤器。编辑筛选器允许您配置任务和项目所显示的项目。隐藏的task出现在红色区域中。注意：新创建的task将默认出现（相对的默认被隐藏）。</p>
+<p>任务树上下文菜单提供以下选项：</p>
+<ul>
+<li>执行忽略依赖关系。不需要依赖的项目被重建（类似于<code>-a</code> 选项）。</li>
+<li>将task添加到favorites中（见favorites tab）</li>
+<li>隐藏选择的task。</li>
+<li>编辑build.gradle文件。注意：这需要你的java版本&gt;= 1.6，并且你有和系统相匹配的.gradle文件。</li>
+</ul>
+<h2 id="10-2-Favorites"><a href="#10-2-Favorites" class="headerlink" title="10.2. Favorites"></a>10.2. Favorites</h2><p>Favorites tab是一个很好的用来存储经常被使用命令的地方。这里可以是一些很复杂的命令（只要是符合gradle规范的），并且你可以为他们提供一个显示名称。这可以用于：创建、说、自定义一个明确跳过测试的构建命令，文档，和样品，你可以称之为“快速构建”。</p>
+<p>你可以对你列出的favorites进行重新排序，并且导出到磁盘上，并且被其他人引用。</p>
+<h2 id="10-3-Command-Line"><a href="#10-3-Command-Line" class="headerlink" title="10.3. Command Line"></a>10.3. Command Line</h2><p>命令行界面你可以直接输入一条gradle命令。在你将命令添加到Favorites中，这也是一个让你尝试gradle命令的好地方。</p>
+<h2 id="10-4-Setup"><a href="#10-4-Setup" class="headerlink" title="10.4. Setup"></a>10.4. Setup</h2><p>设置选项卡允许一些一般设置的配置。</p>
+<p><strong>Figure 10.2. GUI Setup</strong></p>
+<p><img src="/img/gradle/guiSetup.png" alt=""></p>
+<ul>
+<li><p>当前目录</p>
+<p>  设置你的gradle项目的根目录（通常是build.gradle文件的所在位置）</p>
+</li>
+<li><p>堆栈跟踪输出</p>
+<p>  取决于当你的错误发生时，有多少信息被写入。提示：如果在命令行或“Favorites”选项卡上指定了堆栈跟踪级别，则将覆盖该堆栈跟踪级别。</p>
+</li>
+<li><p>只有当错误发生时才显示输出</p>
+<p>  启用此选项隐藏任务执行时的任何输出，除非生成失败。</p>
+</li>
+<li><p>使用自定义gradle执行器 - 高级功能</p>
+<p>  这为你提供了另一种方式推出Gradle的命令。如果你的项目需要一些额外的设置，这将会很有用，这是在一个批处理文件或脚本（如指定init脚本）内完成的。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/22/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B8%80%E5%91%A8%20(4)%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +337,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -568,7 +683,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -733,7 +848,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -841,7 +956,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -920,7 +1035,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1029,7 +1144,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1131,7 +1246,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1281,7 +1396,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1438,7 +1553,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1508,174 +1623,6 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
 <p>gradle-wrapper.properties</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionSha256Sum&#x3D;371cb9fbebbe9880d147f59bab36d61eee122854ef8c9ee1ecf12b82368bcf10</span><br></pre></td></tr></table></figure>
 <h2 id="5-UNIX文件的权限"><a href="#5-UNIX文件的权限" class="headerlink" title="5.UNIX文件的权限"></a>5.UNIX文件的权限</h2><p>对wrapper task添加适当的文件权限来允许*NIX上的命令行上可以执行<code>gradlew</code>命令。我们不确定其他版本控制系统如何处理这个。但<code>sh gradlew</code>这个命令总是很有效的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/07/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%91%BD%E4%BB%A4%E8%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/07/07/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%91%BD%E4%BB%A4%E8%A1%8C/" class="post-title-link" itemprop="url">gradle学习笔记-使用gradle命令行</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-07-07 13:06:55" itemprop="dateCreated datePublished" datetime="2016-07-07T13:06:55+00:00">2016-07-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/gradle/" itemprop="url" rel="index"><span itemprop="name">gradle</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-执行多条tasks"><a href="#1-执行多条tasks" class="headerlink" title="1.执行多条tasks"></a>1.执行多条tasks</h2><p>gradle可以在一次构建中执行多条tasks。例如：命令<code>gradle compile test</code>将会执行<code>compile</code>和<code>test</code>这两条task。gradle将会按照命令行上输入的顺序去执行这些task。并且也会去执行这些task所依赖的(dependencies)task。并且保证每个task只被执行一次。</p>
-<p>例如：</p>
-<p>如下四个task</p>
-<p><img src="/img/16_07_09/commandLineTutorialTasks.png" alt=""></p>
-<p>build.gradle:</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> <span class="keyword">compile</span> &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;compiling source&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> compileTest(dependsOn: <span class="keyword">compile</span>) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;compiling unit tests&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> test(dependsOn: [<span class="keyword">compile</span>, compileTest]) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;running unit tests&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> dist(dependsOn: [<span class="keyword">compile</span>, test]) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;building the distribution&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>命令行输入<code>gradle dist test</code>的输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle dist test</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line">:test</span><br><span class="line">running unit tests</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
-<p>可以看到每个task只被执行一次，因此命令<code>gradle test test</code>和<code>gradle test</code>的执行效果是一样的。</p>
-<h2 id="2-排除某个task-x-someTask"><a href="#2-排除某个task-x-someTask" class="headerlink" title="2.排除某个task(-x someTask)"></a>2.排除某个task(<code>-x someTask</code>)</h2><p>你也可以通过<code>-x</code>的命令参数来排除某个task的执行：</p>
-<p>以下是命令<code>gradle dist -x test</code>的输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle dist -x test</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
-<p>从输出结果中可以看出来，<code>test</code>的task并没有被执行，即使它是<code>dist</code>所依赖的task。</p>
-<p>有一个细节也许你已经注意到了：<code>test</code>所依赖的task例如<code>compileTest</code>并没有被执行，因为这个task并没有被其他不被排除的task所依赖，为什么<code>compile</code>这个task也是被<code>test</code>所依赖，但却被执行了呢？那是因为<code>compile</code>这个task被其他不被排除的task所依赖了。</p>
-<h2 id="3-当发生失败的时候依然继续执行构建-continue"><a href="#3-当发生失败的时候依然继续执行构建-continue" class="headerlink" title="3.当发生失败的时候依然继续执行构建(--continue)"></a>3.当发生失败的时候依然继续执行构建(<code>--continue</code>)</h2><p>默认情况下，gradle会在任意一个task执行失败的时候立刻中断执行。gradle可以使得构建速度更快，但需要以隐藏发生的失败为代价。为了能够在一次构建的执行中发现尽可能多的失败，你可以使用<code>--continue</code>选项。</p>
-<p>当在命令中加入<code>--continue</code>,gradle将会执行每一个要被执行的task，以及所有的依赖task，并且无错误的完成task，而不是一旦遇到错误就立马停止。并且每一个发生的失败都会在构建结束后上报出来。</p>
-<p>如果一个task失败了，那么任何依赖于这个产生失败的task的子task也不会被执行，这样做是不安全的。例如，如果在测试代码中有一个编译失败，测试将不会运行；因为测试任务将直接或间接的取决于编译任务。</p>
-<h2 id="4-task名字的缩写"><a href="#4-task名字的缩写" class="headerlink" title="4.task名字的缩写"></a>4.task名字的缩写</h2><p>当你在命令行上指定task时，你没必要指定task的全名。你只需要提供足够长的能唯一标识task的名字即可。例如：在上面的构建例子中，你可以通过命令<code>gradle d</code>来执行<code>dist</code>这条task。</p>
-<p><code>gradle di</code>的输出:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle di</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line">:test</span><br><span class="line">running unit tests</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
-<p>你也可以通过每个task名称的单词的首字母的驼峰缩写来标识一个task：你可以通过执行<code>gradle compTest</code>或者甚至是<code>gradle cT</code>来执行<code>compileTest</code>这个task。</p>
-<p><code>gradle cT</code>的输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle cT</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
-<p>以上规则对<code>-x</code>项(排除某个task)也是适用的。</p>
-<h2 id="5-选择某一条构建去执行"><a href="#5-选择某一条构建去执行" class="headerlink" title="5.选择某一条构建去执行"></a>5.选择某一条构建去执行</h2><p>当你运行gradle命令时，它会在当前目录中查找一个build文件。你可以使用<code>-b</code>选项来选择其他的build文件。如果你使用了<code>-b</code>选项，那么<code>settings.gradle</code>这个文件将不起作用。</p>
-<p>举个例子：</p>
-<p>选择一个工程使用build文件：</p>
-<p>subdir/myproject.gradle</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">task hello &lt;&lt; &#123;</span><br><span class="line">    println &quot;using build file &#39;$buildFile.name&#39; in &#39;$buildFile.parentFile.name&#39;.&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行<code>gradle -q -b subdir/myproject.gradle hello</code></p>
-<p><em>这里<code>-q</code>是“安静模式”，指过程中只会输出错误log</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q -b subdir&#x2F;myproject.gradle hello</span><br><span class="line">using build file &#39;myproject.gradle&#39; in &#39;subdir&#39;.</span><br></pre></td></tr></table></figure>
-<p>另外一种方式，你可以使用<code>-p</code>选项来指定项目所在的路径。对于多项目构建，你应该使用<code>-p</code>选项来代替<code>-b</code>选项。</p>
-<p>执行<code>gradle -q -p subdir hello</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q -p subdir hello</span><br><span class="line">using build file &#39;build.gradle&#39; in &#39;subdir&#39;.</span><br></pre></td></tr></table></figure>
-<h2 id="6-强制执行task-rerun-tasks-someTask"><a href="#6-强制执行task-rerun-tasks-someTask" class="headerlink" title="6.强制执行task(--rerun-tasks someTask)"></a>6.强制执行task(<code>--rerun-tasks someTask</code>)</h2><p>许多task，尤其是gradle自身的task，都支持<strong>incremental builds(增量构建)</strong>。这种task可以决定是否需要运行，或者通过最后一次运行之后的输入输出文件是否有变动来判断是否有必要重新运行。你可以通过在执行构建时gradle列出的<code>UP-TO-DATE</code>,来很容易的认出<code>incremental tasks</code>。</p>
-<p>某些场景下，你也许希望忽略<code>up-to-date</code>的检查，来强制执行gradle所有的task。这种情况下，你只需要使用<code>--rerun-tasks</code>这条命令即可。</p>
-<p>以下是两个例子的输出，分别是执行task带有和不带有<code>--rerun-tasks</code>命令：</p>
-<p>执行<code>gradle doIt</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle doIt</span><br><span class="line">:doIt UP-TO-DATE</span><br></pre></td></tr></table></figure>
-<p>执行<code>gradle --rerun-tasks doIt</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle --rerun-tasks doIt</span><br><span class="line">:doIt</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：这将会强制执行全部的task，不仅仅是你在命令行上指定的那些。这有点像在运行<code>clean</code>，但不同的是没有任何的输出会被删除掉。</p>
-</blockquote>
-<h2 id="7-获取关于你的构建的信息"><a href="#7-获取关于你的构建的信息" class="headerlink" title="7.获取关于你的构建的信息"></a>7.获取关于你的构建的信息</h2><p>gradle提供了多个用来显示构建详情的内置task。这些可以被用来理解你项目构建的结构和依赖，以及用debug调试问题。</p>
-<p>除了这些内置task之外，    你也可以使用project report plugin(项目报告插件)，添加到你的项目中，就可以生成这些信息报告了。</p>
-<h3 id="7-1-展示项目列表-gradle-projects"><a href="#7-1-展示项目列表-gradle-projects" class="headerlink" title="7.1.展示项目列表(gradle projects)"></a>7.1.展示项目列表(<code>gradle projects</code>)</h3><p>运行<code>gradle projects</code>，你会得到一个你所选项目的子项目清单，并且是分层显示的哦。下面就是一个例子：</p>
-<p>输入<code>gradle -q projects</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q projects</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Root project &#39;projectReports&#39;</span><br><span class="line">+--- Project &#39;:api&#39; - The shared API for the application</span><br><span class="line">\--- Project &#39;:webapp&#39; - The Web application implementation</span><br><span class="line"></span><br><span class="line">To see a list of the tasks of a project, run gradle &lt;project-path&gt;:tasks</span><br><span class="line">For example, try running gradle :api:tasks</span><br></pre></td></tr></table></figure>
-<p>该报告展示了每个项目的描述（如果项目被设置了描述）。你也可以通过设置描述特性，来为一个项目提供一个描述。</p>
-<p>例如在<code>build.gradle</code>中添加描述：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">description &#x3D; &#39;The shared API for the application&#39;</span><br></pre></td></tr></table></figure>
-<h3 id="7-2-展示task列表-gradle-tasks"><a href="#7-2-展示task列表-gradle-tasks" class="headerlink" title="7.2 展示task列表(gradle tasks)"></a>7.2 展示task列表(<code>gradle tasks</code>)</h3><p>运行<code>gradle tasks</code>可以得到当前项目的主task。生成的报告清单会显示所有的默认task，当然，如果有描述信息的话，也会一并显示。</p>
-<p>例如：</p>
-<p>运行<code>gradle -q tasks</code>会得到如下输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q tasks</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">All tasks runnable from root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Default tasks: dists</span><br><span class="line"></span><br><span class="line">Build tasks</span><br><span class="line">-----------</span><br><span class="line">clean - Deletes the build directory (build)</span><br><span class="line">dists - Builds the distribution</span><br><span class="line">libs - Builds the JAR</span><br><span class="line"></span><br><span class="line">Build Setup tasks</span><br><span class="line">-----------------</span><br><span class="line">init - Initializes a new Gradle build. [incubating]</span><br><span class="line">wrapper - Generates Gradle wrapper files. [incubating]</span><br><span class="line"></span><br><span class="line">Help tasks</span><br><span class="line">----------</span><br><span class="line">buildEnvironment - Displays all buildscript dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">components - Displays the components produced by root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">dependencies - Displays all dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">dependencyInsight - Displays the insight into a specific dependency in root project &#39;projectReports&#39;.</span><br><span class="line">help - Displays a help message.</span><br><span class="line">model - Displays the configuration model of root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">projects - Displays the sub-projects of root project &#39;projectReports&#39;.</span><br><span class="line">properties - Displays the properties of root project &#39;projectReports&#39;.</span><br><span class="line">tasks - Displays the tasks runnable from root project &#39;projectReports&#39; (some of the displayed tasks may belong to subprojects).</span><br><span class="line"></span><br><span class="line">To see all tasks and more detail, run gradle tasks --all</span><br><span class="line"></span><br><span class="line">To see more detail about a task, run gradle help --task &lt;task&gt;</span><br></pre></td></tr></table></figure>
-<p>默认情况下，此报告只显示已被分配给一个task group的task。你可以设置task的所在组，也可以设置task的描述信息。这些设置都会在这份报告中展示。</p>
-<p>例如：</p>
-<p>build.gradle</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dists &#123;</span><br><span class="line">    description &#x3D; &#39;Builds the distribution&#39;</span><br><span class="line">    group &#x3D; &#39;build&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>你可以通过使用<code>--all</code>命令来获取更多的task列表信息。通过这个命令，task列表报告单会显示当前项目的所有的task，并且会按照主task以及每个task的依赖进行分组展示。下面是一个例子：</p>
-<p>获取有关task的更多信息</p>
-<p>执行<code>gradle -q tasks --all</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q tasks --all</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">All tasks runnable from root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Default tasks: dists</span><br><span class="line"></span><br><span class="line">Build tasks</span><br><span class="line">-----------</span><br><span class="line">clean - Deletes the build directory (build)</span><br><span class="line">api:clean - Deletes the build directory (build)</span><br><span class="line">webapp:clean - Deletes the build directory (build)</span><br><span class="line">dists - Builds the distribution [api:libs, webapp:libs]</span><br><span class="line">    docs - Builds the documentation</span><br><span class="line">api:libs - Builds the JAR</span><br><span class="line">    api:compile - Compiles the source files</span><br><span class="line">webapp:libs - Builds the JAR [api:libs]</span><br><span class="line">    webapp:compile - Compiles the source files</span><br><span class="line"></span><br><span class="line">Build Setup tasks</span><br><span class="line">-----------------</span><br><span class="line">init - Initializes a new Gradle build. [incubating]</span><br><span class="line">wrapper - Generates Gradle wrapper files. [incubating]</span><br><span class="line"></span><br><span class="line">Help tasks</span><br><span class="line">----------</span><br><span class="line">buildEnvironment - Displays all buildscript dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">api:buildEnvironment - Displays all buildscript dependencies declared in project &#39;:api&#39;.</span><br><span class="line">webapp:buildEnvironment - Displays all buildscript dependencies declared in project &#39;:webapp&#39;.</span><br><span class="line">components - Displays the components produced by root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">api:components - Displays the components produced by project &#39;:api&#39;. [incubating]</span><br><span class="line">webapp:components - Displays the components produced by project &#39;:webapp&#39;. [incubating]</span><br><span class="line">dependencies - Displays all dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">api:dependencies - Displays all dependencies declared in project &#39;:api&#39;.</span><br><span class="line">webapp:dependencies - Displays all dependencies declared in project &#39;:webapp&#39;.</span><br><span class="line">dependencyInsight - Displays the insight into a specific dependency in root project &#39;projectReports&#39;.</span><br><span class="line">api:dependencyInsight - Displays the insight into a specific dependency in project &#39;:api&#39;.</span><br><span class="line">webapp:dependencyInsight - Displays the insight into a specific dependency in project &#39;:webapp&#39;.</span><br><span class="line">help - Displays a help message.</span><br><span class="line">api:help - Displays a help message.</span><br><span class="line">webapp:help - Displays a help message.</span><br><span class="line">model - Displays the configuration model of root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">api:model - Displays the configuration model of project &#39;:api&#39;. [incubating]</span><br><span class="line">webapp:model - Displays the configuration model of project &#39;:webapp&#39;. [incubating]</span><br><span class="line">projects - Displays the sub-projects of root project &#39;projectReports&#39;.</span><br><span class="line">api:projects - Displays the sub-projects of project &#39;:api&#39;.</span><br><span class="line">webapp:projects - Displays the sub-projects of project &#39;:webapp&#39;.</span><br><span class="line">properties - Displays the properties of root project &#39;projectReports&#39;.</span><br><span class="line">api:properties - Displays the properties of project &#39;:api&#39;.</span><br><span class="line">webapp:properties - Displays the properties of project &#39;:webapp&#39;.</span><br><span class="line">tasks - Displays the tasks runnable from root project &#39;projectReports&#39; (some of the displayed tasks may belong to subprojects).</span><br><span class="line">api:tasks - Displays the tasks runnable from project &#39;:api&#39;.</span><br><span class="line">webapp:tasks - Displays the tasks runnable from project &#39;:webapp&#39;.</span><br></pre></td></tr></table></figure>
-<h3 id="7-3-显示task的使用细节-gradle-help-task-someTask"><a href="#7-3-显示task的使用细节-gradle-help-task-someTask" class="headerlink" title="7.3 显示task的使用细节(gradle help --task someTask)"></a>7.3 显示task的使用细节(<code>gradle help --task someTask</code>)</h3><p>运行<code>gradle help --task someTask</code>会得到一个关于你所选择的task或者与你输入名称相匹配的一系列task的详细信息。</p>
-<p>下面是一个例子：</p>
-<p><code>gradle -q help --task libs</code>执行的输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q help --task libs</span><br><span class="line">Detailed task information for libs</span><br><span class="line"></span><br><span class="line">Paths</span><br><span class="line">     :api:libs</span><br><span class="line">     :webapp:libs</span><br><span class="line"></span><br><span class="line">Type</span><br><span class="line">     Task (org.gradle.api.Task)</span><br><span class="line"></span><br><span class="line">Description</span><br><span class="line">     Builds the JAR</span><br><span class="line"></span><br><span class="line">Group</span><br><span class="line">     build</span><br></pre></td></tr></table></figure>
-<p>这些信息包含全部的task路径，task的类型，可能有的命令行选项和给定的task的描述。</p>
-<h3 id="7-4-列出项目的依赖项-gradle-dependencies"><a href="#7-4-列出项目的依赖项-gradle-dependencies" class="headerlink" title="7.4 列出项目的依赖项(gradle dependencies)"></a>7.4 列出项目的依赖项(<code>gradle dependencies</code>)</h3><p>运行<code>gradle dependencies</code>，列出了所选项目的所有依赖，以及被配置项分解的依赖。对于每个配置，该配置的直接和传递的依赖关系都会在树中显示。下面是一个例子：</p>
-<p><strong>获取依赖关系的信息</strong></p>
-<p>运行<code>gradle -q dependencies api:dependencies webapp:dependencies</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q dependencies api:dependencies webapp:dependencies</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">No configurations</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">compile</span><br><span class="line">\--- org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">\--- junit:junit:4.12</span><br><span class="line">     \--- org.hamcrest:hamcrest-core:1.3</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :webapp - The Web application implementation</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">compile</span><br><span class="line">+--- project :api</span><br><span class="line">|    \--- org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line">\--- commons-io:commons-io:1.2</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">No dependencies</span><br></pre></td></tr></table></figure>
-<p>由于一个依赖报告可能会变得很大，所以有必要通过一些配置来过滤依赖报告的显示。通过命令参数<code>--configuration</code>来实现：</p>
-<p><strong>通过配置来过滤依赖项报告</strong></p>
-<p><code>gradle -q api:dependencies --configuration testCompile</code>的输出结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q api:dependencies --configuration testCompile</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">\--- junit:junit:4.12</span><br><span class="line">     \--- org.hamcrest:hamcrest-core:1.3</span><br></pre></td></tr></table></figure>
-<h3 id="7-5-列出项目构建脚本依赖-gradle-buildEnvironment"><a href="#7-5-列出项目构建脚本依赖-gradle-buildEnvironment" class="headerlink" title="7.5 列出项目构建脚本依赖(gradle buildEnvironment)"></a>7.5 列出项目构建脚本依赖(<code>gradle buildEnvironment</code>)</h3><p>运行<code>gradle buildEnvironment</code>可以看见项目的依赖的构建脚本，类似于执行<code>gradle dependencies</code>列出构建的依赖项的展示。</p>
-<h3 id="7-6-观察一个特定的依赖项"><a href="#7-6-观察一个特定的依赖项" class="headerlink" title="7.6 观察一个特定的依赖项"></a>7.6 观察一个特定的依赖项</h3><p>运行<code>gradle dependencyInsight</code>你将得到一个与你输入匹配的一条或多条依赖项的内部信息。下面是一个例子：</p>
-<p><strong>观察一个特定的依赖</strong></p>
-<p>运行<code>gradle -q webapp:dependencyInsight --dependency groovy --configuration compile</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q webapp:dependencyInsight --dependency groovy --configuration compile</span><br><span class="line">org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line">\--- project :api</span><br><span class="line">     \--- compile</span><br></pre></td></tr></table></figure>
-<p>这个task对于解决调查一个依赖，发现一定的依赖关系是从哪里来的，某些版本的选择原因是什么，是非常有用的。更多的信息，请查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.diagnostics.DependencyInsightReportTask.html">DependencyInsightReportTask</a>类的API文档。</p>
-<p>内置的dependencyInsight task在’Help’的task组内。task需要配置依赖项和设置信息。该报告查找在指定的配置中匹配指定的依赖性规范的依赖。如果应用java相关的插件，那么dependencyInsight task就被预配置了’compile’这条配置，因为通常情况下，编译依赖是我们感兴趣的。你应该指定你感兴趣的依赖，通过命令行<code>--dependency</code>选项。如果你不喜欢的默认值，你可以通过<code>--configuration</code>选项来选择配置。更多的信息，请查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.diagnostics.DependencyInsightReportTask.html">DependencyInsightReportTask</a>类的API文档。</p>
-<h3 id="7-7-列出项目属性gradle-properties"><a href="#7-7-列出项目属性gradle-properties" class="headerlink" title="7.7 列出项目属性gradle properties"></a>7.7 列出项目属性<code>gradle properties</code></h3><p>运行<code>gradle properties</code>列出一个项目属性的列表。下面是一小片输出：</p>
-<p><strong>信息的属性</strong></p>
-<p><code>gradle -q api:properties</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q api:properties</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">allprojects: [project &#39;:api&#39;]</span><br><span class="line">ant: org.gradle.api.internal.project.DefaultAntBuilder@12345</span><br><span class="line">antBuilderFactory: org.gradle.api.internal.project.DefaultAntBuilderFactory@12345</span><br><span class="line">artifacts: org.gradle.api.internal.artifacts.dsl.DefaultArtifactHandler_Decorated@12345</span><br><span class="line">asDynamicObject: DynamicObject for project &#39;:api&#39;</span><br><span class="line">baseClassLoaderScope: org.gradle.api.internal.initialization.DefaultClassLoaderScope@12345</span><br><span class="line">buildDir: &#x2F;home&#x2F;user&#x2F;gradle&#x2F;samples&#x2F;userguide&#x2F;tutorial&#x2F;projectReports&#x2F;api&#x2F;build</span><br><span class="line">buildFile: &#x2F;home&#x2F;user&#x2F;gradle&#x2F;samples&#x2F;userguide&#x2F;tutorial&#x2F;projectReports&#x2F;api&#x2F;build.gradle</span><br></pre></td></tr></table></figure>
-<h3 id="7-8-分析构建-profile"><a href="#7-8-分析构建-profile" class="headerlink" title="7.8 分析构建(--profile)"></a>7.8 分析构建(<code>--profile</code>)</h3><p><code>--profile</code>命令选项会在你执行构建上报出有用的定时信息，并输出在<code>build/reports/profile</code>目录下。报告被命名为构建运行的时间。</p>
-<p>这份报告列出了配置阶段和任务执行的汇总时间和详细信息。配置和任务执行的时间按照花费时间最高到最低进行排序。任务执行结果还表明，是否有任何任务被跳过（以及原因），或者如果没有跳过的任务没有工作。</p>
-<p>利用buildsrc目录的构建，将在buildSrc/build目录下会生成第二份报告。</p>
-<p><img src="/img/16_07_09/profile.png" alt=""></p>
-<h2 id="8-Dry-Run"><a href="#8-Dry-Run" class="headerlink" title="8.Dry Run"></a>8.Dry Run</h2><p>有时，您是希望在命令行上指定一组给定的task的执行的顺序，但你不希望task被执行。你可以使用<code>-m</code>命令项。例如<code>gradle -m clean compile</code>，你将会看见全部作为clean和compile的task的一部分的将被执行的task。这些会展示给你所依赖的可被执行的task。</p>
-<h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a>9.总结</h2><p>在这一节中，你看到了你可以通过gradle命令行做到的一些事情，更多命令可以查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/gradle_command_line.html">Appendix D, Gradle Command Line</a>。</p>
 
       
     </div>
@@ -1762,7 +1709,7 @@ J(θ\_{0},θ\_{1})</script><p>跟前一节视频不同的是 我还是把$θ$写
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

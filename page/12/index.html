@@ -191,6 +191,234 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/03/06/R%E8%AF%AD%E8%A8%80%EF%BC%8802%EF%BC%89%E7%BB%98%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/03/06/R%E8%AF%AD%E8%A8%80%EF%BC%8802%EF%BC%89%E7%BB%98%E5%9B%BE/" class="post-title-link" itemprop="url">R语言（02）绘图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-03-06 18:08:55" itemprop="dateCreated datePublished" datetime="2016-03-06T18:08:55+00:00">2016-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index"><span itemprop="name">R</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基本图形的绘制"><a href="#基本图形的绘制" class="headerlink" title="基本图形的绘制"></a>基本图形的绘制</h2><p>在<strong>R语言(01)</strong>中，最后的一个综合训练，我们生成了一部分数据，现在我们就用这些数据为例，来展示R是如何绘制一些图表的。</p>
+<h3 id="数据的导入"><a href="#数据的导入" class="headerlink" title="数据的导入"></a>数据的导入</h3><p>通过读取数据文件，我们可以导入之前产生的数据。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; x=read.table(<span class="string">&quot;mark.txt&quot;</span>,header=<span class="built_in">F</span>)</span><br><span class="line">&gt; x</span><br><span class="line">          V1  V2 V3  V4</span><br><span class="line">1   <span class="number">10378001</span>  <span class="number">99</span> <span class="number">73</span>  <span class="number">98</span></span><br><span class="line">2   <span class="number">10378002</span>  <span class="number">86</span> <span class="number">95</span>  <span class="number">90</span></span><br><span class="line">3   <span class="number">10378003</span>  <span class="number">98</span> <span class="number">85</span>  <span class="number">84</span></span><br><span class="line">4   <span class="number">10378004</span>  <span class="number">90</span> <span class="number">81</span> <span class="number">100</span></span><br><span class="line">5   <span class="number">10378005</span>  <span class="number">81</span> <span class="number">88</span>  <span class="number">96</span></span><br><span class="line">6   <span class="number">10378006</span>  <span class="number">99</span> <span class="number">63</span>  <span class="number">61</span></span><br><span class="line">7   <span class="number">10378007</span>  <span class="number">88</span> <span class="number">79</span> <span class="number">100</span></span><br><span class="line">8   <span class="number">10378008</span>  <span class="number">88</span> <span class="number">92</span>  <span class="number">95</span></span><br><span class="line">9   <span class="number">10378009</span>  <span class="number">91</span> <span class="number">91</span> <span class="number">100</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>其中V1列是学好，V2是均匀分布的成绩数据，V3和V4是正太分布的数据，其中V4对超过100的数据取100。</p>
+<h3 id="直方图分析-hist"><a href="#直方图分析-hist" class="headerlink" title="直方图分析 hist()"></a>直方图分析 hist()</h3><p>绘制直方图函数hist()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V2)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_01.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V3)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_02.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V4)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_03.png" alt=""></p>
+<h3 id="散点图-plot"><a href="#散点图-plot" class="headerlink" title="散点图 plot()"></a>散点图 plot()</h3><p>散点图绘制函数plot()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(x$V1,x$V2)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_04.png" alt=""></p>
+<h3 id="柱状图barplot"><a href="#柱状图barplot" class="headerlink" title="柱状图barplot()"></a>柱状图barplot()</h3><p>列联函数table(),柱状图绘制函数barplot()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(x$V2)</span><br><span class="line"></span><br><span class="line"> <span class="number">80</span>  <span class="number">81</span>  <span class="number">82</span>  <span class="number">83</span>  <span class="number">84</span>  <span class="number">85</span>  <span class="number">86</span>  <span class="number">87</span>  <span class="number">88</span>  <span class="number">89</span>  <span class="number">90</span>  <span class="number">91</span>  <span class="number">92</span>  <span class="number">93</span>  <span class="number">94</span>  <span class="number">95</span>  <span class="number">96</span>  <span class="number">97</span>  <span class="number">98</span>  <span class="number">99</span> </span><br><span class="line">  <span class="number">1</span>   <span class="number">5</span>   <span class="number">7</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">8</span>   <span class="number">7</span>   <span class="number">4</span>   <span class="number">7</span>   <span class="number">8</span>   <span class="number">4</span>   <span class="number">4</span>   <span class="number">5</span>   <span class="number">2</span>   <span class="number">6</span>   <span class="number">2</span>   <span class="number">4</span>   <span class="number">8</span> </span><br><span class="line">100 </span><br><span class="line">  <span class="number">2</span> </span><br><span class="line">&gt; barplot(table(x$V2))</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_05.png" alt=""></p>
+<h3 id="饼图-pie"><a href="#饼图-pie" class="headerlink" title="饼图 pie()"></a>饼图 pie()</h3><p>饼图绘制函数pie()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pie(table(x$V2))</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_06.png" alt=""></p>
+<h3 id="箱尾图"><a href="#箱尾图" class="headerlink" title="箱尾图"></a>箱尾图</h3><ul>
+<li>箱子的上下横线为样本的25%和75%分为数</li>
+<li>箱子中间的横线为样本的中位数</li>
+<li>上下延伸的直线称为尾线，尾线的尽头为最高值和最低值</li>
+<li>异常值是箱外部的个别与大多数样本相距很远的样本数据</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x$V2,x$V2,x$V3)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_07.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x[<span class="number">2</span>:<span class="number">4</span>],col=<span class="built_in">c</span>(<span class="string">&quot;red&quot;</span>,<span class="string">&quot;green&quot;</span>,<span class="string">&quot;blue&quot;</span>),notch=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
+<p>x[2:4] 是值第2到4列</p>
+<p>col=c(“red”,”green”,”blue”) 分别指定每个箱尾图的颜色</p>
+<p>notch=T 是控制中间的缺口的  主要是让用户更清楚的看到中位线</p>
+<p><img src="/img/r_02_08.png" alt=""></p>
+<p>水平放置的箱尾图</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x$V2,x$V2,x$V3,horizontal=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
+<p>horizontal=T 设置水平显示</p>
+<p><img src="/img/r_02_09.png" alt=""></p>
+<h3 id="星相图-stars"><a href="#星相图-stars" class="headerlink" title="星相图 stars()"></a>星相图 stars()</h3><ul>
+<li>每个观测单位的数值表示为一个图形</li>
+<li>每个图的每个角表示一个变量，字符串类型会标注在图的下方</li>
+<li>角线的长度表达值的大小</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; stars(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)])</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_10.png" alt=""></p>
+<p>星相图另一种表示：雷达图</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; stars(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)],full=<span class="built_in">T</span>,draw.segment=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_11.png" alt=""></p>
+<h3 id="人脸图"><a href="#人脸图" class="headerlink" title="人脸图"></a>人脸图</h3><ul>
+<li>用五官的宽度和高度来描绘数值</li>
+<li>人对脸谱高度敏感和强记忆</li>
+<li>适合较少样本的情况</li>
+</ul>
+<p>安装aplpack包</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; require(<span class="string">&quot;aplpack&quot;</span>)</span><br><span class="line">&gt; faces(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)])</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_12.png" alt=""></p>
+<p>其它脸谱图</p>
+<p>安装TeachingDemos包</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; require(<span class="string">&quot;TeachingDemos&quot;</span>)</span><br><span class="line">&gt; faces2(x)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_13.png" alt=""></p>
+<h3 id="茎叶图-stem"><a href="#茎叶图-stem" class="headerlink" title="茎叶图 stem()"></a>茎叶图 stem()</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; stem(x$V3)</span><br><span class="line"></span><br><span class="line">  The decimal point is <span class="number">1</span> digit(s) to the right of the |</span><br><span class="line"></span><br><span class="line">  <span class="number">6</span> | <span class="number">0233</span></span><br><span class="line">  <span class="number">6</span> | <span class="number">88</span></span><br><span class="line">  <span class="number">7</span> | <span class="number">000111222333333</span></span><br><span class="line">  <span class="number">7</span> | <span class="number">55556677888888888999999999</span></span><br><span class="line">  <span class="number">8</span> | <span class="number">0000011111112223333333444444</span></span><br><span class="line">  <span class="number">8</span> | <span class="number">5556666788888899</span></span><br><span class="line">  <span class="number">9</span> | <span class="number">001224</span></span><br><span class="line">  <span class="number">9</span> | <span class="number">559</span></span><br></pre></td></tr></table></figure>
+<p>6 | 0233  代表60,62,63,63四个样本数据.茎叶图没有图像输出，是一种高密集型的数据展现形式。</p>
+<h3 id="QQ图"><a href="#QQ图" class="headerlink" title="QQ图"></a>QQ图</h3><ul>
+<li>可用于判断是否正态分布(服从正态分布的点基本都处于同一直线)</li>
+<li>直线的斜率是标准差，截距是均值</li>
+<li>点的散布越接近直线，则越接近正态分布</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqnorm(x$V2)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_14.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqline(x$V2)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_15.png" alt=""></p>
+<p>x$V3 数据服从正态分布，点基本都处于同一直线上：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqnorm(x$V3)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_16.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqline(x$V3)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_17.png" alt=""></p>
+<h2 id="图形绘制进阶"><a href="#图形绘制进阶" class="headerlink" title="图形绘制进阶"></a>图形绘制进阶</h2><h3 id="散点图进一步设置"><a href="#散点图进一步设置" class="headerlink" title="散点图进一步设置"></a>散点图进一步设置</h3><p>在mac上绘图时显示中文，需要安装以下安装包：</p>
+<ul>
+<li>showtext</li>
+<li>showtextdb</li>
+<li>sysfonts</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(sysfonts)</span><br><span class="line">&gt; library(showtext)</span><br><span class="line">&gt; dev.new() <span class="comment">#如果已打开图形设备，本句可以不用</span></span><br><span class="line">&gt; showtext.begin()</span><br></pre></td></tr></table></figure>
+<p>加入这几句之后，绘制的图像中就可以正常显示中文了。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(x$V2,x$V3,</span><br><span class="line">main=<span class="string">&quot;数学分析与线性代数成绩的关系&quot;</span>,</span><br><span class="line">xlab=<span class="string">&quot;数学分析&quot;</span>,</span><br><span class="line">ylab=<span class="string">&quot;线性代数&quot;</span>,</span><br><span class="line">xlim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">100</span>),</span><br><span class="line">ylim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">100</span>),</span><br><span class="line">xaxs=<span class="string">&quot;i&quot;</span>, <span class="comment">#Set x axis style as internal</span></span><br><span class="line">yaxs=<span class="string">&quot;i&quot;</span>, <span class="comment">#Set y axis style as internal</span></span><br><span class="line">col=<span class="string">&quot;red&quot;</span>, <span class="comment">#Set the color of plotting symbol to red</span></span><br><span class="line">pch=<span class="number">19</span>) <span class="comment">#Set the plotting symbol to filled dots</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_18.png" alt=""></p>
+<h3 id="连线图"><a href="#连线图" class="headerlink" title="连线图"></a>连线图</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; a=<span class="built_in">c</span>(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>)</span><br><span class="line">&gt; b=<span class="built_in">c</span>(<span class="number">4</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">12</span>)</span><br><span class="line">&gt; plot(a,b,type=<span class="string">&quot;l&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>type=”l” 代表想字母”l”一样，是折现。</p>
+<p><img src="/img/r_02_19.png" alt=""></p>
+<h3 id="密度图-density"><a href="#密度图-density" class="headerlink" title="密度图 density()"></a>密度图 density()</h3><p>函数density()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(density(rnorm(<span class="number">1000</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_20.png" alt=""></p>
+<h3 id="R中的内置数据集"><a href="#R中的内置数据集" class="headerlink" title="R中的内置数据集"></a>R中的内置数据集</h3><p>在R中输入data可查看内置数据集：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data()</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_21.png" alt=""></p>
+<h3 id="热力图-heatmap"><a href="#热力图-heatmap" class="headerlink" title="热力图 heatmap()"></a>热力图 heatmap()</h3><p>利用内置的mtcars数据集绘制</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; heatmap(as.matrix(mtcars),</span><br><span class="line">Rowv=<span class="literal">NA</span>,</span><br><span class="line">Colv=<span class="literal">NA</span>,</span><br><span class="line">col=heat.colors(<span class="number">256</span>),</span><br><span class="line">scale=<span class="string">&quot;column&quot;</span>,</span><br><span class="line">margins=<span class="built_in">c</span>(<span class="number">2</span>,<span class="number">8</span>),</span><br><span class="line">main=<span class="string">&quot;Car characteristics by Model&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_22.png" alt=""></p>
+<h3 id="Iris-鸢尾花-数据集"><a href="#Iris-鸢尾花-数据集" class="headerlink" title="Iris(鸢尾花)数据集"></a>Iris(鸢尾花)数据集</h3><ul>
+<li>Sepal花萼</li>
+<li>Petal花瓣</li>
+<li>Species种属</li>
+</ul>
+<p>这是一个非常著名的数据集，Iris也称鸢尾花卉数据集，是一类多重变量分析的数据集。通过花萼长度，花萼宽度，花瓣长度，花瓣宽度4个属性预测鸢尾花卉属于（Setosa，Versicolour，Virginica）三个种类中的哪一类。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; iris</span><br><span class="line">    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species</span><br><span class="line">1            <span class="number">5.1</span>         <span class="number">3.5</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">2            <span class="number">4.9</span>         <span class="number">3.0</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">3            <span class="number">4.7</span>         <span class="number">3.2</span>          <span class="number">1.3</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">4            <span class="number">4.6</span>         <span class="number">3.1</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">5            <span class="number">5.0</span>         <span class="number">3.6</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">6            <span class="number">5.4</span>         <span class="number">3.9</span>          <span class="number">1.7</span>         <span class="number">0.4</span>     setosa</span><br><span class="line">7            <span class="number">4.6</span>         <span class="number">3.4</span>          <span class="number">1.4</span>         <span class="number">0.3</span>     setosa</span><br><span class="line">8            <span class="number">5.0</span>         <span class="number">3.4</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">9            <span class="number">4.4</span>         <span class="number">2.9</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">10           <span class="number">4.9</span>         <span class="number">3.1</span>          <span class="number">1.5</span>         <span class="number">0.1</span>     setosa</span><br><span class="line">11           <span class="number">5.4</span>         <span class="number">3.7</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="向日葵散点图-sunflowerplot"><a href="#向日葵散点图-sunflowerplot" class="headerlink" title="向日葵散点图 sunflowerplot()"></a>向日葵散点图 sunflowerplot()</h3><ul>
+<li>用来克服散点图中数据点重叠问题</li>
+<li>在有重叠的地方用一朵“向日葵花”的花瓣数目来表示重叠数据个数</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; sunflowerplot(iris[,<span class="number">3</span>:<span class="number">4</span>],col=<span class="string">&quot;gold&quot;</span>,seg.col=<span class="string">&quot;gold&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_23.png" alt=""></p>
+<h3 id="散点图集"><a href="#散点图集" class="headerlink" title="散点图集"></a>散点图集</h3><ul>
+<li>遍历样本中全部的变量配对画出二元图</li>
+<li>直观地了解所有变量之间的关系</li>
+</ul>
+<p>将iris数据集的第1到4列的数据取出，两两组合，形成散点图。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pairs(iris[,<span class="number">1</span>:<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_24.png" alt=""></p>
+<p>用plot也可以实现同样的效果</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(iris[,<span class="number">1</span>:<span class="number">4</span>],</span><br><span class="line">main=<span class="string">&quot;Relationships between </span></span><br><span class="line"><span class="string">characteristics of iris flowers&quot;</span>,</span><br><span class="line">pch=<span class="number">19</span>,</span><br><span class="line">col=<span class="string">&quot;blue&quot;</span>,</span><br><span class="line">cex=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_25.png" alt=""></p>
+<ul>
+<li>利用par()在同一个device输出多个散点图</li>
+<li>Par命令博大精深，用于设置绘图参数，help(par)</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; par(mfrow=<span class="built_in">c</span>(<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">&gt; plot(x$V2,x$V3);plot(x$V3,x$V4);plot(x$V4,x$V1)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_26.png" alt=""></p>
+<p>par(mfrow=c(3,1))   把屏幕划分成3个水平区域<br>plot(x1,x2);plot(x2,x3);plot(x3,x1);    分别将三个散点图显示在这三块区域中。</p>
+<blockquote>
+<p>如果想深入学习R语言图像绘制，建议对par()函数的文档深入学习，并且学习《R Graphs Cookbook》这本书，会有很大收获的。</p>
+</blockquote>
+<h3 id="颜色colors"><a href="#颜色colors" class="headerlink" title="颜色colors()"></a>颜色colors()</h3><p>查看有哪些颜色 colors()</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; colors()</span><br><span class="line">  [<span class="number">1</span>] <span class="string">&quot;white&quot;</span>                <span class="string">&quot;aliceblue&quot;</span>            <span class="string">&quot;antiquewhite&quot;</span>        </span><br><span class="line">  [<span class="number">4</span>] <span class="string">&quot;antiquewhite1&quot;</span>        <span class="string">&quot;antiquewhite2&quot;</span>        <span class="string">&quot;antiquewhite3&quot;</span>       </span><br><span class="line">  [<span class="number">7</span>] <span class="string">&quot;antiquewhite4&quot;</span>        <span class="string">&quot;aquamarine&quot;</span>           <span class="string">&quot;aquamarine1&quot;</span>         </span><br><span class="line"> [<span class="number">10</span>] <span class="string">&quot;aquamarine2&quot;</span>          <span class="string">&quot;aquamarine3&quot;</span>          <span class="string">&quot;aquamarine4&quot;</span>         </span><br><span class="line"> [<span class="number">13</span>] <span class="string">&quot;azure&quot;</span>                <span class="string">&quot;azure1&quot;</span>               <span class="string">&quot;azure2&quot;</span>              </span><br><span class="line"> [<span class="number">16</span>] <span class="string">&quot;azure3&quot;</span>               <span class="string">&quot;azure4&quot;</span>               <span class="string">&quot;beige&quot;</span>               </span><br><span class="line"> [<span class="number">19</span>] <span class="string">&quot;bisque&quot;</span>               <span class="string">&quot;bisque1&quot;</span>              <span class="string">&quot;bisque2&quot;</span>             </span><br><span class="line"> [<span class="number">22</span>] <span class="string">&quot;bisque3&quot;</span>              <span class="string">&quot;bisque4&quot;</span>              <span class="string">&quot;black&quot;</span>               </span><br><span class="line"> [<span class="number">25</span>] <span class="string">&quot;blanchedalmond&quot;</span>       <span class="string">&quot;blue&quot;</span>                 <span class="string">&quot;blue1&quot;</span>               </span><br><span class="line"> [<span class="number">28</span>] <span class="string">&quot;blue2&quot;</span>                <span class="string">&quot;blue3&quot;</span>                <span class="string">&quot;blue4&quot;</span>               </span><br><span class="line"> [<span class="number">31</span>] <span class="string">&quot;blueviolet&quot;</span>           <span class="string">&quot;brown&quot;</span>                <span class="string">&quot;brown1&quot;</span>              </span><br><span class="line"> [<span class="number">34</span>] <span class="string">&quot;brown2&quot;</span>               <span class="string">&quot;brown3&quot;</span>               <span class="string">&quot;brown4&quot;</span>        </span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>绘图设备</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; dev.cur() <span class="comment"># 当前图形窗</span></span><br><span class="line">&gt; dev.list() <span class="comment"># 查看现在所有的图形窗</span></span><br><span class="line">&gt; dev.next(which=dev.cur()) <span class="comment">#某个图形窗的后一个图形窗</span></span><br><span class="line">&gt; dev.prev(which=dev.cur()) <span class="comment">#某个图形窗的前一个图形窗</span></span><br><span class="line">&gt; dev.off(which=dev.cur()) <span class="comment">#关闭某个图形窗</span></span><br><span class="line">&gt; dev.set(which=dev.next()) <span class="comment">#设置图形窗</span></span><br><span class="line">&gt; dev.new(...) <span class="comment">#开启新的图形窗</span></span><br><span class="line">&gt; graphics.off() <span class="comment">#关闭整个窗口</span></span><br></pre></td></tr></table></figure>
+<h3 id="三维散点图"><a href="#三维散点图" class="headerlink" title="三维散点图"></a>三维散点图</h3><p>安装scatterplot3d包</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(scatterplot3d)</span><br><span class="line">&gt; scatterplot3d(x[<span class="number">2</span>:<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_27.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; x&lt;-y&lt;-seq(-<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="built_in">pi</span>/<span class="number">15</span>)</span><br><span class="line">&gt; f&lt;-<span class="keyword">function</span>(x,y)<span class="built_in">sin</span>(x)*<span class="built_in">sin</span>(y)</span><br><span class="line">&gt; z&lt;-outer(x,y,f)</span><br><span class="line">&gt; contour(x,y,z,col=<span class="string">&quot;blue&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_28.png" alt=""></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; contour(x,y,z,col=<span class="string">&quot;blue&quot;</span>)</span><br><span class="line">&gt; persp(x,y,z,theta=<span class="number">30</span>,phi=<span class="number">30</span>,expand=<span class="number">0.7</span>,col=<span class="string">&quot;lightblue&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_29.png" alt=""></p>
+<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p>安装maps包</p>
+<p>显示美国地图：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(maps)</span><br><span class="line">&gt; map(<span class="string">&quot;state&quot;</span>,interior=<span class="built_in">F</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_30.png" alt=""></p>
+<blockquote>
+<p>state 代表美国</p>
+</blockquote>
+<p>世界地图的绘制：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; map(<span class="string">&quot;world&quot;</span>,fill=<span class="built_in">T</span>,col=heat.colors(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/img/r_02_31.png" alt=""></p>
+<h3 id="社交数据可视化"><a href="#社交数据可视化" class="headerlink" title="社交数据可视化"></a>社交数据可视化</h3><p>通过R可以画出如下的facebook社交关系图:</p>
+<p><img src="/img/r_02_32.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/03/02/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B007-%E7%9B%B4%E7%BA%BF%E7%9A%84%E5%8F%82%E6%95%B0%E8%A1%A8%E7%A4%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +450,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -310,7 +538,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -597,7 +825,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -809,7 +1037,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -890,7 +1118,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -963,7 +1191,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1071,7 +1299,7 @@ l=\\{X+tV | t \in R\\}</script><p>其中向量$X$和向量$Y$可以是人意维�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1227,7 +1455,7 @@ p(c_i|\textbf{w}) = \dfrac{p(\textbf{w}|c_i)p(c_i)}{p(\textbf{w})}</script><p>�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1405,7 +1633,7 @@ p(c_i|\textbf{w}) = \dfrac{p(\textbf{w}|c_i)p(c_i)}{p(\textbf{w})}</script><p>�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1574,154 +1802,6 @@ p(c_i|\textbf{w}) = \dfrac{p(\textbf{w}|c_i)p(c_i)}{p(\textbf{w})}</script><p>�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B006-%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/12/05/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B006-%E5%90%91%E9%87%8F%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">线性代数06-向量简介</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2015-12-05 13:50:55" itemprop="dateCreated datePublished" datetime="2015-12-05T13:50:55+00:00">2015-12-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="实数"><a href="#实数" class="headerlink" title="实数"></a>实数</h2><blockquote>
-<p>有理数和无理数.其中无理数就是无限不循环小数,有理数就包括整数和分数.实数直观地定义为和数轴上的点一一对应的数.本来实数仅称作数,后来引入了虚数概念,原本的数称作“实数”——意义是“实在的数”</p>
-</blockquote>
-<p>π是一个实数，e是一个实数，√2是实数，3也是实数。但是1+2i不是实数。</p>
-<h2 id="R-n"><a href="#R-n" class="headerlink" title="$R^n$"></a><strong>$R^n$</strong></h2><p><strong>$R^n$</strong>代表所有有序集的集合。（这里的n并不是n次方的意思。）</p>
-<p>例如：</p>
-<script type="math/tex; mode=display">
-R^2 = \\{(x1,x2)  \|  x1,x2\in R  \\}</script><p>什么是$R^n$上的向量呢？</p>
-<p>其实就是这些n元组中的一个特定值。[n个实数的有序集]</p>
-<p>表示一个向量，有很多种方法，例如一个二维向量可以用（x1，x2）来表示，看起来有点像坐标系。或者可以这样表示<x1,x2></p>
-<p>也可以用矩阵表示：</p>
-<p>例如定义一个n维向量:</p>
-<script type="math/tex; mode=display">
-V=
-\left[
-\begin{matrix}
- v1  \\\
- v2  \\\
- \vdots \\\
- vn  \\\
-\end{matrix}
-\right]</script><h2 id="矩阵的加法"><a href="#矩阵的加法" class="headerlink" title="矩阵的加法"></a>矩阵的加法</h2><script type="math/tex; mode=display">
-A=
-\left[
-\begin{matrix}
- a1  \\\
- a2  \\\
- \vdots \\\
- an  \\\
-\end{matrix}
-\right]</script><script type="math/tex; mode=display">
-B=
-\left[
-\begin{matrix}
- b1  \\\
- b2  \\\
- \vdots \\\
- bn  \\\
-\end{matrix}
-\right]</script><script type="math/tex; mode=display">
-A + B=
-\left[
-\begin{matrix}
- a1 + b1  \\\
- a2 + b2  \\\
- \vdots \\\
- an + bn  \\\
-\end{matrix}
-\right]</script><h2 id="数乘运算"><a href="#数乘运算" class="headerlink" title="数乘运算"></a>数乘运算</h2><script type="math/tex; mode=display">
-A=
-\left[
-\begin{matrix}
- a1  \\\
- a2  \\\
- \vdots \\\
- an  \\\
-\end{matrix}
-\right]</script><script type="math/tex; mode=display">
-cA=
-\left[
-\begin{matrix}
- ca1  \\\
- ca2  \\\
- \vdots \\\
- can  \\\
-\end{matrix}
-\right]</script><h2 id="零向量"><a href="#零向量" class="headerlink" title="零向量"></a>零向量</h2><p>零向量：每个元素都为0的n维向量。</p>
-<script type="math/tex; mode=display">
-\left[
-\begin{matrix}
- 0  \\\
- 0  \\\
- \vdots \\\
- 0  \\\
-\end{matrix}
-\right]</script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1793,7 +1873,7 @@ cA=
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

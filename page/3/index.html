@@ -191,6 +191,215 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【斯坦福cs231n】2-1图像分类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-30 13:27:00" itemprop="dateCreated datePublished" datetime="2017-07-30T13:27:00+00:00">2017-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/" itemprop="url" rel="index"><span itemprop="name">cs231n</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="图像分类"><a href="#图像分类" class="headerlink" title="图像分类"></a>图像分类</h2><p><strong>动机.</strong>在这一部分，我们将介绍图像分类问题，这是将输入图像分配到一组固定类别标签中的某一个标签的任务。尽管这个问题很简单，但它是计算机视觉的核心问题之一，并且有着各种各样的实际应用。此外，正如我们将在后面看到的，许多其它不同的计算机视觉任务（例如对象检测，分割）都可以被简化为图像识别问题。</p>
+<p><strong>示例.</strong>例如，在下面的图像识别的例子中，图像分类模型接收单张图片，并对四个标签{cat，dog，hat，mug}的概率赋值。如图所示，请记住，对于计算机而言，图像被表示为一个大的三维数组。在这个例子中，猫图像是248像素宽，400像素高，并且有三个颜色通道：红色，绿色，蓝色（或简称RGB）。因此，该图像由248 x 400 x 3数字组成，总共297,600个数字。其中每个数字都是一个范围在0（黑色）到255（白色）的整数。我们的任务就是把这将近30万个数字转成像{cat}这样的单一的标签。</p>
+<p><img src="/img/17_07_30/001.png" alt=""></p>
+<blockquote>
+<p>图像分类的任务是预测给定图像的单个标签（或者类似这里的一个标签的概率分布，用于表示我们信心）。图像是包含0到255整数的3维整数，大小是宽度x高度x3。其中3表示RGB三色通道。</p>
+</blockquote>
+<hr>
+<p><strong>挑战.</strong>由于视觉识别问题（例如识别“猫”的例子）对于人类来说，是再简单不过的问题，但从计算机视觉算法的角度来重新审视这个问题，就充满了挑战。在我们下面提出的这些挑战中，请记住图像的原始表示形式为3-D阵列的亮度值：</p>
+<ul>
+<li><strong>不同的观察点(Viewpoint variation)</strong>照相机可以从多个方向来拍摄同一个实例对象。</li>
+<li><strong>大小变化(Scale variation)</strong>视觉分类通常会出现不同的尺寸变化（这里包含在现实世界中的尺寸，不仅仅是针对图像中的大小程度）。</li>
+<li><strong>变形(Deformation)</strong>许多物体并不是刚体，并且可以以极端的方式变形。</li>
+<li><strong>闭塞(Occlusion)</strong>我们所观察的目标对象可能处于被遮挡的状态。有的时候我们只能看到对象的一小部分（像素比较少）。</li>
+<li><strong>光照情况(Illumination conditions)</strong>照明的效果在像素级上的影响是剧烈的。</li>
+<li><strong>背景杂波(Background clutter)</strong>我们所观察的对象可能融入到他们的背景环境中，使其难以识别。</li>
+<li><strong>类型内部变化(Intra-class variation)</strong>我们所关心的类别通常会比较宽泛，比如椅子。不同类型的椅子有着不同的外观，但他们都属于“椅子”这一类别。</li>
+</ul>
+<p>一个好的图片识别分类模型必须在所有这些情况交叉出现的情况下，都能产出不变的结果输出，同时保持类别变化时的敏感性。</p>
+<p><img src="/img/17_07_30/002.jpeg" alt=""></p>
+<hr>
+<p><strong>数据驱动的方法.</strong>如何编写一个将图像分类到不同类别的算法呢？与编写一个像数字排序这样的算法不同的是，如何编写一个识别猫的算法的方法并不是显式的。我们不会视图在代码中指定每个不同的类别在代码中是什么样的，我们所采取的方法就像是在教一个小孩子一样：我们首先为每个类别提供许多个实例，然后开发学习算法，通过学习算法来输入这些类别实例图像，学习到这些每个类别的视觉外观。这种方法被称为数据驱动方法，因为它依赖于事先已经被标记过的标签的图像的训练数据集：</p>
+<p><img src="/img/17_07_30/003.jpg" alt=""></p>
+<blockquote>
+<p>上图是四个视觉类别的训练集示例。在实际情况中，我们可能会有数千种类别和数十万种图像。</p>
+</blockquote>
+<hr>
+<p><strong>图像分类流水线.</strong>正如我们已经看到的，图像分类中的任务是使用一个像素数组来代表一个图像，并且为其分配一个标签。完整的流水线可以表示成如下的流程：</p>
+<ul>
+<li><strong>输入：</strong>我们的输入由一组N个图像组成，每一个都标有K个不同的类别。我们将这些数据称为训练集。</li>
+<li><strong>学习：</strong>我们的任务是使用训练集来了解每一个类别的样子。我们将此步骤称为<em>训练分类器（training a classifier）</em>，或者<em>学习模型（learning a model）</em>。</li>
+<li><strong>评估：</strong>最后，我们通过预测一组从未见过的新图像的标签来评估分类器的质量。然后，我们将这些图像的真实标签与分类器预测的图像进行比较。直观地说，我们希望达到的效果是大多数预测结果与真实答案（我们称之为ground truth）相匹配。</li>
+</ul>
+<h2 id="最邻近分类器（Nearest-Neighbor-Classifier）"><a href="#最邻近分类器（Nearest-Neighbor-Classifier）" class="headerlink" title="最邻近分类器（Nearest Neighbor Classifier）"></a>最邻近分类器（Nearest Neighbor Classifier）</h2><p>我们将开发一种叫做<strong>最邻近分类器</strong>，来作为我们的第一个图片分类的实现。这种分类器与卷积网络无关，在实践中很少使用，但它可以使我们了解处理图像分类问题的基本方法。</p>
+<p><strong>示例图像分类数据集：CIFAR-10.</strong><a target="_blank" rel="noopener" href="http://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a>是一个流行的toy级别的图像分类数据集。这个数据集包含60,000个长宽都是32像素的小图片。每个图片都有一个标签（例如“飞机，汽车，鸟等”）。这60,000张图像被划分为50,000张图像的训练集和10,000张图像的测试集。在下面的图片中，您可以看到10个类别中的每个类别的10个随机示例图像：</p>
+<p><img src="/img/17_07_30/004.jpg" alt=""></p>
+<blockquote>
+<p>左图：来自CIFAR-10数据集的示例图像。右图：第一列显示几个测试图像，并且在每个测试图像旁边，我们根据像素差异显示训练集中的前10个最近邻居。</p>
+</blockquote>
+<hr>
+<p>假设现在我们有50,000张训练图像（50,000张图像都有其对应的标签数据），并且我们希望为剩余的10,000张图片打标签。最邻近分类器将接收一个测试图片，与每一张训练图片做对比，然后以其最接近的训练图像的标签作为其预测标签。在上面的右图中，您可以看到10个示例图片的十个用这种方式得到的最相近的结果图片。请注意，在这10个示例中，有三个图片在检索相同的类别，而其他7个示例并非如此。例如，在第八行最接近“马头图片”的训练的图像是一个“红色汽车图片”，也许是由于它们都拥有黑色背景的原因。这种结果，使得这匹马的形象在这种情况下会被误认为是汽车。</p>
+<p>您可能已经注意到，我们并没有详细的说明我们是如何比较这两个尺寸为32 x 32 x 3的图像的细节的。一种最简单的处理方式是对像素点逐个比较，然后求差值绝对值之和。换句话说，给出两个图像，并将其表示为向量$I_1, I_2$，比较他们的一种合理的方式是求<strong>L1距离</strong>:</p>
+<script type="math/tex; mode=display">
+d_1 (I_1, I_2) = \sum\_p \left| I^p_1 - I^p_2 \right|</script><p>下面是将这段程序可视化的过程：</p>
+<p><img src="/img/17_07_30/005.jpeg" alt=""></p>
+<blockquote>
+<p>一个使用L1距离来比较图片像素差异的示例（在这里例子中只有一个颜色通道）。将两个图像元素相减，然后将所有差值相加到一个数字上。如果两个图像相同，则结果将为零。但如果图像非常不同，结果会很大。</p>
+</blockquote>
+<hr>
+<p>我们来看看我们如何在代码中实现分类器。首先，我们将CIFAR-10数据作为4个阵列加载到内存中：用于训练的数据/标签集合，以及用于测试的数据/标签集合。在下面的代码中，<code>Xtr</code>(尺寸是50,000 x 32 x 32 x 3)包含全部的用于训练的图像数据，与之对应的是一个一维数组<code>Ytr</code>(长度是50,000)持有训练集标签(标签是0到9的类别)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Xtr, Ytr, Xte, Yte &#x3D; load_CIFAR10(&#39;data&#x2F;cifar10&#x2F;&#39;) # a magic function we provide</span><br><span class="line"># flatten out all images to be one-dimensional</span><br><span class="line">Xtr_rows &#x3D; Xtr.reshape(Xtr.shape[0], 32 * 32 * 3) # Xtr_rows becomes 50000 x 3072</span><br><span class="line">Xte_rows &#x3D; Xte.reshape(Xte.shape[0], 32 * 32 * 3) # Xte_rows becomes 10000 x 3072</span><br></pre></td></tr></table></figure>
+<p>现在我们把所有的图像都拉伸成行了，下面的代码演示了我们如何训练并且评估一个分类器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nn &#x3D; NearestNeighbor() # create a Nearest Neighbor classifier class</span><br><span class="line">nn.train(Xtr_rows, Ytr) # train the classifier on the training images and labels</span><br><span class="line">Yte_predict &#x3D; nn.predict(Xte_rows) # predict labels on the test images</span><br><span class="line"># and now print the classification accuracy, which is the average number</span><br><span class="line"># of examples that are correctly predicted (i.e. label matches)</span><br><span class="line">print &#39;accuracy: %f&#39; % ( np.mean(Yte_predict &#x3D;&#x3D; Yte) )</span><br></pre></td></tr></table></figure>
+<p>请注意，作为评估标准，我们通常使用<strong>准确率(accuracy)</strong>来衡量预测结果的准确性。请注意，我们将构建的所有分类器都满足这一个常见的API：它们有一个接受用来学习的数据和标签的<code>train(X,y)</code>函数。在内部，该类应该建立一些标签的模型，以及如何从数据中预测结果的逻辑。同时还需要有一个用来接受新数据并且预测其标签的<code>predict(X)</code>函数。下面是一个L1距离的最邻近分类器的一个简单实现，它满足这套模板：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">class NearestNeighbor(object):</span><br><span class="line">  def __init__(self):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  def train(self, X, y):</span><br><span class="line">    &quot;&quot;&quot; X is N x D where each row is an example. Y is 1-dimension of size N &quot;&quot;&quot;</span><br><span class="line">    # the nearest neighbor classifier simply remembers all the training data</span><br><span class="line">    self.Xtr &#x3D; X</span><br><span class="line">    self.ytr &#x3D; y</span><br><span class="line"></span><br><span class="line">  def predict(self, X):</span><br><span class="line">    &quot;&quot;&quot; X is N x D where each row is an example we wish to predict label for &quot;&quot;&quot;</span><br><span class="line">    num_test &#x3D; X.shape[0]</span><br><span class="line">    # lets make sure that the output type matches the input type</span><br><span class="line">    Ypred &#x3D; np.zeros(num_test, dtype &#x3D; self.ytr.dtype)</span><br><span class="line"></span><br><span class="line">    # loop over all test rows</span><br><span class="line">    for i in xrange(num_test):</span><br><span class="line">      # find the nearest training image to the i&#39;th test image</span><br><span class="line">      # using the L1 distance (sum of absolute value differences)</span><br><span class="line">      distances &#x3D; np.sum(np.abs(self.Xtr - X[i,:]), axis &#x3D; 1)</span><br><span class="line">      min_index &#x3D; np.argmin(distances) # get the index with smallest distance</span><br><span class="line">      Ypred[i] &#x3D; self.ytr[min_index] # predict the label of the nearest example</span><br><span class="line"></span><br><span class="line">    return Ypred</span><br></pre></td></tr></table></figure>
+<p>如果你运行了上面的代码，你将看到这个分类器在CIFAR-10的数据集上只有<strong>38.6%</strong>的准确率。比我们随机选取的结果准确率高一些（随机选取的准确率是10%，因为我们有10个类别），但这个结果与人类真实的识别准确率（估计<a target="_blank" rel="noopener" href="http://karpathy.github.io/2011/04/27/manually-classifying-cifar10/">约为94%</a>）或者最先进的卷积神经网络能达到的95%准确率相比，差的很远。（见CIFAR-10在Kaggle上的<a target="_blank" rel="noopener" href="http://www.kaggle.com/c/cifar-10/leaderboard">排行榜</a>）</p>
+<p><strong>距离的选择.</strong>有许多其他的方式来计算两个向量之间的距离。一种比较常用的方式是计算两个向量之间的欧几里得距离，即<strong>L2距离</strong>。公式如下:</p>
+<script type="math/tex; mode=display">
+d\_2 (I\_1, I\_2) = \sqrt{\sum\_{p} \left( I^p\_1 - I^p\_2 \right)^2}</script><p>换句话说，我们之前需要计算两者的像素差，而这一次，我们需要计算像素差的平方，并且把他们加起来之后开根号。在numpy中，我们可以用一行代码来实现上述的计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distances &#x3D; np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis &#x3D; 1))</span><br></pre></td></tr></table></figure>
+<p>请注意，在上面的计算中，我引入了<code>np.sqrt</code>，但在实际的最邻近应用中，我们可以省略求平方根的操作，因为平方根是一个单调函数。也就是说，它对距离的绝对值的差值起到了缩放的作用，但它依然保留了排序结果，因此对于最邻近问题来说，有没有这一步开根号的运算，其结果都是相同的。如果你在CIFAR-10上运行这个L2最邻近分类器，那么你得到的准确率是<strong>35.4%</strong>（比L1的结果略低一些）。</p>
+<p><strong>L1 vs L2.</strong>这两者之间存在什么样的差异呢？这是一个很有意思的问题。在特定的情况下，当涉及两个向量之间的差异时，L2距离比L1距离更糟一些。L1和L2距离（或等效地，一对图像之间的差异的L1 / L2范数）是<a target="_blank" rel="noopener" href="http://planetmath.org/vectorpnorm">p范数</a>最常用的特殊情况。</p>
+<h3 id="KNN分类器（k-Nearest-Neighbor-Classifier）"><a href="#KNN分类器（k-Nearest-Neighbor-Classifier）" class="headerlink" title="KNN分类器（k - Nearest Neighbor Classifier）"></a>KNN分类器（k - Nearest Neighbor Classifier）</h3><p>您可能已经注意到，当我们想进行预测时，只使用最接近的一个图像的标签是很奇怪的。事实上，通过使用所谓的<strong>KNN分类器</strong>，人们可以做得更好。实际上这个想法很简单：不是在训练集中找到单个最接近的图像，我们将找到最接近的<strong>k</strong>个图像，并让他们对测试图像的标签进行投票。尤其是，当$k=1$的时候，我们KNN分类器实际上就是最邻近分类器。从直觉上来说，较高的<strong>k</strong>值有更平滑的效果，使得分类器更能抵抗离群值：</p>
+<p><img src="/img/17_07_30/006.jpeg" alt=""></p>
+<blockquote>
+<p>上图中，使用二维散点图用三种颜色（红、蓝、绿）来表示三种类别，分别展示了原始数据在最邻近分类器上和在5-NN分类器上的效果。彩色的区域显示在L2距离下生成的<strong>判定边界</strong>。白色区域显示出不能被明确分类的点（即，类别投票至少被分为两类）。请注意，在使用最邻近分类器的情况下，异常值数据点（例如蓝色区域中的绿点）会产生可能不正确的预测的区块，而5-NN分类器在这种情况下会得到相对平滑的效果，这也意味着对测试数据的<strong>泛化</strong>能力更好（未被显示）。还要注意，5-NN图像中的灰色区域是由最邻近的几个邻居颜色不同导致的（例如，有两个是红色的，两个是蓝色的，一个是绿色的）。</p>
+</blockquote>
+<hr>
+<p>在实践中，当我们使用kNN分类器时，应该选择什么样的k值才合适呢？接下来我们来谈谈这个问题。</p>
+<h2 id="验证集，交叉验证，超参数调谐"><a href="#验证集，交叉验证，超参数调谐" class="headerlink" title="验证集，交叉验证，超参数调谐"></a>验证集，交叉验证，超参数调谐</h2><p>kNN分类器需要指定一个k值，但是当k取什么值时效果最好呢？另外，我们还可以选择L1范数、L2范数，等，以及许多我们甚至没有考虑到的选择。这些选择被称为<strong>超参数（Hyperparameter）</strong>，他们在许多机器学习算法的设计过程中都会出现。通常这些值应该被设置为多少，并不是十分显而易见。</p>
+<p>你也许会试图建议我们尝试许多不同的值，然后看看哪些值的效果最好。这的确是一个好办法，这也是我们接下来要做的，但这个过程必须非常仔细地进行。特别要说吗的是，<strong>我们不能使用测试集来调整参数</strong>。当您在设计一款机器学习算法时，您应该将将测试集视为一个非常宝贵的资源，在理想情况下，除非在测试阶段，都不要去触碰它。否则，你调整的参数将会作用域测试集上，这样做非常危险，因为当你开始在真实的数据上使用该模型时，你会发现性能显著降低。在实践过程中，我们称这种现象为<strong>过拟合</strong>测试集。关于这一现象的另一种解释是，如果你在测试集上调整了参数，你实际上是在把测试集当做训练集在使用，因此，你实现的模型的性能对于实际观察到的情况来说都是过于乐观的。但与之相反的，如果我们只是在最后的测试过程中使用一次测试集，那么它仍然是测量分类器<strong>泛化</strong>的一个很好的代理（我们将在以后的课程中看到更多关于泛化的讨论）。</p>
+<blockquote>
+<p>评估测试集在每次训练结束后只运行一次。</p>
+</blockquote>
+<p>幸运的是，有一种不触碰测试集的调整超参数的方法。这个方法就是将我们的训练集分为两部分：其中稍微小一些的那部分训练集，我们称之为<strong>验证集(validation set)</strong>。使用CIFAR-10为例，我们使用49,000的样本作为训练集，然后使用剩下的1,000个样本作为验证集。这个验证集是用来调整超参数的一个假测试集。</p>
+<p>在CIFAR-10中，这个例子看起来可能是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># assume we have Xtr_rows, Ytr, Xte_rows, Yte as before</span><br><span class="line"># recall Xtr_rows is 50,000 x 3072 matrix</span><br><span class="line">Xval_rows &#x3D; Xtr_rows[:1000, :] # take first 1000 for validation</span><br><span class="line">Yval &#x3D; Ytr[:1000]</span><br><span class="line">Xtr_rows &#x3D; Xtr_rows[1000:, :] # keep last 49,000 for train</span><br><span class="line">Ytr &#x3D; Ytr[1000:]</span><br><span class="line"></span><br><span class="line"># find hyperparameters that work best on the validation set</span><br><span class="line">validation_accuracies &#x3D; []</span><br><span class="line">for k in [1, 3, 5, 10, 20, 50, 100]:</span><br><span class="line">  </span><br><span class="line">  # use a particular value of k and evaluation on validation data</span><br><span class="line">  nn &#x3D; NearestNeighbor()</span><br><span class="line">  nn.train(Xtr_rows, Ytr)</span><br><span class="line">  # here we assume a modified NearestNeighbor class that can take a k as input</span><br><span class="line">  Yval_predict &#x3D; nn.predict(Xval_rows, k &#x3D; k)</span><br><span class="line">  acc &#x3D; np.mean(Yval_predict &#x3D;&#x3D; Yval)</span><br><span class="line">  print &#39;accuracy: %f&#39; % (acc,)</span><br><span class="line"></span><br><span class="line">  # keep track of what works on the validation set</span><br><span class="line">  validation_accuracies.append((k, acc))</span><br></pre></td></tr></table></figure>
+<p>在此过程结束之前，我们可以绘制一个图表，来显示哪个k值表现的更好。然后我们使用这个最好的k值，对真正的测试集进行一次评估。</p>
+<blockquote>
+<p>将你的训练集分割为训练集和验证集。使用验证集来调整所有的超参数。最后在测试集上仅运行一次评估操作，并上报结果。</p>
+</blockquote>
+<p><strong>交叉验证.</strong>在你的训练集（同时也包括验证集）可能非常小的情况下，人们有时使用一个更复杂叫做<strong>交叉验证</strong>的技术来调节超参数。作用于我们之前的例子中，取代之前我们选取1000个数据点来作为验证集、剩下的部分用做测试集这种方式，我们通过迭代不同的验证集以及求得他们的平均表现这种方式，来得到一个更好的，噪音更小的k值。举个例子，在5倍交叉验证中，我们将数据分为5等份，使用其中4份来训练，用剩余的1份作为验证。然后我们迭代所有其他份数据来作为验证集，计算每一份作为验证集的最终表现，最终将每次得到的表现求和在求平均值。</p>
+<p><img src="/img/17_07_30/007.png" alt=""></p>
+<blockquote>
+<p>参数k的五倍交叉验证运行示例。对于k的每个值，我们都在4份数据上训练，并且在第5份数据上评估。因此，对于每个k，我们在交叉验证上都会有5个评估得到的准确率（y轴是准确率，每个结果对应一个点）。趋势曲线通过每个k的结果的平均值绘制，错误条表明标准偏差。注意在这里的一个特定场景，交叉验证集建议我们选取的k=7，此时在数据集上的预测效果最好（对应于图中的峰值处）。如果我们使用超过5份的数据，我们也许会看到一个更平滑（低噪音）的曲线。</p>
+</blockquote>
+<hr>
+<p><strong>实践.</strong>在实践中，人们更倾向于避免使用交叉验证，人们更愿意接受单个的验证集分割，因为交叉验证的计算是十分昂贵的。人们倾向使用的分割方式是将训练集分割50%-90%用作训练，剩下的部分用作验证。然而，这取决于多个因素：例如如果超参数数量很大，你也许更倾向于使用一个更大的验证集分割。如果验证集样本的数量很少（可能只有几百个），那么使用交叉验证则更安全一些。正如你所见的，典型的交叉验证可能会是三等分、5等分或者10等分的交叉验证。</p>
+<p><img src="/img/17_07_30/008.jpeg" alt=""></p>
+<blockquote>
+<p>常见的数据分割。给定训练集和测试集。训练集被分割为几等份（例如这里的五等分）。第1-4份数据作为训练集。一份作为验证集（例如这里的黄颜色的第五份），用来调节超参数。交叉验证更进一步的操作是迭代循环这5份数据，分别作为验证集的预测结果。这被称为5倍交叉验证。一旦模型被训练，并且确定了所有的最佳的超参数，最终在测试集（红色）上单词评估干模型。</p>
+</blockquote>
+<hr>
+<h2 id="最近邻分类器的优缺点"><a href="#最近邻分类器的优缺点" class="headerlink" title="最近邻分类器的优缺点"></a>最近邻分类器的优缺点</h2><p>思考最邻近分类器的优缺点是一件值得做的事情。很明显，一个优点是：它的实现很简单，理解起来也很简单。此外，这个分类器不需要训练的时间，因为用于预测结果的数据全部来自于被存储的以及可能被索引的训练数据。但是，我们需要消耗一次测试的时间，因为对测试数据进行分类，我们需要将每个训练样本进行比较。这是一种不好的方式，因为在实践过程中，我们往往很在意测试运行的时间，而不太在意训练所花费的时间。事实上，我们将在稍后的深度神经网络课程中，我们将看到另一个极端：它会在训练样本的过程中花费巨大的开销，但一旦训练结束，在一个新的测试样本上执行分类任务时的开销是非常小的。这种模式在实践中更为理想。</p>
+<p>除此之外，关于最邻近分类器的计算复杂度问题，一直是一个活跃的研究领域，并且有一些可以加速数据集中最邻近数据的查找的<strong>近似最邻近（Approximate Nearest Neighbor(ANN)）</strong>算法和库存在（例如<a target="_blank" rel="noopener" href="http://www.cs.ubc.ca/research/flann/">FLANN</a>）。这些算法允许在检索期间以其空间/时间复杂度来折衷最近相邻检索的正确性，并且通常依赖于涉及构建kdtree或运行k-means算法的预处理/索引阶段。</p>
+<p>在某些场景中，最近邻分类器有时可能是一个很好的选择（特别是如果数据是低维数据），但很少适用于实际的图像分类场景。其中一个问题是图像是高维度对象（即它们通常包含许多像素），并且高维空间的距离是非常不直观的。下面的图像说明了我们上面开发的基于像素的L2相似度与人类感知相似性的区别：</p>
+<p><img src="/img/17_07_30/009.png" alt=""></p>
+<blockquote>
+<p>高维数据（尤其是图像）上基于像素的距离可能非常不直观。基于L2像素距离，原始图像（左）和旁边的三个其他图像都距离它们相同。显然，像素方向的距离并不能与人类感知上的相似性相对应。</p>
+</blockquote>
+<hr>
+<p>这里有更多的可视化数据来说服你，使用像素差异来比较图像是不够的。我们可以使用一种名为t-SNE的可视化技术来拍摄CIFAR-10图像，并将其嵌入到二维空间中，使其（局部）成对距离最好地保留下来。在这种可视化中，根据我们上面开发的L2像素距离，我们将其L2距离相对较小的图像聚集在一起：</p>
+<p><img src="/img/17_07_30/010.jpg" alt=""></p>
+<blockquote>
+<p>使用t-SNE嵌入二维的CIFAR-10图像。该图像附近的图像被认为是基于L2像素距离接近的。注意到背景的强烈影响，而不是语义层次的差异。点击<a target="_blank" rel="noopener" href="http://cs231n.github.io/assets/pixels_embed_cifar10_big.jpg">这里</a>查看这个可视化的更大版本。</p>
+</blockquote>
+<hr>
+<p>特别地，请注意，彼此相邻的图像更多是图像的平均颜色分布或背景的类型相似的图像，而不是其相似的标签类型的图像。例如，可以看到一张狗的图片和一张青蛙的照片像邻，因为两者都是在白色背景上。理想情况下，我们希望所有10个类中的图像形成自己的集群，使得同一类的图像在彼此附近，而不管不相关的特征和变化（如背景）。然而，要获得这个属性，我们将不得不超越像素级别的去考虑问题。</p>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>综上所述：</p>
+<ul>
+<li>我们引入了<strong>图像分类</strong>的问题，其中给出了一组全部标记为单一类别的图像。然后，我们要求为这些类别预测一组新的测试图像，并测量预测的准确性。</li>
+<li>我们引入了一个称为<strong>最近邻分类器</strong>的简单分类<strong>器</strong>。我们看到有与此分类器相关联的多个超参数（如k值或用于比较示例的距离类型），并没有明显的选择方式。</li>
+<li>我们看到设置这些超参数的正确方法是将训练数据分为两个：训练集和假测试集，我们称之为<strong>验证集</strong>。我们尝试不同的超参数值，并保持在验证集上达到最佳性能的值。</li>
+<li>如果缺乏培训数据是一个问题，我们讨论了一个称为<strong>交叉验证</strong>的过程，它可以帮助减少噪声，以估计哪些超参数最有效。</li>
+<li>一旦找到了最佳的超参数，我们修复它们，并对实际测试集执行单个<strong>评估</strong>。</li>
+<li>我们看到最近邻居可以在CIFAR-10上获得约40％的准确性。它实现起来很简单，但要求我们存储整个训练集，并且在测试图像上进行评估是很昂贵的。</li>
+<li>最后，我们看到在原始像素值上使用L1或L2距离是不够的，因为这些距离与图像的背景和颜色分布相比，与其语义内容相比更强烈。</li>
+</ul>
+<p>在接下来的课程中，我们将着手解决这些挑战，最终达成90％精度的解决方案，让我们在完成学习后完全丢弃训练集，并允许我们在不到一毫秒内评估测试图像。</p>
+<h2 id="总结：在实践中应用kNN"><a href="#总结：在实践中应用kNN" class="headerlink" title="总结：在实践中应用kNN"></a>总结：在实践中应用kNN</h2><p>如果您希望在实践中应用kNN（希望不是在图像上），请按如下步骤进行：</p>
+<ul>
+<li>1.预处理数据：规范数据中的特征（例如图像中的一个像素），使其具有零均值和单位方差。我们将在后面的章节中更详细地介绍这一点，并且选择不覆盖本节中的数据规范化，因为图像中的像素通常是均匀的，并且不会展现出广泛不同的分布，从而减轻了数据规范化的需要。</li>
+<li>2.如果您的数据非常高，请考虑使用维度降低技术，如PCA（<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Principal_component_analysis">wiki ref</a>，<a target="_blank" rel="noopener" href="http://cs229.stanford.edu/notes/cs229-notes10.pdf">CS229ref</a>，<a target="_blank" rel="noopener" href="http://www.bigdataexaminer.com/cgi-sys/suspendedpage.cgi">博客引用</a>），甚至使用<a target="_blank" rel="noopener" href="http://scikit-learn.org/stable/modules/random_projection.html">随机投影</a>。</li>
+<li>3.将您的训练数据随机分成训练集/验证集。根据经验，70-90％的数据通常会分配到训练集上。此设置取决于您拥有多少超参数以及您期望他们拥有多少影响力。如果有很多超参数需要估计，那么您应该在验证集更大的一边进行有效的估计。如果您的验证数据集比较小，最好将训练数据拆分为几等分，并执行交叉验证。如果你能负担得起计算机的运算量，那么交叉验证（更多的份数越好，但是更昂贵）总是更安全。</li>
+<li>4.对于k的许多选择（比如越多越好）和不同距离类型（L1和L2都是不错的选择），对验证数集（对于所有份数，如果进行交叉验证）训练和评估kNN分类器。</li>
+<li>5.如果您的kNN分类器运行时间过长，请考虑使用近似最近邻库（<a target="_blank" rel="noopener" href="http://www.cs.ubc.ca/research/flann/">FLANN</a>）来加速检索（以某种精度为代价）。</li>
+<li>6.记下提供最佳效果的超参数。有一个问题是您应该使用最佳超参数的完整训练集，因为如果要将验证数据折叠到训练集中（因为数据的大小会更大），最佳超参数可能会改变。实际上，在最终分类器中不使用验证数据更为清晰，并且在估计超参数时认为它被刻录。评估测试集上的最佳模型。上报在测试集上的准确率，这个结果作为kNN分类器的最终表现。</li>
+</ul>
+<h2 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h2><p>这里有一些（可选）链接，您可能会发现更多有趣的东西：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">关于机器学习的一些有用的事情</a>，其中特别是第6部分是相关的，但这整篇文章都是值得一读的。</li>
+<li><a target="_blank" rel="noopener" href="http://people.csail.mit.edu/torralba/shortCourseRLOC/index.html">认可和学习对象类别</a>，ICCV 2005的短期课程对象分类。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/06/13/%E3%80%90%E7%BF%BB%E8%AF%91%E3%80%91%E8%A7%86%E8%A7%89%E4%BF%A1%E6%81%AF%E8%AE%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +431,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -520,7 +729,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -745,7 +954,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1243,7 +1452,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1410,7 +1619,7 @@ p(y=1|x;\theta)</script><p>你知道的，特征$x$获取了手机的特点以�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1630,7 +1839,7 @@ cost(\theta,(x^{(i)},y^{(i)}))=
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2511,7 +2720,7 @@ Y=\left[
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2855,7 +3064,7 @@ exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))</script><h3 id="何时使用多元高斯�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3110,7 +3319,7 @@ x\_6=\frac{(CPU 负载)^2}{流量消耗}</script><p>其实，解决这类问题�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3385,523 +3594,6 @@ p(x)=p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)</script><p>那么有了这个表
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第八周 (2)降维</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-05-12 07:51:58" itemprop="dateCreated datePublished" datetime="2017-05-12T07:51:58+00:00">2017-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>在这个模块中，我们将介绍<strong>主成分分析（PCA）</strong>，并显示它可以用于数据压缩，加快学习算法，以及可视化的复杂数据集。</p>
-</blockquote>
-<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><h2 id="动机I：数据压缩"><a href="#动机I：数据压缩" class="headerlink" title="动机I：数据压缩"></a>动机I：数据压缩</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/0EJ6A/motivation-i-data-compression">视频地址</a></p>
-<blockquote>
-<p>本节我将开始介绍第二种无监督学习问题，它叫<strong>降维(dimensionality reduction)</strong>。</p>
-<p>我们希望使用降维的一个主要原因是数据压缩。我们会在后几节中看到，数据压缩不仅通过压缩数据使得数据占用更少的计算机内存和硬盘空间，它还能给算法提速。</p>
-</blockquote>
-<p>首先我们来介绍什么是降维。</p>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>举一个例子，假如我们有一个有很多很多很多特征变量的数据集：</p>
-<p><img src="/img/17_05_12/001.png" alt=""></p>
-<p>这里为了方便展示，只画了其中两个。</p>
-<p>假设我们不知道这两个特征量。其中$x_1$是某个物体的长度，以厘米为单位；另一个$x_2$是它以英寸为单位的长度。所以这是一个非常冗余的数据，与其用两个特征变量$x_1$和$x_2$，它们都是测量到的长度，或许我们应该把这个数据降到一维，只用一个长度的数据。</p>
-<p>这个例子可能看起来好像是我生造的，但这个厘米英寸的例子其实还真不是那么无聊。我在工业界看到的情况也是大同小异。</p>
-<blockquote>
-<p>如果你有上百或者上千的特征变量，很容易就会忘记你到底有什么特征变量，而且有时候可能有几个不同的工程师团队。一队工程师可能给你200个特征变量，第二队工程师可能再给你300个特征变量，然后第三队工程师给你500个特征变量。所以你一共有1000个特征变量，这样就很难搞清哪个队给了你什么特征变量。实际上得到这样冗余的特征变量并不难。</p>
-</blockquote>
-<p>所以如果以厘米计的长度被取整到最近的厘米整数，以英寸计的长度被取整到最近的英寸整数。这就是为什么这些样本没有完美地在一条直线上。就是因为取整所造成的误差。</p>
-<p><img src="/img/17_05_12/002.png" alt=""></p>
-<p>这种情况下，如果我们可以把数据降到一维而不是二维，就可以减少冗余。</p>
-<h3 id="降维含义"><a href="#降维含义" class="headerlink" title="降维含义"></a>降维含义</h3><p>让我们再详细讲讲从二维降到一维到底意味着什么。</p>
-<h4 id="二维降到一维"><a href="#二维降到一维" class="headerlink" title="二维降到一维"></a>二维降到一维</h4><p>让我给这些样本涂上不同的颜色涂上不同的颜色：</p>
-<p><img src="/img/17_05_12/003.png" alt=""></p>
-<p>在这个例子中降低维度的意思是：我希望找到一条线，基本所有数据映射到这条线上。这样做之后，我就可以直接测量这条线上每个样本的位置。我想把这个新特征叫做$z_1$。</p>
-<p><img src="/img/17_05_12/004.png" alt=""></p>
-<p>要确定这条线上的位置，我只需要一个数字。这就是说新特征变量$z_1$能够表示这条绿线上每一个点的位置。</p>
-<p>在之前如果想要表示一个样本点，我需要一个二维向量$(x_1,x_2)$，但是现在我可以用一个一维向量$z_1$来表示这个样本点：</p>
-<p><img src="/img/17_05_12/005.png" alt=""></p>
-<p>总结一下，在把所有训练样本映射到一条线上之后，我就能做到只用一个数字来表示每个训练样本的位置。这是一个对原始训练样本的近似。相对于之前需要用两个数字来表示一个样本而言，现在我只需要一个数字就可以表示了。这样就减少了一半的内存需求或者硬盘需求。</p>
-<p>更重要的是，数据压缩还会让我们的学习算法运行地更快。</p>
-<h4 id="三维降到二维"><a href="#三维降到二维" class="headerlink" title="三维降到二维"></a>三维降到二维</h4><p>现在，我展示一个把三维数据降到二维的例子。</p>
-<p><img src="/img/17_05_12/006.png" alt=""></p>
-<blockquote>
-<p>顺便说一下，在更典型的降维例子中，我们可能有1000维的数据，我们可能想降低到100维，但是因为我在这里能可视化的展示数据的维度是有限制的，所以我要用的例子是三维到二维的。</p>
-</blockquote>
-<p>我们有一个图上这样的数据集，我有一个样本$x^{(i)}$的集合，$x^{(i)}$是一个三维实数的点，所以我的样本是三维的：</p>
-<script type="math/tex; mode=display">
-x^{(i)} \in R^3</script><p>实际上，这些样本点，差不多都处于同一平面上。降维在这里的作用，就是把所有的数据，都投影到一个二维的平面内。所以，我们要对所有的数据进行投影，使得它们落在这个平面上：</p>
-<p><img src="/img/17_05_12/007.png" alt=""></p>
-<p>最后为了表示一个点在平面上的位置，我们需要两个数来表示平面上一个点的位置。这两个数可能叫做$z_1$和$z_2$：</p>
-<p><img src="/img/17_05_12/008.png" alt=""></p>
-<p>这也意味着我们现在可以用一个二维向量$z$来表示每一个训练样本了：</p>
-<p><img src="/img/17_05_12/009.png" alt=""></p>
-<script type="math/tex; mode=display">
-z^{(i)} \in R^2</script><hr>
-<p>为了更好的理解降维的过程，现在让我们用3D绘图来重现上面的整个过程：</p>
-<p><img src="/img/17_05_12/010.png" alt=""></p>
-<p>我们走的过程是这样的：左边是原始数据集，中间是投影到2D的数据集，右边是以$z_1$和$z_2$为坐标轴的2D数据集。</p>
-<p>我们来更详细地看一下：</p>
-<p>原始数据集是这样的：</p>
-<p><img src="/img/17_05_12/011.gif" alt=""></p>
-<p>可以看出来，大部分数据差不多可能都落在某个2D平面上，或者说距离某个2D平面不远。</p>
-<p>所以我们可以把它们投影到2D平面上。下面是投影后的效果：</p>
-<p><img src="/img/17_05_12/012.gif" alt=""></p>
-<p>你可以看到所有的数据落在一个平面上，因为我们把所有的东西都投影到一个平面上了。所以我们现在只需要两个数:$z_1$和$z_2$来表示点在平面上的位置即可：</p>
-<p><img src="/img/17_05_12/013.png" alt=""></p>
-<p>这就是把数据从三维降到二维的过程。</p>
-<p>这就是降维以及如何使用它来压缩数据的过程。</p>
-<h2 id="动机II：可视化数据"><a href="#动机II：可视化数据" class="headerlink" title="动机II：可视化数据"></a>动机II：可视化数据</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/t6pYD/motivation-ii-visualization">视频地址</a></p>
-<blockquote>
-<p>在上节中，我们讲到一种通过数据降维来进行数据压缩的方法。在本节我将会讲到第二种数据降维的应用，那就是<strong>可视化数据</strong>。</p>
-<p>对于大多数的机器学习应用，它真的可以帮助我们来开发高效的学习算法，但前提是我们能更好地理解数据。降维就是数据可视化的一种方法。</p>
-</blockquote>
-<p>假如我们已经收集了大量的有关全世界不同国家的统计数据集：</p>
-<p><img src="/img/17_05_12/014.png" alt=""></p>
-<p>第一个特征$x_1$是国家的国内生产总值；第二个特征$x_2$是一个百分比，表示人均占有的GDP；第三个特征$x_3$是人类发展指数；第四个特征$x_4$是预期寿命；…直到$x_{50}$</p>
-<p>在这里我们有大量的国家的数据，对于每个国家有50个特征。我们有这样的众多国家的数据集，为了使得我们能更好地来理解数据，我们需要对数据进行可视化展示。这里我们有50个特征，但绘制一幅50维度的图是异常困难的，因此我们需要对数据进行降维，然后再可视化。</p>
-<p>具体做法如下：</p>
-<p>我们使用特征向量$x^{(i)}$来表示每个国家。$x^{(i)}$有着50个维度。我们需要对这50个特征降维之后，我们可以用另一种方式来代表$x^{(i)}$：使用一个二维的向量$z$来代替之前50维的$x$。</p>
-<p><img src="/img/17_05_12/015.png" alt=""></p>
-<script type="math/tex; mode=display">
-z^{(i)} \in R^2</script><p>我们用$z_1$和$z_2$这两个数来总结50个维度的数据，我们可以使用这两个数来绘制出这些国家的二维图，使用这样的方法尝试去理解二维空间下不同国家在不同特征的差异会变得更容易。</p>
-<p>在降维处理时，我们用$z_1$来表示那些象征着国家整体情况的数据，例如”国家总面积”、”国家总体经济水平”等；用$z_2$来表示象征着人均情况的数据，例如”人均GDP”，”人均幸福感”等。</p>
-<p>降维处理之后，将数据按照这两个维度展示如下：</p>
-<p><img src="/img/17_05_12/016.png" alt=""></p>
-<p>在图中，右侧的点，象征着国家整体经济比较好的国家；上方的点，象征着人均经济比较好、人均幸福感较高、人均寿命较长…的国家。</p>
-<hr>
-<p>那么具体我们要如何去压缩数据达到降维的效果呢？在下一节视频中我们将会开始开发一种特别的算法。简称<strong>PCA</strong>或者<strong>主成分分析 </strong>。这个算法允许我们进行数据可视化，同时可以进行早先我们提到的一些有关数据压缩方面的应用。</p>
-<h1 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h1><h2 id="主成分分析（PCA）相关概念"><a href="#主成分分析（PCA）相关概念" class="headerlink" title="主成分分析（PCA）相关概念"></a>主成分分析（PCA）相关概念</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/GBFTt/principal-component-analysis-problem-formulation">视频地址</a></p>
-<blockquote>
-<p>对于降维问题来说，目前最流行最常用的算法是<strong>主成分分析法(Principal Componet Analysis, PCA）</strong>。</p>
-<p>在本节中，我想首先开始讨论PCA问题的公式描述，也就是说，我们用公式准确地精确地描述：我们想让PCA来做什么。</p>
-</blockquote>
-<h3 id="PCA的执行过程2D-gt-1D"><a href="#PCA的执行过程2D-gt-1D" class="headerlink" title="PCA的执行过程2D -&gt; 1D"></a>PCA的执行过程2D -&gt; 1D</h3><p>假设我们有这样的一个数据集:</p>
-<p><img src="/img/17_05_12/017.png" alt=""></p>
-<p>这个数据集含有二维实数空间内的样本X。</p>
-<p>假设我想对数据进行降维，从二维降到一维。也就是说我想找到一条直线将数据投影到这条直线上，那怎么找到一条好的直线来投影这些数据呢？ </p>
-<p>这样的一条直线也许是个不错的选择：</p>
-<p><img src="/img/17_05_12/018.png" alt=""></p>
-<p>你认为这是一个不错的选择的原因是：如果你观察投影到直线上的点的位置，我们发现每个点到它们对应的投影到直线上的点之间的距离非常小。（也就是说这些蓝色的线段非常的短）：</p>
-<p><img src="/img/17_05_12/019.png" alt=""></p>
-<p>所以，正式的说<strong>PCA</strong>所做的就是<strong>寻找一个低维的面(在这个例子中，其实是一条直线）数据投射在上面，使得这些蓝色小线段的平方和达到最小值</strong>。这些蓝色线段的长度被叫做<strong>投影误差</strong>。</p>
-<p>所以<strong>PCA</strong>所做的就是寻找一个投影平面，对数据进行投影，使得这个能够最小化。</p>
-<p>另外在应用<strong>PCA</strong>之前，通常的做法是先进行<strong>均值归一化</strong>和<strong>特征规范化</strong>，使得特征$x_1$和$x_2$均值为0，数值在可比较的范围之内。</p>
-<blockquote>
-<p>在这个例子里，我已经这么做了。但是在后面我还将回过来讨论更多有关PCA背景下的特征规范化和均值归一化问题。</p>
-</blockquote>
-<hr>
-<p>我们正式一点地写出<strong>PCA</strong>的目标是这样的：</p>
-<p>如果我们将数据从二维降到一维的话，我们需要试着寻找一个向量$u^{(i)}$，该向量属于$n$维空间中的向量（在这个例子中是二维的），我们将寻找一个对数据进行投影的方向，使得<strong>投影误差能够最小</strong>（在这个例子里，我们把PCA寻找到这个向量记做$u^{(1)}$）：</p>
-<p><img src="/img/17_05_12/020.png" alt=""></p>
-<p>所以当我把数据投影到这条向量所在的直线上时，最后我将得到非常小的重建误差。</p>
-<blockquote>
-<p>另外需要说明的时无论PCA给出的是这个$u^{(1)}$是正还是负都没关系。因为无论给的是正的还是负的$u^{(1)}$它对应的直线都是同一条，也就是我将投影的方向。</p>
-</blockquote>
-<p>这就是将二维数据降到一维的例子。</p>
-<p>更一般的情况是我们有$n$维的数据想降到$k$维。在这种情况下我们不仅仅只寻找单个的向量（$u^{(1)}$）来对数据进行投影，我们要找到$k$个方向($u^{(k)}$)来对数据进行投影，从而最小化投影误差。</p>
-<h3 id="PCA的执行过程3D-gt-2D"><a href="#PCA的执行过程3D-gt-2D" class="headerlink" title="PCA的执行过程3D -&gt; 2D"></a>PCA的执行过程3D -&gt; 2D</h3><p>下面的例子中，假设我有一些三维数据点：</p>
-<p><img src="/img/17_05_12/021.png" alt=""></p>
-<p>我想要做的是是寻找两个向量$u^{(1)}$和$u^{(2)}$：</p>
-<p><img src="/img/17_05_12/022.png" alt=""></p>
-<p>这两个向量一起定义了一个二维平面，我将把数据投影到这个二维平面上。</p>
-<blockquote>
-<p>如果你精通线性代数，那么这里更正式的定义是：我们将寻找一组向量$u^{(1)}$，$u^{(2)}$，…，$u^{(k)}$，我们将要做的是将数据投影到这$k$个向量展开的线性子空间上。</p>
-<p>但是如果你不熟悉线性代数，那就想成是寻找$k$个方向（而不是之寻找一个方向）对数据进行投影。</p>
-</blockquote>
-<p>所以对于3D降维到2D的这个例子来说，寻找一个$k$维的平面，就是在寻找二维的平面。</p>
-<hr>
-<p>因此<strong>PCA</strong>做的就是：<strong>寻找一组$k$维向量(一条直线、或者平面、或者诸如此类等等)对数据进行投影，来最小化正交投影误差。</strong></p>
-<h3 id="PCA和线性回归的关系"><a href="#PCA和线性回归的关系" class="headerlink" title="PCA和线性回归的关系"></a>PCA和线性回归的关系</h3><p>最后一个我有时会被问到的问题是：<strong>PCA和线性回归有怎么样的关系？</strong></p>
-<p>因为当我解释<strong>PCA</strong>的时候，我有时候会画出这样看上去有点像线性回归的图：</p>
-<p><img src="/img/17_05_12/023.png" alt=""></p>
-<p>但是，事实上<strong>PCA不是线性回归</strong>。尽管看上去有一些相似，但是它们确实是两种不同的算法。</p>
-<h4 id="不同点-之一"><a href="#不同点-之一" class="headerlink" title="不同点 之一"></a>不同点 之一</h4><p>如果我们做线性回归，我们做的是在给定某个输入特征$x$的情况下预测某个变量$y$的数值。因此对于线性回归，我们想做的是拟合一条直线，来最小化点和直线之间的平方误差：</p>
-<p><img src="/img/17_05_12/024.png" alt=""></p>
-<p>所以我们要最小化的是，上图中蓝线幅值的平方。注意我画的这些蓝色的垂直线，这是垂直距离。它是某个点与通过假设的得到的其预测值之间的距离。</p>
-<p>与此想反，PCA要做的是最小化这些样本点与直线的最短距离(直角距离)：</p>
-<p><img src="/img/17_05_12/025.png" alt=""></p>
-<p>这是一种非常不同的效果。</p>
-<h4 id="不同点-之二"><a href="#不同点-之二" class="headerlink" title="不同点 之二"></a>不同点 之二</h4><p>更更更一般的是，当你做线性回归的时候，有一个特别的变量$y$作为我们即将预测的值，线性回归所要做的就是用$x$的所有的值来预测$y$。然而在PCA中，没有这么一个特殊的变量$y$是我们要预测的。我们所拥有的是特征$x_1$,$x_2$,…,$x_n$，所有的这些特征都是被同样地对待。</p>
-<p>在上面那个从3维降到2维的例子中，原先的3个特征$x_1$,$x_2$,$x_3$都是被同样地对待的，没有特殊的变量$y$需要被预测。</p>
-<hr>
-<p>因此，PCA不是线性回归。尽管有一定程度的相似性，使得它们看上去是有关联的，但它们实际上是非常不同的算法。</p>
-<p>因此，希望你们能理解PCA是做什么的：它是寻找到一个低维的平面，对数据进行投影，以便最小化投影误差平方的（最小化每个点与投影后的对应点之间的距离的平方值）。</p>
-<h2 id="PCA算法-实现过程"><a href="#PCA算法-实现过程" class="headerlink" title="PCA算法 实现过程"></a>PCA算法 实现过程</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/GBFTt/principal-component-analysis-problem-formulation">视频地址</a></p>
-<blockquote>
-<p>本节，将介绍<strong>PCA</strong>算法的具体细节，学完本节后，你就应该知道<strong>PCA</strong>的实现过程，并且应用PCA来给你的数据降维了。</p>
-</blockquote>
-<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>在使用PCA之前，我们通常会有一个数据预处理的过程。</p>
-<p>拿到某组有m个无标签样本的训练集，一般先进行<strong>均值归一化(mean normalization)</strong>。这一步很重要。然后还可以进行<strong>特征缩放(feature scaling)</strong>，这根据你的数据而定。</p>
-<blockquote>
-<p>这跟我们之前在<strong>监督学习</strong>中提到的<strong>均值归一</strong>和<strong>特征缩放</strong>是一样的。</p>
-</blockquote>
-<h4 id="数据预处理第一步：均值归一化-mean-normalization"><a href="#数据预处理第一步：均值归一化-mean-normalization" class="headerlink" title="数据预处理第一步：均值归一化(mean normalization)"></a>数据预处理第一步：均值归一化(mean normalization)</h4><p>对于<strong>均值归一</strong>，我们首先应该计算出每个特征的均值$μ$，然后我们用$x-μ$来替换掉$x$。这样就使得所有特征的均值为0。</p>
-<p><strong>举例说明：</strong></p>
-<p>比如说，如果$x_1$表示房子的面积，$x_2$表示房屋的卧室数量，然后我们可以把每个特征进行缩放，使其处于同一可比的范围内。</p>
-<p>同样地，跟之前的监督学习类似，我们可以首先计算出每个特征的均值：</p>
-<script type="math/tex; mode=display">
-μ\_j=\frac{1}{m}\sum\_{i=1}^{m}x\_j^{(i)}</script><p>然后每个样本值对应的特征减去其对应的均值：</p>
-<script type="math/tex; mode=display">
-x\_j^{(i)} ← x\_j^{(i)}-μ\_j</script><p>将所有的特征替换为这种形式的结果。这样就保证了所有特征的均值为0。</p>
-<h4 id="数据预处理第二步：特征缩放-feature-scaling"><a href="#数据预处理第二步：特征缩放-feature-scaling" class="headerlink" title="数据预处理第二步：特征缩放(feature scaling)"></a>数据预处理第二步：特征缩放(feature scaling)</h4><p>然后，由于不同特征的取值范围都很不一样，我们还需要进行<strong>特征缩放</strong>。</p>
-<p>我们需要将每个特征的取值范围都划定在同一范围内，因此对于均值化处理之后的特征值$x_j^{(i)}-μ_j$，我们还需要做进一步处理：</p>
-<script type="math/tex; mode=display">
-x\_j^{(i)} ← \frac{x\_j^{(i)}-μ\_j}{s\_j}</script><p>这里$s_j$表示特征$j$度量范围，即该特征的最大值减去最小值。</p>
-<h3 id="PCA算法"><a href="#PCA算法" class="headerlink" title="PCA算法"></a>PCA算法</h3><p>接下来就正式进入PCA的算法部分。</p>
-<p>在之前的视频中，我们已经知道了PCA的原理。PCA是在试图找到一个低维的子空间，然后把原数据投影到子空间上，并且最小化平方投影误差的值（投影误差的平方和，即下图中蓝色线段长度的平方和）：</p>
-<p><img src="/img/17_05_12/026.png" alt=""></p>
-<p>那么应该怎样来计算这个子空间呢? 实际上这个问题有完整的数学证明来解释如何找到这样的子空间，不过这个数学证明过程是非常复杂的，同时也超出了本课程的范围。但如果你推导一遍这个数学证明过程，你就会发现要找到$u^{(1)}$的值，也不是一件很难的事。但在这里，我不会给出证明，我只是简单描述一下实现PCA所需要进行的步骤。</p>
-<p>假如说我们想要把数据从$n$维降低到$k$维，我们首先要做的是计算出下面这个协方差矩阵(通常用$∑$来表示)：</p>
-<script type="math/tex; mode=display">
-∑=\frac{1}{m}\sum\_{i=1}^n(x^{(i)})(x^{(i)})^T</script><blockquote>
-<p>很不幸的是，这个希腊符号$∑$和求和符号重复了。希望你对这里不要产生混淆。</p>
-</blockquote>
-<p>计算出这个协方差矩阵后，假如我们把它存为Octave中的一个名为<code>Sigma</code>的变量，我们需要做的是计算出<code>Sigma</code>矩阵的<strong>特征向量(eigenvectors)</strong>。</p>
-<p>在Octave中，你可以使用如下命令来实现这一功能：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V] &#x3D; svd(Sigma); </span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>顺便说一下，<code>svd</code>表示<strong>奇异值分解(singular value decomposition)</strong>，这是某种更高级的奇异值分解，这是比较高级的线性代数的内容。你不必掌握这些，但实际上<code>Sigma</code>是一个协方差矩阵。有很多种方法来计算它的特征向量。</p>
-<p>如果你线性代数学得很好，或者你之前听说过特征向量的话，那也许知道在Octave中还有另一个<code>eig</code>命令，可以用来计算特征向量。实际上<code>svd</code>命令和<code>eig</code>命令将得到相同的结果。但<code>svd</code>其实要更稳定一些，所以我一般选择用<code>svd</code>，不过我也有一些朋友喜欢用<code>eig</code>函数。</p>
-<p>在这里对协方差矩阵<code>Sigma</code>使用<code>eig</code>和<code>svd</code>时，你会得到同样的答案。这是因为协方差均值总满足一个数学性质，称为<strong>对称正定(symmetric positive definite)</strong>，其实你不必细究这个具体是什么意思，只要知道这种情况下，使用<code>eig</code>和<code>svd</code>结果是一样的就可以了。</p>
-</blockquote>
-<p>好了，这就是你需要了解的一点线性代数知识，如果有任何地方不清楚的话不必在意。你只需要知道上面这行Octave代码就行了。</p>
-<p>如果你用除了Octave或者MATLAB之外的其他编程环境，你要做的是找到某个可以计算svd，即奇异值分解的函数库文件。在主流的编程语言中，应该有不少这样的库文件。我们可以用它们来计算出协方差矩阵的$U$ $S$ $V$矩阵。</p>
-<hr>
-<p>我再提几个细节问题。</p>
-<p>这个协方差矩阵<code>Sigma</code>应该是一个$n×n$的矩阵，通过定义可以发现这是一个$n×1$的向量，和它自身的转置（一个$1×n$的向量）相乘得到的结果，这个结果自然是一个$n×n$的矩阵。</p>
-<p>然后把这n个$n×n$的矩阵加起来，当然还是$n×n$矩阵。</p>
-<p>然后svd将输出三个矩阵，分别是$U$ $S$ $V$。你真正需要的是$U$矩阵。</p>
-<p>$U$矩阵也是一个$n×n$矩阵：</p>
-<p><img src="/img/17_05_12/027.png" alt=""></p>
-<p>实际上$U$矩阵的列元素就是我们需要的$u^{(1)}$,$u^{(1)}$等等。</p>
-<p>如果我们想将数据的维度从$n$降低到$k$的话，我们只需要提取前$k$列向量。这样我们就得到了$u^{(1)}$到$u^{(k)}$，也就是我们用来投影数据的$k$个方向。</p>
-<p>我们取出$U$矩阵的前$k$列得到一个新的，由$u^{(1)}$到$u^{(k)}$组成的矩阵$U_{reduce}$：</p>
-<script type="math/tex; mode=display">
-\begin{equation}
-U\_{reduce}=\left[
-\begin{matrix}
-|&|&|&...&|\\\\
-|&|&|&...&|\\\\
-u^{(1)}&u^{(2)}&u^{(3)}&...&u^{(k)}\\\
-|&|&|&...&|\\\\
-|&|&|&...&|\\\\
-\end{matrix}
-\right]
-\end{equation}</script><p>这是一个$n × k$维的矩阵。</p>
-<p>然后我们用这个$U_{reduce}$来对我的数据进行<strong>降维</strong>。我们定义：</p>
-<script type="math/tex; mode=display">
-\begin{equation}
-z=\left[
-\begin{matrix}
-|&|&|&...&|\\\\
-|&|&|&...&|\\\\
-u^{(1)}&u^{(2)}&u^{(3)}&...&u^{(k)}\\\
-|&|&|&...&|\\\\
-|&|&|&...&|\\\\
-\end{matrix}
-\right]
-^{T}x
-\\\\
-=
-\left[
-\begin{matrix}
--&-&u^{(1)}&...&-\\\\
--&-&u^{(2)}&...&-\\\\
--&-&u^{(3)}&...&-\\\
-.&.&.&...&.\\\\
--&-&u^{(k)}&...&-\\\\
-\end{matrix}
-\right]
-x
-\end{equation}</script><script type="math/tex; mode=display">
-z \in R^k</script><p>其中$\left[<br>\begin{matrix}<br>-&amp;-&amp;u^{(1)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(2)}&amp;…&amp;-\\<br>-&amp;-&amp;u^{(3)}&amp;…&amp;-\\<br>.&amp;.&amp;.&amp;…&amp;.\\<br>-&amp;-&amp;u^{(k)}&amp;…&amp;-\\<br>\end{matrix}<br>\right]$是$k×n$的矩阵，$x$是$n×1$的矩阵，因此$z$是$k×1$的矩阵。</p>
-<p>这里的$x$可以是训练集中的样本，也可以是交叉验证集中的样本，也可以是测试集样本。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总结一下，这就是PCA的全过程：</p>
-<ul>
-<li><p>首先进行均值归一化</p>
-<ul>
-<li>保证所有的特征量都是均值为0的。</li>
-</ul>
-</li>
-<li><p>然后可以选择进行特征缩放</p>
-<ul>
-<li>如果不同特征量的范围跨度很大的话，你确实需要进行特征缩放这一步。</li>
-</ul>
-</li>
-<li><p>在以上的预处理之后，我们计算出这个协方差<code>Sigma</code>矩阵：</p>
-</li>
-</ul>
-<script type="math/tex; mode=display">
-Sigma = \frac{1}{m}\sum\_{i=1}^m(x^{(i)})(x^{(i)})^T</script><ul>
-<li>然后我们可以应用<code>svd</code>函数来计算出<code>U S V</code>矩阵:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V] &#x3D; svd(Sigma);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>然后，我们取出$U$矩阵的前$k$列元素组成新的$U_{reduce}$矩阵：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ureduce &#x3D; U(:,1:k);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>最后这个式子给出了我们从原来的特征$x$变成降维后的$z$的过程:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z &#x3D; Ureduce&#96;*x;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>另外，跟<strong>k均值算法</strong>类似，如果你使用<strong>PCA</strong>的话，你的$x$应该是$n$维实数。所以没有$x_0 = 1$这一项。</p>
-<p>有一件事儿我没做：$u^{(1)},u^{(2)}…u^{(k)}$通过将数据投影到$k$维的子平面上确实使得投影误差的平方和为最小值，但是我并没有证明这一点，因为这已经超出了这门课的范围。</p>
-<p>幸运的是PCA算法能够用不多的几行代码就能实现它。</p>
-</blockquote>
-<h1 id="应用PCA"><a href="#应用PCA" class="headerlink" title="应用PCA"></a>应用PCA</h1><h2 id="对压缩数据的还原"><a href="#对压缩数据的还原" class="headerlink" title="对压缩数据的还原"></a>对压缩数据的还原</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/X8JoQ/reconstruction-from-compressed-representation">视频地址</a></p>
-<blockquote>
-<p>在前面的视频中我们介绍了<strong>PCA (主成分分析)</strong>作为压缩数据的算法，你会发现它能将高达一千维度的数据压缩到只有一百个维度；或者将三维数据压缩到两个维度的情况。</p>
-<p>如果有一个这样的压缩算法，那么也应该有一种方法可以从压缩过的数据近似地回到原始高维度的数据。</p>
-<p>假设有一个已经被压缩过的$z^{(i)}$它有100个维度，怎样使它回到其最初的表示$x^{(i)}$也就是压缩前的1000维的数据呢？ </p>
-<p>在本节，我将会告诉你如何做到。</p>
-</blockquote>
-<p>在PCA算法中，我们有下面这些样本：</p>
-<p><img src="/img/17_05_12/028.png" alt=""></p>
-<p>我们让这些样本投影在一维平面$z_1$上，并且明确地指定其位置：</p>
-<p><img src="/img/17_05_12/029.png" alt=""></p>
-<p>那么给出一个一维实数点$z$我们能否，让$z$重新变成原来的二维实数点$x$呢？</p>
-<p>即做到：</p>
-<script type="math/tex; mode=display">
-z \in R → x \in R^2</script><hr>
-<p>我们知道:</p>
-<script type="math/tex; mode=display">
-z = U^T\_{reduce}x</script><p>如果想得到相反的情形，方程应这样变化:</p>
-<script type="math/tex; mode=display">
-x\_{approx} = U\_{reduce}z</script><p>为了检查维度，在这里$U_{reduce}$是一个$n×k$矩阵，$z$就是一个$k×1$维向量。将它们相乘得到的就是$n×1$维。</p>
-<p>所以$x_{approx}$是一个$n$维向量。</p>
-<p>同时根据PCA的意图，投影的平方误差不能很大。也就是说$x_{approx}$将会与最开始用来导出$z$的原始$x$很接近。用图表示出来就是这样：</p>
-<p><img src="/img/17_05_12/030.png" alt=""></p>
-<p>这已经与原始数据非常近似了。</p>
-<p>这就是用低维度的特征数据$z$还原到未被压缩的特征数据的过程。我们找到一个与原始数据$x$近似的$x_{approx}$。我们也称这一过程为<strong>原始数据的重构(reconstruction)</strong>。</p>
-<h2 id="选择主成分的数量k"><a href="#选择主成分的数量k" class="headerlink" title="选择主成分的数量k"></a>选择主成分的数量k</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/S1bq1/choosing-the-number-of-principal-components">视频地址</a></p>
-<blockquote>
-<p>在PCA算法中，我们把n维特征变量降维到k维特征变量。这个数字k是PCA算法的一个参数。这个数字k也被称作<strong>主成分的数量</strong>。在本节中我会给你们一些参考，告诉你们人们是怎样思考如何选择PCA的参数k的。</p>
-</blockquote>
-<h3 id="算法原理：最小化平均平方映射误差"><a href="#算法原理：最小化平均平方映射误差" class="headerlink" title="算法原理：最小化平均平方映射误差"></a>算法原理：最小化平均平方映射误差</h3><p>为了选择参数k（也就是要选择<strong>主成分的数量</strong>），这里有几个有用的概念：</p>
-<p>PCA所做的是尽量最小化<strong>平均平方映射误差 (Average Squared Projection Error) </strong>。</p>
-<p>因此PCA就是要将下面这个量最小化：</p>
-<script type="math/tex; mode=display">
-\frac{1}{m}\sum\_{i=1}^m||x^{i}-x\_{approx}^{(i)}||^2</script><p>即最小化$x$和其在低维表面上的映射点之间的距离的平方。这就是平均平方映射误差。</p>
-<p>同时我们还要定义一下<strong>数据的总变差(Total Variation)</strong>：</p>
-<script type="math/tex; mode=display">
-\frac{1}{m}\sum\_{1=m}^m||x^{(i)}||^2</script><p>数据的总变差 (Total Variation) 是这些样本的长度的平方的均值。它的意思是 “平均来看，我的训练样本距离零向量（原点）多远？”。</p>
-<p>当我们去选择k值的时候，我们通过平均平方映射误差除以数据的总变差来表示数据的变化有多大。我们想要这个比值能够小于1%：</p>
-<script type="math/tex; mode=display">
-\frac{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
-}{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
-}
-\le0.01</script><p>大部分人在考虑，选择k的方法时，不是直接选择k值，而是这里的数字应该设置为多少：</p>
-<p><img src="/img/17_05_12/031.png" alt=""></p>
-<p>它应该是0.01还是其它的数？如果选择了0.01，那么用PCA的语言说就是保留了99%的差异性。</p>
-<p>数字0.01是人们经常用的一个值，另一个常用的值是0.05。如果选择了0.05，就意味着95%的差异性被保留了。从95到99是人们最为常用的取值范围。</p>
-<p>你可能会惊讶的发现，对于许多数据集，即使保留了99%的差异性，可以大幅地降低数据的维度。因为大部分现实中的数据，许多特征变量都是高度相关的。所以实际上大量压缩数据是可能的，而且仍然会保留99%或95%的差异性。</p>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>那么你该如何实现它呢？</p>
-<h4 id="原始的算法"><a href="#原始的算法" class="headerlink" title="原始的算法"></a>原始的算法</h4><p>有一种方式是从1开始，依次递增k的值，尝试检查差异性是否达到预设值。</p>
-<p>例如：</p>
-<ul>
-<li>尝试$k=1$时的PCA。</li>
-<li>计算出$U_{reduce}，z^{(1)}，z^{(2)}，…，z^{(m)}，x^{(1)}_{approx}，…，x^{(m)}_{approx}$</li>
-<li>检查是否满足：</li>
-</ul>
-<script type="math/tex; mode=display">
-\frac{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
-}{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
-}
-\le0.01</script><p>如果满足条件，我们就用$k=1$；但如果不满足，那么我们接下来尝试$k=2$，然后我们要重新走一遍这整个过程。</p>
-<p>以此类推一直试到上面不等式成立为止。</p>
-<h4 id="一种更快的算法"><a href="#一种更快的算法" class="headerlink" title="一种更快的算法"></a>一种更快的算法</h4><p>可以想象，上面这种方式非常低效。每次尝试使用新的$k$值带入计算时，整个计算过程都需要重新执行一遍，还好我没有一种更快捷方便的计算方式。</p>
-<p>当你调用<code>svd</code>来计算PCA时，你会得到三个矩阵<code>[U,S,V]</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V]&#x3D;svd(Sigma)</span><br></pre></td></tr></table></figure>
-<p>除了之前提到的<code>U</code>矩阵之外，当你对协方差的矩阵<code>Sigma</code>调用<code>svd</code>时，我没还会得到中间的这个<code>S</code>矩阵。<code>S</code>矩阵是一个$n×n$的对角矩阵，它只有在对角线上的元素不为0，其余的元素都是0。并且显而易见，它是一个方阵：</p>
-<script type="math/tex; mode=display">
-\begin{equation}
-S=\left[
-\begin{matrix}
-s\_{11}&0&0&...&0\\\\
-0&s\_{22}&0&...&0\\\\
-0&0&s\_{33}&...&0\\\
-┋&┋&┋&...&┋\\\\
-0&0&0&...&s\_{nn}\\\\
-\end{matrix}
-\right]
-\end{equation}</script><p>可以证明的是（我不会在此证明）实际上对于一个给定的k值，可以通过这个$S$矩阵方便的计算出差异性那一项的值：</p>
-<script type="math/tex; mode=display">
-\frac{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
-}{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
-}
-=
-1-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}</script><hr>
-<p>例如，假设差异性要满足小于$0.01$，那么可以得出：</p>
-<script type="math/tex; mode=display">
-\frac{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}-x\_{approx}^{(i)}||^2
-}{
-\frac{1}{m}\sum\_{i=1}^m||x^{(i)}||^2
-}
-=
-1-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
-\le0.01</script><p>即：</p>
-<script type="math/tex; mode=display">
-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
-\ge0.99</script><p>那么你可以从1开始，慢慢增大$k$的值，来计算上面这个不等式，直到满足为止即可（得到满足上面不等式的最小$k$值）。</p>
-<hr>
-<p>通过这种方式，你只需要<strong>调用一次<code>svd</code>函数</strong>，通过<code>svd</code>给出的<code>S</code>矩阵你就可以通过依次增加$k$值的方式来求解了。这样以来就大幅的提升了计算效率。</p>
-<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>总结一下，使用PCA算法时寻找合适$k$值的方法：</p>
-<ul>
-<li>首先对协方差矩阵<code>Sigma</code>调用一次<code>svd</code>：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[U,S,V] &#x3D; svd(Sigma)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>然后使用下面的不等式求得满足条件的最小$k$值：</li>
-</ul>
-<script type="math/tex; mode=display">
-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}
-\ge0.99</script><hr>
-<p>顺便说一下，即使你想要手动挑选$k$值，如果你想要向别人解释你实现的PCA的性能具体如何，那么一个好方法就是算出这个值：</p>
-<script type="math/tex; mode=display">
-\frac{\sum\_{i=1}^k S\_{ii}}{\sum\_{i=1}^n S\_{ii}}</script><p>它会告诉你百分之多少的差异性被保留了下来。</p>
-<p>如果你把这个数值展现出来，那么熟悉PCA的人们就可以通过它来更好地理解你用来代表原始数据的压缩后的数据近似得有多好。因为有99%的差异性被保留了。</p>
-<p>这就是一个<strong>平方投影误差的测量指标</strong>。它可以带给你对于数据压缩后是否与原始数据相似带来一种很好的直观感受。</p>
-<h2 id="应用PCA的建议"><a href="#应用PCA的建议" class="headerlink" title="应用PCA的建议"></a>应用PCA的建议</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/RBqQl/advice-for-applying-pca">视频地址</a></p>
-<blockquote>
-<p>在之前的课程中，我已经提到过<strong>PCA</strong>有时可以用来提高机器学习算法的速度。在本节，我将讲解如何在实际操作中来实现。同时列举一些例子来说明PCA在具体应用过程中的使用建议。</p>
-</blockquote>
-<h3 id="PCA应用场景总结"><a href="#PCA应用场景总结" class="headerlink" title="PCA应用场景总结"></a>PCA应用场景总结</h3><p>迄今为止我们讨论过的有关PCA的应用中有如下应用场景：</p>
-<ul>
-<li>数据压缩<ul>
-<li>减少内存或者磁盘空间的使用</li>
-<li>提升学习算法的效率（k值的选择是关键）</li>
-</ul>
-</li>
-<li>数据可视化<ul>
-<li>将数据降维到二/三维度进行可视化展示</li>
-</ul>
-</li>
-</ul>
-<h3 id="通过PCA来提高学习算法的速度"><a href="#通过PCA来提高学习算法的速度" class="headerlink" title="通过PCA来提高学习算法的速度"></a>通过PCA来提高学习算法的速度</h3><p>举例说明，假如你正在用机器学习来处理图片数据。假设每张输入的图片尺寸是$100×100$的，那么对于每张图片来说，都有10000个像素点。假设样本$x^{(i)}$是包含了10000像素强度值的特征向量，即：</p>
-<script type="math/tex; mode=display">
-x^{(i)}\in R</script><p>那么对于我们的样本数据集来说：</p>
-<script type="math/tex; mode=display">
-(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})</script><p>每个样本中，对应的$x^{(i)}$都是10000维的特征向量。</p>
-<p>可想而知，这么高维度的数据带入到逻辑回归、神经网络、支持向量机或者任何别的算法中，学习算法运行的都会很慢。</p>
-<p>幸运的是，通过使用PCA，我们能够<strong>降低数据的维数，从而使得算法能够更加高效地运行</strong>。这就是PCA提高算法运算效率的原理。</p>
-<h4 id="降维步骤"><a href="#降维步骤" class="headerlink" title="降维步骤"></a>降维步骤</h4><p>首先我们需要检查带标签的训练数据集，并提取出输入数据。我们只需要提取出$x$并暂时把$y$放在一边。这一步我们会得到一组无标签的训练集：</p>
-<script type="math/tex; mode=display">
-x^{(1)},x^{(2)},...,x^{(m)}\in R^{10000}</script><p>从$x^{(1)}$到$x^{(m)}$，每个样本都是10000维的数据。然后我们应用PCA降维，我们会得到一个降维后的1000维的数据集：</p>
-<script type="math/tex; mode=display">
-z^{(1)},z^{(2)},...,z^{(m)}\in R^{1000}</script><p>这样我们就得到了一个新的训练集：</p>
-<script type="math/tex; mode=display">
-(z^{(1)},y^{(1)}),(z^{(2)},y^{(2)}),...,(z^{(m)},y^{(m)})</script><p>现在，我可以将这个已经降维的数据集输入到学习算法中，来得出假设函数，并把降维后的数据作为输入带入，做出预测。</p>
-<p>以<strong>逻辑回归</strong>为例：</p>
-<p>逻辑回归中，我们得到的假设函数如下：</p>
-<script type="math/tex; mode=display">
-h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作为输入带入，并得出一个预测值。</p>
-<p>最后，如果你有一个新的样本$x$，那么你所要做的是将你的测试样本$x$通过同样的PCA降维之后，你会得到这个样本所对应的$z$。然后将这个$z$值带入到这个假设函数中进行预测。</p>
-<blockquote>
-<p><strong>注意（重要）：</strong></p>
-<p>最后要注意一点，PCA定义了从$x$到$z$的对应关系，这种对应关系只可以通过在训练集上运行PCA定义出来。</p>
-<p>具体来讲，这种PCA所学习出的对应关系，所做的就是计算出一系列的参数。这些参数这就是<strong>特征缩放</strong>和<strong>均值归一化</strong>以及降维矩阵$U_{reduce}$。但是对于降维矩阵$U_{reduce}$中的数据，我们需要使我们的参数唯一地适应<strong>训练集</strong>，而不是适应交叉验证或者测试集。因此我们通过在训练集中找到了降维矩阵$U_{reduce}$，我们就可以将同样的对应关系应用到其他样本中了，比如交叉验证数集样本，或者用在测试数据集中。</p>
-<p>总结一下，当你在运行PCA的时候，只是在训练集那一部分来进行的，而不是在交叉验证的数据集或者测试集上运行。在训练集上运行PCA后，得到了从$x$到$z$的映射，然后你就可以将这个映射应用到交叉验证数据集，和测试数据集中。</p>
-</blockquote>
-<p>通过这个例子中的这种方式，我们讨论了将数据从上万维降到千维。在实际应用场景中，我们经常发现，将数据降维到原有维度的五分之一或者十分之一，就分类的精确度而言，降维后的数据对学习算法几乎没有什么影响。如果我们将降维用在低维数据上，我们的学习算法会运行得更快。</p>
-<h3 id="PCA的错误使用"><a href="#PCA的错误使用" class="headerlink" title="PCA的错误使用"></a>PCA的错误使用</h3><p>有一个值得提醒的频繁被误用的PCA应用场景，那就是使用它来避免过拟合。</p>
-<p>具体原因是将高维度数据降维处理后，相较于原先的数据，会更不容易出现过拟合的现象。例如我们将10000维的数据降到了1000维，那么降维后的1000维数据相较于降维前的10000维数据更不容易产生过拟合。</p>
-<p>因此有人认为PCA是一种避免过拟合的方法，但在这里，我需要强调一下，<strong>为了解决过拟合问题而使用PCA是不适合的！并且我不建议这么做。</strong></p>
-<p>如果你比较担心过拟合问题，那么你应该使用正则化方法，而不是使用PCA来对数据进行降维。</p>
-<blockquote>
-<p><strong>PCA会丢失信息：</strong>如果你仔细想想PCA的工作原理，你会发现它并不需要使用数据的标签，你只需要设定好输入数据$x^{(i)}$，同时使用这个方法来寻找更低维度的数据近似，在这个过程中，PCA实际上已经把某些信息舍弃掉了。</p>
-</blockquote>
-<p>舍弃掉一些数据，并在你对数据标签$y$值毫不知情的情况下对数据进行降维，所以这或许是一个使用PCA方法的可行之路。如果保留99%的方差，即保留绝大部分的方差，那也是舍弃了某些有用的信息。事实证明，当你在保留99%或者95%或者其它百分比的方差时，结果表明只使用正则化对于避免过拟合，会带来比较好的效果。</p>
-<p>同时对于过拟合问题，正则化效果也会比PCA更好，因为当你使用线性回归或者逻辑回归或其他的方法配合正则化时，这个最小化问题实际就变成了y值是什么，才不至于将有用的信息舍弃掉。然而PCA不需要使用到这些标签，它更容易将有价值信息舍弃。</p>
-<p>总之，<strong>使用PCA的目的是加速学习算法，但不应该用它来避免过拟合</strong>。</p>
-<h3 id="两个建议"><a href="#两个建议" class="headerlink" title="两个建议"></a>两个建议</h3><h4 id="真的需要PCA吗？"><a href="#真的需要PCA吗？" class="headerlink" title="真的需要PCA吗？"></a>真的需要PCA吗？</h4><p>有时候人们正在设计机器学习系统，或许会写下像这样的计划：</p>
-<p><strong>设计一个机器学习系统：</strong></p>
-<ul>
-<li>收集训练数据集$｛(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),…,(x^{(m)},y^{(m)})｝$</li>
-<li>运行PCA将数据$x^{(i)}$降维到$z^{(i)}$</li>
-<li>对降维后的数据训练逻辑回归算法$｛(z^{(1)},y^{(1)}),(z^{(2)},y^{(2)}),…,(z^{(m)},y^{(m)})｝$</li>
-<li>在测试集上测试结果：将$x_{test}^{(i)}$映射到$z_{test}^{(i)}$。对映射后的数据集$｛(z_{test}^{(1)},y_{test}^{(1)}),…,(z_{test}^{(m)},y_{test}^{(m)})｝$运行假设函数$h_{\theta}(z)$</li>
-</ul>
-<p>通常在一个项目的初期，有些人便直接写出这样的项目计划。</p>
-<p>在写下这样一个使用PCA方法的项目计划前，一个非常好的问题是：<strong>如果我们在整个项目中不使用PCA效果会怎样？</strong> </p>
-<p>通常人们不会去思考这个问题，尤其是当人们提出一个复杂的项目并且其中使用了PCA或其它方法时，我经常建议大家在使用PCA之前，首先要想清楚你自己做的是什么，以及你想要做什么。这也是你首先需要在原始数据$x^{(i)}$上考虑的问题。并且根据具体情况来分析是否适合使用PCA，还是直接将原始数据带入到学习算法中。</p>
-<h4 id="不要一开始就带入PCA"><a href="#不要一开始就带入PCA" class="headerlink" title="不要一开始就带入PCA"></a>不要一开始就带入PCA</h4><p>同时我也建议一开始不要将PCA方法就直接放到算法里，先使用原始数据$x^{(i)}$看看效果。只有一个原因让我们相信算法出现了问题，那就是你的学习算法收敛地非常缓慢，占用内存或者硬盘空间非常大，所以你想来压缩数据。只有当你的$x^{(i)}$效果不好的时候，那么就考虑用PCA来进行压缩数据。</p>
-<p>因为我常常看到某些人在项目开始时便将PCA考虑进去，有时他们并没有仔细思考他们做了什么使得结果表现地好，更没有考虑在不用PCA下的情景会是什么样的效果。如果某个数据不使用PCA也可以工作的很好，但我们对于这些数据使用PCA耗费了大量时间，这是不值得的。</p>
-<p>然而，尽管有这些需要注意的地方，PCA仍旧是一种不可思议的有用的算法。PCA的使用频率也很高，大部分时候我都用它来加快学习算法。但我认为PCA通常都是被用来压缩数据以减少内存使用或硬盘空间占用的、或者用来可视化数据的。</p>
-<p>同时PCA也是一种强有力的无监督学习算法。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3973,7 +3665,7 @@ h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

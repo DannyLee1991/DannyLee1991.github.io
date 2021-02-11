@@ -191,6 +191,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/02/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(5)%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/02/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(5)%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第六周 (5)使用大数据集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-02-04 00:55:58" itemprop="dateCreated datePublished" datetime="2017-02-04T00:55:58+00:00">2017-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="机器学习的数据"><a href="#机器学习的数据" class="headerlink" title="机器学习的数据"></a>机器学习的数据</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/XcNcz/data-for-machine-learning">视频地址</a></p>
+<blockquote>
+<p>在之前的视频中，我们讨论了评价指标。在本节课的视频中，我们来讨论一下机器学习系统设计中另一个重要的方面，这往往涉及到用来训练的数据有多少。</p>
+<p>在之前的一些视频中，我曾告诫大家不要一开始就盲目地花大量的时间来收集大量的数据，因为这种做法只在某些情况下能起到实际的作用。但事实证明，在一定条件下，得到大量的数据，并在某种类型的学习算法中进行训练，却是一种有效的获得一个具有良好性能的学习算法的方法。而这种情况往往出现在这些条件对于你的问题都成立，并且你能够得到大量数据的情况下。这是一个很好的获得非常高性能的学习算法的方式。</p>
+</blockquote>
+<p>我先讲一个故事。很多很多年前，我认识的两位研究人员 Michele Banko 和 Eric Brill，他们进行了一项有趣的研究：研究在不同的数据集上使用不同的学习算法的效果。他们当时考虑的问题是混淆词分类问题，例如，下面这个句子：</p>
+<ul>
+<li><strong>For breakfast I ate __ eggs.</strong></li>
+</ul>
+<p>在这个句子中，空白处的可选词是：</p>
+<ul>
+<li><strong>to</strong></li>
+<li><strong>two</strong></li>
+<li><strong>too</strong></li>
+</ul>
+<p>在这个例子中应该填入<strong>two</strong>。</p>
+<p>于是他们把诸如这样的机器学习问题当做一类监督学习问题，并尝试将其分类：什么样的词在一个英文句子特定的位置才是合适的。</p>
+<p>他们用了下面几种不同的学习算法，这些算法在他们2001年进行研究的时候都已经 被公认是比较领先的学习算法：</p>
+<ul>
+<li><strong>感知器(Perceptron) (逻辑回归)</strong></li>
+<li><strong>Winnow(类似于回归问题，但不完全相同。过去常用，但现在很少用到)</strong></li>
+<li><strong>基于内存的学习方法(Memory-based)</strong></li>
+<li><strong>朴素贝叶斯</strong></li>
+</ul>
+<p>这些算法的具体细节不重要，总之他们使用了这几种算法。他们所做的就是改变了训练数据集的大小，并尝试将这些学习算法用于不同大小的训练数据集中。这就是他们得到的结果：</p>
+<p><img src="/img/17_02_04/001.png" width = "300" height = "200" align=center /></p>
+<p>横轴代表以百万为单位的数据集大小，即从0.1百万到1000百万（10亿）规模的数据集；纵轴代表精确度，范围是0到1。</p>
+<p>从图中可以看出趋势非常明显。首先大部分算法都具有相似的性能，其次随着训练数据集的增大，这些算法的准确性也都对应的增强了。事实上，如果你选择任意一个算法，例如选择了一个”劣等的”算法，如果你给这个劣等算法更多的数据，那么从这些列子中看起来，它很有可能会其他算法更好，甚至会比”优等算法”更好。</p>
+<p>由于这项原始的研究非常具有影响力，已经有一系列不同的研究显示了类似的结果。这些结果表明，许多不同的学习算法有时倾向于表现出非常相似的效果，虽然这些效果的表现还取决于一些细节，但是真正能提高算法性能(准确度)的，就是你能够给到一个算法的大量的训练数据。类似这样的结论引起了一种在机器学习中的普遍共识：</p>
+<ul>
+<li><p><strong>It`s not who has the best algrithm that wins.It`s who has the most data.</strong></p>
+</li>
+<li><p><strong>取得成功的人不是因为拥有最好算法，而是因为拥有最多数据。</strong></p>
+</li>
+</ul>
+<p>那么这种说法在什么时候是靠谱的，什么时候是不靠谱的呢？因为如果上面的说法在所有情况下都是对的话，那么我们保证我们得到一个高性能的学习算法的最佳方式应该是获取大量的数据，而不是考虑该使用什么学习算法。</p>
+<p>其实，在下面这种情况下，获取大量的数据是提高算法性能的好方法：</p>
+<p><strong>在特征值x包含足够多的用来准确预测y的信息时，获取大量的数据是提高算法性能的好方法。</strong></p>
+<p>例如在上面介绍的混淆词的例子中：</p>
+<ul>
+<li><strong>For breakfast I ate __ eggs.</strong></li>
+</ul>
+<p>空白词附近的词就是我们需要捕捉的特征<strong>x</strong>，这些词中包含了大量的信息来告诉我空白处应该填写<strong>two</strong>而不是<strong>to</strong>或者<strong>too</strong>。实际上对于特征捕捉，哪怕是周围词语中的一个词，就能够给我足够的信息来确定出标签<strong>y</strong>是什么了。</p>
+<p>这就是通过一个有充足的信息的特征值<strong>x</strong>的来确定<strong>y</strong>的例子。举一个反例：</p>
+<p>设想在房屋价格预测问题中，我们获取的房屋信息中只有房屋面积信息，没有其他的特征值，那么如果我告诉你这个房子有500平方英尺，但是我没有告诉你其他的特征信息，我也不告诉你这个房子位于这个城市房价比较昂贵的区域还是便宜的区域，也不告诉你这所房子的房间数量，它里面陈设了多漂亮的家具，以及这个房子是新的还是旧的。我不告诉你除了这个房子有500平方英尺以外的其他任何信息，然而除此之外还有许多其他因素会影响房子的价格，不仅仅是房子的大小。但如果你仅仅知道房屋的尺寸，那么事实上是很难准确预测它的价格的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/19/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(4)%E6%93%8D%E4%BD%9C%E5%81%8F%E6%96%9C%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +340,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -511,7 +629,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -879,7 +997,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1113,7 +1231,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1474,7 +1592,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1668,7 +1786,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1773,7 +1891,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1858,7 +1976,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2008,7 +2126,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2137,95 +2255,6 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">【Android文档翻译】自动化UI测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-01-11 23:43:58" itemprop="dateCreated datePublished" datetime="2017-01-11T23:43:58+00:00">2017-01-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>用户界面（UI）测试可以确保您的应用程序满足其功能要求，并达到高标准的质量，使其更有可能被用户成功采纳。</p>
-<p>UI测试的一种方法是简单地让人类测试者对目标应用程序执行一组用户操作，并验证它的行为是否正确。然而，该手动方法可能是耗时，冗长且易出错的。一个更有效的方法是编写用户界面测试，使得用户操作以自动化的方式执行。自动化方法允许您以可重复的方式快速可靠地运行测试。</p>
-<blockquote>
-<p><strong>注意：</strong>强烈建议您使用Android Studio构建测试应用程序，因为它提供了项目设置，库包含和便捷的打包功能。这里假设你使用的是Android Studio。</p>
-</blockquote>
-<p>要使用Android Studio自动执行UI测试，请在单独的Android测试文件夹(<code>src/androidTest/java</code>)中实现测试代码。<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/building/plugin-for-gradle.html">Android Plug-in for Gradle</a>基于您的测试代码构建测试应用程序，然后将测试应用程序加载到与目标应用程序相同的设备上。在测试代​​码中，您可以使用UI测试框架来模拟目标应用程序上的用户交互，以便执行涵盖特定使用情况的测试任务。</p>
-<p>对于测试Android应用，您通常会创建以下类型的自动UI测试：</p>
-<ul>
-<li><p><em>跨越单个应用程序的UI测试:</em>当用户执行特定操作或在Activity中输入特定输入时，此类型的测试验证目标应用程序的行为是否与预期相符。它允许您检查目标应用程序返回正确的UI输出，以响应用户在应用程序Activity中的互动。诸如Espresso的UI测试框架允许您以编程方式模拟用户操作并测试复杂的应用内用户交互。</p>
-</li>
-<li><p><em>跨越多个应用程序的UI测试:</em>此类型的测试验证不同用户应用程序之间或用户应用程序和系统应用程序之间的交互的正确行为。例如，您可能想测试您的相机应用是否与第三方社交媒体应用或默认的Android Photos应用正确分享了图片。支持跨应用程序交互的UI测试框架（如UI Automator）允许您为这些场景创建测试。</p>
-</li>
-</ul>
-<p>本课的课程将教你如何使用Android测试支持库中的工具和API来构建这些类型的自动化测试。在使用这些API开始构建测试之前，您必须安装<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html">Android Testing Support Library</a>，如在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html#setup">下载Android Testing Support Library</a>中所描述的那样。</p>
-<h2 id="课程"><a href="#课程" class="headerlink" title="课程"></a>课程</h2><p><a href="/2017/01/13/【Android文档翻译】测试单个应用程序的UI/">测试单个应用程序的UI</a><br>    了解如何使用Espresso测试框架在单个应用中测试UI。</p>
-<p><a href="/2017/01/13/【Android文档翻译】测试多个应用程序的UI/">测试多个应用程序的UI</a><br>    了解如何使用UI Automator测试框架在多个应用中测试UI。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2297,7 +2326,7 @@ F\_{1}Score : 2\frac{PR} {P+R}</script><p>通过<strong>F score</strong>方法�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

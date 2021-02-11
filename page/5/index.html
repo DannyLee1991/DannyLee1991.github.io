@@ -191,6 +191,201 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/05/%E5%85%B3%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/03/05/%E5%85%B3%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">关于机器学习的一些思考</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-05 16:40:58" itemprop="dateCreated datePublished" datetime="2017-03-05T16:40:58+00:00">2017-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我大概是在两年前开始正式关注机器学习领域的，当时一心想做一个基于机器学习的五子棋程序，希望能达到机器自动理解五子棋游戏规则的效果，但没能成功，于是我开始找一些机器学习领域的课程和书籍开始啃。</p>
+<p>当时机器学习在国内还是一个很少听到的名词，但当我学习这方面的东西的时候，我深深的感受到这个领域的东西和我之前学到的技术不是一个维度的东西，并且它将深远的影响未来的发展。直到后来AlphaGo的出现，以及Google开源了TensorFlow，这一系列的大事件的发生，悄然在业内刮起了一股人工智能风。</p>
+<p>TensorFlow在开源之初，国内的<strong>极客学院</strong>发起了文档的翻译工作，还记的在其翻译文档的首页这样写到：</p>
+<blockquote>
+<p>你正在阅读的项目可能会比 Android 系统更加深远地影响着世界！</p>
+</blockquote>
+<p>不管这句话说得是否过于夸大，但TensorFlow在github上开源一个月之内就收到了10000+的star，这是github上机器学习领域也是python领域star增长最快的项目了。截止目前，TensorFlow的star为49227，已经超过了linux的42490。可见，机器学习的发展速度之迅猛，是不容小视的。</p>
+<p>本文是我对机器学习领域的一些见解和思考，主要涉及<strong>机器学习的定义</strong>，<strong>机器学习的学习方式</strong>以及<strong>相关概念的理解</strong>。你会看到很多教科书上看不到的解读，虽然不是很严谨，但有助于你对一些概念建立起直觉上的理解，从而帮助你更好的了解这一领域的知识。</p>
+<h2 id="思考1：机器学习是什么"><a href="#思考1：机器学习是什么" class="headerlink" title="思考1：机器学习是什么"></a>思考1：机器学习是什么</h2><h3 id="机器学习定义"><a href="#机器学习定义" class="headerlink" title="机器学习定义"></a>机器学习定义</h3><blockquote>
+<p>机器学习(Machine Learning, ML)是一门多领域交叉学科，涉及概率论、统计学、逼近论、凸分析、算法复杂度理论等多门学科。专门研究计算机怎样模拟或实现人类的学习行为，以获取新的知识或技能，重新组织已有的知识结构使之不断改善自身的性能。</p>
+</blockquote>
+<p>这是百度百科给出的定义，更加通俗的解释一下，机器学习是人工智能领域下的子领域，通过对大量现有数据的分析运算来对未知数据进行预测的一种学科。（虽然说法不严谨，但这种解释有助于理解）</p>
+<p>将机器学习的通用模型类比于养一个小孩：</p>
+<ul>
+<li>训练过程就像是养一个小孩子</li>
+<li>如果小孩子小的时候接触到了正确的教育（这里正确的教育就是<strong>训练数据集</strong>）</li>
+<li>如果小孩子本身的悟性很高（悟性很高类比于有很好的<strong>学习算法</strong>）</li>
+<li>那么这个孩子经过一段时间的成长学习后（类比于机器学习的<strong>训练</strong>阶段）</li>
+<li>会成为一个有用之才（得到和很好的<strong>假设函数</strong>，即训练模型）</li>
+<li>当他遇到新的人和事的时候（接受<strong>测试数据</strong>）</li>
+<li>就能够处理的很好（<strong>预测结果</strong>）</li>
+</ul>
+<p>这就是机器学习的通用模型，虽然不是严谨的学术定义，但相信这能使你建立一种直觉上的认识。</p>
+<h3 id="这是一项新技术吗？"><a href="#这是一项新技术吗？" class="headerlink" title="这是一项新技术吗？"></a>这是一项新技术吗？</h3><p>机器学习目前处于学术界迈向工业界的一个过程，其核心算法几十年前就有了，理念也绝非新鲜事物，达到工业级别是一个时间问题，而现在<strong>我们就处在这一学术界迈向工业界的关键阶段</strong>。</p>
+<p>其实，机器学习的核心概念早在第一台计算机制造之前就已经产生了。这里也不做过多介绍，大家可以自行去搜索。</p>
+<h2 id="思考2：如何学习机器学习"><a href="#思考2：如何学习机器学习" class="headerlink" title="思考2：如何学习机器学习"></a>思考2：如何学习机器学习</h2><h3 id="学习框架-or-学习算法"><a href="#学习框架-or-学习算法" class="headerlink" title="学习框架 or 学习算法?"></a>学习框架 or 学习算法?</h3><p>完全没有学过这一领域的东西，是否应该直接上手TensorFlow之类的框架呢？</p>
+<p>框架只是工具，不管是TensorFlow还是Caffe还是Torch，都是对算法的封装，很多之前做其他方面开发的程序员，在接触一个框架或者工具时，都倾向于追求能达到“直接去调用一下就得到结果”这样的效果，但机器学习领域的框架并不是如此，它要求你对机器学习领域的算法有一定了解，要明白自己在做什么。</p>
+<p>所以先对这个领域的算法知识有个掌握之后，再去学习和使用框架来实践操作可能是效率更高的一种学习模式。相反，直接上手来学习框架，期望直接调用一些API就得出结果的想法会让你有种寸步难行的感觉。</p>
+<p>这里安利一下<a target="_blank" rel="noopener" href="https://www.coursera.org/">coursera</a>上的吴恩达老师的<a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning">机器学习</a>课程（可能会需要翻墙才能访问，自行购买vpn）。这门课深入浅出的讲解了机器学习领域的流行的算法的实现原理。</p>
+<blockquote>
+<p>介绍一下吴恩达老师，在最强大脑第四季开播之前，可能知道他的人很少。吴恩达是华裔美国人，是斯坦福大学计算机科学系和电子工程系副教授，人工智能实验室主任，是Coursera的联合创始人。之前是google负责google大脑项目，后来在14年5月16日加入百度，担任百度首席科学家，负责百度研究院的领导工作，尤其是Baidu Brain计划。这是中国互联网公司迄今为止引进的最重量级人物。</p>
+</blockquote>
+<h3 id="深入底层-or-关注上层？"><a href="#深入底层-or-关注上层？" class="headerlink" title="深入底层 or 关注上层？"></a>深入底层 or 关注上层？</h3><p>在技术领域一直流传着这样一种理念：底层的就是牛X的。上层技术变化无常，但底层技术万变不离其宗。再加上底层技术的学习成本远高于上层技术，而且吃透了底层技术能够对上层技术有更深刻的理解，导致程序员对底层技术有一种神圣的向往情节。</p>
+<p>技术领域，专注细节不是坏事，但对于机器学习这个领域呢？恐怕我们需要重新考量一下这种思维模式了。</p>
+<p>其实在机器学习领域，也是提倡对底层实现算法有一定的了解的，但并不代表我们要去亲自实现一些算法，比如神经网络中的反向传播算法的实现，很多框架都已经写的很完善了，而且都是数值计算领域的专家来实现的高质量高性能的代码，我们没必要花时间和精力来重新造轮子，也没必要去研究他们是如何造的这个轮子。我们更应该把宝贵的时间留在理解这些算法的原理上，以及学会使用这些算法来应用到实际中的问题，这才是把好钢用到了刀刃上。</p>
+<p>实际上，正确的学习方式是，首先学习并理解算法原理，在直觉层面建立起对算法的认识，然后快速动手实践，将学到的算法应用到小项目里，不用太过在意写的东西是不是很挫，重要的是开始写！然后再不断的完善你的项目。带着一些问题去继续学习，你会有更多的收获。</p>
+<h3 id="不要想太多有的没的"><a href="#不要想太多有的没的" class="headerlink" title="不要想太多有的没的"></a>不要想太多有的没的</h3><p>可能很多人跟我一样，刚开始了解这一领域的东西的时候，很是兴奋，感觉造出一个通用人工智能指日可待了。再加上近些年随着人工智能概念的兴起，出来了一批相关影视作品和科幻小说，更让我们对人工智能产生了一系列不切实际的想法。</p>
+<p>对于这一点，我想说明的是，不要过分执迷于AI能创建出智能大脑的想法，除非你是业内出类拔萃的专家。科幻小说与电影只是一种艺术表现手法，并不代表着未来。通常，人们看不懂看不透的地方就容易形成骗局，通用智能虽然是人工智能一直以来在追求的一个目标，但目前主流学术发展方向并没有朝着这方面走。机器学习、深度学习的确在飞速的进步，未来也会波及到很多行业，但这个学科归根结底还是一门基于数据的学科，并没有达到拥有情感、独立思考等这方面的能力，实际上，绝大多数业内专家对这方面的想法是持有厌恶态度的，倒是相关的社科类软文在这个时代被吹上了天。</p>
+<p>因此，与其花时间想这些有的没的，还不如花时间脚踏实地的去学习一下算法、写写代码，除非你想成为一个科幻小说作家。</p>
+<h2 id="思考3：机器学习中一些概念的解读"><a href="#思考3：机器学习中一些概念的解读" class="headerlink" title="思考3：机器学习中一些概念的解读"></a>思考3：机器学习中一些概念的解读</h2><p>机器学习领域中有很多很有趣、很耐人寻味的原理值得细细品味，下面是我对其中部分概念的直觉上的理解，可能你在教科书或者教学视频上看不到这种解读，但这些概念所折射出来的现象也许就是我所描述的那样。当然，如果你没有看过这个领域，甚至没有写过代码也没关系，我保证能让你能读得懂。</p>
+<h3 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h3><p><strong>神经网络</strong>是机器学习领域出镜率很高的一个词汇，很多人对它的理解一直是停留在“<strong>很牛X，很复杂</strong>”的状态。下面用一个例子来解释神经网络的使用原理：</p>
+<p>假设你有一个下周六是否要去电影院看电影的决定。这个决定的结果无非只有两种：<strong>去</strong>或者<strong>不去</strong>。</p>
+<p>影响你去或不去的因素有很多：</p>
+<ul>
+<li>是否有人陪</li>
+<li>是否有想看的电影</li>
+<li>是否有时间</li>
+<li>天气是否足够好</li>
+<li>…</li>
+</ul>
+<p>我相信你可以列出足够多的理由来拒绝周末去看电影，但为了方便描述起见，我们先用三个条件：<strong>是否有人陪</strong>、<strong>是否有想看的电影</strong>、<strong>是否有时间</strong>。</p>
+<p>好，现在我们来用三个圈来表示这三个条件。</p>
+<p><img src="/img/17_03_05/002.png" alt=""></p>
+<p>圆圈中间的数值代表对做出去看电影的决策的影响程度，可以看到这里<strong>是否有时间</strong>的影响程度是最大的（这里的每个小圈，其实就是神经网络中的<strong>神经元</strong>，上面的数值就是<strong>权值</strong>）。</p>
+<p>我们接下来把我们的神经网络补充完整：</p>
+<p><img src="/img/17_03_05/003.png" alt=""></p>
+<p>我们又加了两个圈和一些箭头。好，对应图中，如果我们现在<strong>有想看的电影，可是没有人陪，但有时间</strong>，那么我们的计算方式就是:</p>
+<p><img src="/img/17_03_05/004.png" alt=""></p>
+<script type="math/tex; mode=display">
+(-1)×0.3 + 1×0.6 + 1×1.0 = 1.3</script><p>输出结果是一个大于0的值：1.3，代表我们会做出去看电影的决定。</p>
+<p>类似的，假如我们<strong>有人陪，有想看的电影，但是没时间</strong>：</p>
+<script type="math/tex; mode=display">
+1×0.3 + 1×0.6 + (-1)×1.0 = -0.1</script><p>是一个负数，代表我们不会去看电影。</p>
+<p>这就是一个训练好的神经网络的使用方式，这幅图就是一个典型的三层神经网络，从左到右依次是<strong>输出层</strong>、<strong>隐藏层</strong>、<strong>输出层</strong>，其中0.3，0.6，1.0是通过<strong>训练</strong>得出的<strong>权值</strong>。</p>
+<p><img src="/img/17_03_05/005.png" alt=""></p>
+<p>我相信你对神经网络还是有很多疑问，比如0.3，0.6和1.0是怎么得来的（实际上是通过<strong>反向传播算法</strong>得来的），但神经网络运作的大体模式就是这样，希望你能对它产生一种宏观层面的认识。</p>
+<h3 id="偏拟合-和-过拟合"><a href="#偏拟合-和-过拟合" class="headerlink" title="偏拟合 和 过拟合"></a>偏拟合 和 过拟合</h3><p><strong>偏拟合</strong>和<strong>过拟合</strong>具体是什么意思呢？不要被陌生的名词吓到。</p>
+<p>首先要说明的是，这两个词都不是褒义词，都是我们不想看到的一种状态。</p>
+<p>其实所谓<strong>偏拟合</strong>就是相当于某一领域经验不足的人，由于经历的事情太少，容易做出一些错误的判断，这种现象就是<strong>偏拟合</strong>。</p>
+<p>所谓<strong>过拟合</strong>，恰恰相反，是指某一领域经验非常丰富的人，由于经历的事情太多，反而容易对新的事物产生偏见（因为既往的经验会告诉他这是不对的），从而产生错误的决定。</p>
+<p>教科书上不会这么解释<strong>偏拟合</strong>和<strong>过拟合</strong>的概念，但事实上这个概念描述的就是这样的现象。是不是我们身边随处可见这两种现象呢？</p>
+<h3 id="查准率-和-召回率"><a href="#查准率-和-召回率" class="headerlink" title="查准率 和 召回率"></a>查准率 和 召回率</h3><p>假设我们现在写了个用于预测病人是否患有肺癌的程序，我们出入了100个病人的体征数据，然后来告知这一批病人有谁不幸得了肺癌。</p>
+<p>假设我们的预测准确率为98%，这个结果乍一看是不是很高呢？但我告诉你另一个事实，那就是我们只有两个病人是真正患有肺癌的，然而我们的算法正确的识别了两者中的一位，并且还错误的认为在98名没有患有肺癌的患者里有一位癌症患者。那这还是一个好结果吗？</p>
+<p>很明显，100个人里只有两个人患有癌症，其中一个还预测错误，这是一个很差的结果，但我们的准确率为98%，因为我们预测对了100个人中的98个人，所以从准确率上来看并不差，但实际结果却很差。</p>
+<p>这就是典型的<strong>偏斜类</strong>问题。</p>
+<p>也许有人会说，这表明了数据会说谎，但实际情况是，数据并没有说谎，只不过我们看待数据的方式不够科学。</p>
+<p>科学的方式就是引入<strong>查准率</strong>和<strong>召回率</strong>。</p>
+<p>在这里:</p>
+<script type="math/tex; mode=display">
+查准率 = \frac{在预测患有肺癌的病人中，预测正确的数量} {预测患有肺癌的病人数量}</script><script type="math/tex; mode=display">
+召回率 = \frac{在预测患有肺癌的病人中，预测正确的数量} {实际患有肺癌病人的数量}</script><p>可见，<strong>查准率</strong>和<strong>召回率</strong>都是越高越好的。</p>
+<p>那么我们的例子中<strong>查准率</strong>和<strong>召回率</strong>的真实值分别为：</p>
+<script type="math/tex; mode=display">
+查准率 = \frac{在预测患有肺癌的病人中，预测正确的数量} {预测患有肺癌的病人数量} = \frac{1} {2} = 0.5</script><script type="math/tex; mode=display">
+召回率 = \frac{在预测患有肺癌的病人中，预测正确的数量} {实际患有肺癌病人的数量} = \frac{1} {2} = 0.5</script><p>我们的查准率和召回率都很低。所以换个角度来看待数据，会有新的发现。</p>
+<p>查准率和召回率是两个维度的数据，有的时候我们为了追求高查准率，会得到一个低召回率的结果；有的时候我们为了追求高召回率，却会得到一个低查准率的结果。这种顾此失彼的状态，也不是我们想要。</p>
+<p>所以我们引入了一个叫做<strong>Fscore</strong>的方法来对两种进行一个整体的衡量，其表达式为：</p>
+<script type="math/tex; mode=display">
+Fscore = \frac{查准率×召回率} {查准率+召回率}</script><p>这里我们的$Fscore=0.25$。</p>
+<p>我们生活中也处处充满着<strong>准确率高但查准率和召回率低的例子</strong>：</p>
+<p>我们往往会有这种体验，一些成功的名人说的话似乎都很有道理，但其实他们说的有道理的话似乎都比较“大”；而有些人，专注于某一特定领域的专家，在发表一些观点的时候，用词都非常谨慎，因为他们在描述一件具体的事物。</p>
+<p>所以，我们会发现，<strong>越“大”的话，越容易获得较高的准确率；越“专”的话，越不容易获得较高的准确率</strong>。</p>
+<p>所以带着这种角度，我们去审视一下：</p>
+<ul>
+<li>失败是成功之母。</li>
+<li>天才是99%的汗水加1%的灵感。</li>
+<li>…</li>
+</ul>
+<p>类似这类的<strong>鸡汤名言</strong>，我们会有新的思考。我们会发现，真正的牛人说的话，不仅仅准确率高，而且查准率和召回率也很高。</p>
+<h3 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h3><p><strong>无监督学习</strong>是相对于<strong>监督学习</strong>而言的。那么什么是<strong>监督学习</strong>呢？</p>
+<p><strong>监督学习</strong>通俗的将就是我们告诉机器一堆格式为：</p>
+<p><strong>bulabulabula的东西，是xxx</strong></p>
+<p>来预测未知类别的数据：</p>
+<p><strong>bulabulabula的东西，是？</strong></p>
+<p>例如通过体征来预测性别：</p>
+<p>已有100个数据：</p>
+<ul>
+<li>身高175cm，短发，70kg的人是男性</li>
+<li>身高165cm，长发，48kg的人是女性</li>
+<li>…</li>
+</ul>
+<p>那么：</p>
+<ul>
+<li>身高170cm，长发，55kg的人是？</li>
+</ul>
+<p>这种预测类别已知的机器学习，就是<strong>监督学习</strong>。典型的<strong>监督学习</strong>的案例有<strong>语音识别</strong>、<strong>图像识别</strong>、<strong>人脸识别</strong>等等。</p>
+<p>所谓<strong>无监督学习</strong>就是我们并不能知道数据所属的类别，通过算法使数据自动地按照相似的类别聚合起来，即所谓的<strong>聚类算法</strong>。</p>
+<p>我们俗话所说的<strong>物以类聚，人以群分</strong>就是无监督学习的体现。</p>
+<p>其实，仔细想想，人类社会的发展演化过程，是不是就是一个大型的<strong>无监督学习</strong>的过程呢？我们都是这个学习过程中的一环，是这个大型的神经网络中的一个神经元，我们社会的发展形态和目标在各个阶段都是不一样的，即使我们无法过远地预测到未来进化的方向，但我们一直在自我学习的过程中不断进化。也许这正是生命的本质。</p>
+<hr>
+<p>以上观点可能不是很严谨，也不是正统的机器学习理论，是本人对机器学习的一些思考。如有概念上的错误，欢迎斧正。也欢迎在评论区和我一起讨论<strong>机器学习</strong>的相关问题。</p>
+<p>非常感谢您能读完我的文章，最后安利一下我的一个实验项目<a target="_blank" rel="noopener" href="http://118.190.96.169:3389/iw/help/">智能背词算法</a>，目前处于数据采集阶段，具体使用方式见帮助页面。谢谢~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/05/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E3%80%90tf.contrib.learn%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E3%80%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +417,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -486,7 +681,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -719,7 +914,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -879,7 +1074,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1061,7 +1256,7 @@ H\_{y'}(y) = -\sum\_i y'\_i \log(y\_i)</script><p><strong>y</strong>是我们预
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1235,7 +1430,7 @@ H\_{y'}(y) = -\sum\_i y'\_i \log(y\_i)</script><p><strong>y</strong>是我们预
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1324,7 +1519,7 @@ H\_{y'}(y) = -\sum\_i y'\_i \log(y\_i)</script><p><strong>y</strong>是我们预
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1743,7 +1938,7 @@ exp(-\frac{||x-l^\{(i)}||^2}{2σ^2})</script><p>在下面这个例子中，如�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2221,7 +2416,7 @@ u^Tv=p·||u||</script><p>通过这种方式计算出来的内积，答案和之�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2245,124 +2440,6 @@ u^Tv=p·||u||</script><p>通过这种方式计算出来的内积，答案和之�
 
       
           <h2 id="代码复用"><a href="#代码复用" class="headerlink" title="代码复用"></a>代码复用</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/02/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(5)%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/02/04/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AD%E5%91%A8%20(5)%E4%BD%BF%E7%94%A8%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第六周 (5)使用大数据集</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-02-04 00:55:58" itemprop="dateCreated datePublished" datetime="2017-02-04T00:55:58+00:00">2017-02-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="机器学习的数据"><a href="#机器学习的数据" class="headerlink" title="机器学习的数据"></a>机器学习的数据</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/XcNcz/data-for-machine-learning">视频地址</a></p>
-<blockquote>
-<p>在之前的视频中，我们讨论了评价指标。在本节课的视频中，我们来讨论一下机器学习系统设计中另一个重要的方面，这往往涉及到用来训练的数据有多少。</p>
-<p>在之前的一些视频中，我曾告诫大家不要一开始就盲目地花大量的时间来收集大量的数据，因为这种做法只在某些情况下能起到实际的作用。但事实证明，在一定条件下，得到大量的数据，并在某种类型的学习算法中进行训练，却是一种有效的获得一个具有良好性能的学习算法的方法。而这种情况往往出现在这些条件对于你的问题都成立，并且你能够得到大量数据的情况下。这是一个很好的获得非常高性能的学习算法的方式。</p>
-</blockquote>
-<p>我先讲一个故事。很多很多年前，我认识的两位研究人员 Michele Banko 和 Eric Brill，他们进行了一项有趣的研究：研究在不同的数据集上使用不同的学习算法的效果。他们当时考虑的问题是混淆词分类问题，例如，下面这个句子：</p>
-<ul>
-<li><strong>For breakfast I ate __ eggs.</strong></li>
-</ul>
-<p>在这个句子中，空白处的可选词是：</p>
-<ul>
-<li><strong>to</strong></li>
-<li><strong>two</strong></li>
-<li><strong>too</strong></li>
-</ul>
-<p>在这个例子中应该填入<strong>two</strong>。</p>
-<p>于是他们把诸如这样的机器学习问题当做一类监督学习问题，并尝试将其分类：什么样的词在一个英文句子特定的位置才是合适的。</p>
-<p>他们用了下面几种不同的学习算法，这些算法在他们2001年进行研究的时候都已经 被公认是比较领先的学习算法：</p>
-<ul>
-<li><strong>感知器(Perceptron) (逻辑回归)</strong></li>
-<li><strong>Winnow(类似于回归问题，但不完全相同。过去常用，但现在很少用到)</strong></li>
-<li><strong>基于内存的学习方法(Memory-based)</strong></li>
-<li><strong>朴素贝叶斯</strong></li>
-</ul>
-<p>这些算法的具体细节不重要，总之他们使用了这几种算法。他们所做的就是改变了训练数据集的大小，并尝试将这些学习算法用于不同大小的训练数据集中。这就是他们得到的结果：</p>
-<p><img src="/img/17_02_04/001.png" width = "300" height = "200" align=center /></p>
-<p>横轴代表以百万为单位的数据集大小，即从0.1百万到1000百万（10亿）规模的数据集；纵轴代表精确度，范围是0到1。</p>
-<p>从图中可以看出趋势非常明显。首先大部分算法都具有相似的性能，其次随着训练数据集的增大，这些算法的准确性也都对应的增强了。事实上，如果你选择任意一个算法，例如选择了一个”劣等的”算法，如果你给这个劣等算法更多的数据，那么从这些列子中看起来，它很有可能会其他算法更好，甚至会比”优等算法”更好。</p>
-<p>由于这项原始的研究非常具有影响力，已经有一系列不同的研究显示了类似的结果。这些结果表明，许多不同的学习算法有时倾向于表现出非常相似的效果，虽然这些效果的表现还取决于一些细节，但是真正能提高算法性能(准确度)的，就是你能够给到一个算法的大量的训练数据。类似这样的结论引起了一种在机器学习中的普遍共识：</p>
-<ul>
-<li><p><strong>It`s not who has the best algrithm that wins.It`s who has the most data.</strong></p>
-</li>
-<li><p><strong>取得成功的人不是因为拥有最好算法，而是因为拥有最多数据。</strong></p>
-</li>
-</ul>
-<p>那么这种说法在什么时候是靠谱的，什么时候是不靠谱的呢？因为如果上面的说法在所有情况下都是对的话，那么我们保证我们得到一个高性能的学习算法的最佳方式应该是获取大量的数据，而不是考虑该使用什么学习算法。</p>
-<p>其实，在下面这种情况下，获取大量的数据是提高算法性能的好方法：</p>
-<p><strong>在特征值x包含足够多的用来准确预测y的信息时，获取大量的数据是提高算法性能的好方法。</strong></p>
-<p>例如在上面介绍的混淆词的例子中：</p>
-<ul>
-<li><strong>For breakfast I ate __ eggs.</strong></li>
-</ul>
-<p>空白词附近的词就是我们需要捕捉的特征<strong>x</strong>，这些词中包含了大量的信息来告诉我空白处应该填写<strong>two</strong>而不是<strong>to</strong>或者<strong>too</strong>。实际上对于特征捕捉，哪怕是周围词语中的一个词，就能够给我足够的信息来确定出标签<strong>y</strong>是什么了。</p>
-<p>这就是通过一个有充足的信息的特征值<strong>x</strong>的来确定<strong>y</strong>的例子。举一个反例：</p>
-<p>设想在房屋价格预测问题中，我们获取的房屋信息中只有房屋面积信息，没有其他的特征值，那么如果我告诉你这个房子有500平方英尺，但是我没有告诉你其他的特征信息，我也不告诉你这个房子位于这个城市房价比较昂贵的区域还是便宜的区域，也不告诉你这所房子的房间数量，它里面陈设了多漂亮的家具，以及这个房子是新的还是旧的。我不告诉你除了这个房子有500平方英尺以外的其他任何信息，然而除此之外还有许多其他因素会影响房子的价格，不仅仅是房子的大小。但如果你仅仅知道房屋的尺寸，那么事实上是很难准确预测它的价格的。</p>
-
       
     </div>
 
@@ -2448,7 +2525,7 @@ u^Tv=p·||u||</script><p>通过这种方式计算出来的内积，答案和之�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

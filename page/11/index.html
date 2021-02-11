@@ -191,6 +191,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/07/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%91%BD%E4%BB%A4%E8%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/07/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%91%BD%E4%BB%A4%E8%A1%8C/" class="post-title-link" itemprop="url">gradle学习笔记-使用gradle命令行</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-07 13:06:55" itemprop="dateCreated datePublished" datetime="2016-07-07T13:06:55+00:00">2016-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/gradle/" itemprop="url" rel="index"><span itemprop="name">gradle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-执行多条tasks"><a href="#1-执行多条tasks" class="headerlink" title="1.执行多条tasks"></a>1.执行多条tasks</h2><p>gradle可以在一次构建中执行多条tasks。例如：命令<code>gradle compile test</code>将会执行<code>compile</code>和<code>test</code>这两条task。gradle将会按照命令行上输入的顺序去执行这些task。并且也会去执行这些task所依赖的(dependencies)task。并且保证每个task只被执行一次。</p>
+<p>例如：</p>
+<p>如下四个task</p>
+<p><img src="/img/16_07_09/commandLineTutorialTasks.png" alt=""></p>
+<p>build.gradle:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> <span class="keyword">compile</span> &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;compiling source&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> compileTest(dependsOn: <span class="keyword">compile</span>) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;compiling unit tests&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> test(dependsOn: [<span class="keyword">compile</span>, compileTest]) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;running unit tests&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> dist(dependsOn: [<span class="keyword">compile</span>, test]) &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">&#x27;building the distribution&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>命令行输入<code>gradle dist test</code>的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle dist test</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line">:test</span><br><span class="line">running unit tests</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
+<p>可以看到每个task只被执行一次，因此命令<code>gradle test test</code>和<code>gradle test</code>的执行效果是一样的。</p>
+<h2 id="2-排除某个task-x-someTask"><a href="#2-排除某个task-x-someTask" class="headerlink" title="2.排除某个task(-x someTask)"></a>2.排除某个task(<code>-x someTask</code>)</h2><p>你也可以通过<code>-x</code>的命令参数来排除某个task的执行：</p>
+<p>以下是命令<code>gradle dist -x test</code>的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle dist -x test</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
+<p>从输出结果中可以看出来，<code>test</code>的task并没有被执行，即使它是<code>dist</code>所依赖的task。</p>
+<p>有一个细节也许你已经注意到了：<code>test</code>所依赖的task例如<code>compileTest</code>并没有被执行，因为这个task并没有被其他不被排除的task所依赖，为什么<code>compile</code>这个task也是被<code>test</code>所依赖，但却被执行了呢？那是因为<code>compile</code>这个task被其他不被排除的task所依赖了。</p>
+<h2 id="3-当发生失败的时候依然继续执行构建-continue"><a href="#3-当发生失败的时候依然继续执行构建-continue" class="headerlink" title="3.当发生失败的时候依然继续执行构建(--continue)"></a>3.当发生失败的时候依然继续执行构建(<code>--continue</code>)</h2><p>默认情况下，gradle会在任意一个task执行失败的时候立刻中断执行。gradle可以使得构建速度更快，但需要以隐藏发生的失败为代价。为了能够在一次构建的执行中发现尽可能多的失败，你可以使用<code>--continue</code>选项。</p>
+<p>当在命令中加入<code>--continue</code>,gradle将会执行每一个要被执行的task，以及所有的依赖task，并且无错误的完成task，而不是一旦遇到错误就立马停止。并且每一个发生的失败都会在构建结束后上报出来。</p>
+<p>如果一个task失败了，那么任何依赖于这个产生失败的task的子task也不会被执行，这样做是不安全的。例如，如果在测试代码中有一个编译失败，测试将不会运行；因为测试任务将直接或间接的取决于编译任务。</p>
+<h2 id="4-task名字的缩写"><a href="#4-task名字的缩写" class="headerlink" title="4.task名字的缩写"></a>4.task名字的缩写</h2><p>当你在命令行上指定task时，你没必要指定task的全名。你只需要提供足够长的能唯一标识task的名字即可。例如：在上面的构建例子中，你可以通过命令<code>gradle d</code>来执行<code>dist</code>这条task。</p>
+<p><code>gradle di</code>的输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle di</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line">:test</span><br><span class="line">running unit tests</span><br><span class="line">:dist</span><br><span class="line">building the distribution</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
+<p>你也可以通过每个task名称的单词的首字母的驼峰缩写来标识一个task：你可以通过执行<code>gradle compTest</code>或者甚至是<code>gradle cT</code>来执行<code>compileTest</code>这个task。</p>
+<p><code>gradle cT</code>的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle cT</span><br><span class="line">:compile</span><br><span class="line">compiling source</span><br><span class="line">:compileTest</span><br><span class="line">compiling unit tests</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
+<p>以上规则对<code>-x</code>项(排除某个task)也是适用的。</p>
+<h2 id="5-选择某一条构建去执行"><a href="#5-选择某一条构建去执行" class="headerlink" title="5.选择某一条构建去执行"></a>5.选择某一条构建去执行</h2><p>当你运行gradle命令时，它会在当前目录中查找一个build文件。你可以使用<code>-b</code>选项来选择其他的build文件。如果你使用了<code>-b</code>选项，那么<code>settings.gradle</code>这个文件将不起作用。</p>
+<p>举个例子：</p>
+<p>选择一个工程使用build文件：</p>
+<p>subdir/myproject.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">task hello &lt;&lt; &#123;</span><br><span class="line">    println &quot;using build file &#39;$buildFile.name&#39; in &#39;$buildFile.parentFile.name&#39;.&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行<code>gradle -q -b subdir/myproject.gradle hello</code></p>
+<p><em>这里<code>-q</code>是“安静模式”，指过程中只会输出错误log</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q -b subdir&#x2F;myproject.gradle hello</span><br><span class="line">using build file &#39;myproject.gradle&#39; in &#39;subdir&#39;.</span><br></pre></td></tr></table></figure>
+<p>另外一种方式，你可以使用<code>-p</code>选项来指定项目所在的路径。对于多项目构建，你应该使用<code>-p</code>选项来代替<code>-b</code>选项。</p>
+<p>执行<code>gradle -q -p subdir hello</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q -p subdir hello</span><br><span class="line">using build file &#39;build.gradle&#39; in &#39;subdir&#39;.</span><br></pre></td></tr></table></figure>
+<h2 id="6-强制执行task-rerun-tasks-someTask"><a href="#6-强制执行task-rerun-tasks-someTask" class="headerlink" title="6.强制执行task(--rerun-tasks someTask)"></a>6.强制执行task(<code>--rerun-tasks someTask</code>)</h2><p>许多task，尤其是gradle自身的task，都支持<strong>incremental builds(增量构建)</strong>。这种task可以决定是否需要运行，或者通过最后一次运行之后的输入输出文件是否有变动来判断是否有必要重新运行。你可以通过在执行构建时gradle列出的<code>UP-TO-DATE</code>,来很容易的认出<code>incremental tasks</code>。</p>
+<p>某些场景下，你也许希望忽略<code>up-to-date</code>的检查，来强制执行gradle所有的task。这种情况下，你只需要使用<code>--rerun-tasks</code>这条命令即可。</p>
+<p>以下是两个例子的输出，分别是执行task带有和不带有<code>--rerun-tasks</code>命令：</p>
+<p>执行<code>gradle doIt</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle doIt</span><br><span class="line">:doIt UP-TO-DATE</span><br></pre></td></tr></table></figure>
+<p>执行<code>gradle --rerun-tasks doIt</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle --rerun-tasks doIt</span><br><span class="line">:doIt</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：这将会强制执行全部的task，不仅仅是你在命令行上指定的那些。这有点像在运行<code>clean</code>，但不同的是没有任何的输出会被删除掉。</p>
+</blockquote>
+<h2 id="7-获取关于你的构建的信息"><a href="#7-获取关于你的构建的信息" class="headerlink" title="7.获取关于你的构建的信息"></a>7.获取关于你的构建的信息</h2><p>gradle提供了多个用来显示构建详情的内置task。这些可以被用来理解你项目构建的结构和依赖，以及用debug调试问题。</p>
+<p>除了这些内置task之外，    你也可以使用project report plugin(项目报告插件)，添加到你的项目中，就可以生成这些信息报告了。</p>
+<h3 id="7-1-展示项目列表-gradle-projects"><a href="#7-1-展示项目列表-gradle-projects" class="headerlink" title="7.1.展示项目列表(gradle projects)"></a>7.1.展示项目列表(<code>gradle projects</code>)</h3><p>运行<code>gradle projects</code>，你会得到一个你所选项目的子项目清单，并且是分层显示的哦。下面就是一个例子：</p>
+<p>输入<code>gradle -q projects</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q projects</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Root project &#39;projectReports&#39;</span><br><span class="line">+--- Project &#39;:api&#39; - The shared API for the application</span><br><span class="line">\--- Project &#39;:webapp&#39; - The Web application implementation</span><br><span class="line"></span><br><span class="line">To see a list of the tasks of a project, run gradle &lt;project-path&gt;:tasks</span><br><span class="line">For example, try running gradle :api:tasks</span><br></pre></td></tr></table></figure>
+<p>该报告展示了每个项目的描述（如果项目被设置了描述）。你也可以通过设置描述特性，来为一个项目提供一个描述。</p>
+<p>例如在<code>build.gradle</code>中添加描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">description &#x3D; &#39;The shared API for the application&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="7-2-展示task列表-gradle-tasks"><a href="#7-2-展示task列表-gradle-tasks" class="headerlink" title="7.2 展示task列表(gradle tasks)"></a>7.2 展示task列表(<code>gradle tasks</code>)</h3><p>运行<code>gradle tasks</code>可以得到当前项目的主task。生成的报告清单会显示所有的默认task，当然，如果有描述信息的话，也会一并显示。</p>
+<p>例如：</p>
+<p>运行<code>gradle -q tasks</code>会得到如下输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q tasks</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">All tasks runnable from root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Default tasks: dists</span><br><span class="line"></span><br><span class="line">Build tasks</span><br><span class="line">-----------</span><br><span class="line">clean - Deletes the build directory (build)</span><br><span class="line">dists - Builds the distribution</span><br><span class="line">libs - Builds the JAR</span><br><span class="line"></span><br><span class="line">Build Setup tasks</span><br><span class="line">-----------------</span><br><span class="line">init - Initializes a new Gradle build. [incubating]</span><br><span class="line">wrapper - Generates Gradle wrapper files. [incubating]</span><br><span class="line"></span><br><span class="line">Help tasks</span><br><span class="line">----------</span><br><span class="line">buildEnvironment - Displays all buildscript dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">components - Displays the components produced by root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">dependencies - Displays all dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">dependencyInsight - Displays the insight into a specific dependency in root project &#39;projectReports&#39;.</span><br><span class="line">help - Displays a help message.</span><br><span class="line">model - Displays the configuration model of root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">projects - Displays the sub-projects of root project &#39;projectReports&#39;.</span><br><span class="line">properties - Displays the properties of root project &#39;projectReports&#39;.</span><br><span class="line">tasks - Displays the tasks runnable from root project &#39;projectReports&#39; (some of the displayed tasks may belong to subprojects).</span><br><span class="line"></span><br><span class="line">To see all tasks and more detail, run gradle tasks --all</span><br><span class="line"></span><br><span class="line">To see more detail about a task, run gradle help --task &lt;task&gt;</span><br></pre></td></tr></table></figure>
+<p>默认情况下，此报告只显示已被分配给一个task group的task。你可以设置task的所在组，也可以设置task的描述信息。这些设置都会在这份报告中展示。</p>
+<p>例如：</p>
+<p>build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dists &#123;</span><br><span class="line">    description &#x3D; &#39;Builds the distribution&#39;</span><br><span class="line">    group &#x3D; &#39;build&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以通过使用<code>--all</code>命令来获取更多的task列表信息。通过这个命令，task列表报告单会显示当前项目的所有的task，并且会按照主task以及每个task的依赖进行分组展示。下面是一个例子：</p>
+<p>获取有关task的更多信息</p>
+<p>执行<code>gradle -q tasks --all</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q tasks --all</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">All tasks runnable from root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Default tasks: dists</span><br><span class="line"></span><br><span class="line">Build tasks</span><br><span class="line">-----------</span><br><span class="line">clean - Deletes the build directory (build)</span><br><span class="line">api:clean - Deletes the build directory (build)</span><br><span class="line">webapp:clean - Deletes the build directory (build)</span><br><span class="line">dists - Builds the distribution [api:libs, webapp:libs]</span><br><span class="line">    docs - Builds the documentation</span><br><span class="line">api:libs - Builds the JAR</span><br><span class="line">    api:compile - Compiles the source files</span><br><span class="line">webapp:libs - Builds the JAR [api:libs]</span><br><span class="line">    webapp:compile - Compiles the source files</span><br><span class="line"></span><br><span class="line">Build Setup tasks</span><br><span class="line">-----------------</span><br><span class="line">init - Initializes a new Gradle build. [incubating]</span><br><span class="line">wrapper - Generates Gradle wrapper files. [incubating]</span><br><span class="line"></span><br><span class="line">Help tasks</span><br><span class="line">----------</span><br><span class="line">buildEnvironment - Displays all buildscript dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">api:buildEnvironment - Displays all buildscript dependencies declared in project &#39;:api&#39;.</span><br><span class="line">webapp:buildEnvironment - Displays all buildscript dependencies declared in project &#39;:webapp&#39;.</span><br><span class="line">components - Displays the components produced by root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">api:components - Displays the components produced by project &#39;:api&#39;. [incubating]</span><br><span class="line">webapp:components - Displays the components produced by project &#39;:webapp&#39;. [incubating]</span><br><span class="line">dependencies - Displays all dependencies declared in root project &#39;projectReports&#39;.</span><br><span class="line">api:dependencies - Displays all dependencies declared in project &#39;:api&#39;.</span><br><span class="line">webapp:dependencies - Displays all dependencies declared in project &#39;:webapp&#39;.</span><br><span class="line">dependencyInsight - Displays the insight into a specific dependency in root project &#39;projectReports&#39;.</span><br><span class="line">api:dependencyInsight - Displays the insight into a specific dependency in project &#39;:api&#39;.</span><br><span class="line">webapp:dependencyInsight - Displays the insight into a specific dependency in project &#39;:webapp&#39;.</span><br><span class="line">help - Displays a help message.</span><br><span class="line">api:help - Displays a help message.</span><br><span class="line">webapp:help - Displays a help message.</span><br><span class="line">model - Displays the configuration model of root project &#39;projectReports&#39;. [incubating]</span><br><span class="line">api:model - Displays the configuration model of project &#39;:api&#39;. [incubating]</span><br><span class="line">webapp:model - Displays the configuration model of project &#39;:webapp&#39;. [incubating]</span><br><span class="line">projects - Displays the sub-projects of root project &#39;projectReports&#39;.</span><br><span class="line">api:projects - Displays the sub-projects of project &#39;:api&#39;.</span><br><span class="line">webapp:projects - Displays the sub-projects of project &#39;:webapp&#39;.</span><br><span class="line">properties - Displays the properties of root project &#39;projectReports&#39;.</span><br><span class="line">api:properties - Displays the properties of project &#39;:api&#39;.</span><br><span class="line">webapp:properties - Displays the properties of project &#39;:webapp&#39;.</span><br><span class="line">tasks - Displays the tasks runnable from root project &#39;projectReports&#39; (some of the displayed tasks may belong to subprojects).</span><br><span class="line">api:tasks - Displays the tasks runnable from project &#39;:api&#39;.</span><br><span class="line">webapp:tasks - Displays the tasks runnable from project &#39;:webapp&#39;.</span><br></pre></td></tr></table></figure>
+<h3 id="7-3-显示task的使用细节-gradle-help-task-someTask"><a href="#7-3-显示task的使用细节-gradle-help-task-someTask" class="headerlink" title="7.3 显示task的使用细节(gradle help --task someTask)"></a>7.3 显示task的使用细节(<code>gradle help --task someTask</code>)</h3><p>运行<code>gradle help --task someTask</code>会得到一个关于你所选择的task或者与你输入名称相匹配的一系列task的详细信息。</p>
+<p>下面是一个例子：</p>
+<p><code>gradle -q help --task libs</code>执行的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q help --task libs</span><br><span class="line">Detailed task information for libs</span><br><span class="line"></span><br><span class="line">Paths</span><br><span class="line">     :api:libs</span><br><span class="line">     :webapp:libs</span><br><span class="line"></span><br><span class="line">Type</span><br><span class="line">     Task (org.gradle.api.Task)</span><br><span class="line"></span><br><span class="line">Description</span><br><span class="line">     Builds the JAR</span><br><span class="line"></span><br><span class="line">Group</span><br><span class="line">     build</span><br></pre></td></tr></table></figure>
+<p>这些信息包含全部的task路径，task的类型，可能有的命令行选项和给定的task的描述。</p>
+<h3 id="7-4-列出项目的依赖项-gradle-dependencies"><a href="#7-4-列出项目的依赖项-gradle-dependencies" class="headerlink" title="7.4 列出项目的依赖项(gradle dependencies)"></a>7.4 列出项目的依赖项(<code>gradle dependencies</code>)</h3><p>运行<code>gradle dependencies</code>，列出了所选项目的所有依赖，以及被配置项分解的依赖。对于每个配置，该配置的直接和传递的依赖关系都会在树中显示。下面是一个例子：</p>
+<p><strong>获取依赖关系的信息</strong></p>
+<p>运行<code>gradle -q dependencies api:dependencies webapp:dependencies</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q dependencies api:dependencies webapp:dependencies</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Root project</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">No configurations</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">compile</span><br><span class="line">\--- org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">\--- junit:junit:4.12</span><br><span class="line">     \--- org.hamcrest:hamcrest-core:1.3</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :webapp - The Web application implementation</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">compile</span><br><span class="line">+--- project :api</span><br><span class="line">|    \--- org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line">\--- commons-io:commons-io:1.2</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">No dependencies</span><br></pre></td></tr></table></figure>
+<p>由于一个依赖报告可能会变得很大，所以有必要通过一些配置来过滤依赖报告的显示。通过命令参数<code>--configuration</code>来实现：</p>
+<p><strong>通过配置来过滤依赖项报告</strong></p>
+<p><code>gradle -q api:dependencies --configuration testCompile</code>的输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q api:dependencies --configuration testCompile</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">testCompile</span><br><span class="line">\--- junit:junit:4.12</span><br><span class="line">     \--- org.hamcrest:hamcrest-core:1.3</span><br></pre></td></tr></table></figure>
+<h3 id="7-5-列出项目构建脚本依赖-gradle-buildEnvironment"><a href="#7-5-列出项目构建脚本依赖-gradle-buildEnvironment" class="headerlink" title="7.5 列出项目构建脚本依赖(gradle buildEnvironment)"></a>7.5 列出项目构建脚本依赖(<code>gradle buildEnvironment</code>)</h3><p>运行<code>gradle buildEnvironment</code>可以看见项目的依赖的构建脚本，类似于执行<code>gradle dependencies</code>列出构建的依赖项的展示。</p>
+<h3 id="7-6-观察一个特定的依赖项"><a href="#7-6-观察一个特定的依赖项" class="headerlink" title="7.6 观察一个特定的依赖项"></a>7.6 观察一个特定的依赖项</h3><p>运行<code>gradle dependencyInsight</code>你将得到一个与你输入匹配的一条或多条依赖项的内部信息。下面是一个例子：</p>
+<p><strong>观察一个特定的依赖</strong></p>
+<p>运行<code>gradle -q webapp:dependencyInsight --dependency groovy --configuration compile</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q webapp:dependencyInsight --dependency groovy --configuration compile</span><br><span class="line">org.codehaus.groovy:groovy-all:2.4.4</span><br><span class="line">\--- project :api</span><br><span class="line">     \--- compile</span><br></pre></td></tr></table></figure>
+<p>这个task对于解决调查一个依赖，发现一定的依赖关系是从哪里来的，某些版本的选择原因是什么，是非常有用的。更多的信息，请查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.diagnostics.DependencyInsightReportTask.html">DependencyInsightReportTask</a>类的API文档。</p>
+<p>内置的dependencyInsight task在’Help’的task组内。task需要配置依赖项和设置信息。该报告查找在指定的配置中匹配指定的依赖性规范的依赖。如果应用java相关的插件，那么dependencyInsight task就被预配置了’compile’这条配置，因为通常情况下，编译依赖是我们感兴趣的。你应该指定你感兴趣的依赖，通过命令行<code>--dependency</code>选项。如果你不喜欢的默认值，你可以通过<code>--configuration</code>选项来选择配置。更多的信息，请查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.diagnostics.DependencyInsightReportTask.html">DependencyInsightReportTask</a>类的API文档。</p>
+<h3 id="7-7-列出项目属性gradle-properties"><a href="#7-7-列出项目属性gradle-properties" class="headerlink" title="7.7 列出项目属性gradle properties"></a>7.7 列出项目属性<code>gradle properties</code></h3><p>运行<code>gradle properties</code>列出一个项目属性的列表。下面是一小片输出：</p>
+<p><strong>信息的属性</strong></p>
+<p><code>gradle -q api:properties</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle -q api:properties</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Project :api - The shared API for the application</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">allprojects: [project &#39;:api&#39;]</span><br><span class="line">ant: org.gradle.api.internal.project.DefaultAntBuilder@12345</span><br><span class="line">antBuilderFactory: org.gradle.api.internal.project.DefaultAntBuilderFactory@12345</span><br><span class="line">artifacts: org.gradle.api.internal.artifacts.dsl.DefaultArtifactHandler_Decorated@12345</span><br><span class="line">asDynamicObject: DynamicObject for project &#39;:api&#39;</span><br><span class="line">baseClassLoaderScope: org.gradle.api.internal.initialization.DefaultClassLoaderScope@12345</span><br><span class="line">buildDir: &#x2F;home&#x2F;user&#x2F;gradle&#x2F;samples&#x2F;userguide&#x2F;tutorial&#x2F;projectReports&#x2F;api&#x2F;build</span><br><span class="line">buildFile: &#x2F;home&#x2F;user&#x2F;gradle&#x2F;samples&#x2F;userguide&#x2F;tutorial&#x2F;projectReports&#x2F;api&#x2F;build.gradle</span><br></pre></td></tr></table></figure>
+<h3 id="7-8-分析构建-profile"><a href="#7-8-分析构建-profile" class="headerlink" title="7.8 分析构建(--profile)"></a>7.8 分析构建(<code>--profile</code>)</h3><p><code>--profile</code>命令选项会在你执行构建上报出有用的定时信息，并输出在<code>build/reports/profile</code>目录下。报告被命名为构建运行的时间。</p>
+<p>这份报告列出了配置阶段和任务执行的汇总时间和详细信息。配置和任务执行的时间按照花费时间最高到最低进行排序。任务执行结果还表明，是否有任何任务被跳过（以及原因），或者如果没有跳过的任务没有工作。</p>
+<p>利用buildsrc目录的构建，将在buildSrc/build目录下会生成第二份报告。</p>
+<p><img src="/img/16_07_09/profile.png" alt=""></p>
+<h2 id="8-Dry-Run"><a href="#8-Dry-Run" class="headerlink" title="8.Dry Run"></a>8.Dry Run</h2><p>有时，您是希望在命令行上指定一组给定的task的执行的顺序，但你不希望task被执行。你可以使用<code>-m</code>命令项。例如<code>gradle -m clean compile</code>，你将会看见全部作为clean和compile的task的一部分的将被执行的task。这些会展示给你所依赖的可被执行的task。</p>
+<h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a>9.总结</h2><p>在这一节中，你看到了你可以通过gradle命令行做到的一些事情，更多命令可以查阅<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/gradle_command_line.html">Appendix D, Gradle Command Line</a>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/05/31/UML%E7%B1%BB%E5%9B%BE%E5%9F%BA%E6%9C%AC%E5%85%B3%E7%B3%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +390,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -322,7 +490,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -475,7 +643,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -624,7 +792,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -976,7 +1144,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1145,7 +1313,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1279,7 +1447,7 @@ P(wi-1) ≈ #(wi-1)/#
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1358,7 +1526,7 @@ P(wi-1) ≈ #(wi-1)/#
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1443,7 +1611,7 @@ P(wi-1) ≈ #(wi-1)/#
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1534,234 +1702,6 @@ P(wi-1) ≈ #(wi-1)/#
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/03/06/R%E8%AF%AD%E8%A8%80%EF%BC%8802%EF%BC%89%E7%BB%98%E5%9B%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/03/06/R%E8%AF%AD%E8%A8%80%EF%BC%8802%EF%BC%89%E7%BB%98%E5%9B%BE/" class="post-title-link" itemprop="url">R语言（02）绘图</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-03-06 18:08:55" itemprop="dateCreated datePublished" datetime="2016-03-06T18:08:55+00:00">2016-03-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/R/" itemprop="url" rel="index"><span itemprop="name">R</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基本图形的绘制"><a href="#基本图形的绘制" class="headerlink" title="基本图形的绘制"></a>基本图形的绘制</h2><p>在<strong>R语言(01)</strong>中，最后的一个综合训练，我们生成了一部分数据，现在我们就用这些数据为例，来展示R是如何绘制一些图表的。</p>
-<h3 id="数据的导入"><a href="#数据的导入" class="headerlink" title="数据的导入"></a>数据的导入</h3><p>通过读取数据文件，我们可以导入之前产生的数据。</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; x=read.table(<span class="string">&quot;mark.txt&quot;</span>,header=<span class="built_in">F</span>)</span><br><span class="line">&gt; x</span><br><span class="line">          V1  V2 V3  V4</span><br><span class="line">1   <span class="number">10378001</span>  <span class="number">99</span> <span class="number">73</span>  <span class="number">98</span></span><br><span class="line">2   <span class="number">10378002</span>  <span class="number">86</span> <span class="number">95</span>  <span class="number">90</span></span><br><span class="line">3   <span class="number">10378003</span>  <span class="number">98</span> <span class="number">85</span>  <span class="number">84</span></span><br><span class="line">4   <span class="number">10378004</span>  <span class="number">90</span> <span class="number">81</span> <span class="number">100</span></span><br><span class="line">5   <span class="number">10378005</span>  <span class="number">81</span> <span class="number">88</span>  <span class="number">96</span></span><br><span class="line">6   <span class="number">10378006</span>  <span class="number">99</span> <span class="number">63</span>  <span class="number">61</span></span><br><span class="line">7   <span class="number">10378007</span>  <span class="number">88</span> <span class="number">79</span> <span class="number">100</span></span><br><span class="line">8   <span class="number">10378008</span>  <span class="number">88</span> <span class="number">92</span>  <span class="number">95</span></span><br><span class="line">9   <span class="number">10378009</span>  <span class="number">91</span> <span class="number">91</span> <span class="number">100</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>其中V1列是学好，V2是均匀分布的成绩数据，V3和V4是正太分布的数据，其中V4对超过100的数据取100。</p>
-<h3 id="直方图分析-hist"><a href="#直方图分析-hist" class="headerlink" title="直方图分析 hist()"></a>直方图分析 hist()</h3><p>绘制直方图函数hist()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V2)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_01.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V3)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_02.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hist(x$V4)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_03.png" alt=""></p>
-<h3 id="散点图-plot"><a href="#散点图-plot" class="headerlink" title="散点图 plot()"></a>散点图 plot()</h3><p>散点图绘制函数plot()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(x$V1,x$V2)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_04.png" alt=""></p>
-<h3 id="柱状图barplot"><a href="#柱状图barplot" class="headerlink" title="柱状图barplot()"></a>柱状图barplot()</h3><p>列联函数table(),柱状图绘制函数barplot()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; table(x$V2)</span><br><span class="line"></span><br><span class="line"> <span class="number">80</span>  <span class="number">81</span>  <span class="number">82</span>  <span class="number">83</span>  <span class="number">84</span>  <span class="number">85</span>  <span class="number">86</span>  <span class="number">87</span>  <span class="number">88</span>  <span class="number">89</span>  <span class="number">90</span>  <span class="number">91</span>  <span class="number">92</span>  <span class="number">93</span>  <span class="number">94</span>  <span class="number">95</span>  <span class="number">96</span>  <span class="number">97</span>  <span class="number">98</span>  <span class="number">99</span> </span><br><span class="line">  <span class="number">1</span>   <span class="number">5</span>   <span class="number">7</span>   <span class="number">3</span>   <span class="number">3</span>   <span class="number">4</span>   <span class="number">6</span>   <span class="number">8</span>   <span class="number">7</span>   <span class="number">4</span>   <span class="number">7</span>   <span class="number">8</span>   <span class="number">4</span>   <span class="number">4</span>   <span class="number">5</span>   <span class="number">2</span>   <span class="number">6</span>   <span class="number">2</span>   <span class="number">4</span>   <span class="number">8</span> </span><br><span class="line">100 </span><br><span class="line">  <span class="number">2</span> </span><br><span class="line">&gt; barplot(table(x$V2))</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_05.png" alt=""></p>
-<h3 id="饼图-pie"><a href="#饼图-pie" class="headerlink" title="饼图 pie()"></a>饼图 pie()</h3><p>饼图绘制函数pie()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pie(table(x$V2))</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_06.png" alt=""></p>
-<h3 id="箱尾图"><a href="#箱尾图" class="headerlink" title="箱尾图"></a>箱尾图</h3><ul>
-<li>箱子的上下横线为样本的25%和75%分为数</li>
-<li>箱子中间的横线为样本的中位数</li>
-<li>上下延伸的直线称为尾线，尾线的尽头为最高值和最低值</li>
-<li>异常值是箱外部的个别与大多数样本相距很远的样本数据</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x$V2,x$V2,x$V3)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_07.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x[<span class="number">2</span>:<span class="number">4</span>],col=<span class="built_in">c</span>(<span class="string">&quot;red&quot;</span>,<span class="string">&quot;green&quot;</span>,<span class="string">&quot;blue&quot;</span>),notch=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
-<p>x[2:4] 是值第2到4列</p>
-<p>col=c(“red”,”green”,”blue”) 分别指定每个箱尾图的颜色</p>
-<p>notch=T 是控制中间的缺口的  主要是让用户更清楚的看到中位线</p>
-<p><img src="/img/r_02_08.png" alt=""></p>
-<p>水平放置的箱尾图</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; boxplot(x$V2,x$V2,x$V3,horizontal=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
-<p>horizontal=T 设置水平显示</p>
-<p><img src="/img/r_02_09.png" alt=""></p>
-<h3 id="星相图-stars"><a href="#星相图-stars" class="headerlink" title="星相图 stars()"></a>星相图 stars()</h3><ul>
-<li>每个观测单位的数值表示为一个图形</li>
-<li>每个图的每个角表示一个变量，字符串类型会标注在图的下方</li>
-<li>角线的长度表达值的大小</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; stars(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)])</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_10.png" alt=""></p>
-<p>星相图另一种表示：雷达图</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; stars(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)],full=<span class="built_in">T</span>,draw.segment=<span class="built_in">T</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_11.png" alt=""></p>
-<h3 id="人脸图"><a href="#人脸图" class="headerlink" title="人脸图"></a>人脸图</h3><ul>
-<li>用五官的宽度和高度来描绘数值</li>
-<li>人对脸谱高度敏感和强记忆</li>
-<li>适合较少样本的情况</li>
-</ul>
-<p>安装aplpack包</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; require(<span class="string">&quot;aplpack&quot;</span>)</span><br><span class="line">&gt; faces(x[<span class="built_in">c</span>(<span class="string">&quot;V2&quot;</span>,<span class="string">&quot;V3&quot;</span>,<span class="string">&quot;V4&quot;</span>)])</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_12.png" alt=""></p>
-<p>其它脸谱图</p>
-<p>安装TeachingDemos包</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; require(<span class="string">&quot;TeachingDemos&quot;</span>)</span><br><span class="line">&gt; faces2(x)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_13.png" alt=""></p>
-<h3 id="茎叶图-stem"><a href="#茎叶图-stem" class="headerlink" title="茎叶图 stem()"></a>茎叶图 stem()</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; stem(x$V3)</span><br><span class="line"></span><br><span class="line">  The decimal point is <span class="number">1</span> digit(s) to the right of the |</span><br><span class="line"></span><br><span class="line">  <span class="number">6</span> | <span class="number">0233</span></span><br><span class="line">  <span class="number">6</span> | <span class="number">88</span></span><br><span class="line">  <span class="number">7</span> | <span class="number">000111222333333</span></span><br><span class="line">  <span class="number">7</span> | <span class="number">55556677888888888999999999</span></span><br><span class="line">  <span class="number">8</span> | <span class="number">0000011111112223333333444444</span></span><br><span class="line">  <span class="number">8</span> | <span class="number">5556666788888899</span></span><br><span class="line">  <span class="number">9</span> | <span class="number">001224</span></span><br><span class="line">  <span class="number">9</span> | <span class="number">559</span></span><br></pre></td></tr></table></figure>
-<p>6 | 0233  代表60,62,63,63四个样本数据.茎叶图没有图像输出，是一种高密集型的数据展现形式。</p>
-<h3 id="QQ图"><a href="#QQ图" class="headerlink" title="QQ图"></a>QQ图</h3><ul>
-<li>可用于判断是否正态分布(服从正态分布的点基本都处于同一直线)</li>
-<li>直线的斜率是标准差，截距是均值</li>
-<li>点的散布越接近直线，则越接近正态分布</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqnorm(x$V2)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_14.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqline(x$V2)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_15.png" alt=""></p>
-<p>x$V3 数据服从正态分布，点基本都处于同一直线上：</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqnorm(x$V3)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_16.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; qqline(x$V3)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_17.png" alt=""></p>
-<h2 id="图形绘制进阶"><a href="#图形绘制进阶" class="headerlink" title="图形绘制进阶"></a>图形绘制进阶</h2><h3 id="散点图进一步设置"><a href="#散点图进一步设置" class="headerlink" title="散点图进一步设置"></a>散点图进一步设置</h3><p>在mac上绘图时显示中文，需要安装以下安装包：</p>
-<ul>
-<li>showtext</li>
-<li>showtextdb</li>
-<li>sysfonts</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(sysfonts)</span><br><span class="line">&gt; library(showtext)</span><br><span class="line">&gt; dev.new() <span class="comment">#如果已打开图形设备，本句可以不用</span></span><br><span class="line">&gt; showtext.begin()</span><br></pre></td></tr></table></figure>
-<p>加入这几句之后，绘制的图像中就可以正常显示中文了。</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(x$V2,x$V3,</span><br><span class="line">main=<span class="string">&quot;数学分析与线性代数成绩的关系&quot;</span>,</span><br><span class="line">xlab=<span class="string">&quot;数学分析&quot;</span>,</span><br><span class="line">ylab=<span class="string">&quot;线性代数&quot;</span>,</span><br><span class="line">xlim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">100</span>),</span><br><span class="line">ylim=<span class="built_in">c</span>(<span class="number">0</span>,<span class="number">100</span>),</span><br><span class="line">xaxs=<span class="string">&quot;i&quot;</span>, <span class="comment">#Set x axis style as internal</span></span><br><span class="line">yaxs=<span class="string">&quot;i&quot;</span>, <span class="comment">#Set y axis style as internal</span></span><br><span class="line">col=<span class="string">&quot;red&quot;</span>, <span class="comment">#Set the color of plotting symbol to red</span></span><br><span class="line">pch=<span class="number">19</span>) <span class="comment">#Set the plotting symbol to filled dots</span></span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_18.png" alt=""></p>
-<h3 id="连线图"><a href="#连线图" class="headerlink" title="连线图"></a>连线图</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; a=<span class="built_in">c</span>(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>)</span><br><span class="line">&gt; b=<span class="built_in">c</span>(<span class="number">4</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">12</span>)</span><br><span class="line">&gt; plot(a,b,type=<span class="string">&quot;l&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>type=”l” 代表想字母”l”一样，是折现。</p>
-<p><img src="/img/r_02_19.png" alt=""></p>
-<h3 id="密度图-density"><a href="#密度图-density" class="headerlink" title="密度图 density()"></a>密度图 density()</h3><p>函数density()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(density(rnorm(<span class="number">1000</span>)))</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_20.png" alt=""></p>
-<h3 id="R中的内置数据集"><a href="#R中的内置数据集" class="headerlink" title="R中的内置数据集"></a>R中的内置数据集</h3><p>在R中输入data可查看内置数据集：</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data()</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_21.png" alt=""></p>
-<h3 id="热力图-heatmap"><a href="#热力图-heatmap" class="headerlink" title="热力图 heatmap()"></a>热力图 heatmap()</h3><p>利用内置的mtcars数据集绘制</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; heatmap(as.matrix(mtcars),</span><br><span class="line">Rowv=<span class="literal">NA</span>,</span><br><span class="line">Colv=<span class="literal">NA</span>,</span><br><span class="line">col=heat.colors(<span class="number">256</span>),</span><br><span class="line">scale=<span class="string">&quot;column&quot;</span>,</span><br><span class="line">margins=<span class="built_in">c</span>(<span class="number">2</span>,<span class="number">8</span>),</span><br><span class="line">main=<span class="string">&quot;Car characteristics by Model&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_22.png" alt=""></p>
-<h3 id="Iris-鸢尾花-数据集"><a href="#Iris-鸢尾花-数据集" class="headerlink" title="Iris(鸢尾花)数据集"></a>Iris(鸢尾花)数据集</h3><ul>
-<li>Sepal花萼</li>
-<li>Petal花瓣</li>
-<li>Species种属</li>
-</ul>
-<p>这是一个非常著名的数据集，Iris也称鸢尾花卉数据集，是一类多重变量分析的数据集。通过花萼长度，花萼宽度，花瓣长度，花瓣宽度4个属性预测鸢尾花卉属于（Setosa，Versicolour，Virginica）三个种类中的哪一类。</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; iris</span><br><span class="line">    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species</span><br><span class="line">1            <span class="number">5.1</span>         <span class="number">3.5</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">2            <span class="number">4.9</span>         <span class="number">3.0</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">3            <span class="number">4.7</span>         <span class="number">3.2</span>          <span class="number">1.3</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">4            <span class="number">4.6</span>         <span class="number">3.1</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">5            <span class="number">5.0</span>         <span class="number">3.6</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">6            <span class="number">5.4</span>         <span class="number">3.9</span>          <span class="number">1.7</span>         <span class="number">0.4</span>     setosa</span><br><span class="line">7            <span class="number">4.6</span>         <span class="number">3.4</span>          <span class="number">1.4</span>         <span class="number">0.3</span>     setosa</span><br><span class="line">8            <span class="number">5.0</span>         <span class="number">3.4</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">9            <span class="number">4.4</span>         <span class="number">2.9</span>          <span class="number">1.4</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">10           <span class="number">4.9</span>         <span class="number">3.1</span>          <span class="number">1.5</span>         <span class="number">0.1</span>     setosa</span><br><span class="line">11           <span class="number">5.4</span>         <span class="number">3.7</span>          <span class="number">1.5</span>         <span class="number">0.2</span>     setosa</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h3 id="向日葵散点图-sunflowerplot"><a href="#向日葵散点图-sunflowerplot" class="headerlink" title="向日葵散点图 sunflowerplot()"></a>向日葵散点图 sunflowerplot()</h3><ul>
-<li>用来克服散点图中数据点重叠问题</li>
-<li>在有重叠的地方用一朵“向日葵花”的花瓣数目来表示重叠数据个数</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; sunflowerplot(iris[,<span class="number">3</span>:<span class="number">4</span>],col=<span class="string">&quot;gold&quot;</span>,seg.col=<span class="string">&quot;gold&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_23.png" alt=""></p>
-<h3 id="散点图集"><a href="#散点图集" class="headerlink" title="散点图集"></a>散点图集</h3><ul>
-<li>遍历样本中全部的变量配对画出二元图</li>
-<li>直观地了解所有变量之间的关系</li>
-</ul>
-<p>将iris数据集的第1到4列的数据取出，两两组合，形成散点图。</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pairs(iris[,<span class="number">1</span>:<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_24.png" alt=""></p>
-<p>用plot也可以实现同样的效果</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; plot(iris[,<span class="number">1</span>:<span class="number">4</span>],</span><br><span class="line">main=<span class="string">&quot;Relationships between </span></span><br><span class="line"><span class="string">characteristics of iris flowers&quot;</span>,</span><br><span class="line">pch=<span class="number">19</span>,</span><br><span class="line">col=<span class="string">&quot;blue&quot;</span>,</span><br><span class="line">cex=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_25.png" alt=""></p>
-<ul>
-<li>利用par()在同一个device输出多个散点图</li>
-<li>Par命令博大精深，用于设置绘图参数，help(par)</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; par(mfrow=<span class="built_in">c</span>(<span class="number">3</span>,<span class="number">1</span>))</span><br><span class="line">&gt; plot(x$V2,x$V3);plot(x$V3,x$V4);plot(x$V4,x$V1)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_26.png" alt=""></p>
-<p>par(mfrow=c(3,1))   把屏幕划分成3个水平区域<br>plot(x1,x2);plot(x2,x3);plot(x3,x1);    分别将三个散点图显示在这三块区域中。</p>
-<blockquote>
-<p>如果想深入学习R语言图像绘制，建议对par()函数的文档深入学习，并且学习《R Graphs Cookbook》这本书，会有很大收获的。</p>
-</blockquote>
-<h3 id="颜色colors"><a href="#颜色colors" class="headerlink" title="颜色colors()"></a>颜色colors()</h3><p>查看有哪些颜色 colors()</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; colors()</span><br><span class="line">  [<span class="number">1</span>] <span class="string">&quot;white&quot;</span>                <span class="string">&quot;aliceblue&quot;</span>            <span class="string">&quot;antiquewhite&quot;</span>        </span><br><span class="line">  [<span class="number">4</span>] <span class="string">&quot;antiquewhite1&quot;</span>        <span class="string">&quot;antiquewhite2&quot;</span>        <span class="string">&quot;antiquewhite3&quot;</span>       </span><br><span class="line">  [<span class="number">7</span>] <span class="string">&quot;antiquewhite4&quot;</span>        <span class="string">&quot;aquamarine&quot;</span>           <span class="string">&quot;aquamarine1&quot;</span>         </span><br><span class="line"> [<span class="number">10</span>] <span class="string">&quot;aquamarine2&quot;</span>          <span class="string">&quot;aquamarine3&quot;</span>          <span class="string">&quot;aquamarine4&quot;</span>         </span><br><span class="line"> [<span class="number">13</span>] <span class="string">&quot;azure&quot;</span>                <span class="string">&quot;azure1&quot;</span>               <span class="string">&quot;azure2&quot;</span>              </span><br><span class="line"> [<span class="number">16</span>] <span class="string">&quot;azure3&quot;</span>               <span class="string">&quot;azure4&quot;</span>               <span class="string">&quot;beige&quot;</span>               </span><br><span class="line"> [<span class="number">19</span>] <span class="string">&quot;bisque&quot;</span>               <span class="string">&quot;bisque1&quot;</span>              <span class="string">&quot;bisque2&quot;</span>             </span><br><span class="line"> [<span class="number">22</span>] <span class="string">&quot;bisque3&quot;</span>              <span class="string">&quot;bisque4&quot;</span>              <span class="string">&quot;black&quot;</span>               </span><br><span class="line"> [<span class="number">25</span>] <span class="string">&quot;blanchedalmond&quot;</span>       <span class="string">&quot;blue&quot;</span>                 <span class="string">&quot;blue1&quot;</span>               </span><br><span class="line"> [<span class="number">28</span>] <span class="string">&quot;blue2&quot;</span>                <span class="string">&quot;blue3&quot;</span>                <span class="string">&quot;blue4&quot;</span>               </span><br><span class="line"> [<span class="number">31</span>] <span class="string">&quot;blueviolet&quot;</span>           <span class="string">&quot;brown&quot;</span>                <span class="string">&quot;brown1&quot;</span>              </span><br><span class="line"> [<span class="number">34</span>] <span class="string">&quot;brown2&quot;</span>               <span class="string">&quot;brown3&quot;</span>               <span class="string">&quot;brown4&quot;</span>        </span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>绘图设备</li>
-</ul>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; dev.cur() <span class="comment"># 当前图形窗</span></span><br><span class="line">&gt; dev.list() <span class="comment"># 查看现在所有的图形窗</span></span><br><span class="line">&gt; dev.next(which=dev.cur()) <span class="comment">#某个图形窗的后一个图形窗</span></span><br><span class="line">&gt; dev.prev(which=dev.cur()) <span class="comment">#某个图形窗的前一个图形窗</span></span><br><span class="line">&gt; dev.off(which=dev.cur()) <span class="comment">#关闭某个图形窗</span></span><br><span class="line">&gt; dev.set(which=dev.next()) <span class="comment">#设置图形窗</span></span><br><span class="line">&gt; dev.new(...) <span class="comment">#开启新的图形窗</span></span><br><span class="line">&gt; graphics.off() <span class="comment">#关闭整个窗口</span></span><br></pre></td></tr></table></figure>
-<h3 id="三维散点图"><a href="#三维散点图" class="headerlink" title="三维散点图"></a>三维散点图</h3><p>安装scatterplot3d包</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(scatterplot3d)</span><br><span class="line">&gt; scatterplot3d(x[<span class="number">2</span>:<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_27.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; x&lt;-y&lt;-seq(-<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="built_in">pi</span>/<span class="number">15</span>)</span><br><span class="line">&gt; f&lt;-<span class="keyword">function</span>(x,y)<span class="built_in">sin</span>(x)*<span class="built_in">sin</span>(y)</span><br><span class="line">&gt; z&lt;-outer(x,y,f)</span><br><span class="line">&gt; contour(x,y,z,col=<span class="string">&quot;blue&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_28.png" alt=""></p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; contour(x,y,z,col=<span class="string">&quot;blue&quot;</span>)</span><br><span class="line">&gt; persp(x,y,z,theta=<span class="number">30</span>,phi=<span class="number">30</span>,expand=<span class="number">0.7</span>,col=<span class="string">&quot;lightblue&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_29.png" alt=""></p>
-<h3 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h3><p>安装maps包</p>
-<p>显示美国地图：</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; library(maps)</span><br><span class="line">&gt; map(<span class="string">&quot;state&quot;</span>,interior=<span class="built_in">F</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_30.png" alt=""></p>
-<blockquote>
-<p>state 代表美国</p>
-</blockquote>
-<p>世界地图的绘制：</p>
-<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; map(<span class="string">&quot;world&quot;</span>,fill=<span class="built_in">T</span>,col=heat.colors(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/img/r_02_31.png" alt=""></p>
-<h3 id="社交数据可视化"><a href="#社交数据可视化" class="headerlink" title="社交数据可视化"></a>社交数据可视化</h3><p>通过R可以画出如下的facebook社交关系图:</p>
-<p><img src="/img/r_02_32.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1833,7 +1773,7 @@ P(wi-1) ≈ #(wi-1)/#
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

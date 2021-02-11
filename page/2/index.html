@@ -191,6 +191,155 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/26/Docker%E5%85%A5%E9%97%A8Part3-%E6%9C%8D%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/26/Docker%E5%85%A5%E9%97%A8Part3-%E6%9C%8D%E5%8A%A1/" class="post-title-link" itemprop="url">Docker入门Part3-服务</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-26 10:12:00" itemprop="dateCreated datePublished" datetime="2018-04-26T10:12:00+00:00">2018-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>安装<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">Docker 1.13或更高的版本</a>。</li>
+<li>获取<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/overview/">Docker Compose</a>。在<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>和<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>中，它已预先安装，这一步很方便。在Linux系统上，您需要<a target="_blank" rel="noopener" href="https://github.com/docker/compose/releases">直接安装它</a>。在没有<em>Hyper-V</em>的Windows 10系统上，使用<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>。</li>
+<li>阅读Part1部分。</li>
+<li>学习Part2中如何创建容器。</li>
+<li>确定你已经通过<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#share-your-image">上传到仓库</a>的方式发布了<code>friendlyhello</code>镜像。我们在这里使用共享镜像。</li>
+<li>确定你的镜像作为一个已部署的容器。运行下面这条命令，插入你的<code>username</code>、<code>repo</code>、和<code>tag</code>:<code>docker run -p 80:80 username/repo:tag</code>，然后访问<code>http://localhost/</code>。</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在第三部分，我们将扩展我们的应用并实现负载均衡。为了做到这一点，我们必须在分布式应用程序的层次结构中升一级：<strong>service(服务)</strong>。</p>
+<ul>
+<li>Stack</li>
+<li><strong>Services(服务 你在这里)</strong></li>
+<li>Container（参见 part2）</li>
+</ul>
+<h2 id="关于Services"><a href="#关于Services" class="headerlink" title="关于Services"></a>关于Services</h2><p>在一个分布式应用中，应用的不同部分被称为”services”。例如，想象你有一个影片分享站点，它也许包括一个关于将应用数据存储在数据库中的service，一个在用户上传一些东西之后在后台对其进行转码操作的service，一个前端的服务，等等。</p>
+<p>Services实际上只是“生产中的容器”。service只运行一个镜像，但用于编纂镜像的运行方式—应该使用哪个端口，应该运行多少个容器副本以便服务具有所需的容量，等等。缩放service会更改运行该软件的容器实例的数量，从而为流程中的服务分配更多计算资源。</p>
+<p>幸运的是，使用Docker平台定义，运行和扩展services非常简单 — 仅仅写一个<code>docker-compose.yml</code>文件即可。</p>
+<h2 id="你的第一个docker-compose-yml文件"><a href="#你的第一个docker-compose-yml文件" class="headerlink" title="你的第一个docker-compose.yml文件"></a>你的第一个<code>docker-compose.yml</code>文件</h2><p>一个<code>docker-compose.yml</code>文件是一个用于定义Docker容器在生产环境中的行为的YAML文件。</p>
+<h3 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a><code>docker-compose.yml</code></h3><p>将此文件另存为<code>docker-compose.yml</code>，无论你在哪里。确保您已将第2部分中创建的镜像推送到注册表中，并通根据你的镜像的具体的信息替换掉<code>username/repo:tag</code>部分来更新此<code>.yml</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    # replace username&#x2F;repo:tag with your name and image details</span><br><span class="line">    image: username&#x2F;repo:tag</span><br><span class="line">    deploy:</span><br><span class="line">      replicas: 5</span><br><span class="line">      resources:</span><br><span class="line">        limits:</span><br><span class="line">          cpus: &quot;0.1&quot;</span><br><span class="line">          memory: 50M</span><br><span class="line">      restart_policy:</span><br><span class="line">        condition: on-failure</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;80:80&quot;</span><br><span class="line">    networks:</span><br><span class="line">      - webnet</span><br><span class="line">networks:</span><br><span class="line">  webnet:</span><br></pre></td></tr></table></figure>
+<p>这个<code>docker-compose.yml</code>文件告诉Docker要做以下事情：</p>
+<ul>
+<li>按照Part2中的方式从仓库中下拉我们的镜像。</li>
+<li>运行镜像的5个实例作为一个名为<code>web</code>的service，限制每个实例，最多占用10%CPU(所有的核)、50MB的RAM。</li>
+<li>如果一个容器失败了立刻重启。</li>
+<li>将主机上的端口80映射到<code>web</code>的端口80。</li>
+<li>指示<code>web</code>容器通过名为<code>webnet</code>负载均衡网络共享80端口。（在内部，容器本身在临时端口上发布到<code>web</code>的80端口）。</li>
+<li>使用默认设置（这是一个负载均衡覆盖网络）定义<code>webnet</code>网络。</li>
+</ul>
+<h2 id="运行你的全新的负载均衡应用"><a href="#运行你的全新的负载均衡应用" class="headerlink" title="运行你的全新的负载均衡应用"></a>运行你的全新的负载均衡应用</h2><p>在我们可以使用<code>docker stack deploy</code>命令之前，我们首先运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：我们在Part4部分深入了解该命令的含义。如果你不运行<code>docker swarm init</code>命令的话，你会得到这样一条错误信息：”this node is not a swarm manager.”。</p>
+</blockquote>
+<p>现在，让我们来运行它吧。你需要给你的应用起一个名字。这里我们起名为<code>getstartedlab</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>我们的单个service堆栈在一台主机上运行了5个部署映像的容器实例。让我们来进一步了解。</p>
+<p>在我们的应用程序中获取一项service的service ID：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ls</span><br></pre></td></tr></table></figure>
+<p>查找<code>web</code>service的输出信息，找到那个以你的应用程序名称作为前缀信息。如果您将其命名为与此示例中显示的相同，那么这里的名称为<code>getstartedlab_web</code>。还列出了service ID以及副本数量，镜像名称和对外暴露的端口。</p>
+<p>在service中运行的单个容器称为<strong>task(任务)</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ps getstartedlab_web</span><br></pre></td></tr></table></figure>
+<p>如果您只列出系统中的所有容器，任务也会显示出来，它不会被service所过滤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container ls -q</span><br></pre></td></tr></table></figure>
+<p>你可以运行几次<code>curl -4 http://localhost</code>，或者通过浏览器打开这个链接尝试刷新几次。</p>
+<p><img src="/img/18_04_26/001.png" alt=""></p>
+<p>无论哪种方式，容器ID都会发生变化，从而显示负载均衡;在每个请求中，以循环方式选择5个任务中的一个来响应。容器ID与前一个命令(<code>docker container ls -q</code>)的输出相匹配。</p>
+<blockquote>
+<p><strong>在Windows10下运行？</strong></p>
+<p>Windows10的PowerShell可以使用<code>curl</code>命令，但如果不行的话，你可以尝试获取一个Linux终端模拟器，例如<a target="_blank" rel="noopener" href="https://git-for-windows.github.io/">Git BASH</a>或者下载很相似的<a target="_blank" rel="noopener" href="http://gnuwin32.sourceforge.net/packages/wget.htm">wget for Windows</a>。</p>
+<p><strong>响应时间慢？</strong></p>
+<p>根据您的环境的网络配置，容器可能需要长达30秒才能响应HTTP请求。这并不代表Docker或群集性能，而是我们稍后在本教程中讨论的未满足的Redis依赖项。就目前而言，访客柜台并不是出于同样的原因;我们还没有添加service来保存数据。</p>
+</blockquote>
+<h2 id="扩展应用程序"><a href="#扩展应用程序" class="headerlink" title="扩展应用程序"></a>扩展应用程序</h2><p>你可以通过修改<code>docker-compose.yml</code>中<code>replicas</code>的值来扩展应用，保存<code>docker-compose.yml</code>的改变之后，重新运行<code>docker stack deploy</code>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>Docker执行一个就地更新，不需要先撤下堆栈或杀死任何容器。</p>
+<p>现在，重新运行<code>docker container ls -q</code>以查看重新配置的已部署实例。如果您扩大副本，则会启动更多任务，因此还会启动更多容器。</p>
+<h3 id="撤下应用和swarm"><a href="#撤下应用和swarm" class="headerlink" title="撤下应用和swarm"></a>撤下应用和swarm</h3><ul>
+<li>通过指令<code>docker stack rm</code>来撤下应用：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
+<ul>
+<li>撤下swarm</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure>
+<p>用Docker新建并扩展您的应用程序非常简单。您已经朝着学习如何在生产中运行容器迈出了一大步。接下来，您将学习如何将这个应用程序作为Docker机器群集上的真正群体运行。</p>
+<blockquote>
+<p>注意：像这里的Compose文件是用于通过Docker来定义应用程序，并且可以通过<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-cloud/">Docker Cloud</a>上传到云端，或者任何带有<a target="_blank" rel="noopener" href="https://www.docker.com/enterprise-edition">Docker 企业版</a>的云服务上。</p>
+</blockquote>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>总而言之，在输入<code>docker run</code>运行时非常简单，生产中的容器真正实现将其作为服务运行。服务在Compose文件中编写容器的行为，此文件可用于缩放，限制和重新部署我们的应用程序。对服务的更改可以在运行时适用，使用启动服务的相同命令：<code>docker stack deploy</code>。</p>
+<p>现阶段需要学习的一些命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker stack ls                                            # List stacks or apps</span><br><span class="line">docker stack deploy -c &lt;composefile&gt; &lt;appname&gt;  # Run the specified Compose file</span><br><span class="line">docker service ls                 # List running services associated with an app</span><br><span class="line">docker service ps &lt;service&gt;                  # List tasks associated with an app</span><br><span class="line">docker inspect &lt;task or container&gt;                   # Inspect task or container</span><br><span class="line">docker container ls -q                                      # List container IDs</span><br><span class="line">docker stack rm &lt;appname&gt;                             # Tear down an application</span><br><span class="line">docker swarm leave --force      # Take down a single node swarm from the manager</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/25/Docker%E5%85%A5%E9%97%A8Part2-%E5%AE%B9%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +371,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -391,7 +540,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -553,7 +702,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1412,7 +1561,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1576,7 +1725,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1837,7 +1986,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1962,7 +2111,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2047,7 +2196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2160,7 +2309,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2314,215 +2463,6 @@ P(y\_i \mid x\_i; W) = \frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j} }</script><p>这个
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【斯坦福cs231n】2-1图像分类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-30 13:27:00" itemprop="dateCreated datePublished" datetime="2017-07-30T13:27:00+00:00">2017-07-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 09:49:52" itemprop="dateModified" datetime="2021-02-11T09:49:52+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/" itemprop="url" rel="index"><span itemprop="name">cs231n</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="图像分类"><a href="#图像分类" class="headerlink" title="图像分类"></a>图像分类</h2><p><strong>动机.</strong>在这一部分，我们将介绍图像分类问题，这是将输入图像分配到一组固定类别标签中的某一个标签的任务。尽管这个问题很简单，但它是计算机视觉的核心问题之一，并且有着各种各样的实际应用。此外，正如我们将在后面看到的，许多其它不同的计算机视觉任务（例如对象检测，分割）都可以被简化为图像识别问题。</p>
-<p><strong>示例.</strong>例如，在下面的图像识别的例子中，图像分类模型接收单张图片，并对四个标签{cat，dog，hat，mug}的概率赋值。如图所示，请记住，对于计算机而言，图像被表示为一个大的三维数组。在这个例子中，猫图像是248像素宽，400像素高，并且有三个颜色通道：红色，绿色，蓝色（或简称RGB）。因此，该图像由248 x 400 x 3数字组成，总共297,600个数字。其中每个数字都是一个范围在0（黑色）到255（白色）的整数。我们的任务就是把这将近30万个数字转成像{cat}这样的单一的标签。</p>
-<p><img src="/img/17_07_30/001.png" alt=""></p>
-<blockquote>
-<p>图像分类的任务是预测给定图像的单个标签（或者类似这里的一个标签的概率分布，用于表示我们信心）。图像是包含0到255整数的3维整数，大小是宽度x高度x3。其中3表示RGB三色通道。</p>
-</blockquote>
-<hr>
-<p><strong>挑战.</strong>由于视觉识别问题（例如识别“猫”的例子）对于人类来说，是再简单不过的问题，但从计算机视觉算法的角度来重新审视这个问题，就充满了挑战。在我们下面提出的这些挑战中，请记住图像的原始表示形式为3-D阵列的亮度值：</p>
-<ul>
-<li><strong>不同的观察点(Viewpoint variation)</strong>照相机可以从多个方向来拍摄同一个实例对象。</li>
-<li><strong>大小变化(Scale variation)</strong>视觉分类通常会出现不同的尺寸变化（这里包含在现实世界中的尺寸，不仅仅是针对图像中的大小程度）。</li>
-<li><strong>变形(Deformation)</strong>许多物体并不是刚体，并且可以以极端的方式变形。</li>
-<li><strong>闭塞(Occlusion)</strong>我们所观察的目标对象可能处于被遮挡的状态。有的时候我们只能看到对象的一小部分（像素比较少）。</li>
-<li><strong>光照情况(Illumination conditions)</strong>照明的效果在像素级上的影响是剧烈的。</li>
-<li><strong>背景杂波(Background clutter)</strong>我们所观察的对象可能融入到他们的背景环境中，使其难以识别。</li>
-<li><strong>类型内部变化(Intra-class variation)</strong>我们所关心的类别通常会比较宽泛，比如椅子。不同类型的椅子有着不同的外观，但他们都属于“椅子”这一类别。</li>
-</ul>
-<p>一个好的图片识别分类模型必须在所有这些情况交叉出现的情况下，都能产出不变的结果输出，同时保持类别变化时的敏感性。</p>
-<p><img src="/img/17_07_30/002.jpeg" alt=""></p>
-<hr>
-<p><strong>数据驱动的方法.</strong>如何编写一个将图像分类到不同类别的算法呢？与编写一个像数字排序这样的算法不同的是，如何编写一个识别猫的算法的方法并不是显式的。我们不会视图在代码中指定每个不同的类别在代码中是什么样的，我们所采取的方法就像是在教一个小孩子一样：我们首先为每个类别提供许多个实例，然后开发学习算法，通过学习算法来输入这些类别实例图像，学习到这些每个类别的视觉外观。这种方法被称为数据驱动方法，因为它依赖于事先已经被标记过的标签的图像的训练数据集：</p>
-<p><img src="/img/17_07_30/003.jpg" alt=""></p>
-<blockquote>
-<p>上图是四个视觉类别的训练集示例。在实际情况中，我们可能会有数千种类别和数十万种图像。</p>
-</blockquote>
-<hr>
-<p><strong>图像分类流水线.</strong>正如我们已经看到的，图像分类中的任务是使用一个像素数组来代表一个图像，并且为其分配一个标签。完整的流水线可以表示成如下的流程：</p>
-<ul>
-<li><strong>输入：</strong>我们的输入由一组N个图像组成，每一个都标有K个不同的类别。我们将这些数据称为训练集。</li>
-<li><strong>学习：</strong>我们的任务是使用训练集来了解每一个类别的样子。我们将此步骤称为<em>训练分类器（training a classifier）</em>，或者<em>学习模型（learning a model）</em>。</li>
-<li><strong>评估：</strong>最后，我们通过预测一组从未见过的新图像的标签来评估分类器的质量。然后，我们将这些图像的真实标签与分类器预测的图像进行比较。直观地说，我们希望达到的效果是大多数预测结果与真实答案（我们称之为ground truth）相匹配。</li>
-</ul>
-<h2 id="最邻近分类器（Nearest-Neighbor-Classifier）"><a href="#最邻近分类器（Nearest-Neighbor-Classifier）" class="headerlink" title="最邻近分类器（Nearest Neighbor Classifier）"></a>最邻近分类器（Nearest Neighbor Classifier）</h2><p>我们将开发一种叫做<strong>最邻近分类器</strong>，来作为我们的第一个图片分类的实现。这种分类器与卷积网络无关，在实践中很少使用，但它可以使我们了解处理图像分类问题的基本方法。</p>
-<p><strong>示例图像分类数据集：CIFAR-10.</strong><a target="_blank" rel="noopener" href="http://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a>是一个流行的toy级别的图像分类数据集。这个数据集包含60,000个长宽都是32像素的小图片。每个图片都有一个标签（例如“飞机，汽车，鸟等”）。这60,000张图像被划分为50,000张图像的训练集和10,000张图像的测试集。在下面的图片中，您可以看到10个类别中的每个类别的10个随机示例图像：</p>
-<p><img src="/img/17_07_30/004.jpg" alt=""></p>
-<blockquote>
-<p>左图：来自CIFAR-10数据集的示例图像。右图：第一列显示几个测试图像，并且在每个测试图像旁边，我们根据像素差异显示训练集中的前10个最近邻居。</p>
-</blockquote>
-<hr>
-<p>假设现在我们有50,000张训练图像（50,000张图像都有其对应的标签数据），并且我们希望为剩余的10,000张图片打标签。最邻近分类器将接收一个测试图片，与每一张训练图片做对比，然后以其最接近的训练图像的标签作为其预测标签。在上面的右图中，您可以看到10个示例图片的十个用这种方式得到的最相近的结果图片。请注意，在这10个示例中，有三个图片在检索相同的类别，而其他7个示例并非如此。例如，在第八行最接近“马头图片”的训练的图像是一个“红色汽车图片”，也许是由于它们都拥有黑色背景的原因。这种结果，使得这匹马的形象在这种情况下会被误认为是汽车。</p>
-<p>您可能已经注意到，我们并没有详细的说明我们是如何比较这两个尺寸为32 x 32 x 3的图像的细节的。一种最简单的处理方式是对像素点逐个比较，然后求差值绝对值之和。换句话说，给出两个图像，并将其表示为向量$I_1, I_2$，比较他们的一种合理的方式是求<strong>L1距离</strong>:</p>
-<script type="math/tex; mode=display">
-d_1 (I_1, I_2) = \sum\_p \left| I^p_1 - I^p_2 \right|</script><p>下面是将这段程序可视化的过程：</p>
-<p><img src="/img/17_07_30/005.jpeg" alt=""></p>
-<blockquote>
-<p>一个使用L1距离来比较图片像素差异的示例（在这里例子中只有一个颜色通道）。将两个图像元素相减，然后将所有差值相加到一个数字上。如果两个图像相同，则结果将为零。但如果图像非常不同，结果会很大。</p>
-</blockquote>
-<hr>
-<p>我们来看看我们如何在代码中实现分类器。首先，我们将CIFAR-10数据作为4个阵列加载到内存中：用于训练的数据/标签集合，以及用于测试的数据/标签集合。在下面的代码中，<code>Xtr</code>(尺寸是50,000 x 32 x 32 x 3)包含全部的用于训练的图像数据，与之对应的是一个一维数组<code>Ytr</code>(长度是50,000)持有训练集标签(标签是0到9的类别)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Xtr, Ytr, Xte, Yte &#x3D; load_CIFAR10(&#39;data&#x2F;cifar10&#x2F;&#39;) # a magic function we provide</span><br><span class="line"># flatten out all images to be one-dimensional</span><br><span class="line">Xtr_rows &#x3D; Xtr.reshape(Xtr.shape[0], 32 * 32 * 3) # Xtr_rows becomes 50000 x 3072</span><br><span class="line">Xte_rows &#x3D; Xte.reshape(Xte.shape[0], 32 * 32 * 3) # Xte_rows becomes 10000 x 3072</span><br></pre></td></tr></table></figure>
-<p>现在我们把所有的图像都拉伸成行了，下面的代码演示了我们如何训练并且评估一个分类器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nn &#x3D; NearestNeighbor() # create a Nearest Neighbor classifier class</span><br><span class="line">nn.train(Xtr_rows, Ytr) # train the classifier on the training images and labels</span><br><span class="line">Yte_predict &#x3D; nn.predict(Xte_rows) # predict labels on the test images</span><br><span class="line"># and now print the classification accuracy, which is the average number</span><br><span class="line"># of examples that are correctly predicted (i.e. label matches)</span><br><span class="line">print &#39;accuracy: %f&#39; % ( np.mean(Yte_predict &#x3D;&#x3D; Yte) )</span><br></pre></td></tr></table></figure>
-<p>请注意，作为评估标准，我们通常使用<strong>准确率(accuracy)</strong>来衡量预测结果的准确性。请注意，我们将构建的所有分类器都满足这一个常见的API：它们有一个接受用来学习的数据和标签的<code>train(X,y)</code>函数。在内部，该类应该建立一些标签的模型，以及如何从数据中预测结果的逻辑。同时还需要有一个用来接受新数据并且预测其标签的<code>predict(X)</code>函数。下面是一个L1距离的最邻近分类器的一个简单实现，它满足这套模板：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">class NearestNeighbor(object):</span><br><span class="line">  def __init__(self):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">  def train(self, X, y):</span><br><span class="line">    &quot;&quot;&quot; X is N x D where each row is an example. Y is 1-dimension of size N &quot;&quot;&quot;</span><br><span class="line">    # the nearest neighbor classifier simply remembers all the training data</span><br><span class="line">    self.Xtr &#x3D; X</span><br><span class="line">    self.ytr &#x3D; y</span><br><span class="line"></span><br><span class="line">  def predict(self, X):</span><br><span class="line">    &quot;&quot;&quot; X is N x D where each row is an example we wish to predict label for &quot;&quot;&quot;</span><br><span class="line">    num_test &#x3D; X.shape[0]</span><br><span class="line">    # lets make sure that the output type matches the input type</span><br><span class="line">    Ypred &#x3D; np.zeros(num_test, dtype &#x3D; self.ytr.dtype)</span><br><span class="line"></span><br><span class="line">    # loop over all test rows</span><br><span class="line">    for i in xrange(num_test):</span><br><span class="line">      # find the nearest training image to the i&#39;th test image</span><br><span class="line">      # using the L1 distance (sum of absolute value differences)</span><br><span class="line">      distances &#x3D; np.sum(np.abs(self.Xtr - X[i,:]), axis &#x3D; 1)</span><br><span class="line">      min_index &#x3D; np.argmin(distances) # get the index with smallest distance</span><br><span class="line">      Ypred[i] &#x3D; self.ytr[min_index] # predict the label of the nearest example</span><br><span class="line"></span><br><span class="line">    return Ypred</span><br></pre></td></tr></table></figure>
-<p>如果你运行了上面的代码，你将看到这个分类器在CIFAR-10的数据集上只有<strong>38.6%</strong>的准确率。比我们随机选取的结果准确率高一些（随机选取的准确率是10%，因为我们有10个类别），但这个结果与人类真实的识别准确率（估计<a target="_blank" rel="noopener" href="http://karpathy.github.io/2011/04/27/manually-classifying-cifar10/">约为94%</a>）或者最先进的卷积神经网络能达到的95%准确率相比，差的很远。（见CIFAR-10在Kaggle上的<a target="_blank" rel="noopener" href="http://www.kaggle.com/c/cifar-10/leaderboard">排行榜</a>）</p>
-<p><strong>距离的选择.</strong>有许多其他的方式来计算两个向量之间的距离。一种比较常用的方式是计算两个向量之间的欧几里得距离，即<strong>L2距离</strong>。公式如下:</p>
-<script type="math/tex; mode=display">
-d\_2 (I\_1, I\_2) = \sqrt{\sum\_{p} \left( I^p\_1 - I^p\_2 \right)^2}</script><p>换句话说，我们之前需要计算两者的像素差，而这一次，我们需要计算像素差的平方，并且把他们加起来之后开根号。在numpy中，我们可以用一行代码来实现上述的计算：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distances &#x3D; np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis &#x3D; 1))</span><br></pre></td></tr></table></figure>
-<p>请注意，在上面的计算中，我引入了<code>np.sqrt</code>，但在实际的最邻近应用中，我们可以省略求平方根的操作，因为平方根是一个单调函数。也就是说，它对距离的绝对值的差值起到了缩放的作用，但它依然保留了排序结果，因此对于最邻近问题来说，有没有这一步开根号的运算，其结果都是相同的。如果你在CIFAR-10上运行这个L2最邻近分类器，那么你得到的准确率是<strong>35.4%</strong>（比L1的结果略低一些）。</p>
-<p><strong>L1 vs L2.</strong>这两者之间存在什么样的差异呢？这是一个很有意思的问题。在特定的情况下，当涉及两个向量之间的差异时，L2距离比L1距离更糟一些。L1和L2距离（或等效地，一对图像之间的差异的L1 / L2范数）是<a target="_blank" rel="noopener" href="http://planetmath.org/vectorpnorm">p范数</a>最常用的特殊情况。</p>
-<h3 id="KNN分类器（k-Nearest-Neighbor-Classifier）"><a href="#KNN分类器（k-Nearest-Neighbor-Classifier）" class="headerlink" title="KNN分类器（k - Nearest Neighbor Classifier）"></a>KNN分类器（k - Nearest Neighbor Classifier）</h3><p>您可能已经注意到，当我们想进行预测时，只使用最接近的一个图像的标签是很奇怪的。事实上，通过使用所谓的<strong>KNN分类器</strong>，人们可以做得更好。实际上这个想法很简单：不是在训练集中找到单个最接近的图像，我们将找到最接近的<strong>k</strong>个图像，并让他们对测试图像的标签进行投票。尤其是，当$k=1$的时候，我们KNN分类器实际上就是最邻近分类器。从直觉上来说，较高的<strong>k</strong>值有更平滑的效果，使得分类器更能抵抗离群值：</p>
-<p><img src="/img/17_07_30/006.jpeg" alt=""></p>
-<blockquote>
-<p>上图中，使用二维散点图用三种颜色（红、蓝、绿）来表示三种类别，分别展示了原始数据在最邻近分类器上和在5-NN分类器上的效果。彩色的区域显示在L2距离下生成的<strong>判定边界</strong>。白色区域显示出不能被明确分类的点（即，类别投票至少被分为两类）。请注意，在使用最邻近分类器的情况下，异常值数据点（例如蓝色区域中的绿点）会产生可能不正确的预测的区块，而5-NN分类器在这种情况下会得到相对平滑的效果，这也意味着对测试数据的<strong>泛化</strong>能力更好（未被显示）。还要注意，5-NN图像中的灰色区域是由最邻近的几个邻居颜色不同导致的（例如，有两个是红色的，两个是蓝色的，一个是绿色的）。</p>
-</blockquote>
-<hr>
-<p>在实践中，当我们使用kNN分类器时，应该选择什么样的k值才合适呢？接下来我们来谈谈这个问题。</p>
-<h2 id="验证集，交叉验证，超参数调谐"><a href="#验证集，交叉验证，超参数调谐" class="headerlink" title="验证集，交叉验证，超参数调谐"></a>验证集，交叉验证，超参数调谐</h2><p>kNN分类器需要指定一个k值，但是当k取什么值时效果最好呢？另外，我们还可以选择L1范数、L2范数，等，以及许多我们甚至没有考虑到的选择。这些选择被称为<strong>超参数（Hyperparameter）</strong>，他们在许多机器学习算法的设计过程中都会出现。通常这些值应该被设置为多少，并不是十分显而易见。</p>
-<p>你也许会试图建议我们尝试许多不同的值，然后看看哪些值的效果最好。这的确是一个好办法，这也是我们接下来要做的，但这个过程必须非常仔细地进行。特别要说吗的是，<strong>我们不能使用测试集来调整参数</strong>。当您在设计一款机器学习算法时，您应该将将测试集视为一个非常宝贵的资源，在理想情况下，除非在测试阶段，都不要去触碰它。否则，你调整的参数将会作用域测试集上，这样做非常危险，因为当你开始在真实的数据上使用该模型时，你会发现性能显著降低。在实践过程中，我们称这种现象为<strong>过拟合</strong>测试集。关于这一现象的另一种解释是，如果你在测试集上调整了参数，你实际上是在把测试集当做训练集在使用，因此，你实现的模型的性能对于实际观察到的情况来说都是过于乐观的。但与之相反的，如果我们只是在最后的测试过程中使用一次测试集，那么它仍然是测量分类器<strong>泛化</strong>的一个很好的代理（我们将在以后的课程中看到更多关于泛化的讨论）。</p>
-<blockquote>
-<p>评估测试集在每次训练结束后只运行一次。</p>
-</blockquote>
-<p>幸运的是，有一种不触碰测试集的调整超参数的方法。这个方法就是将我们的训练集分为两部分：其中稍微小一些的那部分训练集，我们称之为<strong>验证集(validation set)</strong>。使用CIFAR-10为例，我们使用49,000的样本作为训练集，然后使用剩下的1,000个样本作为验证集。这个验证集是用来调整超参数的一个假测试集。</p>
-<p>在CIFAR-10中，这个例子看起来可能是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># assume we have Xtr_rows, Ytr, Xte_rows, Yte as before</span><br><span class="line"># recall Xtr_rows is 50,000 x 3072 matrix</span><br><span class="line">Xval_rows &#x3D; Xtr_rows[:1000, :] # take first 1000 for validation</span><br><span class="line">Yval &#x3D; Ytr[:1000]</span><br><span class="line">Xtr_rows &#x3D; Xtr_rows[1000:, :] # keep last 49,000 for train</span><br><span class="line">Ytr &#x3D; Ytr[1000:]</span><br><span class="line"></span><br><span class="line"># find hyperparameters that work best on the validation set</span><br><span class="line">validation_accuracies &#x3D; []</span><br><span class="line">for k in [1, 3, 5, 10, 20, 50, 100]:</span><br><span class="line">  </span><br><span class="line">  # use a particular value of k and evaluation on validation data</span><br><span class="line">  nn &#x3D; NearestNeighbor()</span><br><span class="line">  nn.train(Xtr_rows, Ytr)</span><br><span class="line">  # here we assume a modified NearestNeighbor class that can take a k as input</span><br><span class="line">  Yval_predict &#x3D; nn.predict(Xval_rows, k &#x3D; k)</span><br><span class="line">  acc &#x3D; np.mean(Yval_predict &#x3D;&#x3D; Yval)</span><br><span class="line">  print &#39;accuracy: %f&#39; % (acc,)</span><br><span class="line"></span><br><span class="line">  # keep track of what works on the validation set</span><br><span class="line">  validation_accuracies.append((k, acc))</span><br></pre></td></tr></table></figure>
-<p>在此过程结束之前，我们可以绘制一个图表，来显示哪个k值表现的更好。然后我们使用这个最好的k值，对真正的测试集进行一次评估。</p>
-<blockquote>
-<p>将你的训练集分割为训练集和验证集。使用验证集来调整所有的超参数。最后在测试集上仅运行一次评估操作，并上报结果。</p>
-</blockquote>
-<p><strong>交叉验证.</strong>在你的训练集（同时也包括验证集）可能非常小的情况下，人们有时使用一个更复杂叫做<strong>交叉验证</strong>的技术来调节超参数。作用于我们之前的例子中，取代之前我们选取1000个数据点来作为验证集、剩下的部分用做测试集这种方式，我们通过迭代不同的验证集以及求得他们的平均表现这种方式，来得到一个更好的，噪音更小的k值。举个例子，在5倍交叉验证中，我们将数据分为5等份，使用其中4份来训练，用剩余的1份作为验证。然后我们迭代所有其他份数据来作为验证集，计算每一份作为验证集的最终表现，最终将每次得到的表现求和在求平均值。</p>
-<p><img src="/img/17_07_30/007.png" alt=""></p>
-<blockquote>
-<p>参数k的五倍交叉验证运行示例。对于k的每个值，我们都在4份数据上训练，并且在第5份数据上评估。因此，对于每个k，我们在交叉验证上都会有5个评估得到的准确率（y轴是准确率，每个结果对应一个点）。趋势曲线通过每个k的结果的平均值绘制，错误条表明标准偏差。注意在这里的一个特定场景，交叉验证集建议我们选取的k=7，此时在数据集上的预测效果最好（对应于图中的峰值处）。如果我们使用超过5份的数据，我们也许会看到一个更平滑（低噪音）的曲线。</p>
-</blockquote>
-<hr>
-<p><strong>实践.</strong>在实践中，人们更倾向于避免使用交叉验证，人们更愿意接受单个的验证集分割，因为交叉验证的计算是十分昂贵的。人们倾向使用的分割方式是将训练集分割50%-90%用作训练，剩下的部分用作验证。然而，这取决于多个因素：例如如果超参数数量很大，你也许更倾向于使用一个更大的验证集分割。如果验证集样本的数量很少（可能只有几百个），那么使用交叉验证则更安全一些。正如你所见的，典型的交叉验证可能会是三等分、5等分或者10等分的交叉验证。</p>
-<p><img src="/img/17_07_30/008.jpeg" alt=""></p>
-<blockquote>
-<p>常见的数据分割。给定训练集和测试集。训练集被分割为几等份（例如这里的五等分）。第1-4份数据作为训练集。一份作为验证集（例如这里的黄颜色的第五份），用来调节超参数。交叉验证更进一步的操作是迭代循环这5份数据，分别作为验证集的预测结果。这被称为5倍交叉验证。一旦模型被训练，并且确定了所有的最佳的超参数，最终在测试集（红色）上单词评估干模型。</p>
-</blockquote>
-<hr>
-<h2 id="最近邻分类器的优缺点"><a href="#最近邻分类器的优缺点" class="headerlink" title="最近邻分类器的优缺点"></a>最近邻分类器的优缺点</h2><p>思考最邻近分类器的优缺点是一件值得做的事情。很明显，一个优点是：它的实现很简单，理解起来也很简单。此外，这个分类器不需要训练的时间，因为用于预测结果的数据全部来自于被存储的以及可能被索引的训练数据。但是，我们需要消耗一次测试的时间，因为对测试数据进行分类，我们需要将每个训练样本进行比较。这是一种不好的方式，因为在实践过程中，我们往往很在意测试运行的时间，而不太在意训练所花费的时间。事实上，我们将在稍后的深度神经网络课程中，我们将看到另一个极端：它会在训练样本的过程中花费巨大的开销，但一旦训练结束，在一个新的测试样本上执行分类任务时的开销是非常小的。这种模式在实践中更为理想。</p>
-<p>除此之外，关于最邻近分类器的计算复杂度问题，一直是一个活跃的研究领域，并且有一些可以加速数据集中最邻近数据的查找的<strong>近似最邻近（Approximate Nearest Neighbor(ANN)）</strong>算法和库存在（例如<a target="_blank" rel="noopener" href="http://www.cs.ubc.ca/research/flann/">FLANN</a>）。这些算法允许在检索期间以其空间/时间复杂度来折衷最近相邻检索的正确性，并且通常依赖于涉及构建kdtree或运行k-means算法的预处理/索引阶段。</p>
-<p>在某些场景中，最近邻分类器有时可能是一个很好的选择（特别是如果数据是低维数据），但很少适用于实际的图像分类场景。其中一个问题是图像是高维度对象（即它们通常包含许多像素），并且高维空间的距离是非常不直观的。下面的图像说明了我们上面开发的基于像素的L2相似度与人类感知相似性的区别：</p>
-<p><img src="/img/17_07_30/009.png" alt=""></p>
-<blockquote>
-<p>高维数据（尤其是图像）上基于像素的距离可能非常不直观。基于L2像素距离，原始图像（左）和旁边的三个其他图像都距离它们相同。显然，像素方向的距离并不能与人类感知上的相似性相对应。</p>
-</blockquote>
-<hr>
-<p>这里有更多的可视化数据来说服你，使用像素差异来比较图像是不够的。我们可以使用一种名为t-SNE的可视化技术来拍摄CIFAR-10图像，并将其嵌入到二维空间中，使其（局部）成对距离最好地保留下来。在这种可视化中，根据我们上面开发的L2像素距离，我们将其L2距离相对较小的图像聚集在一起：</p>
-<p><img src="/img/17_07_30/010.jpg" alt=""></p>
-<blockquote>
-<p>使用t-SNE嵌入二维的CIFAR-10图像。该图像附近的图像被认为是基于L2像素距离接近的。注意到背景的强烈影响，而不是语义层次的差异。点击<a target="_blank" rel="noopener" href="http://cs231n.github.io/assets/pixels_embed_cifar10_big.jpg">这里</a>查看这个可视化的更大版本。</p>
-</blockquote>
-<hr>
-<p>特别地，请注意，彼此相邻的图像更多是图像的平均颜色分布或背景的类型相似的图像，而不是其相似的标签类型的图像。例如，可以看到一张狗的图片和一张青蛙的照片像邻，因为两者都是在白色背景上。理想情况下，我们希望所有10个类中的图像形成自己的集群，使得同一类的图像在彼此附近，而不管不相关的特征和变化（如背景）。然而，要获得这个属性，我们将不得不超越像素级别的去考虑问题。</p>
-<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>综上所述：</p>
-<ul>
-<li>我们引入了<strong>图像分类</strong>的问题，其中给出了一组全部标记为单一类别的图像。然后，我们要求为这些类别预测一组新的测试图像，并测量预测的准确性。</li>
-<li>我们引入了一个称为<strong>最近邻分类器</strong>的简单分类<strong>器</strong>。我们看到有与此分类器相关联的多个超参数（如k值或用于比较示例的距离类型），并没有明显的选择方式。</li>
-<li>我们看到设置这些超参数的正确方法是将训练数据分为两个：训练集和假测试集，我们称之为<strong>验证集</strong>。我们尝试不同的超参数值，并保持在验证集上达到最佳性能的值。</li>
-<li>如果缺乏培训数据是一个问题，我们讨论了一个称为<strong>交叉验证</strong>的过程，它可以帮助减少噪声，以估计哪些超参数最有效。</li>
-<li>一旦找到了最佳的超参数，我们修复它们，并对实际测试集执行单个<strong>评估</strong>。</li>
-<li>我们看到最近邻居可以在CIFAR-10上获得约40％的准确性。它实现起来很简单，但要求我们存储整个训练集，并且在测试图像上进行评估是很昂贵的。</li>
-<li>最后，我们看到在原始像素值上使用L1或L2距离是不够的，因为这些距离与图像的背景和颜色分布相比，与其语义内容相比更强烈。</li>
-</ul>
-<p>在接下来的课程中，我们将着手解决这些挑战，最终达成90％精度的解决方案，让我们在完成学习后完全丢弃训练集，并允许我们在不到一毫秒内评估测试图像。</p>
-<h2 id="总结：在实践中应用kNN"><a href="#总结：在实践中应用kNN" class="headerlink" title="总结：在实践中应用kNN"></a>总结：在实践中应用kNN</h2><p>如果您希望在实践中应用kNN（希望不是在图像上），请按如下步骤进行：</p>
-<ul>
-<li>1.预处理数据：规范数据中的特征（例如图像中的一个像素），使其具有零均值和单位方差。我们将在后面的章节中更详细地介绍这一点，并且选择不覆盖本节中的数据规范化，因为图像中的像素通常是均匀的，并且不会展现出广泛不同的分布，从而减轻了数据规范化的需要。</li>
-<li>2.如果您的数据非常高，请考虑使用维度降低技术，如PCA（<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Principal_component_analysis">wiki ref</a>，<a target="_blank" rel="noopener" href="http://cs229.stanford.edu/notes/cs229-notes10.pdf">CS229ref</a>，<a target="_blank" rel="noopener" href="http://www.bigdataexaminer.com/cgi-sys/suspendedpage.cgi">博客引用</a>），甚至使用<a target="_blank" rel="noopener" href="http://scikit-learn.org/stable/modules/random_projection.html">随机投影</a>。</li>
-<li>3.将您的训练数据随机分成训练集/验证集。根据经验，70-90％的数据通常会分配到训练集上。此设置取决于您拥有多少超参数以及您期望他们拥有多少影响力。如果有很多超参数需要估计，那么您应该在验证集更大的一边进行有效的估计。如果您的验证数据集比较小，最好将训练数据拆分为几等分，并执行交叉验证。如果你能负担得起计算机的运算量，那么交叉验证（更多的份数越好，但是更昂贵）总是更安全。</li>
-<li>4.对于k的许多选择（比如越多越好）和不同距离类型（L1和L2都是不错的选择），对验证数集（对于所有份数，如果进行交叉验证）训练和评估kNN分类器。</li>
-<li>5.如果您的kNN分类器运行时间过长，请考虑使用近似最近邻库（<a target="_blank" rel="noopener" href="http://www.cs.ubc.ca/research/flann/">FLANN</a>）来加速检索（以某种精度为代价）。</li>
-<li>6.记下提供最佳效果的超参数。有一个问题是您应该使用最佳超参数的完整训练集，因为如果要将验证数据折叠到训练集中（因为数据的大小会更大），最佳超参数可能会改变。实际上，在最终分类器中不使用验证数据更为清晰，并且在估计超参数时认为它被刻录。评估测试集上的最佳模型。上报在测试集上的准确率，这个结果作为kNN分类器的最终表现。</li>
-</ul>
-<h2 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h2><p>这里有一些（可选）链接，您可能会发现更多有趣的东西：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf">关于机器学习的一些有用的事情</a>，其中特别是第6部分是相关的，但这整篇文章都是值得一读的。</li>
-<li><a target="_blank" rel="noopener" href="http://people.csail.mit.edu/torralba/shortCourseRLOC/index.html">认可和学习对象类别</a>，ICCV 2005的短期课程对象分类。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2594,7 +2534,7 @@ d\_2 (I\_1, I\_2) = \sqrt{\sum\_{p} \left( I^p\_1 - I^p\_2 \right)^2}</script><p
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">136</span>
+          <span class="site-state-item-count">137</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
