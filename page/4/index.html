@@ -191,6 +191,316 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第九周 (1)密度估计</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-05-23 21:59:00" itemprop="dateCreated datePublished" datetime="2017-05-23T21:59:00+00:00">2017-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="动机-异常检测"><a href="#动机-异常检测" class="headerlink" title="动机:异常检测"></a>动机:异常检测</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/V9MNG/problem-motivation">视频地址</a></p>
+<blockquote>
+<p>在接下来的一系列课程中，我将向大家介绍<strong>异常检测(Anomaly detection)问题</strong>。这是机器学习算法的一个常见应用。这种算法的一个有趣之处在于它虽然主要用于非监督学习问题，但从某些角度看，它又类似于一些监督学习问题。</p>
+</blockquote>
+<p>首先，我们举一个例子来解释什么是异常检测。</p>
+<p>假想你是一个飞机引擎制造商，当你生产的飞机引擎从生产线上流出时，你需要进行QA(质量控制测试)。而作为这个测试的一部分，你测量了飞机引擎的一些特征变量，比如你可能测量了引擎运转时产生的热量，或者引擎的振动等等（我有一些朋友很早之前就开始进行这类工作，在实际工作中他们确实会从真实的飞机引擎采集这些特征变量）：</p>
+<script type="math/tex; mode=display">
+x\_1 = 产生的热量 \\\\
+x\_2 = 振动的强度 \\\\
+...</script><p>这样一来，如果你生产了m个引擎的话，你就有了一个从$x^{(1)}$到$x^{(m)}$的数据集：</p>
+<script type="math/tex; mode=display">
+｛x^{(1)}，x^{(2)}，...，x^{(m)}｝</script><p>也许你会将这些数据绘制成图表，看起来就是这个样子：</p>
+<p><img src="/img/17_05_23/001.png" alt=""></p>
+<p>图中每个叉都是你的无标签数据。</p>
+<p>假设有一天，你有一个新的飞机引擎从生产线上流出，这个引擎的数据为$x_{test}$。那么所谓的<strong>异常检测问题</strong>就是检查这个新的飞机引擎是否存在某种异常。</p>
+<p>比如说，如果你的新引擎对应的点落在这里：</p>
+<p><img src="/img/17_05_23/002.png" alt=""></p>
+<p>从数据上来看，它看起来像我们之前见过的引擎，因此我们可以直接认为它是正常的。然而如果你的新飞机引擎的$x_{test}$对应的点在这外面：</p>
+<p><img src="/img/17_05_23/003.png" alt=""></p>
+<p>那么我们可以认为这是一个异常的引擎。</p>
+<h3 id="异常检测问题更正式的定义"><a href="#异常检测问题更正式的定义" class="headerlink" title="异常检测问题更正式的定义"></a>异常检测问题更正式的定义</h3><p><strong>异常检测问题</strong>更正式一些的定义如下：</p>
+<p>假设我们有$m$个<strong>正常的</strong>样本数据$｛x^{(1)}，x^{(2)}，…，x^{(m)}｝$，我们需要一个算法来告诉我们一个新的样本数据$x_{test}$是否异常。</p>
+<p>我们要采取的方法是：给定无标签的训练集，对数据集$x$建立一个概率分布模型$p(x)$。当我们建立了$x$的概率模型之后，我们就会说，对于新的飞机引擎$x_{test}$，如果概率$p$低于阈值$ε$：</p>
+<script type="math/tex; mode=display">
+p(x\_{test}) \lt ε</script><p>那么就将其标记为异常。</p>
+<p>因此当我们看到一个新的引擎在我们根据训练数据得到的$p(x_{test})$模型中概率非常低时，我们就将其标记为异常；反之如果$p(x_{test})$大于给定的阈值$ε$，我们就认为它是正常的。</p>
+<hr>
+<p>因此在上面的飞机引擎的例子中，对于给定的训练集，对于图中的中心区域的$p(x)$会很大；而稍微远离中心区域的点概率会小一些；更远的地方的点，它们的概率将更小；在外面的点将成为异常点：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">中心区域$p(x)$很大</th>
+<th style="text-align:center">$p(x)$略小</th>
+<th style="text-align:center">$p(x)$很小</th>
+<th style="text-align:center">异常点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_05_23/004.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/005.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/006.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/007.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="异常检测的应用场景"><a href="#异常检测的应用场景" class="headerlink" title="异常检测的应用场景"></a>异常检测的应用场景</h3><h4 id="欺诈检测"><a href="#欺诈检测" class="headerlink" title="欺诈检测"></a>欺诈检测</h4><p>异常检测最常见的应用就是欺诈检测了。</p>
+<p>假设你有很多用户，你的每个用户都在从事不同的活动。你可以对不同的用户活动计算特征变量，然后建立一个用来表示用户行为对应的特征向量出现的概率的模型（用来表示用户表现出各种行为的可能性的模型）。</p>
+<p>因此假设你看到某个用户在网站上行为的特征变量是这样的：</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+x\_1&:是用户登录的频率 \\\\
+x\_2&:是用户访问某个页面的次数 \\\\
+x\_3&:是用户在论坛上发帖的次数 \\\\
+x\_4&:是用户的打字速度（有些网站是可以记录的）
+\end{align\*}</script><p>因此你可以根据这些数据建一个模型$p(x)$，然后你可以通过这个模型来发现你网站上的行为奇怪的用户。你只需要看哪些用户的$p(x)\ltε$即可，接下来你就可以对这些用户的档案做进一步筛选，或者要求这些用户 验证他们的身份，从而让你的网站防御异常行为或者欺诈行为。</p>
+<p>这种技术将会找到行为不正常的用户，而不仅仅是有欺诈行为的用户。然而这就是许多许多在线购物网站常常用来识别异常用户的技术。</p>
+<h4 id="工业领域查找异常产品"><a href="#工业领域查找异常产品" class="headerlink" title="工业领域查找异常产品"></a>工业领域查找异常产品</h4><p>异常检测的另一个例子是在工业生产领域，事实上我们上面已经谈到过飞机引擎的问题，你可以通过异常检测找到异常的飞机引擎，然后要求进一步细查这些引擎的质量。</p>
+<h4 id="计算机监控"><a href="#计算机监控" class="headerlink" title="计算机监控"></a>计算机监控</h4><p>第三个应用是数据中心的计算机监控。实际上我有些朋友正在从事这类工作。</p>
+<p>如果你正在管理一个计算机集群或者一个数据中心，其中有许多计算机。那么我们可以为每台计算机计算特征变量，例如计算机的内存消耗、硬盘访问量、CPU负载或者一些更加复杂的特征（例如一台计算机的CPU负载与网络流量的比值）。</p>
+<p>那么给定正常情况下数据中心中计算机的特征变量，你可以建立$p(x)$模型，通过它来找到运行不正常的计算机。</p>
+<p>目前这种技术正在被各大数据中心使用，用来监测大量计算机可能发生的异常。</p>
+<h2 id="高斯分布-正态分布"><a href="#高斯分布-正态分布" class="headerlink" title="高斯分布(正态分布)"></a>高斯分布(正态分布)</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/ZYAyC/gaussian-distribution">视频地址</a></p>
+<blockquote>
+<p>在本节我将介绍<strong>高斯分布</strong>（也称为<strong>正态分布</strong>）。</p>
+<p>如果你已经对高斯分布非常熟悉了，那么也许你可以直接跳过这一节。但是如果你不确定或者你已经有段时间没有接触高斯分布了，那么请从头到尾看完这一节。在下一节中，我们将应用高斯分布来推导一套异常检测算法。</p>
+</blockquote>
+<h3 id="高斯分布的定义"><a href="#高斯分布的定义" class="headerlink" title="高斯分布的定义"></a>高斯分布的定义</h3><p>假设$x$是一个实数随机变量（即：$x \in R$），如果x的概率分布服从高斯分布：其中均值为$μ$，方差为$σ^2$，那么将它记作：</p>
+<script type="math/tex; mode=display">
+x \sim N(μ,σ^2)</script><blockquote>
+<p>这里的$\sim$符号读作：”服从…分布”。大写字母$N$表示Normal (正态)，有两个参数，其中$μ$表示均值，$σ^2$表示方差。</p>
+</blockquote>
+<p>如果我们将高斯分布的概率密度函数绘制出来，它看起来将是这样一个钟形的曲线：</p>
+<p><img src="/img/17_05_23/008.png" alt=""></p>
+<p>这个钟形曲线有两个参数，分别是$μ$和$σ$。其中$μ$控制这个钟形曲线的中心位置，$σ$控制这个钟形曲线的宽度。</p>
+<p>从图中可以看出来，$x$取中心区域的值的概率相当大，因为高斯分布的概率密度在这里很大；而$x$取远处和更远处数值的概率将逐渐降低，直至消失。</p>
+<p>高斯分布的数学公式如下：</p>
+<script type="math/tex; mode=display">
+p(x;μ,σ^2)=
+\frac{1}{\sqrt{2π}σ}exp(-\frac{(x-μ)^2}{2σ^2})</script><p>其实我们并不需要记住这个公式，当我们真的需要用到它时，我们总可以查资料找到它。</p>
+<h3 id="高斯分布中，-μ-和-σ-的关系"><a href="#高斯分布中，-μ-和-σ-的关系" class="headerlink" title="高斯分布中，$μ$和$σ$的关系"></a>高斯分布中，$μ$和$σ$的关系</h3><p>我们举例来说明一下高斯分布中$μ$和$σ$这两个参数之间的关系：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$μ=0$，$σ=1$</th>
+<th style="text-align:center">$μ=0$，$σ=0.5$</th>
+<th style="text-align:center">$μ=0$，$σ=2$</th>
+<th style="text-align:center">$μ=3$，$σ=0.5$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_05_23/009.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/010.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/011.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/012.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>值得提醒的是，在高斯分布的图像中，不管曲线的形状如何，曲线围城的总面积都是1。所以如果$σ$很大，就意味着数据的离散化程度越大，中间区域就会变宽，但由于总概率为1，所以高度会降低；反之如果$σ$很小，就意味着数据的离散化程度越小，中间区域就会变窄，但由于总概率为1，所以高度会升高。</p>
+<h3 id="参数估计问题"><a href="#参数估计问题" class="headerlink" title="参数估计问题"></a>参数估计问题</h3><p>接下来让我们来看参数估计问题。</p>
+<p>假设我们有以下数据集：</p>
+<script type="math/tex; mode=display">
+｛x^{(1)},x^{(2)},...,x^{(m)}｝ \ \ \ \ \ \ \  x^{(i)} \in R</script><p>其对应的数据在图像中如下：</p>
+<p><img src="/img/17_05_23/013.png" alt=""></p>
+<p>如果这些数据是服从正态分布的：</p>
+<script type="math/tex; mode=display">
+x \sim N(μ,σ^2)</script><p>但我们只有数据，并不知道参数$μ$和$σ$的具体值。那么参数估计问题，就是在寻找这些参数具体值的问题。</p>
+<h4 id="高斯分布的参数估计公式"><a href="#高斯分布的参数估计公式" class="headerlink" title="高斯分布的参数估计公式"></a>高斯分布的参数估计公式</h4><p>具体来说，高斯分布中的参数估计公式如下：</p>
+<script type="math/tex; mode=display">
+μ=\frac{1}{m}\sum\_{i=1}^mx^{(i)}</script><script type="math/tex; mode=display">
+σ^2=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}-μ)^2</script><p>可以看出来，$μ$是在对所有m个样本求均值，$σ^2$实际上是对所有样本与均值做差再取平方后得到的平均大小。</p>
+<blockquote>
+<p>再提一下，如果你精通统计学，你可能听过<strong>极大似然估计</strong>，那么这里的估计实际就是对$μ$和$σ^2$的极大似然估计。如果你不知道，也无所谓。</p>
+<p>还有一点，如果你在学习统计学时，可能会见到这个式子：$σ^2=\frac{1}{m-1}\sum_{i=1}^m(x^{(i)}-μ)^2$，但在机器学习领域，大家习惯使用$σ^2=\frac{1}{m}\sum_{i=1}^m(x^{(i)}-μ)^2$，其实在实际情况中，具体使用$\frac{1}{m}$还是$\frac{1}{m-1}$其实区别很小，只要你有一个稍大的数据集。这两个版本的公式在理论特性和数学特性上稍有不同，但在实际应用中，他们的区别甚小，几乎可以忽略不计。</p>
+</blockquote>
+<h2 id="异常检测的具体算法"><a href="#异常检测的具体算法" class="headerlink" title="异常检测的具体算法"></a>异常检测的具体算法</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/C8IJp/algorithm">视频地址</a></p>
+<blockquote>
+<p>在上节课中，我们谈到了高斯分布。在本节我将应用高斯分布开发异常检测算法。</p>
+</blockquote>
+<p>假如说我们有一个无标签的训练集，其中共有$m$个训练样本，并且这里的训练集里的每一个样本都是$n$维的特征，因此你的训练集应该是$m$个$n$维的特征构成的样本矩阵：</p>
+<script type="math/tex; mode=display">
+｛x^{(1)},...,x^{(m)}｝   \\\\ 
+x \in R^n</script><p>对于我们的异常检测算法，我们要从数据中建立一个$p(x)$概率模型。由于$x$是一个向量，因此：</p>
+<script type="math/tex; mode=display">
+p(x)=p(x\_1)p(x\_2)p(x\_3)...p(x\_n)</script><p>我们假定特征$x_1$服从高斯正态分布:</p>
+<script type="math/tex; mode=display">
+x\_1 \sim N(μ\_1,σ^2\_1)</script><p>根据上节学到的知识，你可以得出对应的$μ_1$和$σ_1$:</p>
+<script type="math/tex; mode=display">
+μ\_1=\frac{1}{m}\sum\_{i=1}^mx^{(i)}\_1</script><script type="math/tex; mode=display">
+σ^2\_1=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}\_1-μ\_1)^2</script><p>这样$p(x_1)$就可以写成这样一个高斯分布:</p>
+<script type="math/tex; mode=display">
+p(x\_1)=p(x\_1;μ\_1,σ^2\_1)</script><p>同样地，我假设$x_2$也服从高斯分布，可以得出：</p>
+<script type="math/tex; mode=display">
+p(x\_2)=p(x\_2;μ\_2,σ^2\_2)</script><p>与此类似$x_3$服从另外一个高斯分布:</p>
+<script type="math/tex; mode=display">
+p(x\_3)=p(x\_3;μ\_3,σ^2\_3)</script><p>直到$x_n$:</p>
+<script type="math/tex; mode=display">
+p(x\_n)=p(x\_n;μ\_n,σ^2\_n)</script><p>因此可以得出:</p>
+<script type="math/tex; mode=display">
+\begin{align\*}
+p(x) 
+&= p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)p(x\_3;μ\_3,σ^2\_3)...p(x\_n;μ\_n,σ^2\_n) \\\\
+&= Π\_{j=1}^np(x\_j;μ\_j,σ^2\_j)
+\end{align\*}</script><p>其中$Π$（读作pai，是$π$的大写形式）类似$∑$符号，只不过这里将连加换成了连乘。顺便要说的是，估计$p(x)$的分布问题，通常被称为<strong>密度估计</strong>问题。</p>
+<blockquote>
+<p>注意：对于熟悉统计学的同学来说，上面的式子实际上就对应于一个从$x_1$到$x_n$的独立的假设。但实际应用中，无论这些特征是否相互独立，这些算法的效果都还不错。</p>
+</blockquote>
+<h3 id="异常检测算法步骤总结"><a href="#异常检测算法步骤总结" class="headerlink" title="异常检测算法步骤总结"></a>异常检测算法步骤总结</h3><p>让我们来总结一下<strong>异常检测</strong>算法的具体步骤：</p>
+<ul>
+<li>1.从样本中选择一些能体现出异常行为的特征$x_i$。</li>
+</ul>
+<blockquote>
+<p>我们可以尝试找出一些特征，比如在你的系统里，那些能看出用户异常行为或者欺诈行为的特征。</p>
+</blockquote>
+<ul>
+<li>2.分别计算出每个特征的参数$μ_1,…,μ_n,σ^2_1,…,σ^2_n$。</li>
+</ul>
+<script type="math/tex; mode=display">
+μ=
+\begin{equation} 
+\left[
+\begin{matrix}
+     μ\_1 \\\\
+     μ\_2 \\\\
+     ┋     \\\\
+     μ\_n
+\end{matrix}
+\right]
+\end{equation}
+=
+\frac{1}{m}\sum\_{i=1}^mx^{(i)}</script><script type="math/tex; mode=display">
+σ^2=
+\begin{equation} 
+\left[
+\begin{matrix}
+     σ^2\_1 \\\\
+     σ^2\_2 \\\\
+     ┋     \\\\
+     σ^2\_n
+\end{matrix}
+\right]
+\end{equation}
+=
+\frac{1}{m}\sum\_{i=1}^m(x^{(i)}-μ)^2</script><p>其中：</p>
+<script type="math/tex; mode=display">
+μ\_j=\frac{1}{m}\sum\_{i=1}^mx^{(i)}\_j</script><script type="math/tex; mode=display">
+σ^2\_j=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}\_j-μ\_j)^2</script><blockquote>
+<p>对$m$个无标签数据分别计算出他们每个特征的期望$μ$和方差$σ^2$。<strong>注意，这里$μ$和$σ$都是m维度的向量</strong>，而$μ_j$和$σ_j$都是其中对应的第$j$个元素。</p>
+</blockquote>
+<ul>
+<li>3.给定一个新的样本$x$，计算出它对应的$p(x)$:</li>
+</ul>
+<script type="math/tex; mode=display">
+p(x)=Π\_{j=1}^np(x\_j;μ\_j,σ^2\_j)=Π\_{j=1}^n\frac{1}{\sqrt{2π}σ\_j}exp(-\frac{(x\_j-μ\_j)^2}{2σ^2\_j})</script><p>通过判断$p(x)&lt;ε$，来判断是否有异常发生。</p>
+<blockquote>
+<p>给定一个用户行为的样本，如何知道用户行为是否异常呢？我们将用户行为数据带入到$p(x)$的计算中来，如果这个结果非常小，那么我们就将这个行为标注为异常行为。</p>
+</blockquote>
+<h3 id="异常分析例子"><a href="#异常分析例子" class="headerlink" title="异常分析例子"></a>异常分析例子</h3><p>假如说我们有下面这样的数据集：</p>
+<p><img src="/img/17_05_23/014.png" alt=""></p>
+<p>从图中我们可以看出，数据集有两个特征$x_1$和$x_2$。</p>
+<p>其中特征$x_1$对应的是水平方向的数据，它的均值是5，标准差是2；$x_2$对应的是竖直方向上的数据，它的均值是3，标准差是1：</p>
+<script type="math/tex; mode=display">
+μ\_1=5,σ\_1=2</script><script type="math/tex; mode=display">
+μ\_2=3,σ\_2=1</script><p>这两个特征对应的分布如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$p(x_1;μ_1,σ^2_1)$</th>
+<th style="text-align:center">$p(x_2;μ_2,σ^2_2)$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="/img/17_05_23/015.png" alt=""></td>
+<td style="text-align:center"><img src="/img/17_05_23/016.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>如果绘制出$p(x)$的图像，那么这个图像如下：</p>
+<p><img src="/img/17_05_23/017.png" alt=""></p>
+<p>通过图像，我们可以得出具体的某一点对应的高度值。</p>
+<p>假如$x_1=2$，$x_2=2$那么就是这个点:</p>
+<p><img src="/img/17_05_23/018.png" alt=""></p>
+<p>在3-D表面图上的高度就代表$p(x)$的值。而这个$p(x)$完整的写出来就是下面的形式：</p>
+<script type="math/tex; mode=display">
+p(x)=p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)</script><p>那么有了这个表达式，我们如何鉴定新的样本是否异常呢？</p>
+<p>要回答这个问题，我们可以先给计算机设某个无穷小的数值$ε$，假如我设置$ε=0.02$(我会在后面讲到如何选取$ε$的值)。</p>
+<p>现在我们有两个样本，分别为$x_{test}^{(1)}$和$x_{test}^{(2)}$：</p>
+<p><img src="/img/17_05_23/019.png" alt=""></p>
+<p>我们用上面的式子来计算出$p(x_{test}^{(1)})$，可以发现这是一个比较大的数，具体大小是大于等于$ε$的，所以对于$x_{test}^{(1)}$的检测结果是不属于异常。同样对于$p(x_{test}^{(2)})$，我们发现这是一个很小的数，具体值是小于$ε$的，所以我们说$x_{test}^{(2)}$属于异常数据。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/12/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E5%85%AB%E5%91%A8%20(2)%E9%99%8D%E7%BB%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +532,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -739,7 +1049,7 @@ h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -838,7 +1148,7 @@ h\_{\theta}(z) = \frac{1}{1+e^{-\theta^{T}z}}</script><p>我们将$z$向量作�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1170,7 +1480,7 @@ J(c^{(1)},...,c^{(m)},μ\_1,...,μ\_K)</script><p>在K均值算法中，有时�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1359,7 +1669,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1508,7 +1818,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1703,7 +2013,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1976,7 +2286,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2155,7 +2465,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2206,209 +2516,6 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
 <p>当你看着TensorBoard，你会看到在右上角的导航选项卡。每个选项卡表示可以可视化的一组序列化数据。</p>
 <p>有关如何使用图形选项卡可视化图形的详细信息，请参阅<a href="/2017/03/07/【Tensorflow%20r1.0%20文档翻译】TensorBoard-图的可视化/">TensorBoard：图形可视化</a>。</p>
 <p>有关TensorBoard的更多使用信息，请参阅<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/tensorboard/README.md">TensorBoard README</a>。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/06/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E9%80%9A%E8%BF%87tf.contrib.learn%E6%9D%A5%E6%9E%84%E5%BB%BA%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/06/%E3%80%90Tensorflow%20r1.0%20%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E9%80%9A%E8%BF%87tf.contrib.learn%E6%9D%A5%E6%9E%84%E5%BB%BA%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-06 22:24:58" itemprop="dateCreated datePublished" datetime="2017-03-06T22:24:58+00:00">2017-03-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/Tensorflow/" itemprop="url" rel="index"><span itemprop="name">Tensorflow</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本教程将介绍如何在tf.contrib.learn中创建输入函数。您将对如何构造一个用于预处理并将数据反馈到你的模型的<code>input_fn</code>操作有一个大致的了解。然后，您将实现一个<code>input_fn</code>，它将训练，评估和预测数据提供给神经网络回归，并用于预测房屋数据的中位数值。</p>
-<h2 id="使用input-fn的自定义输入管道"><a href="#使用input-fn的自定义输入管道" class="headerlink" title="使用input_fn的自定义输入管道"></a>使用input_fn的自定义输入管道</h2><p>当通过使用tf.contrib.learn来训练一个神经网络时，可以将您的特征和目标数据直接传递到你的<code>fit</code>(拟合)、<code>evaluate</code>(评估)或<code>predict</code>(预测)操作中。下面是从<a href="/2017/03/05/【Tensorflow%20r1.0%20文档翻译】【tf.contrib.learn快速入门】/">tf.contrib.learn快速入门教程</a>中获取的示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">training_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">    filename&#x3D;IRIS_TRAINING, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line">test_set &#x3D; tf.contrib.learn.datasets.base.load_csv_with_header(</span><br><span class="line">    filename&#x3D;IRIS_TEST, target_dtype&#x3D;np.int, features_dtype&#x3D;np.float32)</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">classifier.fit(x&#x3D;training_set.data,</span><br><span class="line">               y&#x3D;training_set.target,</span><br><span class="line">               steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>这种数据量不大的情况下，我们即使不处理数据源，也可好获得良好的效果。但是在需要更多特征工程的情况下，<code>tf.contrib.learn</code>支持使用自定义输入函数（<code>input_fn</code>），它可以将预处理和管道数据的逻辑封装到模型中。</p>
-<h3 id="input-fn的剖析"><a href="#input-fn的剖析" class="headerlink" title="input_fn的剖析"></a>input_fn的剖析</h3><p>以下代码说明了输入函数的基本框架：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def my_input_fn():</span><br><span class="line"></span><br><span class="line">    # Preprocess your data here...</span><br><span class="line"></span><br><span class="line">    # ...then return 1) a mapping of feature columns to Tensors with</span><br><span class="line">    # the corresponding feature data, and 2) a Tensor containing labels</span><br><span class="line">    return feature_cols, labels</span><br></pre></td></tr></table></figure>
-<p>输入函数的主体包含用于预处理输入数据的特定逻辑，例如<strong>擦除不良样本</strong>或<strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Feature_scaling">特征缩放</a></strong>。</p>
-<p>输入函数必须返回以下两个值，这两个值包含要输入到模型中的最终特征和标签数据（如上面的代码框架中所示）：</p>
-<p><code>feature_cols</code></p>
-<pre><code>包含将特征列名称映射到包含相应特征数据的`Tensor`（或`SparseTensor`）的键/值对的字典。
-</code></pre><p><code>labels</code></p>
-<pre><code>包含您的标签（目标）值的`Tensor`：你的模型的值的目的是用于预测。
-</code></pre><h3 id="将特征数据转换为Tensor"><a href="#将特征数据转换为Tensor" class="headerlink" title="将特征数据转换为Tensor"></a>将特征数据转换为Tensor</h3><p>如果你的特征/标签数据储存在<a target="_blank" rel="noopener" href="http://pandas.pydata.org/">pandas</a>数据帧中或<a target="_blank" rel="noopener" href="http://www.numpy.org/">numpy</a>数组中，那么你需要将其转换为<code>Tensor</code>，然后从您的<code>input_fn</code>中返回它。</p>
-<p>对于连续数据，可以使用<code>tf.constant</code>创建和填充<code>Tensor</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feature_column_data &#x3D; [1, 2.4, 0, 9.9, 3, 120]</span><br><span class="line">feature_tensor &#x3D; tf.constant(feature_column_data)</span><br></pre></td></tr></table></figure>
-<p>对于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sparse_matrix">稀疏分类数据</a>（大多数值为0的数据），您应该替换为填充一个<code>SparseTensor</code>，它使用三个参数来实例化：</p>
-<p><code>dense_shape</code></p>
-<pre><code>tensor的形状。获取一个列表，指示每个维度中元素的数量。例如：`dense_shape=[3,6]`指定了一个二维的3x6的tensor，`dense_shape=[2,3,4]`指定了一个三维的2x3x4的tensor，`dense_shape=[9]`指定了一个拥有9个元素的一维tensor。
-</code></pre><p><code>indices</code></p>
-<pre><code>您的tensor中包含非零元素的索引。值为一个列表，其中每一项本身是包含非零元素的索引的列表。（元素是零索引的 - 即，`[0,0]`是二维张量中第一行的第一列中的元素的索引值）。例如：`indices=[[1,3], [2,4]]`指定了索引为`[1,3]`和`[2,4]`的元素具有非零值。
-</code></pre><p><code>values</code></p>
-<pre><code>值为一维tensor。`values`的项`i`对应于`indices`中的项`i`，并且指定了它的值。例如，给定了`indices=[[1,3], [2,4]]`，那么参数`values=[18, 3.6]`就指定了tensor的元素`[1,3]`的值为18，元素`[2,4]`的值为3.6。
-</code></pre><p>以下代码定义了一个具有3行和5列的二维<code>SparseTensor</code>。具有索引<code>[0,1]</code>的元素的值为6，并且索引为<code>[2,4]</code>的元素值为0.5（所有其他值为0）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sparse_tensor &#x3D; tf.SparseTensor(indices&#x3D;[[0,1], [2,4]],</span><br><span class="line">                                values&#x3D;[6, 0.5],</span><br><span class="line">                                dense_shape&#x3D;[3, 5])</span><br></pre></td></tr></table></figure>
-<p>这对应了下面的稠密tensor(dense tensor)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[0, 6, 0, 0, 0]</span><br><span class="line"> [0, 0, 0, 0, 0]</span><br><span class="line"> [0, 0, 0, 0, 0.5]]</span><br></pre></td></tr></table></figure>
-<p>更多关于<code>SparseTensor</code>的内容，请见<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/SparseTensor"><code>tf.SparseTensor</code></a></p>
-<h3 id="将input-fn数据传递给您的模型"><a href="#将input-fn数据传递给您的模型" class="headerlink" title="将input_fn数据传递给您的模型"></a>将input_fn数据传递给您的模型</h3><p>要将数据馈送到您的模型进行训练，您只需将创建的输入函数作为<code>input_fn</code>参数的值传递到<code>fit</code>运算即可，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;my_input_fn, steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>请注意，<code>input_fn</code>负责将特征和标签数据提供给模型，并在<code>fit</code>(拟合)中替换<code>x</code>和<code>y</code>参数。如果为<code>fit</code>提供了一个不为空的<code>input_fn</code>值与不为<code>None</code>的<code>x</code>或<code>y</code>结合，它将抛出一个<code>ValueError</code>。</p>
-<p>还要注意一点，<code>input_fn</code>参数必须接收一个函数对象（例如<code>input_fn = my_input_fn</code>），而不是函数调用的返回值（<code>input_fn = my_input_fn()</code>）。这意味着，如果您尝试在<code>fit</code>的调用中按照下面的方式，将参数传递给输入函数，则会导致TypeError：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;my_input_fn(training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>但是，如果你想要参数化你的输入函数，有一些其他的方法可以做到。您可以使用不带参数的包装函数作为<code>input_fn</code>，并使用它来调用具有所需参数的输入函数。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def my_input_function_training_set():</span><br><span class="line">  return my_input_function(training_set)</span><br><span class="line"></span><br><span class="line">classifier.fit(input_fn&#x3D;my_input_fn_training_set, steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>或者，你可以使用Python的<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/functools.html#functools.partial"><code>functools.partial</code></a>方法来构造一个新的所有参数值固定的方法对象：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;functools.partial(my_input_function,</span><br><span class="line">                                          data_set&#x3D;training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>第三种方式是将<code>input_fn</code>调用包装在<a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions"><code>lambda</code></a>中，并将其传递给<code>input_fn</code>参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.fit(input_fn&#x3D;lambda: my_input_fn(training_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>构建您的输入管道的一个很大的优势如上所示 — 可以接受数据集的参数 — 是你只需修改数据集的参数，就可以传递相同的<code>input_fn</code>到<code>evaluate</code>和<code>predict</code>操作上。例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">classifier.evaluate(input_fn&#x3D;lambda: my_input_fn(test_set), steps&#x3D;2000)</span><br></pre></td></tr></table></figure>
-<p>这种方法增强了代码的可维护性：不需要针对每种类型的操作捕获单独变量（例如，<code>x_train</code>，<code>x_test</code>，<code>y_train</code>，<code>y_test</code>）中的<code>x</code>和<code>y</code>值。</p>
-<h3 id="一个用于波士顿房屋数据的神经网络"><a href="#一个用于波士顿房屋数据的神经网络" class="headerlink" title="一个用于波士顿房屋数据的神经网络"></a>一个用于波士顿房屋数据的神经网络</h3><p>在本教程的剩余部分，您将编写一个输入函数，用于预处理从<a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/datasets/Housing">UCI住宅数据集</a>中提取的一组波士顿房屋数据，并使用它来将数据馈送到神经网络回归器，以预测房屋中值。</p>
-<p>您将用于训练神经网络的<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/input_fn#setup">波士顿CSV数据集</a>包含以下波士顿郊区的<a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names">特征数据</a>：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">特征</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">CRIM</td>
-<td style="text-align:left">人均犯罪率</td>
-</tr>
-<tr>
-<td style="text-align:left">ZN</td>
-<td style="text-align:left">超过25,000+平方呎地段的住宅用地的部分</td>
-</tr>
-<tr>
-<td style="text-align:left">INDUS</td>
-<td style="text-align:left">非零售业的土地部分</td>
-</tr>
-<tr>
-<td style="text-align:left">NOX</td>
-<td style="text-align:left">一氧化氮浓度 以百万分之一为单位</td>
-</tr>
-<tr>
-<td style="text-align:left">RM</td>
-<td style="text-align:left">每个住宅平均房间数</td>
-</tr>
-<tr>
-<td style="text-align:left">AGE</td>
-<td style="text-align:left">在1940年之前建造的自用住宅的部分</td>
-</tr>
-<tr>
-<td style="text-align:left">DIS</td>
-<td style="text-align:left">到波士顿地区就业中心的距离</td>
-</tr>
-<tr>
-<td style="text-align:left">TAX</td>
-<td style="text-align:left">每$10,000的房产税税率</td>
-</tr>
-<tr>
-<td style="text-align:left">PTRATIO</td>
-<td style="text-align:left">学生 - 教师比例</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>你的模型预测的标签是MEDV，自用住宅的价格中值，以千美元计。</p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>下载以下数据集：<a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_train.csv">boston_train.csv</a>, <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_test.csv">boston_test.csv</a>, 和 <a target="_blank" rel="noopener" href="http://download.tensorflow.org/data/boston_predict.csv">boston_predict.csv</a>。</p>
-<p>以下部分提供了如何创建输入函数的手把手的步骤，将这些数据集送入神经网络回归，训练和评估模型，并进行房屋价值预测。完整的最终代码在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/code/tensorflow/examples/tutorials/input_fn/boston.py">这里</a>。</p>
-<h3 id="输入房屋数据"><a href="#输入房屋数据" class="headerlink" title="输入房屋数据"></a>输入房屋数据</h3><p>要开始，请设置导入所需的库（包括<code>pandas</code>和<code>tensorflow</code>），并将<a target="_blank" rel="noopener" href="https://www.tensorflow.org/get_started/monitors#enabling_logging_with_tensorflow">日志级别设置</a>为<code>INFO</code>以获取更详细的日志输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from __future__ import absolute_import</span><br><span class="line">from __future__ import division</span><br><span class="line">from __future__ import print_function</span><br><span class="line"></span><br><span class="line">import itertools</span><br><span class="line"></span><br><span class="line">import pandas as pd</span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">tf.logging.set_verbosity(tf.logging.INFO)</span><br></pre></td></tr></table></figure>
-<p>在<code>COLUMNS</code>中定义数据集的列名称。要区分特征和标签，还需要定义<code>FEATURES</code>和<code>LABEL</code>。然后将三个CSV（<code>tf.train</code>，<code>tf.test</code>和<code>predict</code>）读入pandas <code>DataFrame</code>s：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">COLUMNS &#x3D; [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;, &quot;age&quot;,</span><br><span class="line">           &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;, &quot;medv&quot;]</span><br><span class="line">FEATURES &#x3D; [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;,</span><br><span class="line">            &quot;age&quot;, &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;]</span><br><span class="line">LABEL &#x3D; &quot;medv&quot;</span><br><span class="line"></span><br><span class="line">training_set &#x3D; pd.read_csv(&quot;boston_train.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                           skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br><span class="line">test_set &#x3D; pd.read_csv(&quot;boston_test.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                       skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br><span class="line">prediction_set &#x3D; pd.read_csv(&quot;boston_predict.csv&quot;, skipinitialspace&#x3D;True,</span><br><span class="line">                             skiprows&#x3D;1, names&#x3D;COLUMNS)</span><br></pre></td></tr></table></figure>
-<h3 id="定义特征列并创建回归"><a href="#定义特征列并创建回归" class="headerlink" title="定义特征列并创建回归"></a>定义特征列并创建回归</h3><p>接下来，为输入数据创建<code>FeatureColumn</code>list，正式指定要用于训练的特征集。由于房屋数据集中的所有特征都包含连续的值，因此可以使用<code>tf.contrib.layers.real_valued_column()</code>函数创建其<code>FeatureColumn</code>s：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">feature_cols &#x3D; [tf.contrib.layers.real_valued_column(k)</span><br><span class="line">                  for k in FEATURES]</span><br></pre></td></tr></table></figure>
-<p>注意：有关特征列的更深入的内容，请参阅此<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/linear#feature_columns_and_transformations">简介</a>，以及说明如何为分类数据定义<code>FeatureColumns</code>的示例，请参阅线<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">性模型教程</a>。</p>
-<p>现在，为神经网络回归模型实例化一个<code>DNNRegressor</code>。这里你需要提供两个参数：<code>hidden_units</code>，指定每个隐藏层中的节点数量的超参数(hyperparameter)（这里，有两个隐藏层，每个隐藏层都具有10个节点），以及<code>feature_columns</code>，包含您刚定义的<code>FeatureColumns</code>list：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">regressor &#x3D; tf.contrib.learn.DNNRegressor(feature_columns&#x3D;feature_cols,</span><br><span class="line">                                          hidden_units&#x3D;[10, 10],</span><br><span class="line">                                          model_dir&#x3D;&quot;&#x2F;tmp&#x2F;boston_model&quot;)</span><br></pre></td></tr></table></figure>
-<h3 id="构建input-fn"><a href="#构建input-fn" class="headerlink" title="构建input_fn"></a>构建input_fn</h3><p>要将输入数据传递到<code>regressor</code>，请创建一个输入函数，它将接受一个pandas <code>Dataframe</code>并返回特征列和标签值作为<code>Tensor</code>s：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def input_fn(data_set):</span><br><span class="line">  feature_cols &#x3D; &#123;k: tf.constant(data_set[k].values)</span><br><span class="line">                  for k in FEATURES&#125;</span><br><span class="line">  labels &#x3D; tf.constant(data_set[LABEL].values)</span><br><span class="line">  return feature_cols, labels</span><br></pre></td></tr></table></figure>
-<p>请注意，输入数据被传递到<code>data_set</code>参数中的<code>input_fn</code>中，这意味着该函数可以处理您导入的任何<code>DataFrames</code>：<code>training_set</code>，<code>test_set</code>和<code>prediction_set</code>。</p>
-<h3 id="训练回归"><a href="#训练回归" class="headerlink" title="训练回归"></a>训练回归</h3><p>要训​​练神经网络回归，运行指定了包含有<code>training_set</code>的<code>input_fn</code>的<code>fit</code>函数，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">regressor.fit(input_fn&#x3D;lambda: input_fn(training_set), steps&#x3D;5000)</span><br></pre></td></tr></table></figure>
-<p>您应该能看到类似于以下内容的日志输出，它会报告每100步的训练loss值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Step 1: loss &#x3D; 483.179</span><br><span class="line">INFO:tensorflow:Step 101: loss &#x3D; 81.2072</span><br><span class="line">INFO:tensorflow:Step 201: loss &#x3D; 72.4354</span><br><span class="line">...</span><br><span class="line">INFO:tensorflow:Step 1801: loss &#x3D; 33.4454</span><br><span class="line">INFO:tensorflow:Step 1901: loss &#x3D; 32.3397</span><br><span class="line">INFO:tensorflow:Step 2001: loss &#x3D; 32.0053</span><br><span class="line">INFO:tensorflow:Step 4801: loss &#x3D; 27.2791</span><br><span class="line">INFO:tensorflow:Step 4901: loss &#x3D; 27.2251</span><br><span class="line">INFO:tensorflow:Saving checkpoints for 5000 into &#x2F;tmp&#x2F;boston_model&#x2F;model.ckpt.</span><br><span class="line">INFO:tensorflow:Loss for final step: 27.1674.</span><br></pre></td></tr></table></figure>
-<h3 id="评估模型"><a href="#评估模型" class="headerlink" title="评估模型"></a>评估模型</h3><p>接下来，看看训练模型如何针对测试数据集执行。运行<code>evaluate</code>，这次将<code>test_set</code>传递给<code>input_fn</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ev &#x3D; regressor.evaluate(input_fn&#x3D;lambda: input_fn(test_set), steps&#x3D;1)</span><br></pre></td></tr></table></figure>
-<p>从<code>ev</code>的结果中检索损失并将其打印到输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loss_score &#x3D; ev[&quot;loss&quot;]</span><br><span class="line">print(&quot;Loss: &#123;0:f&#125;&quot;.format(loss_score))</span><br></pre></td></tr></table></figure>
-<p>您应该会看到类似以下的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO:tensorflow:Eval steps [0,1) for training step 5000.</span><br><span class="line">INFO:tensorflow:Saving evaluation summary for 5000 step: loss &#x3D; 11.9221</span><br><span class="line">Loss: 11.922098</span><br></pre></td></tr></table></figure>
-<h3 id="进行预测"><a href="#进行预测" class="headerlink" title="进行预测"></a>进行预测</h3><p>最后，您可以使用模型预测<code>prediction_set</code>中的房屋中值，其中包含特征数据，但没有六个样本的标签：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">y &#x3D; regressor.predict(input_fn&#x3D;lambda: input_fn(prediction_set))</span><br><span class="line"># .predict() returns an iterator; convert to a list and print predictions</span><br><span class="line">predictions &#x3D; list(itertools.islice(y, 6))</span><br><span class="line">print (&quot;Predictions: &#123;&#125;&quot;.format(str(predictions)))</span><br></pre></td></tr></table></figure>
-<p>您的结果应包含以 $1000 计的六次房价预测，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979</span><br><span class="line">  19.58005714]</span><br></pre></td></tr></table></figure>
-<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p>本教程专注于为神经网络回归创建一个<code>input_fn</code>。要了解更多有关对其他类型模型使用<code>input_fn</code>的信息，请查看以下资源：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/linear">TensorFlow的大尺寸线性模型</a>：这种对TensorFlow中的线性模型的介绍提供了用于变换输入数据的特征列和技术的高级概述。</li>
-<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">TensorFlow线性模型教程</a>：本教程包括为线性分类模型创建<code>FeatureColumn</code>s和<code>input_fn</code>，该模型根据人口普查数据预测收入范围。</li>
-<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide_and_deep">TensorFlow宽＆深学习教程</a>：基于<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/wide">TensorFlow线性模型教程</a>，本教程涵盖了使用<code>DNNLinearCombinedClassifier</code>组合线性模型和神经网络的“宽和深”模型的<code>FeatureColumn</code>和<code>input_fn</code>创建。</li>
-</ul>
 
       
     </div>
@@ -2495,7 +2602,7 @@ y \in ｛1,2,3,...,K｝</script><p>对应下图：</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

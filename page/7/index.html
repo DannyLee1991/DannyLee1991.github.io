@@ -191,6 +191,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/13/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%B5%8B%E8%AF%95%E5%8D%95%E4%B8%AA%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/13/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E6%B5%8B%E8%AF%95%E5%8D%95%E4%B8%AA%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84UI/" class="post-title-link" itemprop="url">【Android文档翻译】测试单个应用程序的UI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-13 08:43:58" itemprop="dateCreated datePublished" datetime="2017-01-13T08:43:58+00:00">2017-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/testing/ui-testing/espresso-testing.html">https://developer.android.google.cn/training/testing/ui-testing/espresso-testing.html</a></p>
+<p>在单个应用中测试用户互动有助于确保用户在与您的应用互动时不会遇到意外的结果或体验不佳。如果您需要验证应用程序的UI是否正常工作，您应该习惯创建用户界面（UI）测试。</p>
+<p>由<a target="_blank" rel="noopener" href="https://developer.android.google.cn/tools/testing-support-library/index.html">Android测试支持库</a>提供的Espresso测试框架提供了用于编写UI测试的API，以在单个目标应用程序中模拟用户交互。Espresso测试可在运行Android 2.3.3（API级别10）及更高版本的设备上运行。使用Espresso的一个主要优点是它提供了测试操作与要测试的应用程序的UI的自动同步。Espresso检测主线程何时空闲，因此可以在适当的时间运行测试命令，提高测试的可靠性。此功能还可以避免您添加任何计时解决方法，例如测试代码中的<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/java/lang/Thread.html#sleep(long">Thread.sleep()</a>)。</p>
+<p>Espresso测试框架是一种基于工具的API，可与<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/runner/AndroidJUnitRunner.html">AndroidJUnitRunner</a>测试运行程序配合使用。</p>
+<h2 id="设置Espresso"><a href="#设置Espresso" class="headerlink" title="设置Espresso"></a>设置Espresso</h2><p>在使用Espresso构建UI测试之前，请确保按照<a href="/2017/01/11/【Android文档翻译】入门测试/">测试入门</a>中所述配置测试源代码位置和项目依赖关系。</p>
+<p>在Android应用程序模块的<code>build.gradle</code>文件中，必须为Espresso库设置依赖性引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    &#x2F;&#x2F; Other dependencies ...</span><br><span class="line">    androidTestCompile &#39;com.android.support.test.espresso:espresso-core:2.2.2&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关闭测试设备上的动画 - 在测试设备中打开系统动画可能会导致意外的结果，或可能导致测试失败。通过打开开发者选项并关闭所有以下选项，从设置中关闭动画：</p>
+<ul>
+<li><strong>窗口动画设置</strong></li>
+<li><strong>过渡动画设置</strong></li>
+<li><strong>动画持续时间设置</strong></li>
+</ul>
+<p>如果要将项目设置为使用除核心API提供的以外的Espresso功能，请参阅此<a target="_blank" rel="noopener" href="https://google.github.io/android-testing-support-library/docs/espresso/index.html">资源</a>。</p>
+<h2 id="创建Espresso测试类"><a href="#创建Espresso测试类" class="headerlink" title="创建Espresso测试类"></a>创建Espresso测试类</h2><p>要创建Espresso测试，请创建遵循此编程模型的Java类：</p>
+<ul>
+<li>1.通过调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View"><code>onView()</code></a>方法或<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/AdapterView.html">AdapterView</a>控件的<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onData(org.hamcrest.Matcher&lt;java.lang.Object"><code>onData()</code></a>)方法，在Activity中找到要测试的UI组件（例如，应用程序中的登录按钮）</li>
+<li>2.通过调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewInteraction.html#perform(android.support.test.espresso.ViewAction..."><code>ViewInteraction.perform()</code></a>或<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/DataInteraction.html#perform(android.support.test.espresso.ViewAction..."><code>DataInteraction.perform()</code></a>方法并传递用户操作（例如，单击登录按钮），模拟要在该UI组件上执行的特定用户交互。要在同一个UI组件上排序多个操作，请使用方法参数中的逗号分隔列表将它们链接起来。</li>
+<li>3.根据需要重复上述步骤，以模拟目标应用程序中多个活动的用户流。</li>
+<li>4.在执行这些用户交互之后，使用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/assertion/ViewAssertions.html"><code>ViewAssertions</code></a>方法检查UI是否反映了预期的状态或行为。</li>
+</ul>
+<p>这些步骤在下面的部分中有更详细地描述。</p>
+<p>以下代码段显示了您的测试类如何调用此基本工作流：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onView(withId(R.id.my_view))            &#x2F;&#x2F; withId(R.id.my_view) is a ViewMatcher</span><br><span class="line">        .perform(click())               &#x2F;&#x2F; click() is a ViewAction</span><br><span class="line">        .check(matches(isDisplayed())); &#x2F;&#x2F; matches(isDisplayed()) is a ViewAssertion</span><br></pre></td></tr></table></figure>
+<h2 id="通过ActivityTestRule来使用Espresso"><a href="#通过ActivityTestRule来使用Espresso" class="headerlink" title="通过ActivityTestRule来使用Espresso"></a>通过ActivityTestRule来使用Espresso</h2><p>以下部分描述如何在JUnit 4样式中创建新的Espresso测试，并使用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/rule/ActivityTestRule.html">ActivityTestRule</a>减少需要写入的样板代码量。通过使用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/rule/ActivityTestRule.html">ActivityTestRule</a>，测试框架在用<code>@Test</code>注解的每个测试方法之前和在用<code>@Before</code>注解的任何方法之前启动测试下的activity。框架处理在测试完成后关闭activity，并运行用<code>@After</code>注解的所有方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">package com.example.android.testing.espresso.BasicSample;</span><br><span class="line"></span><br><span class="line">import org.junit.Before;</span><br><span class="line">import org.junit.Rule;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line"></span><br><span class="line">import android.support.test.rule.ActivityTestRule;</span><br><span class="line">import android.support.test.runner.AndroidJUnit4;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">@LargeTest</span><br><span class="line">public class ChangeTextBehaviorTest &#123;</span><br><span class="line"></span><br><span class="line">    private String mStringToBetyped;</span><br><span class="line"></span><br><span class="line">    @Rule</span><br><span class="line">    public ActivityTestRule&lt;MainActivity&gt; mActivityRule &#x3D; new ActivityTestRule&lt;&gt;(</span><br><span class="line">            MainActivity.class);</span><br><span class="line"></span><br><span class="line">    @Before</span><br><span class="line">    public void initValidString() &#123;</span><br><span class="line">        &#x2F;&#x2F; Specify a valid string.</span><br><span class="line">        mStringToBetyped &#x3D; &quot;Espresso&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void changeText_sameActivity() &#123;</span><br><span class="line">        &#x2F;&#x2F; Type text and then press the button.</span><br><span class="line">        onView(withId(R.id.editTextUserInput))</span><br><span class="line">                .perform(typeText(mStringToBetyped), closeSoftKeyboard());</span><br><span class="line">        onView(withId(R.id.changeTextBt)).perform(click());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Check that the text was changed.</span><br><span class="line">        onView(withId(R.id.textToBeChanged))</span><br><span class="line">                .check(matches(withText(mStringToBetyped)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="访问UI组件"><a href="#访问UI组件" class="headerlink" title="访问UI组件"></a>访问UI组件</h2><p>在Espresso可以与正在测试的应用程序交互之前，您必须首先指定UI组件或视图。Espresso支持使用<a target="_blank" rel="noopener" href="http://hamcrest.org/">Hamcrest匹配器</a>在应用程序中指定视图和适配器。</p>
+<p>要查找视图，请调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View"><code>onView()</code></a>方法并传递一个视图匹配器，该视图匹配器指定您要定位的视图。这在<a href="#指定视图匹配器">指定视图匹配器</a>中有更详细地描述。<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View"><code>onView()</code></a>方法返回一个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewInteraction.html">ViewInteraction</a>对象，允许您的测试与视图交互。但是，如果要在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/v7/widget/RecyclerView.html">RecyclerView</a>布局中查找视图，则调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View"><code>onView()</code></a>方法可能不起作用。在这种情况下，请按照<a href="#在AdapterView中查找视图">在AdapterView中查找视图</a>中的说明进行操作。</p>
+<blockquote>
+<p><strong>注意：</strong><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View"><code>onView()</code></a>方法不会检查您指定的视图是否有效。相反，Espresso仅使用提供的匹配器搜索当前视图层次结构。如果没有找到匹配，该方法将抛出<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/NoMatchingViewException.html">NoMatchingViewException</a>异常。</p>
+</blockquote>
+<p>以下代码段显示了如何编写访问EditText字段，输入文本字符串，关闭虚拟键盘，然后执行按钮单击的测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public void testChangeText_sameActivity() &#123;</span><br><span class="line">    &#x2F;&#x2F; Type text and then press the button.</span><br><span class="line">    onView(withId(R.id.editTextUserInput))</span><br><span class="line">            .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());</span><br><span class="line">    onView(withId(R.id.changeTextButton)).perform(click());</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Check that the text was changed.</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指定视图匹配器"><a href="#指定视图匹配器" class="headerlink" title="指定视图匹配器"></a>指定视图匹配器</h3><p>您可以使用以下方法指定视图匹配器：</p>
+<ul>
+<li>在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/matcher/ViewMatchers.html">ViewMatchers</a>类中调用方法。例如，要通过查找显示的文本字符串来查找视图，可以调用以下方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onView(withText(&quot;Sign-in&quot;));</span><br></pre></td></tr></table></figure>
+<p>同样，您可以调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/matcher/ViewMatchers.html#withId(int"><code>withId()</code></a>并提供视图的资源ID(R.id)，如以下示例所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onView(withId(R.id.button_signin));</span><br></pre></td></tr></table></figure>
+<p>Android资源ID不能保证是唯一的。如果您的测试尝试匹配多个视图使用的资源ID，Espresso会抛出<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/AmbiguousViewMatcherException.html">AmbiguousViewMatcherException</a>。</p>
+<ul>
+<li>使用Hamcrest <a target="_blank" rel="noopener" href="http://hamcrest.org/JavaHamcrest/javadoc/1.3/org/hamcrest/Matchers.html">Matchers</a>类。您可以使用<code>allOf()</code>方法来组合多个匹配器，例如<code>containsString()</code>和<code>instanceOf()</code>。此方法允许您更窄地过滤匹配结果，如以下示例所示：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onView(allOf(withId(R.id.button_signin), withText(&quot;Sign-in&quot;)));</span><br></pre></td></tr></table></figure>
+<p>您可以使用<code>not</code>关键字过滤不与匹配器对应的视图，如以下示例所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onView(allOf(withId(R.id.button_signin), not(withText(&quot;Sign-out&quot;))));</span><br></pre></td></tr></table></figure>
+<p>要在测试中使用这些方法，请导入<code>org.hamcrest.Matchers</code>包。要了解有关Hamcrest匹配的更多信息，请参阅<a target="_blank" rel="noopener" href="http://hamcrest.org/">Hamcrest网站</a>。</p>
+<p>要提高Espresso测试的性能，请指定查找目标视图所需的最小匹配信息。例如，如果视图通过其描述性文本可以唯一标识，则不需要指定它也可以从TextView实例分配。</p>
+<h3 id="在AdapterView中查找视图"><a href="#在AdapterView中查找视图" class="headerlink" title="在AdapterView中查找视图"></a>在AdapterView中查找视图</h3><p>在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/AdapterView.html">AdapterView</a>小部件中，视图在运行时动态填充子视图。如果要测试的目标视图位于<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/AdapterView.html">AdapterView</a>（例如<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/ListView.html">ListView</a>，<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/GridView.html">GridView</a>或<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/Spinner.html">Spinner</a>）中，则<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onView(org.hamcrest.Matcher&lt;android.view.View">onView()</a>方法可能无法工作，因为只有一部分视图可能会加载到当前视图层次结构中。</p>
+<p>相反，调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onData(org.hamcrest.Matcher&lt;java.lang.Object"><code>onData()</code></a>方法可获取<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/DataInteraction.html">DataInteraction</a>对象以访问目标视图元素。Espresso处理将目标视图元素加载到当前视图层次结构中。Espresso还负责滚动到目标元素，并将元素放在焦点上。</p>
+<blockquote>
+<p><strong>注意：</strong><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onData(org.hamcrest.Matcher&lt;java.lang.Object"><code>onData()</code></a>方法不会检查您指定的项目是否与视图对应。Espresso仅搜索当前视图层次结构。如果没有找到匹配，该方法将抛出<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/NoMatchingViewException.html">NoMatchingViewException</a>异常。 </p>
+</blockquote>
+<p>下面的代码片段展示了如何使用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/Espresso.html#onData(org.hamcrest.Matcher&lt;java.lang.Object"><code>onData()</code></a>方法和Hamcrest匹配来搜索包含给定字符串的列表中的特定行。在此示例中，<code>LongListActivity</code>类包含通过<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/widget/SimpleAdapter.html"><code>SimpleAdapter</code></a>公开的字符串列表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">onData(allOf(is(instanceOf(Map.class)),</span><br><span class="line">        hasEntry(equalTo(LongListActivity.ROW_TEXT), is(&quot;test input&quot;)));</span><br></pre></td></tr></table></figure>
+<h2 id="执行操作"><a href="#执行操作" class="headerlink" title="执行操作"></a>执行操作</h2><p>调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewInteraction.html#perform(android.support.test.espresso.ViewAction...">ViewInteraction.perform()</a>或<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/DataInteraction.html#perform(android.support.test.espresso.ViewAction...">DataInteraction.perform()</a>方法来模拟UI组件上的用户交互。您必须传入一个或多个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewAction.html">ViewAction</a>对象作为参数。Espresso按照给定的顺序依次触发每个动作，并在主线程中执行它们。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html">ViewActions</a>类提供了指定常用操作的帮助方法列表。您可以使用这些方法作为方便的快捷方式，而不是创建和配置单个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewAction.html">ViewAction</a>对象。您可以指定此类操作:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html#click(">ViewActions.click()</a>: 点击视图。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html#typeText(java.lang.String">ViewActions.typeText()</a>:单击视图并输入指定的字符串。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html#scrollTo(">ViewActions.scrollTo()</a>:滚动到视图。目标视图必须是来自<code>ScrollView</code>的子类，它的<code>android:visibility</code>属性的值必须是<code>VISIBLE</code>。对于扩展<code>AdapterView</code>（例如<code>ListView</code>）的视图，<code>onData()</code>方法为您处理滚动。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html#pressKey(int">ViewActions.pressKey()</a>：使用指定的键码执行按键操作。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/action/ViewActions.html#clearText(">ViewActions.clearText()</a>：清除目标视图中的文本。</li>
+</ul>
+<p>如果目标视图位于<code>ScrollView</code>中，在其他操作之前，请先执行<code>ViewActions.scrollTo()</code>操作使视图显示在屏幕中。如果视图已显示，<code>ViewActions.scrollTo()</code>操作将不起作用。</p>
+<h2 id="与Espresso-Intents隔离测试您的Activity"><a href="#与Espresso-Intents隔离测试您的Activity" class="headerlink" title="与Espresso Intents隔离测试您的Activity"></a>与Espresso Intents隔离测试您的Activity</h2><p><a target="_blank" rel="noopener" href="https://google.github.io/android-testing-support-library/docs/espresso/intents/index.html">Espresso Intents</a>支持对应用程序发送的Intent进行验证和存根。使用Espresso Intents，您可以通过拦截传出意向，存根结果并将其发送回测试中的组件来单独测试应用程序，Activity或Service。</p>
+<p>要开始使用Espresso Intents进行测试，需要在应用程序的<code>build.gradle</code>文件中添加以下行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  &#x2F;&#x2F; Other dependencies ...</span><br><span class="line">  androidTestCompile &#39;com.android.support.test.espresso:espresso-intents:2.2.2&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要测试一个intent，您需要创建一个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/intent/rule/IntentsTestRule.html">IntentsTestRule</a>类的实例，这与<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/rule/ActivityTestRule.html">ActivityTestRule</a>类非常相似。<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/intent/rule/IntentsTestRule.html">IntentsTestRule</a>类在每次测试之前初始化Espresso Intents，终止host activity，并在每次测试后释放Espresso Intents。</p>
+<p>以下代码片段中显示的测试类提供了对显式意图的简单测试。它测试在<a target="_blank" rel="noopener" href="https://developer.android.google.cn/training/basics/firstapp/index.html">构建您的第一个应用程序教程</a>中创建的Activity和意图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@Large</span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">public class SimpleIntentTest &#123;</span><br><span class="line"></span><br><span class="line">    private static final String MESSAGE &#x3D; &quot;This is a test&quot;;</span><br><span class="line">    private static final String PACKAGE_NAME &#x3D; &quot;com.example.myfirstapp&quot;;</span><br><span class="line"></span><br><span class="line">    &#x2F;* Instantiate an IntentsTestRule object. *&#x2F;</span><br><span class="line">    @Rule</span><br><span class="line">    public IntentsTestRule≶MainActivity&gt; mIntentsRule &#x3D;</span><br><span class="line">      new IntentsTestRule≶&gt;(MainActivity.class);</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void verifyMessageSentToMessageActivity() &#123;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Types a message into a EditText element.</span><br><span class="line">        onView(withId(R.id.edit_message))</span><br><span class="line">                .perform(typeText(MESSAGE), closeSoftKeyboard());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Clicks a button to send the message to another</span><br><span class="line">        &#x2F;&#x2F; activity through an explicit intent.</span><br><span class="line">        onView(withId(R.id.send_message)).perform(click());</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Verifies that the DisplayMessageActivity received an intent</span><br><span class="line">        &#x2F;&#x2F; with the correct package name and message.</span><br><span class="line">        intended(allOf(</span><br><span class="line">                hasComponent(hasShortClassName(&quot;.DisplayMessageActivity&quot;)),</span><br><span class="line">                toPackage(PACKAGE_NAME),</span><br><span class="line">                hasExtra(MainActivity.EXTRA_MESSAGE, MESSAGE)));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有关Espresso Intents的更多信息，请参阅<a target="_blank" rel="noopener" href="https://google.github.io/android-testing-support-library/docs/espresso/intents/index.html">Android测试支持库网站上的Espresso Intents文档</a>。您还可以下载<a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing/tree/master/ui/espresso/IntentsBasicSample">IntentsBasicSample</a>和<a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing/tree/master/ui/espresso/IntentsAdvancedSample">I​​ntentsAdvancedSample</a>代码示例。</p>
+<h2 id="使用Espresso-Web测试WebViews"><a href="#使用Espresso-Web测试WebViews" class="headerlink" title="使用Espresso Web测试WebViews"></a>使用Espresso Web测试WebViews</h2><p>Espresso Web允许您测试Activity中包含的WebView组件。它使用<a target="_blank" rel="noopener" href="http://docs.seleniumhq.org/docs/03_webdriver.jsp">WebDriver API</a>来检查和控制WebView的行为。</p>
+<p>要开始使用Espresso Web进行测试，您需要将以下行添加到应用程序的<code>build.gradle</code>文件中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  &#x2F;&#x2F; Other dependencies ...</span><br><span class="line">  androidTestCompile &#39;com.android.support.test.espresso:espresso-web:2.2.2&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当使用Espresso Web创建测试时，您需要在实例化<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/rule/ActivityTestRule.html">ActivityTestRule</a>对象以测试Activity时在WebView上启用JavaScript。在测试中，您可以选择WebView中显示的HTML元素并模拟用户交互，如在文本框中输入文本，然后单击按钮。操作完成后，您可以验证Web页上的结果是否与您期望的结果匹配。</p>
+<p>在下面的代码片段中，该类在被测试的Activity中测试具有id值’webview’的WebView组件。<code>verifyValidInputYieldsSuccesfulSubmission()</code>测试在Web页面上选择一个<code>&lt;input&gt;</code>元素，输入一些文本，并检查出现在另一个元素中的文本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@LargeTest</span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">public class WebViewActivityTest &#123;</span><br><span class="line"></span><br><span class="line">    private static final String MACCHIATO &#x3D; &quot;Macchiato&quot;;</span><br><span class="line">    private static final String DOPPIO &#x3D; &quot;Doppio&quot;;</span><br><span class="line"></span><br><span class="line">    @Rule</span><br><span class="line">    public ActivityTestRule mActivityRule &#x3D;</span><br><span class="line">        new ActivityTestRule(WebViewActivity.class,</span><br><span class="line">            false &#x2F;* Initial touch mode *&#x2F;, false &#x2F;*  launch activity *&#x2F;) &#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        protected void afterActivityLaunched() &#123;</span><br><span class="line">            &#x2F;&#x2F; Enable JavaScript.</span><br><span class="line">            onWebView().forceJavascriptEnabled();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void typeTextInInput_clickButton_SubmitsForm() &#123;</span><br><span class="line">       &#x2F;&#x2F; Lazily launch the Activity with a custom start Intent per test</span><br><span class="line">       mActivityRule.launchActivity(withWebFormIntent());</span><br><span class="line"></span><br><span class="line">       &#x2F;&#x2F; Selects the WebView in your layout.</span><br><span class="line">       &#x2F;&#x2F; If you have multiple WebViews you can also use a</span><br><span class="line">       &#x2F;&#x2F; matcher to select a given WebView, onWebView(withId(R.id.web_view)).</span><br><span class="line">       onWebView()</span><br><span class="line">           &#x2F;&#x2F; Find the input element by ID</span><br><span class="line">           .withElement(findElement(Locator.ID, &quot;text_input&quot;))</span><br><span class="line">           &#x2F;&#x2F; Clear previous input</span><br><span class="line">           .perform(clearElement())</span><br><span class="line">           &#x2F;&#x2F; Enter text into the input element</span><br><span class="line">           .perform(DriverAtoms.webKeys(MACCHIATO))</span><br><span class="line">           &#x2F;&#x2F; Find the submit button</span><br><span class="line">           .withElement(findElement(Locator.ID, &quot;submitBtn&quot;))</span><br><span class="line">           &#x2F;&#x2F; Simulate a click via JavaScript</span><br><span class="line">           .perform(webClick())</span><br><span class="line">           &#x2F;&#x2F; Find the response element by ID</span><br><span class="line">           .withElement(findElement(Locator.ID, &quot;response&quot;))</span><br><span class="line">           &#x2F;&#x2F; Verify that the response page contains the entered text</span><br><span class="line">           .check(webMatches(getText(), containsString(MACCHIATO)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有关Espresso Web的详细信息，请参阅<a target="_blank" rel="noopener" href="https://google.github.io/android-testing-support-library/docs/espresso/web/index.html">Android测试支持库站点上的Espresso Web文档</a>。您也可以将此代码段作为<a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing/tree/master/ui/espresso/WebBasicSample">Espresso Web代码示例</a>的一部分下载。</p>
+<h2 id="验证结果"><a href="#验证结果" class="headerlink" title="验证结果"></a>验证结果</h2><p>调用<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewInteraction.html#check(android.support.test.espresso.ViewAssertion"><code>ViewInteraction.check()</code></a>或<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/DataInteraction.html#check(android.support.test.espresso.ViewAssertion"><code>DataInteraction.check()</code></a>方法来断言UI中的视图与某些预期状态匹配。您必须传递一个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/ViewAssertion.html">ViewAssertion</a>对象作为参数。如果断言失败，Espresso会抛出一个<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/junit/framework/AssertionFailedError.html">AssertionFailedError</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/assertion/ViewAssertions.html">ViewAssertions</a>类提供了用于指定公共断言的帮助程序方法的列表。您可以使用的断言包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/assertion/ViewAssertions.html#doesNotExist(">doesNotExist</a>: 断言没有与当前视图层次结构中指定的条件匹配的视图。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/assertion/ViewAssertions.html#matches(org.hamcrest.Matcher&lt;? super android.view.View">matches</a>):断言指定视图存在于当前视图层次结构中，并且其状态与某个给定的Hamcrest匹配器匹配。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/espresso/assertion/ViewAssertions.html#selectedDescendantsMatch(org.hamcrest.Matcher&lt;android.view.View&gt;, org.hamcrest.Matcher&lt;android.view.View">selectedDescendentsMatch</a>:断言存在父视图的指定的子视图，并且他们的状态与Hamcrest匹配器给定的相匹配。</li>
+</ul>
+<p>以下代码段显示了如何检查UI中显示的文本的值与之前在EditText字段中输入的文本的值相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void testChangeText_sameActivity() &#123;</span><br><span class="line">    &#x2F;&#x2F; Type text and then press the button.</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Check that the text was changed.</span><br><span class="line">    onView(withId(R.id.textToBeChanged))</span><br><span class="line">            .check(matches(withText(STRING_TO_BE_TYPED)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在设备或模拟器上运行Espresso测试"><a href="#在设备或模拟器上运行Espresso测试" class="headerlink" title="在设备或模拟器上运行Espresso测试"></a>在设备或模拟器上运行Espresso测试</h2><p>您可以从Android Studio或从命令行运行Espresso测试。确保指定<a target="_blank" rel="noopener" href="https://developer.android.google.cn/reference/android/support/test/runner/AndroidJUnitRunner.html">AndroidJUnitRunner</a>作为项目中的默认instrumentation runner。</p>
+<p>要运行Espresso测试，请按照<a href="/2017/01/11/【Android文档翻译】入门测试/">测试入门</a>中所述的运行测试测试的步骤操作。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/01/11/%E3%80%90Android%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%91%E8%87%AA%E5%8A%A8%E5%8C%96UI%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +386,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -311,7 +475,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -458,7 +622,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -570,7 +734,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -741,7 +905,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -824,7 +988,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -954,7 +1118,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1087,7 +1251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1260,7 +1424,7 @@ x\_{j} =
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1400,130 +1564,6 @@ x\_{j} =
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/12/08/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%882%EF%BC%89-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/12/08/%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B%EF%BC%882%EF%BC%89-%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96/" class="post-title-link" itemprop="url">房价预测（2）-数据清洗与持久化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-12-08 23:05:58" itemprop="dateCreated datePublished" datetime="2016-12-08T23:05:58+00:00">2016-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>在<a href="/2016/11/30/房价预测（1）-搜房网数据爬取/">房价预测（1）-搜房网数据爬取</a>中，已经介绍了爬虫的核心代码，但是爬取到的数据是没有经过加工且带有html标签的，很不利于阅读和使用，并且我们没有把数据持久化到本地，那么这篇文章主要介绍的就是这两步工作。</p>
-</blockquote>
-<h2 id="Item-Pipeline介绍"><a href="#Item-Pipeline介绍" class="headerlink" title="Item Pipeline介绍"></a>Item Pipeline介绍</h2><p>Scrapy中有个很好用的工具<a target="_blank" rel="noopener" href="http://scrapy-chs.readthedocs.io/zh_CN/latest/topics/item-pipeline.html">Item Pipeline</a>。</p>
-<p>通过阅读文档我们可以看到它的作用是：</p>
-<ul>
-<li>清理HTML数据</li>
-<li>验证爬取的数据(检查item包含某些字段)</li>
-<li>查重(并丢弃)</li>
-<li>将爬取结果保存到数据库中</li>
-</ul>
-<p>真是完全符合我们的要求。</p>
-<blockquote>
-<p><strong>Pipeline</strong>的意思是<strong>管道</strong>,如果你玩过Linux的话，对这个名称一定不会陌生。管道是计算机中一个非常常见且重要的概念，大致的作用就是<strong>将管道前一部分的输出结果作为它后一部分的输入</strong>。类似这种设计都可以称为<strong>管道</strong>。</p>
-</blockquote>
-<p>还记得我们之前写的蜘蛛吗？在<code>ESFListSpider</code>这个蜘蛛中，开始爬取数据时会走到这个方法中:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 爬取房源列表信息</span><br><span class="line">def parse(self, response):</span><br><span class="line">        self.log(&#39;A response from %s just arrived!&#39; % response.url)</span><br><span class="line">        infos &#x3D; response.xpath(&quot;&#x2F;&#x2F;a&#x2F;@href&quot;).extract()</span><br><span class="line"></span><br><span class="line">        for i in infos:</span><br><span class="line">            i_str &#x3D; str(i).encode(&quot;utf-8&quot;)</span><br><span class="line">            if &quot;esf&quot; in i_str:</span><br><span class="line">                url &#x3D; i_str.replace(&#39;\\&#39;, &#39;&#39;).strip()</span><br><span class="line">                yield scrapy.Request(url&#x3D;url.replace(&quot;\&quot;&quot;, &quot;&quot;), callback&#x3D;self.parse_details)</span><br></pre></td></tr></table></figure>
-<p>在这个方法的内部的循环中会遍历链接地址，再次发起request，之后会自动调用回调函数<code>self.parse_details</code>，自动执行<code>parse_details</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 爬取房源详情信息</span><br><span class="line">def parse_details(self, response):</span><br><span class="line">	...</span><br><span class="line">	# 顺便爬取一下详情页 url</span><br><span class="line">	item &#x3D; ESFItem()</span><br><span class="line">    item[&#39;url&#39;] &#x3D; response.url</span><br><span class="line">    </span><br><span class="line">    # 详情页对应的 城市-一级区域-二级区域 信息</span><br><span class="line">	bread_list &#x3D; response.xpath(&quot;&#x2F;&#x2F;body&#x2F;div[@class&#x3D;&#39;wrap&#39;]&#x2F;div[@class&#x3D;&#39;bread&#39;]&#x2F;p[@class&#x3D;&#39;floatl&#39;]&#x2F;a&quot;).extract()</span><br><span class="line">    for index,bread in enumerate(bread_list[1:]):</span><br><span class="line">        if index &#x3D;&#x3D; 0:</span><br><span class="line">            item[&quot;bread_city&quot;] &#x3D; bread</span><br><span class="line">        elif index &#x3D;&#x3D; 1:</span><br><span class="line">            item[&quot;bread_area&quot;] &#x3D; bread</span><br><span class="line">        elif index &#x3D;&#x3D; 2:</span><br><span class="line">            item[&quot;bread_positon&quot;] &#x3D; bread</span><br><span class="line">	...</span><br><span class="line">	# 这句很重要，保证item可以传递到后面的Pipeline中</span><br><span class="line">	yield item</span><br></pre></td></tr></table></figure>
-<p>以上是我们蜘蛛的部分核心代码，如果我们配置了Pipeline，蜘蛛会把塞满信息的item传递到我们定义的Pipeline中。</p>
-<h3 id="创建Pipeline"><a href="#创建Pipeline" class="headerlink" title="创建Pipeline"></a>创建Pipeline</h3><p>为了满足<strong>清洗数据</strong>和<strong>存储数据</strong>的功能，我们创建两个Pipeline来分别处理这两类逻辑：</p>
-<p>在<code>pipelines.py</code>中添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class ExtractDataPipeline(object):</span><br><span class="line">	def process_item(self, item, spider):</span><br><span class="line">		...</span><br><span class="line">		return item</span><br></pre></td></tr></table></figure>
-<p>和</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class SaveDataPipline(object):</span><br><span class="line">	def process_item(self, item, spider):</span><br><span class="line">		...</span><br><span class="line">		return item</span><br></pre></td></tr></table></figure>
-<p>并在<code>settings.py</code>中进行注册：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">ITEM_PIPELINES &#x3D; &#123;</span><br><span class="line">   &#39;soufang.pipelines.ExtractDataPipeline&#39;: 300,</span><br><span class="line">   &#39;soufang.pipelines.SaveDataPipline&#39;:500,</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>后面的数字范围是0-1000之内的任意整数，代表的是优先级。可以看出来我们是优先清洗数据，然后保存数据。</p>
-<h2 id="清洗数据"><a href="#清洗数据" class="headerlink" title="清洗数据"></a>清洗数据</h2><p>清洗数据的代码如下，就是将每一个字段的信息的html标签进行剥离，并且截取掉冗余的字符串：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># 剔除html代码</span><br><span class="line">def take_out_html(str):</span><br><span class="line">    dr &#x3D; re.compile(r&#39;&lt;[^&gt;]+&gt;&#39;, re.S)</span><br><span class="line">    return dr.sub(&#39;&#39;, str)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ExtractDataPipeline(object):</span><br><span class="line">    def process_item(self, item, spider):</span><br><span class="line">        print &quot;&gt;&gt;&gt; ExtractDataPipeline &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;</span><br><span class="line">        self.extract_data(item, &quot;url&quot;)</span><br><span class="line">        self.extract_data(item, &quot;id&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;publish_time&quot;, f&#x3D;-10)</span><br><span class="line">        self.extract_data(item, &quot;title&quot;)</span><br><span class="line">        self.extract_data(item, &quot;total_price&quot;)</span><br><span class="line">        self.extract_data(item, &quot;house_type&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;house_build_area&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;house_use_area&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;house_age&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;orientation&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;floor&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;structure&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;decoration&quot;, f&#x3D;3)</span><br><span class="line">        self.extract_data(item, &quot;residential_category&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;building_class&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;property_right&quot;, f&#x3D;5)</span><br><span class="line">        self.extract_data(item, &quot;property_name&quot;)</span><br><span class="line">        self.extract_data(item, &quot;school&quot;)</span><br><span class="line">        self.extract_data(item, &quot;supporting_facilities&quot;)</span><br><span class="line">        self.extract_data(item, &quot;bread_city&quot;, t&#x3D;-3)</span><br><span class="line">        self.extract_data(item, &quot;bread_area&quot;, t&#x3D;-3)</span><br><span class="line">        self.extract_data(item, &quot;bread_positon&quot;, t&#x3D;-3)</span><br><span class="line">        return item</span><br><span class="line"></span><br><span class="line">    # 剔除数据中的多余部分</span><br><span class="line">    def extract_data(self, item, key_bread_positon, f&#x3D;None, t&#x3D;None):</span><br><span class="line">        if self.check_key_exist(item, key_bread_positon):</span><br><span class="line">            item[key_bread_positon] &#x3D; take_out_html(item[key_bread_positon]).strip()[f:t]</span><br><span class="line">        else:</span><br><span class="line">            item[key_bread_positon] &#x3D; &quot;&quot;</span><br><span class="line">        self.print_itme_value(item, key_bread_positon)</span><br><span class="line"></span><br><span class="line">    # 检查key是否存在</span><br><span class="line">    def check_key_exist(self, item, key):</span><br><span class="line">        return key in item.keys()</span><br><span class="line"></span><br><span class="line">    # 输出数据</span><br><span class="line">    def print_itme_value(self, item, key):</span><br><span class="line">        print key + &quot; &gt;&gt;&gt; &quot; + item[key]</span><br></pre></td></tr></table></figure>
-<h2 id="保存数据到MongoDB"><a href="#保存数据到MongoDB" class="headerlink" title="保存数据到MongoDB"></a>保存数据到MongoDB</h2><p>保存数据我们使用<a target="_blank" rel="noopener" href="http://www.mongodb.org/">MongoDB</a>，这是一个很简单易用且功能强大的<strong>非关系型数据库</strong>，它可以把数据保存成一种类似Json的格式。</p>
-<p>使用教程网上很容易搜到，推荐一个自学网站：<a target="_blank" rel="noopener" href="http://www.runoob.com/mongodb/mongodb-tutorial.html">MongoDB教程</a></p>
-<p>mongo的可视化工具也有很多，我使用的是<a target="_blank" rel="noopener" href="https://robomongo.org/">Robomongo</a>。</p>
-<p>使用mongo我们需要在<code>settings.py</code>中增添下面的配置信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">MONGO_URI &#x3D; &quot;mongodb:&#x2F;&#x2F;localhost:27017&quot;;</span><br><span class="line">MONGO_DATABASE &#x3D; &quot;soufang&quot;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>下面是<code>SaveDataPipline</code>的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class SaveDataPipline(object):</span><br><span class="line">    def __init__(self, mongo_uri, mongo_db):</span><br><span class="line">        self.mongo_uri &#x3D; mongo_uri</span><br><span class="line">        self.mongo_db &#x3D; mongo_db</span><br><span class="line"></span><br><span class="line">    @classmethod</span><br><span class="line">    def from_crawler(cls, crawler):</span><br><span class="line">        return cls(</span><br><span class="line">            mongo_uri&#x3D;crawler.settings.get(&#39;MONGO_URI&#39;),</span><br><span class="line">            mongo_db&#x3D;crawler.settings.get(&#39;MONGO_DATABASE&#39;, &#39;items&#39;)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    def open_spider(self, spider):</span><br><span class="line">        self.client &#x3D; pymongo.MongoClient(self.mongo_uri)</span><br><span class="line">        self.db &#x3D; self.client[self.mongo_db]</span><br><span class="line"></span><br><span class="line">    def close_spider(self, spider):</span><br><span class="line">        self.client.close()</span><br><span class="line"></span><br><span class="line">    def process_item(self, item, spider):</span><br><span class="line">        print &quot;&gt;&gt;&gt; SaveDataPipline &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;</span><br><span class="line">        collection_name &#x3D; self.mongo_db</span><br><span class="line">        self.db[collection_name].insert(dict(item))</span><br><span class="line">        return item</span><br></pre></td></tr></table></figure>
-<h3 id="去除重复项"><a href="#去除重复项" class="headerlink" title="去除重复项"></a>去除重复项</h3><p>为了保证id重复的房源信息不再重复爬取，我们可以对数据库建立<strong>唯一索引</strong>，这样既能够提高查询效率，又能够去除重复数据。</p>
-<p>后台建立唯一索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.soufang.ensureIndex(&#123;&quot;id&quot;:1&#125;,&#123;&quot;unique&quot;:true&#125;,&#123;&quot;background&quot;:true&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="开始爬取！"><a href="#开始爬取！" class="headerlink" title="开始爬取！"></a>开始爬取！</h2><p>终于可以开心的爬取数据啦~</p>
-<p>命令行输入<code>mongod</code>开启mongo服务后，进入我们的爬虫项目，开启我们的爬虫：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl esflist</span><br></pre></td></tr></table></figure>
-<p><img src="/img/16_12_07/001.gif" alt=""></p>
-<p>在Robomongo中我们执行一条查询语句<code>db.soufang.find()</code>就可以看到我们爬取到的全部数据：</p>
-<p><img src="/img/16_12_07/002.png" alt=""></p>
-<p>执行<code>db.soufang.findOne()</code>可以查询到一条记录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; db.soufang.findOne()</span><br><span class="line">&#123;</span><br><span class="line">	&quot;_id&quot; : ObjectId(&quot;58497108f26cd3d1ac97004b&quot;),</span><br><span class="line">	&quot;orientation&quot; : &quot;&quot;,</span><br><span class="line">	&quot;bread_area&quot; : &quot;普陀&quot;,</span><br><span class="line">	&quot;publish_time&quot; : &quot;2016-10-20&quot;,</span><br><span class="line">	&quot;id&quot; : &quot;268151561&quot;,</span><br><span class="line">	&quot;property_name&quot; : &quot;甘泉一村&quot;,</span><br><span class="line">	&quot;title&quot; : &quot;甘泉一村 边套全明户型 黄金3楼 得房率高 配套成熟 便利&quot;,</span><br><span class="line">	&quot;building_class&quot; : &quot;板楼&quot;,</span><br><span class="line">	&quot;bread_positon&quot; : &quot;甘泉&quot;,</span><br><span class="line">	&quot;house_build_area&quot; : &quot;55.27㎡&quot;,</span><br><span class="line">	&quot;bread_city&quot; : &quot;上海&quot;,</span><br><span class="line">	&quot;house_use_area&quot; : &quot;&quot;,</span><br><span class="line">	&quot;house_type&quot; : &quot;2室1厅1厨1卫&quot;,</span><br><span class="line">	&quot;structure&quot; : &quot;平层&quot;,</span><br><span class="line">	&quot;decoration&quot; : &quot;简装修&quot;,</span><br><span class="line">	&quot;school&quot; : &quot;&quot;,</span><br><span class="line">	&quot;total_price&quot; : &quot;275&quot;,</span><br><span class="line">	&quot;url&quot; : &quot;http:&#x2F;&#x2F;esf.sh.fang.com&#x2F;chushou&#x2F;3_268151561.htm&quot;,</span><br><span class="line">	&quot;house_age&quot; : &quot;1987年&quot;,</span><br><span class="line">	&quot;floor&quot; : &quot;中层(共6层)&quot;,</span><br><span class="line">	&quot;property_right&quot; : &quot;个人产权&quot;,</span><br><span class="line">	&quot;supporting_facilities&quot; : &quot;&quot;,</span><br><span class="line">	&quot;residential_category&quot; : &quot;普通住宅&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>全上海目前在售的二手房源大概有60到70万套之间，我们可以把速度缩短到1秒中爬取一条，如果24小时爬取的话，预计6天可以爬完全上海。不过我们的目的是对数据进行分析，没必要盲目的采集大量的数据，只要数据够用即可。</p>
-<p>如果数据量过大，后面进行训练机器性能也跟不上，所以我准备将总数据量控制在5万条（按照各区域房源数量占比进行组合）。</p>
-<h2 id="what-s-next"><a href="#what-s-next" class="headerlink" title="what`s next?"></a>what`s next?</h2><p>接下来我们将构建一个可视化的界面来直观的观察我们爬取到的房源数据。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1595,7 +1635,7 @@ x\_{j} =
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

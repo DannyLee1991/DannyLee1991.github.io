@@ -191,6 +191,126 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/10/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Gradle%20Wrapper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/07/10/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Gradle%20Wrapper/" class="post-title-link" itemprop="url">gradle学习笔记-Gradle Wrapper</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-10 15:06:55" itemprop="dateCreated datePublished" datetime="2016-07-10T15:06:55+00:00">2016-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/gradle/" itemprop="url" rel="index"><span itemprop="name">gradle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>大多数工具都需要在使用之前安装在你的电脑上，虽然简单的安装步骤会让你觉得没什么大碍，但这其实会给用户带来负担。同样重要的是，用户是否会安装正确的版本的工具呢？如果他们正在构建一个版本比较老的项目呢？</p>
+</blockquote>
+<h2 id="1-通过Wrapper来执行一次构建"><a href="#1-通过Wrapper来执行一次构建" class="headerlink" title="1.通过Wrapper来执行一次构建"></a>1.通过Wrapper来执行一次构建</h2><p>如果一个gradle项目已经设置了wrapper(我们建议所有的项目都这样做)，你可以从项目的根目录执行下列命令之一来进行构建：</p>
+<ul>
+<li><code>./gradlew &lt;task&gt;</code> (Unix-like系统上使用，如Linux和Mac OS X)</li>
+<li><code>gradlew &lt;task&gt;</code> (在Windows上使用gradlew.bat批处理文件)</li>
+</ul>
+<p>每一个wrapper都绑定在一个指定版本的gradle上，所以当你第一次以一个指定版本的gradle来运行以上的命令，它将会去下载指定的gradle并且去使用它来执行构建。</p>
+<p>这不仅意味着你不需要自己手动安装gradle，而且你也能确定当前构建的设计所需要的gradle版本。这使你的历史构建更可靠。只需要在用户指南、在Stack Overflow，在文章的任何地方看到命令行是以<code>gradle ...</code>开头的地方使用适当的语法。（这段没看懂。。）</p>
+<p>为了完整起见，并确保您不删除任何重要的文件，这里是一个gradle工程构成包装的文件和目录：</p>
+<ul>
+<li>gradlew (Unix Shell script)</li>
+<li>gradlew.bat (Windows batch file)</li>
+<li>gradle/wrapper/gradle-wrapper.jar (Wrapper JAR)</li>
+<li>gradle/wrapper/gradle-wrapper.properties (Wrapper properties)</li>
+</ul>
+<p>如果你想要知道你的gradle分配被存储在哪里，那么你可以在home目录下的<code>$USER_HOME/.gradle/wrapper/dists</code>目录下找到。</p>
+<h2 id="2-添加Wrapper到项目中"><a href="#2-添加Wrapper到项目中" class="headerlink" title="2.添加Wrapper到项目中"></a>2.添加Wrapper到项目中</h2><p>wrapper是一种需要检查版本控制的东西。通过分发你的项目wrapper，任何人都可以使用它而无需事先安装gradle。更好的是，它可以保证构建使用正确的gradle版本。当然，由于不需要服务端的任何配置，这也非常有利于<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Continuous_integration">持续集成(continuous integration)</a>服务，(服务器定期构建你的项目)。</p>
+<p>通过运行wrapper任务，您将wrapper安装到您的项目中。(这个任务总是可用的，即使你不把它添加到你的构建中)。通过命令参数<code>--gradle-version</code>来指定一个gradle版本。你也可以直接通过命令<code>--gradle-distribution-url</code>来设置gradle下载链接。如果没有版本或分配URL指定的wrapper将被配置为使用gradle的版本的wrapper task执行。所以，如果你通过gradle2.4运行wrapper task，然后wrapper的配置将默认配置为版本2.4。</p>
+<p>例如：</p>
+<p><strong>运行Wrapper task</strong></p>
+<p>执行<code>gradle wrapper --gradle-version 2.0</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; gradle wrapper --gradle-version 2.0</span><br><span class="line">:wrapper</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL</span><br><span class="line"></span><br><span class="line">Total time: 1 secs</span><br></pre></td></tr></table></figure>
+<p>wrapper能够通过在构建脚本中配置一些参数来被进一步定制并且执行：</p>
+<p>build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">task wrapper(type: Wrapper) &#123;</span><br><span class="line">    gradleVersion &#x3D; &#39;2.0&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这样的一个执行之后，你会发现在你的项目目录中的新的或更新的文件（一旦在wrapper task的默认配置被用到）。</p>
+<p><strong>Wrapper 生成的文件</strong></p>
+<p>Build layout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">simple&#x2F;</span><br><span class="line">  gradlew</span><br><span class="line">  gradlew.bat</span><br><span class="line">  gradle&#x2F;wrapper&#x2F;</span><br><span class="line">    gradle-wrapper.jar</span><br><span class="line">    gradle-wrapper.properties</span><br></pre></td></tr></table></figure>
+<p>所有这些文件都应该提交给您的版本控制系统。这只需要做一次。在这些文件已经添加到项目中之后，项目构建时就应该加<code>gradlew</code>命令了。<code>gradlew</code>命令可以按照和<code>gradle</code>完全一样的方式来使用。</p>
+<p>如果你想切换到一个新的gradle，你不需要重新运行wrapper task。在<code>gradle-wrapper</code>中更改相应的入口就足够了。属性文件，但如果你想要体验新的版本的gradle wrapper，那么你就需要重新生成wrapper文件。</p>
+<h2 id="3-配置"><a href="#3-配置" class="headerlink" title="3.配置"></a>3.配置</h2><p>如果你通过<code>gradlew</code>来运行gradle，wrapper会去检查是否有一个可用版本的gradle。如果这样的话它代表将<code>gradlew</code>命令带上所有的参数传递到当前版本的gradle命令上来。如果没有发现一个一个可用的gradle，它就会去自动下载。</p>
+<p>当你配置wrapper task，你可以指定一个你想要使用的gradle版本。的gradlew命令将从gradle库下载合适的版本。或者，你也可以指定一个gradle的下载链接。的gradlew命令将使用这个URL下载gradle。如果你既没有指定版本，也没有指定下载链接，那么<code>gradlew</code>命令将下载任意一个版本的gralde来生成wrapper文件。</p>
+<p>有关如何配置包装的详细信息，参见<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.tasks.wrapper.Wrapper.html">Wrapper</a>类API文档。</p>
+<p>如果你在使用<code>gradlew</code>进行构建的过程中，不希望有任何下载产生，只需将gradle的zip包放在你的wrapper配置指定的位置并添加到您的版本控制工具即可。相对路径的支持-您可以指定gradle的文件到一个相对于gradle-wrapper.properties文件的位置。</p>
+<p>如果你通过wrapper来构建，机器上安装的任何版本的gradle都会被忽略。</p>
+<h2 id="4-验证下载的gradle"><a href="#4-验证下载的gradle" class="headerlink" title="4.验证下载的gradle"></a>4.验证下载的gradle</h2><p>gradle wrapper通过SHA-256哈希比较来校验下载的gradle。这种方式通过阻止中间人篡改下载的gradle来进行攻击，从而提高了安全性。</p>
+<p>要启用这个功能，你要先计算一个已知的gradle版本的SHA-256哈希码。你可以通过<code>shasum</code>命令在Linux、OSX或者Windows(通过 Cygwin)上来生成SHA-256哈希码。</p>
+<p><strong>生成一个SHA-256 hash</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; shasum -a 256 gradle-2.4-all.zip</span><br><span class="line">371cb9fbebbe9880d147f59bab36d61eee122854ef8c9ee1ecf12b82368bcf10  gradle-2.4-all.zip</span><br></pre></td></tr></table></figure>
+<p>通过将<code>distributionSha256Sum</code>属性配置添加到<code>gradle-wrapper.properties</code>来返回校验的哈希码。</p>
+<p><strong>配置SHA-256校验</strong></p>
+<p>gradle-wrapper.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionSha256Sum&#x3D;371cb9fbebbe9880d147f59bab36d61eee122854ef8c9ee1ecf12b82368bcf10</span><br></pre></td></tr></table></figure>
+<h2 id="5-UNIX文件的权限"><a href="#5-UNIX文件的权限" class="headerlink" title="5.UNIX文件的权限"></a>5.UNIX文件的权限</h2><p>对wrapper task添加适当的文件权限来允许*NIX上的命令行上可以执行<code>gradlew</code>命令。我们不确定其他版本控制系统如何处理这个。但<code>sh gradlew</code>这个命令总是很有效的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2016/07/07/gradle%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BD%BF%E7%94%A8gradle%E5%91%BD%E4%BB%A4%E8%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +342,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -390,7 +510,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -490,7 +610,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -643,7 +763,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -792,7 +912,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1144,7 +1264,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1313,7 +1433,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1447,7 +1567,7 @@ P(wi-1) ≈ #(wi-1)/#
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1526,7 +1646,7 @@ P(wi-1) ≈ #(wi-1)/#
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1561,132 +1681,6 @@ P(wi-1) ≈ #(wi-1)/#
 <p>所以在不确定是否是原子操作的情况下，最好使用synchronized关键字。</p>
 <p>参考文章：</p>
 <p><a target="_blank" rel="noopener" href="http://sakyone.iteye.com/blog/668091">java中关键字volatile的作用</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2016/03/13/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%BA%94%E5%AD%90%E6%A3%8B%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/03/13/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E4%BA%94%E5%AD%90%E6%A3%8B%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">人工智能五子棋实现原理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-03-13 20:30:55" itemprop="dateCreated datePublished" datetime="2016-03-13T20:30:55+00:00">2016-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">人工智能</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这两天Alpha go 和李世石的围棋大战被炒的沸沸扬扬，今天李世石终于为人类扳回了挽回脸面的一局，不管是不是Alpha go故意放水，也不管是不是李世石找到了Alpha go的bug，总之这次围棋大战，是深度学习领域的一个影响深远的重大事件，更多的行业将开始更深入的关注人工智能深度学习领域了。个人认为，人工智能领域必定会成为即移动互联网之后的又一个更大的趋势。</p>
-<p>好了，废话不多说，今天主要是展示一个这两天实现的一个五子棋AI，实现方式很简陋，完全不能和阿法狗相提并论，和大家分享的同时也当作自己练手，写的不好请多多包含。</p>
-<p>项目地址见文章末尾。</p>
-<hr>
-<p>关于棋盘棋子的实现逻辑我就不多说了，大家可以看源码，并不复杂，说说AI部分的实现吧：</p>
-<p>我的实现思路是：</p>
-<p>当玩家走下一步棋的时候，AI要考虑两个因素：</p>
-<p>1.走对自己获得胜利最有利的点（说白了就是最接近5子连线的点）</p>
-<p>2.堵对对方获得胜利最有利的点（说白了就是堵对方的棋子）</p>
-<p>做到这两步就能实现一个初级阶段的人工智能了。</p>
-<p>那么接下来就讲讲<strong>关于计算获得胜利最有利的点</strong>是如何计算出来的：</p>
-<p>其实原理也比较简单：</p>
-<p>在棋盘上计算每个空白位置的点的4个方向（横向，纵向，左上角到右下角方向，右上角到左下角方向）每个有可能获胜的方向所连成的以当前棋子为出发点的长度为获胜棋子数量的（五子棋为5）中途没有被敌方棋子阻挡的所覆盖的己方棋子数。（是不是很绕，反正如果是我看到会被绕晕，没看懂不要紧，下面有栗子，对是栗子）得出每个方向上最大棋子数之后，然后取出每个棋子四个值里最大的值作为获胜权重（win_weight）。</p>
-<p>以下图为例：</p>
-<p><img src="/img/ai_01_01.png" alt=""></p>
-<p>这是一个6x6的棋盘，现在我们来计算一下白子获胜的权重：</p>
-<p><img src="/img/ai_01_02.png" alt=""></p>
-<p>那么权重是如何计算的呢？举个栗子来说明吧：</p>
-<p><img src="/img/ai_01_04.png" alt=""></p>
-<p>首先定义这个棋盘坐标系x方向是向右的，y方向是向下的，左上角的位置是(0,0)，(x,y)可以定义一个棋子的坐标。定义xy方向为左上角到右下角方向，yx方向为右上角到左下角方向。</p>
-<p>（0，0）点的权重计算：首先判断这一点没有连成5子的可能性，权重为0。</p>
-<p>（0，2）点的权重计算：首先判断这一点没有连成5子的可能性，权重为0。</p>
-<p>（0，3）点的权重计算：首先判断这一点有连成5子的可能性，接下来x轴方向上经过当前位置可连成五子的棋子有0个，y轴方向上经过当前位置可连成五子的棋子有1个，xy方向不存在连成5子的可能性，yx方向上不存在连成5子的可能性，四个方向中，取最大值，结果为1，那么当前点的获胜权重为1。</p>
-<p>以此类推，可以得出所有空白点的白字获胜权重。</p>
-<p>那么我们下一步让AI直接走获胜权重最大的点是不是就可以了呢？</p>
-<p>非也非也。我们不能只考虑自己获胜，也要考虑防止对手获胜。那么如何防止对手获胜呢？我的方式就是走对手获胜权重最高的位置就可以了，就素堵住对方的棋子（传说中的走别人的路，让别人无路可走）。</p>
-<p>同样的方式，我们可以求得黑子的获胜权重(win_weight)分布：</p>
-<p><img src="/img/ai_01_03.png" alt=""></p>
-<p>可以看出在(0,0),(0,2),(0,4),(0,5)这几个点是黑子获胜概率最大的点。白子走在这些点就可以堵住黑棋。</p>
-<p>好的我们得到了白子赢得胜利最有利的点，以及白子阻止黑子获得胜利最有利的点，那么问题来了：我们到底该如何选择具体走哪个点呢？</p>
-<p>有个比较粗劣的实现方式，就是将这两个权重相加，相当于将这两个条件同等来对待，认为对白子获得胜利的影响重要性是相同的，然后取加起来权重最高的点。</p>
-<p>但实际情况是这两个条件对获得胜利的影响是不等价的，我们要想办法来得到描述这两者之间关系的公式。这里的实现方式有：</p>
-<ul>
-<li>1.通过试探法（就是瞎猜）</li>
-</ul>
-<p>尝试去将这两个参数相乘，取得的结果作为最终权重，来进行取值。</p>
-<p>或者 白子的获胜权重 + R * 黑子的获胜权重， R是一个系数，我们需要通过不断的调整来接近最好的结果。</p>
-<p>通过不断的尝试，来将最接近答案的公式猜出来。</p>
-<ul>
-<li>2.通过条件分情况来判断</li>
-</ul>
-<p>比如下过五子棋的人都知道一个常识：当对手有三子相连，是一个很危险的情况，如果自己目前没有三子相连，那么你应该去堵住对方的连在一起的三子。那么就可以判断，当对手的win_weight &gt;= 3 的时候，加入对手权重的判断，其余情况不考虑对手获胜权重。</p>
-<ul>
-<li>3.通过机器学习来让机器理解人类走棋的逻辑</li>
-</ul>
-<p>构建机器学习算法，通过大量的训练数据来训练机器，从而让机器通过历史数据来算出下一步该怎么走</p>
-<p>我认为第三种方式是最理想的实现，因为前面两种无法覆盖到所有的情况。不过目前我只是做了第一种的简单的实现，接下来会考虑逐渐完善机器学习算法。</p>
-<p>好了，这就是我实现五子棋AI的一个大致思路，有很多人问我什么是机器学习，我觉得在这里可以用一个简单的比喻告诉大家：</p>
-<p>人生会经历很多事情，当你年幼无知的时候，可能会由于涉世未深而犯很多次错误，当你渐渐长大了，成熟了，经历的事情多了起来，尤其是当你犯错的时候，有人对你指出这样做是错的，你犯错误的次数就会慢慢减少，这个过程就像是一个机器学习的过程。</p>
-<p>机器积累训练数据之前，很容易出错，经过大量的训练数据训练之后，就会做的越来越好，这就是机器学习。</p>
-<p>好了，今天就写到这里，文笔不好，请多多见谅。</p>
-<p>欢迎交流，互相学习，互相进步，转载请表明出处。</p>
-<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/DannyLee1991/AI_wuziqi">https://github.com/DannyLee1991/AI_wuziqi</a></p>
 
       
     </div>
@@ -1773,7 +1767,7 @@ P(wi-1) ≈ #(wi-1)/#
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

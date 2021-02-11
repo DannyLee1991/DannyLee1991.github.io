@@ -191,6 +191,220 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/26/Docker%E5%85%A5%E9%97%A8Part4-Swarms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/26/Docker%E5%85%A5%E9%97%A8Part4-Swarms/" class="post-title-link" itemprop="url">Docker入门Part4-Swarms</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-26 13:46:00" itemprop="dateCreated datePublished" datetime="2018-04-26T13:46:00+00:00">2018-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>安装<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/installation/">Docker 1.13或更高的版本</a>。</li>
+<li>按照Part3部分，获取<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/overview/">Docker Compos</a>。</li>
+<li>获取预装<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-mac/">Docker for Mac</a>和<a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/">Docker for Windows</a>的<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/overview/">Docker Machine</a>，但在Linux系统上需要<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/install-machine/#installing-machine-directly">直接安装它</a>。在没有<em>Hyper-V</em>的Windows 10系统之前以及Windows 10 Home中，使用<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>。</li>
+<li>阅读Part1。</li>
+<li>学习Part2中的如何创建容器。</li>
+<li>确保您已发布了那个<a target="_blank" rel="noopener" href="https://docs.docker.com/get-started/part2/#share-your-image">推送到仓库的</a><code>friendlyhello</code>镜像。我们在这里使用该共享镜像。</li>
+<li>确定你的镜像作为一个已部署的容器。运行下面这条命令，插入你的<code>username</code>、<code>repo</code>、和<code>tag</code>:<code>docker run -p 80:80 username/repo:tag</code>，然后访问<code>http://localhost/</code>。</li>
+<li>有一份Part3中的<code>docker-compose.yml</code>。</li>
+</ul>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在Part3中，你介绍了在Part2中编写的应用程序，并通过将其转化为service来定义应该如何在生产环境中运行，并在其进程内扩大5倍。</p>
+<p>在Part4部分，您将此应用程序部署到集群上，并在多台机器上运行它。通过将多台机器连接到称为<strong>swarm</strong>的“Dockerized”群集，使多容器，多机器应用成为可能。</p>
+<h2 id="了解Swarm集群"><a href="#了解Swarm集群" class="headerlink" title="了解Swarm集群"></a>了解Swarm集群</h2><p>Swarm是一组运行Docker并加入到集群中的机器。发生这种情况后，您将继续运行您习惯的Docker命令，但现在它们将由<strong>swarm manager</strong>在群集上执行。swarm中的机器可以是物理的或虚拟的。加入swarm后，他们被称为节点。</p>
+<p>swarm管理器可以使用几种策略来运行容器，例如“emptiest node”—它用容器填充最少使用的机器。或者“global”，它可以确保每台机器只获取指定容器的一个实例。您指示swarm manager在Compose文件中使用这些策略，就像您已经使用的策略一样。</p>
+<p>swarm manager是群体中唯一可以执行你的命令，或者授权其他机器作为<strong>worker</strong>加入群体的机器。worker只是提供能力，并没有权力告诉任何其他机器它能做什么和不能做什么。</p>
+<p>到目前为止，您已经在本地机器上以单主机模式使用Docker。但是Docker也可以切换到<strong>swarm模式</strong>，这就是使用群集的原因。立即启用swarm模式使当前的机器成为swarm manager。从此，Docker将运行您在您管理的swarm上执行的命令，而不仅仅是在当前机器上执行。</p>
+<h2 id="设置你的swarm"><a href="#设置你的swarm" class="headerlink" title="设置你的swarm"></a>设置你的swarm</h2><p>一个swarm是由多个节点组成，这些节点可以是物理机或虚拟机。基本概念很简单：运行<code>docker swarm init</code>来启用swarm模式，并使您当前的机器成为swarm管理器，然后在其他机器上运行<code>docker swarm join</code>，使其他机器以worker的身份加入到swarm中。我们将使用虚拟机快速创建一个双机群集，并将其变成swarm。</p>
+<h3 id="创建一个集群"><a href="#创建一个集群" class="headerlink" title="创建一个集群"></a>创建一个集群</h3><h4 id="本地虚拟机（Mac，Linux，Windows-7和8）"><a href="#本地虚拟机（Mac，Linux，Windows-7和8）" class="headerlink" title="本地虚拟机（Mac，Linux，Windows 7和8）"></a>本地虚拟机（Mac，Linux，Windows 7和8）</h4><p>您需要一个可以创建虚拟机（VM）的虚拟机管理程序，因此请为您的计算机的操作系统<a target="_blank" rel="noopener" href="https://www.virtualbox.org/wiki/Downloads">安装Oracle VirtualBox</a>。</p>
+<blockquote>
+<p>注意：如果你在Windows系统下，并且已经安装了Hyper-V，例如Windows 10，那就没必要安装VirtualBox了，你可以使用Hyper-V替代。如果你正在使用<a target="_blank" rel="noopener" href="https://docs.docker.com/toolbox/overview/">Docker Toolbox</a>，你应该已经安装好了VirtualBox。</p>
+</blockquote>
+<p>现在，使用<code>docker-machine</code>创建两个虚拟机VM，使用VirtualBox驱动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1</span><br><span class="line">docker-machine create --driver virtualbox myvm2</span><br></pre></td></tr></table></figure>
+<h4 id="本地虚拟机（Windows-10-Hyper-V）"><a href="#本地虚拟机（Windows-10-Hyper-V）" class="headerlink" title="本地虚拟机（Windows 10/Hyper-V）"></a>本地虚拟机（Windows 10/Hyper-V）</h4><p>首先，快速为您的虚拟机（VM）创建一个虚拟交换机以便共享，以便它们可以相互连接。</p>
+<ul>
+<li>1.开启 Hyper-V Manager</li>
+<li>2.点击右上角菜单中的<strong>Virtual Switch Manager</strong></li>
+<li>3.单击创建类型为<strong>External</strong>的<strong>虚拟交换机</strong></li>
+<li>4.将它命名为<code>myswitch</code>，然后选中复选框以共享主机的活动网络适配器</li>
+</ul>
+<p>现在，使用我们的节点管理工具<code>docker-machine</code>创建几个虚拟机：</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm1</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm2</span><br></pre></td></tr></table></figure></h2><h3 id="列出虚拟机，并显示其IP地址"><a href="#列出虚拟机，并显示其IP地址" class="headerlink" title="列出虚拟机，并显示其IP地址"></a>列出虚拟机，并显示其IP地址</h3><p>你现在创建了两个虚拟机，名叫<code>myvm1</code>和<code>myvm2</code>。</p>
+<p>使用下面的命令来列出这些虚拟机以及他们的IP地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ls</span><br></pre></td></tr></table></figure>
+<p>这里是这个命令的输出示例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.100:2376           v17.06.2-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.101:2376           v17.06.2-ce   </span><br></pre></td></tr></table></figure>
+<h3 id="初始化swarm和节点"><a href="#初始化swarm和节点" class="headerlink" title="初始化swarm和节点"></a>初始化swarm和节点</h3><p>第一台机器作为manager，它负责执行管理命令并认证worker机器加入集群，第二台机器是worker。</p>
+<p>你可以对你的虚拟机通过<code>docker-machine ssh</code>来发送命令。通过执行<code>docker swarm init</code>来指导<code>myvm1</code>来成为swarm manager，然后你会看到像下面这样的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm1 &quot;docker swarm init --advertise-addr &lt;myvm1 ip&gt;&quot;</span><br><span class="line">Swarm initialized: current node &lt;node ID&gt; is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following command:</span><br><span class="line"></span><br><span class="line">  docker swarm join \</span><br><span class="line">  --token &lt;token&gt; \</span><br><span class="line">  &lt;myvm ip&gt;:&lt;port&gt;</span><br><span class="line"></span><br><span class="line">To add a manager to this swarm, run &#39;docker swarm join-token manager&#39; and follow the instructions.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>端口2377和2376</strong></p>
+<p>始终使用端口2377（群管理端口）运行<code>docker swarm init</code>和<code>docker swarm join</code>，或根本不指定运行端口，并让其采用默认值。</p>
+<p>由<code>docker-machine ls</code>返回的计算机IP地址包括端口2376，它是Docker守护进程端口。请勿使用此端口，否则<a target="_blank" rel="noopener" href="https://forums.docker.com/t/docker-swarm-join-with-virtualbox-connection-error-13-bad-certificate/31392/2">可能会遇到错误</a>。</p>
+<p><strong>无法使用SSH？试试—native-ssh标志</strong></p>
+<p>如果由于某些原因，您无法将命令发送给Swarm管理器，Docker Machine可以<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/reference/ssh/#different-types-of-ssh">选择让您使用自己的系统的SSH</a>。只需在调用<code>ssh</code>命令时指定<code>--native-ssh</code>标志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine --native-ssh ssh myvm1 ...</span><br></pre></td></tr></table></figure>
+<p>如您所见，对<code>docker swarm init</code>的响应包含一个预配置的<code>docker swarm join</code>命令，您可以在要添加的任何节点上运行该命令。复制这条命令，并通过<code>docker-machine ssh</code>发送到<code>myvm2</code>，使<code>myvm2</code>作为woker的角色来加入到你新创建的集群中。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm2 &quot;docker swarm join \</span><br><span class="line">--token &lt;token&gt; \</span><br><span class="line">&lt;ip&gt;:2377&quot;</span><br><span class="line"></span><br><span class="line">This node joined a swarm as a worker.</span><br></pre></td></tr></table></figure>
+<p>恭喜，您已经创建了您的第一个swarm集群！</p>
+<p>在manager机器上运行<code>docker node ls</code>来查看swarm中的node：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm1 &quot;docker node ls&quot;</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS</span><br><span class="line">brtu9urxwfd5j0zrmkubhpkbd     myvm2               Ready               Active</span><br><span class="line">rihwohkh3ph38fhillhhb84sk *   myvm1               Ready               Active              Leader</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>离开一个swarm</strong></p>
+<p>如果你的某个节点想要退出集群，你可以在节点上运行<code>docker swarm leave</code>。</p>
+</blockquote>
+<h2 id="发布你的应用到swarm集群"><a href="#发布你的应用到swarm集群" class="headerlink" title="发布你的应用到swarm集群"></a>发布你的应用到swarm集群</h2><p>最困难的部分已经结束了。现在你只需重复第3部分用于部署新swarm的流程即可。请记住，只有像<code>myvm1</code>这样的群集管理器才能执行Docker命令；worker机器只是提供使用而已。</p>
+<h3 id="为swarm-manager配置docker-machine-shell"><a href="#为swarm-manager配置docker-machine-shell" class="headerlink" title="为swarm manager配置docker-machine shell"></a>为swarm manager配置<code>docker-machine</code> shell</h3><p>到目前为止，你已经可以在<code>docker-machine ssh</code>中包裹Docker命令来在虚拟机上执行指令了。另一种选择是运行<code>docker-machine env &lt;machine&gt;</code>来获取并执行一个命令，该命令将当前shell配置为与虚拟机上的Docker守护进程进行通信。此方法对下一步更有利，因为它允许您使用本地<code>docker-compose.yml</code>文件“远程”部署应用程序，而无需将其复制到任何位置。</p>
+<p>键入<code>docker-machine env myvm1</code>，然后复制粘贴并运行作为输出最后一行提供的命令，这样可以将shell配置为swarm manager可以与<code>myvm1</code>进行对话。</p>
+<p>配置shell的命令根据你是Mac，Linux还是Windows而有所不同。</p>
+<h4 id="Mac，Linux"><a href="#Mac，Linux" class="headerlink" title="Mac，Linux"></a>Mac，Linux</h4><p>Mac或Linux上的Docker Machine shell</p>
+<p>运行<code>docker-machine env myvm1</code>来获取与<code>myvm1</code>进行交互的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine env myvm1</span><br><span class="line">export DOCKER_TLS_VERIFY&#x3D;&quot;1&quot;</span><br><span class="line">export DOCKER_HOST&#x3D;&quot;tcp:&#x2F;&#x2F;192.168.99.100:2376&quot;</span><br><span class="line">export DOCKER_CERT_PATH&#x3D;&quot;&#x2F;Users&#x2F;sam&#x2F;.docker&#x2F;machine&#x2F;machines&#x2F;myvm1&quot;</span><br><span class="line">export DOCKER_MACHINE_NAME&#x3D;&quot;myvm1&quot;</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># eval $(docker-machine env myvm1)</span><br></pre></td></tr></table></figure>
+<p>运行给出的命令，来配置你的shell来与<code>myvm1</code>进行交互：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval $(docker-machine env myvm1)</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker-machine ls</code>以验证<code>myvm1</code>处于激活状态，星号表示激活状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.100:2376           v17.06.2-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp:&#x2F;&#x2F;192.168.99.101:2376           v17.06.2-ce   </span><br></pre></td></tr></table></figure>
+<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p>运行<code>docker-machine env myvm1</code>来获取与<code>myvm1</code>进行交互的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\sam\sandbox\get-started&gt; docker-machine env myvm1</span><br><span class="line">$Env:DOCKER_TLS_VERIFY &#x3D; &quot;1&quot;</span><br><span class="line">$Env:DOCKER_HOST &#x3D; &quot;tcp:&#x2F;&#x2F;192.168.203.207:2376&quot;</span><br><span class="line">$Env:DOCKER_CERT_PATH &#x3D; &quot;C:\Users\sam\.docker\machine\machines\myvm1&quot;</span><br><span class="line">$Env:DOCKER_MACHINE_NAME &#x3D; &quot;myvm1&quot;</span><br><span class="line">$Env:COMPOSE_CONVERT_WINDOWS_PATHS &#x3D; &quot;true&quot;</span><br><span class="line"># Run this command to configure your shell:</span><br><span class="line"># &amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>运行给出的命令，来配置你的shell来与<code>myvm1</code>进行交互：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>运行<code>docker-machine ls</code>以验证<code>myvm1</code>处于激活状态，星号表示激活状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:PATH&gt; docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER   STATE     URL                          SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        hyperv   Running   tcp:&#x2F;&#x2F;192.168.203.207:2376           v17.06.2-ce</span><br><span class="line">myvm2   -        hyperv   Running   tcp:&#x2F;&#x2F;192.168.200.181:2376           v17.06.2-ce</span><br></pre></td></tr></table></figure>
+<h3 id="在swarm-manager上发布应用"><a href="#在swarm-manager上发布应用" class="headerlink" title="在swarm manager上发布应用"></a>在swarm manager上发布应用</h3><p>现在你已经拥有了<code>myvm1</code>，你可以使用它的权力作为swarm manager来部署你的应用，方法是使用第三部分中的<code>docker stack deploy</code>命令将你的本地副本<code>docker-compose.yml</code>发布到<code>myvm1</code>。这个命令也许会花费几秒钟时间来完成这一操作，部署需要花一段时间才能完成。在swarm manager上使用<code>docker service ps &lt;service_name&gt;</code>命令验证所有服务是否已被重新部署。</p>
+<p>您通过<code>docker-machine shell</code>配置链接到<code>myvm1</code>，并且您仍然可以访问本地主机上的文件。确保你和之前在同一个目录下，并且其中包括你在第3部分中创建的<code>docker-compose.yml</code>文件。</p>
+<p>就像之前一样，运行以下命令在<code>myvm1</code>上部署应用程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>就是这样，该应用程序就成功部署在了swarm集群上了！</p>
+<blockquote>
+<p>注意：如果你的镜像保存在了一个私有仓库而不是Docker Hub上，你需要登录到通过命令<code>docker login &lt;your-registry&gt;</code>来登录到这个仓库，并且然后你需要在上面的命令添加<code>--with-registry-auth</code>指令。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker login registry.example.com</span><br><span class="line"></span><br><span class="line">docker stack deploy --with-registry-auth -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>这使用加密的WAL日志将登录令牌从本地客户端传递到部署服务的群集节点。有了这些信息，这些节点就能够登录到仓库并提取镜像。</p>
+</blockquote>
+<p>现在你可以使用Part3中的docker命令。只有这次注意到services（和相关容器）已经在<code>myvm1</code>和<code>myvm2</code>之间分配了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker stack ps getstartedlab</span><br><span class="line"></span><br><span class="line">ID            NAME                  IMAGE                   NODE   DESIRED STATE</span><br><span class="line">jq2g3qp8nzwx  getstartedlab_web.1   john&#x2F;get-started:part2  myvm1  Running</span><br><span class="line">88wgshobzoxl  getstartedlab_web.2   john&#x2F;get-started:part2  myvm2  Running</span><br><span class="line">vbb1qbkb0o2z  getstartedlab_web.3   john&#x2F;get-started:part2  myvm2  Running</span><br><span class="line">ghii74p9budx  getstartedlab_web.4   john&#x2F;get-started:part2  myvm1  Running</span><br><span class="line">0prmarhavs87  getstartedlab_web.5   john&#x2F;get-started:part2  myvm2  Running</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>使用<code>docker-machine env</code>和<code>docker-machine ssh</code>连接到VM</strong></p>
+<ul>
+<li><p>要将shell设置为与<code>myvm2</code>等其他机器通信，只需在相同或不同的shell中重新运行<code>docker-machine env</code>，然后运行给定的命令以指向<code>myvm2</code>。这里指的是当前的shell。如果你更改为未配置的shell或打开一个新的shell，则需要重新运行这些命令。使用<code>docker-machine ls</code>列出机器列表，查看它们所处的状态，获取IP地址，如果有的话，并找出具体连接到的是哪一个地址。更多请参阅<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/get-started/#create-a-machine">Docker Machine getting started topics</a>。</p>
+</li>
+<li><p>或者，你可以以<code>docker-machine ssh &lt;machine&gt; &quot;&lt;command&gt;&quot;</code>的形式来打包Docker命令，该命令可以直接登陆到VM，但不会立即访问本地主机上的文件。</p>
+</li>
+<li><p>在Mac和Linux上，你可以使用<code>docker-machine scp &lt;file&gt; &lt;machine&gt;:~</code>来在机器间复制文件，但在Windows上，需要使用一个Linux类似<a target="_blank" rel="noopener" href="https://git-for-windows.github.io/">Git Bash</a>的终端模拟器来完成这类工作。</p>
+</li>
+</ul>
+<p>本教程演示了<code>docker-machine ssh</code>和<code>docker-machine env</code>因为这些都可以通过<code>docker-machine</code>CLI在平台上使用。</p>
+</blockquote>
+<h3 id="访问你的集群"><a href="#访问你的集群" class="headerlink" title="访问你的集群"></a>访问你的集群</h3><p>你可以从<code>myvm1</code>或<code>myvm2</code>的IP地址访问您的应用程序。</p>
+<p>你创建的网络在它们之间共享负载均衡。运行<code>docker-machine ls</code>来获取你的VM的IP地址，并通过浏览器访问其中的任何一个，点击刷新（或者仅仅使用<code>curl</code>来访问）</p>
+<p><img src="/img/18_04_26/002.png" alt=""></p>
+<p>有五个可能的容器ID全部随机循环，体现了负载均衡。</p>
+<p>两个IP地址工作的原因是群中的节点参与<strong>入口路由网格</strong>。这可以确保部署在集群中某个端口的服务始终将该端口保留给自己，而不管实际运行容器的节点是什么。以下是三节点swarm的端口8080上发布的名为<code>my-web</code>的服务的路由网络示意图：</p>
+<p><img src="/img/18_04_26/003.png" alt=""></p>
+<blockquote>
+<p><strong>连接有问题？</strong></p>
+<p>请记住，要使用swarm中的入口网络，在启用swarm模式之前，需要在swarm节点之间打开以下端口：</p>
+<ul>
+<li>端口7946 TCP/UDP （用于容器网络发现）</li>
+<li>端口4789 UDP （用于容器入口网络）</li>
+</ul>
+</blockquote>
+<h2 id="迭代和缩放你的应用程序"><a href="#迭代和缩放你的应用程序" class="headerlink" title="迭代和缩放你的应用程序"></a>迭代和缩放你的应用程序</h2><p>在这里，你可以完成你在Part2和Part3中学到的一切。</p>
+<p>通过修改<code>docker-compose.yml</code>文件，可以缩放应用程序。</p>
+<p>通过编辑代码，来改变应用的行为，然后重新构建，并将新的镜像push上去。（要做到这一点，请按照之前用于构建应用程序和发布镜像的相同步骤）。</p>
+<p>无论是哪种情况，只需要通过再次运行<code>docker stack deploy</code>就可以发布这些变更。</p>
+<p>你可以加入任何虚拟的或物理的机器到这个swarm中，对<code>myvm2</code>使用相同的<code>docker swarm join</code>命令，然后集群的容量就被扩大了。在运行<code>docker stack deploy</code>之后，你的应用程序就可以利用到这些资源了。</p>
+<h2 id="清空并重启"><a href="#清空并重启" class="headerlink" title="清空并重启"></a>清空并重启</h2><h3 id="堆栈和swarm"><a href="#堆栈和swarm" class="headerlink" title="堆栈和swarm"></a>堆栈和swarm</h3><p>你可以通过运行<code>docker stack rm</code>来卸下堆栈。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>保留或删除swarm</strong>？</p>
+<p>在稍后，如果您想要使某个worker离开swarm，可以在worker上使用<code>docker-machine ssh myvm2 &quot;docker swarm leave&quot;</code>来卸下woker，如果是manager的话，可以这样执行<code>docker-machine ssh myvm1 &quot;docker swarm leave --force&quot;</code>，但在后面的Part5的教学中，你还需要它，所以暂时保留。</p>
+</blockquote>
+<h3 id="重置docker-machine-shell变量设置"><a href="#重置docker-machine-shell变量设置" class="headerlink" title="重置docker-machine shell变量设置"></a>重置docker-machine shell变量设置</h3><p>你可以通过你当前的shell执行以下命令来重置<code>docker-machine</code>环境变量。</p>
+<p>在Mac或Linux上，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval $(docker-machine env -u)</span><br></pre></td></tr></table></figure>
+<p>在Windows上，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env -u | Invoke-Expression</span><br></pre></td></tr></table></figure>
+<p>这将shell与<code>docker-machine</code>创建的虚拟机断开连接，并允许你继续在同一个shell中工作，现在使用本机docker命令。更多信息，请见<a target="_blank" rel="noopener" href="https://docs.docker.com/machine/get-started/#unset-environment-variables-in-the-current-shell">Machine topic on unsetting environment variables</a>。</p>
+<p>重启Docker machines</p>
+<p>如果你关闭本地主机，Docker machines将停止运行。你可以通过运行<code>docker-machine ls</code>来检查机器运行的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL   SWARM   DOCKER    ERRORS</span><br><span class="line">myvm1   -        virtualbox   Stopped                 Unknown</span><br><span class="line">myvm2   -        virtualbox   Stopped                 Unknown</span><br></pre></td></tr></table></figure>
+<p>重启已经停止的机器，运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine start &lt;machine-name&gt;</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine start myvm1</span><br><span class="line">Starting &quot;myvm1&quot;...</span><br><span class="line">(myvm1) Check network to re-create if needed...</span><br><span class="line">(myvm1) Waiting for an IP...</span><br><span class="line">Machine &quot;myvm1&quot; was started.</span><br><span class="line">Waiting for SSH to be available...</span><br><span class="line">Detecting the provisioner...</span><br><span class="line">Started machines may have new IP addresses. You may need to re-run the &#96;docker-machine env&#96; command.</span><br><span class="line"></span><br><span class="line">$ docker-machine start myvm2</span><br><span class="line">Starting &quot;myvm2&quot;...</span><br><span class="line">(myvm2) Check network to re-create if needed...</span><br><span class="line">(myvm2) Waiting for an IP...</span><br><span class="line">Machine &quot;myvm2&quot; was started.</span><br><span class="line">Waiting for SSH to be available...</span><br><span class="line">Detecting the provisioner...</span><br><span class="line">Started machines may have new IP addresses. You may need to re-run the &#96;docker-machine env&#96; command.</span><br></pre></td></tr></table></figure>
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><p>在part4部分，你学习到了什么是swarm，节点在swarm中可以作为worker，也可以作为manager，创建一个swarm，并在上面发布一个应用。你看到Docker的核心命令和part3中并没有什么不同，他们只需要将目标锁定在swarm主机上运行。你还看到了Docker网络的力量，即使它们运行在不同的机器上，也可以跨容器保持请求负载均衡。最后，你学习了如何在集群上迭代和缩放应用程序。以下是您可能想要运行的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1 # Create a VM (Mac, Win7, Linux)</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch &quot;myswitch&quot; myvm1 # Win10</span><br><span class="line">docker-machine env myvm1                # View basic information about your node</span><br><span class="line">docker-machine ssh myvm1 &quot;docker node ls&quot;         # List the nodes in your swarm</span><br><span class="line">docker-machine ssh myvm1 &quot;docker node inspect &lt;node ID&gt;&quot;        # Inspect a node</span><br><span class="line">docker-machine ssh myvm1 &quot;docker swarm join-token -q worker&quot;   # View join token</span><br><span class="line">docker-machine ssh myvm1   # Open an SSH session with the VM; type &quot;exit&quot; to end</span><br><span class="line">docker node ls                # View nodes in swarm (while logged on to manager)</span><br><span class="line">docker-machine ssh myvm2 &quot;docker swarm leave&quot;  # Make the worker leave the swarm</span><br><span class="line">docker-machine ssh myvm1 &quot;docker swarm leave -f&quot; # Make master leave, kill swarm</span><br><span class="line">docker-machine ls # list VMs, asterisk shows which VM this shell is talking to</span><br><span class="line">docker-machine start myvm1            # Start a VM that is currently not running</span><br><span class="line">docker-machine env myvm1      # show environment variables and command for myvm1</span><br><span class="line">eval $(docker-machine env myvm1)         # Mac command to connect shell to myvm1</span><br><span class="line">&amp; &quot;C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe&quot; env myvm1 | Invoke-Expression   # Windows command to connect shell to myvm1</span><br><span class="line">docker stack deploy -c &lt;file&gt; &lt;app&gt;  # Deploy an app; command shell must be set to talk to manager (myvm1), uses local Compose file</span><br><span class="line">docker-machine scp docker-compose.yml myvm1:~ # Copy file to node&#39;s home dir (only required if you use ssh to connect to manager and deploy the app)</span><br><span class="line">docker-machine ssh myvm1 &quot;docker stack deploy -c &lt;file&gt; &lt;app&gt;&quot;   # Deploy an app using ssh (you must have first copied the Compose file to myvm1)</span><br><span class="line">eval $(docker-machine env -u)     # Disconnect shell from VMs, use native docker</span><br><span class="line">docker-machine stop $(docker-machine ls -q)               # Stop all running VMs</span><br><span class="line">docker-machine rm $(docker-machine ls -q) # Delete all VMs and their disk images</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/26/Docker%E5%85%A5%E9%97%A8Part3-%E6%9C%8D%E5%8A%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +436,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -371,7 +585,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -540,7 +754,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -702,7 +916,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1561,7 +1775,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1725,7 +1939,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1986,7 +2200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2111,7 +2325,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2196,7 +2410,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2260,195 +2474,6 @@
 <li><a href="">常见问题</a></li>
 </ul>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/08/03/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-2%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/08/03/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-2%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【斯坦福cs231n】2-2线性分类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-08-03 23:39:00" itemprop="dateCreated datePublished" datetime="2017-08-03T23:39:00+00:00">2017-08-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/" itemprop="url" rel="index"><span itemprop="name">cs231n</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="线性分类"><a href="#线性分类" class="headerlink" title="线性分类"></a>线性分类</h2><p>在最后一节中，我们介绍了图像分类的问题，这是从一组固定的类别向一个图像分配单个标签的任务。更多的，我们描述了通过将图像与来自训练集的（注释）图像进行比较来标记图像的k-最近邻（kNN）分类器。我们看到，kNN有一些缺点：</p>
-<ul>
-<li>分类器必须记住所有的训练数据并将其存储，以便将来与测试数据进行比较。这在空间上是低效的，因为数据集的大小可能很容易达到千兆字节。</li>
-<li>分类器执行对单个测试样本进行预测的操作是昂贵的，因为它需要与所有训练图像进行比较。</li>
-</ul>
-<p><strong>概述.</strong>我们现在要开发更强大的图像分类方法，我们最终将自然地扩展到整个神经网络和卷积神经网络。该方法将有两个主要部分：一个<strong>得分函数</strong>，这个函数是原始数据到预测分类的得分的映射；以及<strong>损失函数</strong>，这个函数衡量了预测得分与真实结果之间的差值。然后，我们将图像分类问题作为一个最小化相对于得分函数的损失函数的优化问题。</p>
-<h2 id="从图像到标签分数的参数化映射"><a href="#从图像到标签分数的参数化映射" class="headerlink" title="从图像到标签分数的参数化映射"></a>从图像到标签分数的参数化映射</h2><p>该方法的第一个组成部分是定义将图像的像素值映射到每个类的置信度得分的分数函数。我们将以具体的例子来介绍这种方法。像以前一样，我们假设一个图像训练数据集$x_i \in R^D$，每个图像都有一个相关的标签$y_i$。在这里，我们定义$i = 1 \dots N$，并且$y_i \in { 1 \dots K }$。也就是说我们拥有$N$个样本（每个样本的维数都是$D$）和$K$个不同的类别。例如，在CIFAR-10中，我们有一个训练集，它有$N=50,000$张图片，其中每张图片都是$D=32 x 32 x 3 = 3072$像素，并且由于一共有10个不同的类别（狗，猫，车等等），所以$K=10$。我们现在将定义将原始图像像素映射到类分数的分数函数：$f: R^D \mapsto R^K$。</p>
-<p><strong>线性分类器.</strong>在这个模块中，我们可以从最简单的一个线性映射函数开始：</p>
-<script type="math/tex; mode=display">
-f(x_i, W, b) =  W x_i + b</script><p>在上述等式中，我们假设图像$x_i$将其所有像素平坦化形状为[D x 1]的列向量。矩阵$W$(大小是[K x D])，向量$b$（大小是[K x 1]）是函数的<strong>参数</strong>。在CIFAR-10中，$x_i$包含第i张图中的所有像素，并且展开成为单列的尺寸为[3072 x 1]的向量，$W$尺寸是[10 x 3072]，$b$的尺寸是[10 x 1]，所以这个函数每次有3072个参数输入（原始像素值），并且有10个参数输出（10个类别的得分）。参数$W$通常被称为<strong>权重(weights)</strong>，$b$被称为<strong>偏差向量(bias vector)</strong>，因为它会在不与实际输入数据$x_i$发生交互的情况下，影响输出分数值。但是，您经常会听到人们用<em>权重</em>或者<em>参数</em>这样的术语来描述这一概念。</p>
-<p>有一些注意事项：</p>
-<ul>
-<li>首先，注意$Wx_i$的矩阵乘法部分，正在对10个独立的分类器进行并行的评估，其中$W$的每一行分别是一个类别的分类器。</li>
-<li>同时也要注意，给定的输入数据$(x_i, y_i)$是不可变的，但是我们可以控制调节参数$W,b$。我们的目标是通过设置这些参数，使得最终分类器计算出来的得分与整个训练集中的真实标签数据相匹配。我们将详细介绍如何做到这一点，但从直觉上来说，我们希望被正确分类的分数是高于错误分类的分数的。</li>
-<li>这种方法的一个优点是训练数据被用于学习参数$W,b$，但一旦学习完成，我们就可以忽略训练数据集，并且只保留学习得到的参数值即可。这是因为一个新的测试图像可以通过调用这个方法来基于已经算出的分数进行分类。</li>
-<li>最后，注意测试图像分类涉及到一个单个的矩阵乘法和加法操作，这明显比将测试图像与所有训练图像进行比较更快。</li>
-</ul>
-<blockquote>
-<p>卷积：卷积神经访问将图像像素映射到如上所示的分数，但映射(f)更复杂，并且包含更多的参数。</p>
-</blockquote>
-<h2 id="解释线性分类器"><a href="#解释线性分类器" class="headerlink" title="解释线性分类器"></a>解释线性分类器</h2><p>请注意，线性分类器将其分类计算为其所有3个颜色通道中的所有像素值的加权和。分类结果取决于我们为这些权重设置什么具体值，该函数具有在图像中某些位置的某些颜色的喜欢或者不喜欢的能力（取决于每个权重的符号）。例如，你可以想象，如果图像的边缘部分有很多的蓝色（这部分可能是水），那么这张图片是“船”的类别的可能性更大。你可能希望“船”分类器在其蓝色通道有着正权重（蓝色增加“船”类别的分值），而在红色/绿色通道中有着负权重（红色/绿色的存在降低“船”类别的分值）。</p>
-<hr>
-<p><img src="/img/17_08_03/001.jpg" alt=""></p>
-<blockquote>
-<p>一个将图像到分类得分的映射例子。为了方便可视化，我们假设图像只有4个像素（4个单色像素，这里我们不考虑彩色通道），我们有三个类别（红色（猫），绿色（狗），蓝色（船））。（说明：这里的颜色简单的表示了3个类别，但与RGB通道无关。）我们将图像像素拉伸成一列，并执行矩阵乘法以得到每个类的分数。请注意，这里给定的权重W不是很好：我们传入一张猫的图片，通过这个权重计算得到的对应的猫的得分很低。实际上，这套权重对应得到的得分似乎在说明它看到的是一条狗。</p>
-</blockquote>
-<hr>
-<p><strong>将图像比作高维点.</strong>由于图像被拉伸成高维列向量，我们可以将每个图像解释为该空间中的单个点（例如，CIFAR-10中的每个图像是32×32×3像素的3072维空间中的点）。类似地，整个数据集是一个（被标记的）的点集合。</p>
-<p>由于我们将每一个类的分数定义为所有图像像素的加权和，所以每个类对应的分数在这个空间上是一个线性函数。我们无法想象3072维空间的样子，但如果我们想象将所有的维度都挤压到两个维度时，那么我们就可以试着去可视化分类器正在做的事情：</p>
-<p><img src="/img/17_08_03/002.jpeg" alt=""></p>
-<blockquote>
-<p>图像空间中，每个图像都是单个点，并且有三个分类器被可视化。使用汽车分类器（红色）的示例，红色线显示空间中为汽车分类得分为0的所有点。红色箭头表示的是分数增加方向，所以红线右侧的所有点都是正（线性增加）得分，并且左边的所有点都是负（线性递减）得分。</p>
-</blockquote>
-<hr>
-<p>正如我们上面所见到的，权重矩阵$W$的每一行都对应一个类别的分类器。这些数字的几何解释是：当我们更改$W$的其中一行时，像素控件中的相应行将沿不同方向旋转。另一方面，偏置量$b$允许我们的分类器转换行。特别要注意的是，没有偏置量时，插入$x_i=0$时，不管权值为何值，最终得到的分数总是0，所以所有分类器的线条都被迫穿过原点。</p>
-<p><strong>将线性分类器解释为模板匹配.</strong>对于权重$W$的另外一种解释是每一行都对应一个类的模板（有时也称为原型）。然后，通过使用<em>内积</em>（或<em>点积</em>）逐个比较每个模板与图像，以获得最适合的图像，从而获得每个类的分数。当我们执行内积操作的时候，线性分类器正在进行模板匹配，其中模板是通过学习得到的。另一种看待这个问题的方法是我们依然在执行最邻近操作，但是，相比与成千上万的训练图像进行比较，我们这里只是使用单个图像进行比较（尽管我们会学习这张图，但它不一定是训练集中的图像），并且我们使用（负）内积作为距离而不是L1或L2距离。</p>
-<p><img src="/img/17_08_03/003.jpg" alt=""></p>
-<blockquote>
-<p>CIFAR-10学习结束时得到的权重示例。注意，例如，船模板包含大量蓝色像素。因此，一旦与其内部在海洋上的船舶图像相匹配，该模板就会得到高分。</p>
-</blockquote>
-<hr>
-<p>此外，请注意，马模板似乎包含一个双头马，这是由于数据集中有左右两匹马造成的。线性分类器将这两种模式的马在数据中合并成一个模板。类似地，汽车分类器似乎已经将多种模式合并成了单个模板，其必须从各方面以及所有颜色识别汽车。特别地，这个模板最终表现是红色的，这暗示着CIFAR-10数据集中红色的车占汽车类别的大部分。线性分类器太弱，无法正确识别不同颜色的汽车，但正如我们将看到的，神经网络将允许我们执行此任务。神经网络能够通过其隐藏层来开发出可以检测特定汽车类型的中间神经元（例如面向左方的绿色汽车，面向前方的蓝色汽车等），并且下一层的神经元可以通过各个车辆检测器的加权和来将它们组合成更准确的车辆分数。</p>
-<p><strong>偏置技巧.</strong>在继续下面的内容之前，我们将介绍一个通用的简化技巧，将两个参数$W,b$表示为一个参数。回想一下，我们将得分函数定义为：</p>
-<script type="math/tex; mode=display">
-f(x_i, W, b) =  W x_i + b</script><p>对两个参数分别跟踪考虑（偏置$b$和重量$W$）是有点麻烦的。一个常用的技巧是将两组参数组合成一个单一的矩阵，我们通过将向量$x_i$扩展一个额外的维度，其值为常数1—一个默认的偏置维度。使用额外的维度，新的分数函数将简化为单个矩阵乘法：</p>
-<script type="math/tex; mode=display">
-f(x_i, W) =  W x_i</script><p>在我们的CIFAR-10例子中，$x_i$现在的维度由[3072 x 1]变为了[3073 x 1]-（额外的维度的值为常数1），$W$现在由[10 x 3072]变为了[10 x 3073]。现在$W$矩阵额外增加的那一列对应了偏置量$b$。下面是一个帮助我们理解的例子：</p>
-<p><img src="/img/17_08_03/004.jpeg" alt=""></p>
-<blockquote>
-<p>上图介绍了调整偏置量的小技巧。执行一次矩阵乘法，然后将结果与偏置量（左侧）相加，等效于对所有输入向量添加常数为1的偏置维度，并将权重矩阵向右扩展一列偏置列（右侧）。因此，如果我们通过将其附加到所有向量来预处理我们的数据，我们只需要学习一个权重矩阵，而不是保存权重和偏差两个矩阵。</p>
-</blockquote>
-<hr>
-<p><strong>图像数据预处理.</strong>请注意，在上面的例子中，我们使用了原始像素值（范围从[0 … 255]）。在机器学习中，对输入数据进行归一化操作是非常常见的做法（在图像识别的例子中，每一个像素被认为是一个特征）。特别地，通过减去每个特征的平均值来<strong>确定数据的中心值</strong>是很重要的。在图像识别的例子中，这对应于计算训练图像上的平均图像，并从每个图像中减去它，以获得像素范围大约在[-127 … 127]的图像。进一步的常用预处理是缩放每个输入特征，使其值范围落在[-1,1]的区间内。其中，均值为0是更为重要的步骤，但我们理解动态梯度下降之后我们才可以解释这一原因。</p>
-<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>在上一节中，我们定义了由一组权重$W$参数化的像素到得分的映射函数。此外，我们并没有控制数据$(x_i,y_i)$(这些数据是外部给到并不可改变的)，但我们控制了权重，并且我们希望通过设置这些权值来预测分类得分，从而达到与真实标签相符合的效果。</p>
-<p>例如，回到我们前面的那个将猫的图片分类到“猫”，“狗”和“船”的例子中，我们可以看到那个例子中的特定定权值并不是非常好：我们传入了一张画有猫的图片，但对于猫的分类得分，相比对于其他类别（狗的得分是437.9，船的得分是61.95）却非常低(-96.8)。我们可以通过<strong>损失函数</strong>（有时也被称为<strong>代价函数</strong>或<strong>目标</strong>）来衡量我们的分类器有多差。直观的说，如果我们在训练集上分类的效果不好，那么损失值将会很高，反之，则会很低。</p>
-<h3 id="多类SVM损失函数"><a href="#多类SVM损失函数" class="headerlink" title="多类SVM损失函数"></a>多类SVM损失函数</h3><p>有几种方法来定义损失函数的细节。作为第一个例子，我们将首先开发一种称为<strong>多类别支持向量机（SVM）</strong>损失函数的常用损失函数。SVM损失函数被设置为使得SVM“想要”每个图像的正确类别具有比不正确类别高得多的固定的余量$\Delta$。请注意，如上所述，有时有助于拟合损失函数：SVM“想要”某种结果，意味着结果将产生较低的损失（这是好的）。</p>
-<p>我们来看一下更准确的描述。回想一下我们给出的第i个样本的图像$x_i$以及其标识对应类别的标签$y_i$。得分函数$f(x_i, W)$接受像素值并且计算出得分向量，我们简称为$s$(分数的简写)。例如，第j个类别的得分是函数结果的第j个元素：$s_j = f(x_i, W)_j$。然后将第i个例子的多类SVM损失函数表示如下形式：</p>
-<script type="math/tex; mode=display">
-L\_i = \sum\_{j\neq y_i} \max(0, s\_j - s\_{y_i} + \Delta)</script><p><strong>例如.</strong>让我们通过一个例子来了解他是如何工作的。假设我们有三个类，可以得到$s = [13, -7, 11]$，第一个类别对应的是true（即$y_i = 0$）。并且假设$\Delta$（一个我们稍后会介绍到的超参数）的值是10。根据上面的针对错误分类得分的求和表达式（$j \neq y_i$），我们可以得到下面的结果：</p>
-<script type="math/tex; mode=display">
-L_i = \max(0, -7 - 13 + 10) + \max(0, 11 - 13 + 10)</script><p>你可以看到第一部分的结果是0，因为[-7 - 13 + 10]得出的是一个负数，然后通过函数$max(0,-)$将其阈值化为0。我们得到的损失值为0，因为正确分类的得分（13）比不正确分类的得分（-7）相距大于10。事实上，他们的距离是20，这个值是远大于10的，但SVM只关心差值最多在10以内；任何高于此间距的额外差值被取最大值操作控制在了0的位置上。第二部分关于[11 - 13 + 10]的计算结果是8。也就是说，即使正确的分类比不正确的分类（13&gt;11）有更高的分数，但并没有超过10的间隔值。其差值仅仅为2，所以其损失值为8（即，差额要高出多少才能超过间隔值）。总而言之，SVM损失函数希望被正确分类的到$y_i$的得分要比不正确分类的得分至少要大$\Delta$。如果不是这样，我们就会累计损失值。</p>
-<p>请注意，在这个特定的模块中我们正在使用线性评分函数($f(x_i; W) =  W x_i$)，所以我们也可以以等效的方式重写损失函数：</p>
-<script type="math/tex; mode=display">
-L\_i = \sum\_{j\neq y_i} \max(0, w\_j^T x\_i - w\_{y_i}^T x\_i + \Delta)</script><p>这里的$w_j$是权重矩阵$W$的第j行转化为列的形式。然而，在更复杂的评分函数$f$的形式中，不一定是这样的。</p>
-<p>在我们完成本节之前，我们将提到的最后一个术语是值域为0的$max(0,-)$函数，我们通常称为<strong>转折点损失(hinge loss)</strong>。有时候您会听到有关人们使用形式为$max(0,-)^2$的对违规惩罚更强烈（二次而不是线性）的平方转折点损失SVM（或L2-SVM）。无平方计算的是更为标准的版本，但在某些数据集中，平方转折点损失可以工作的更好。这一点可以在交叉验证期间确定。</p>
-<blockquote>
-<p>损失函数量化了我们对训练集的预测结果的不满意程度。</p>
-</blockquote>
-<hr>
-<p><img src="/img/17_08_03/005.jpg" alt=""></p>
-<blockquote>
-<p>多类别支持向量机“想要”正确分类的分数比其他分数至少多出delta的大小。如果任何类别在红色区域内（或者更高）都有分数，那么就会有累计的损失。否则损失值为0。</p>
-</blockquote>
-<hr>
-<p><strong>正则化.</strong>上面提到的损失函数有一个bug。假设我们有一个数据集，并且有一组用于正确分类每个样本的参数$W$（例如，所有的分数都是满足所有的边距值，并且对于所有的i都有$L_i = 0$）。问题是这套$W$不一定是唯一的：可能有许多与$W$类似的参数可以正确分类示例。一种看待这个问题的简单的方式是如果$W$的一些参数正确分类了所有样本（对于每个样本来说损失值为0），那么任意倍数的这些参数$\lambda W$（其中$\lambda &gt; 1$）也可以得出损失值为0的结果，因为这种变换均匀地拉伸了所有的得分幅度，以及它们的绝对差异。但是，如果正确分类的和最近的不正确分类的分数差异为15，然后将$W$的所有元素乘以2会使得新的差异值为30。</p>
-<p>换句话说，我们希望对某些权重$W$进行一些偏好编码，以消除这种歧义。我们可以通过用<strong>正则化乘法$R(W)$</strong>来扩展损失函数，做到这一点。最常见的正则化惩罚是<strong>L2</strong>范数，通过对所有参数进行二次方的惩罚来阻止大权重出现：</p>
-<script type="math/tex; mode=display">
-R(W) = \sum\_k\sum\_l W\_{k,l}^2</script><p>在上面的表达式中，我们将$W$中所有元素的平方求和。请注意，正则化函数不是基于数据的函数，它只是基于权重。包括了正则化惩罚在内的完整的多类支持向量机的损失函数由两部分组成：<strong>数据损失</strong>(这是全部样本中平均损失值$L_i$)和<strong>正则化损失</strong>。也就是说，完整的多类SVM损失函数变为以下形式：</p>
-<p><img src="/img/17_08_03/006.png" alt=""></p>
-<p>或者将其扩展为完整形式：</p>
-<script type="math/tex; mode=display">
-L = \frac{1}{N} \sum\_i \sum\_{j\neq y\_i} 
-\left[ \max(0, f(x\_i; W)\_j - f(x\_i; W)\_{y\_i} + \Delta) \right] + \lambda \sum\_k\sum\_l W\_{k,l}^2</script><p>其中$N$是训练样本的数量。正如你所见的，我们将正则化惩罚附加到损失目标上，由超参数$\lambda$加权。这个超参数通常是由交叉验证来设置，除此之外没有别的简单的方法。</p>
-<p>事实上关于引入正则化惩罚除了上述的动机之外，正则化惩罚还给我们带来了许多理想的性质，其中有许多内容我们将在后面的部分讲到。例如，包括L2惩罚在内的SVM中的<strong>最大间隔</strong>属性（如果你感兴趣的话，见<a target="_blank" rel="noopener" href="http://cs229.stanford.edu/notes/cs229-notes3.pdf">CS229</a>）。</p>
-<p>正则化最具吸引力的功能是可以惩罚大量的权重值使其倾向于增强泛化性能，因此这意味着没有输入数据的情况下也可以通过其自身大幅度的影响评分分值。例如，假设我们有一些输入向量$x = [1,1,1,1]$，以及两个权重向量$w_1 = [1,0,0,0]$，$w_2 = [0.25,0.25,0.25,0.25]$。然后可以得到$w_1^Tx = w_2^Tx = 1$，因此可见两个权重向量得到了相同的结果，但$w_1$的L2惩罚是1.0而$w_2$的L2惩罚仅仅是0.25。因此，根据L2惩罚的结果来看，权重向量$w2$应该被优先选择，因为它实现了较低的正则化损失。从直觉上来看，这是因为$w_2$的权重值更小并且更扩散。由于L2惩罚倾向于更小且更弥散的权重向量，所以最终的分类器更倾向于是将所有的维度都考虑到，而不是一小部分输入维度影响很大。正如我们在稍后的课程中看到的，这种效果可以提高分类器在测试图像上的泛化性能，并防止产生<em>过拟合</em>。</p>
-<p>注意，偏置量具有与权重不同的效果，它不能控制输入数据的影响力。因此，我们通常只对权重$W$进行正则化操作，而不是偏置量$b$。但是，在实践中，这一点通常会忽略不计（即我们统一使用权重和偏置量组合后的矩阵来计算偏差）。最后，请注意，由于正则化惩罚，所以我们绝对不能在所有的样本中的损失值完全为0，除非你错误的把权重矩阵设置为了$W=0$。</p>
-<p><strong>代码.</strong>这是在Python中实现的损失函数（无正则化），这是无向量化以及半向量化的形式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i</span>(<span class="params">x, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  unvectorized version. Compute the multiclass svm loss for a single example (x,y)</span></span><br><span class="line"><span class="string">  - x is a column vector representing an image (e.g. 3073 x 1 in CIFAR-10)</span></span><br><span class="line"><span class="string">    with an appended bias dimension in the 3073-rd position (i.e. bias trick)</span></span><br><span class="line"><span class="string">  - y is an integer giving index of correct class (e.g. between 0 and 9 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - W is the weight matrix (e.g. 10 x 3073 in CIFAR-10)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  delta = <span class="number">1.0</span> <span class="comment"># see notes about delta later in this section</span></span><br><span class="line">  scores = W.dot(x) <span class="comment"># scores becomes of size 10 x 1, the scores for each class</span></span><br><span class="line">  correct_class_score = scores[y]</span><br><span class="line">  D = W.shape[<span class="number">0</span>] <span class="comment"># number of classes, e.g. 10</span></span><br><span class="line">  loss_i = <span class="number">0.0</span></span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> xrange(D): <span class="comment"># iterate over all wrong classes</span></span><br><span class="line">    <span class="keyword">if</span> j == y:</span><br><span class="line">      <span class="comment"># skip for the true class to only loop over incorrect classes</span></span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># accumulate loss for the i-th example</span></span><br><span class="line">    loss_i += <span class="built_in">max</span>(<span class="number">0</span>, scores[j] - correct_class_score + delta)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i_vectorized</span>(<span class="params">x, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  A faster half-vectorized implementation. half-vectorized</span></span><br><span class="line"><span class="string">  refers to the fact that for a single example the implementation contains</span></span><br><span class="line"><span class="string">  no for loops, but there is still one loop over the examples (outside this function)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  delta = <span class="number">1.0</span></span><br><span class="line">  scores = W.dot(x)</span><br><span class="line">  <span class="comment"># compute the margins for all classes in one vector operation</span></span><br><span class="line">  margins = np.maximum(<span class="number">0</span>, scores - scores[y] + delta)</span><br><span class="line">  <span class="comment"># on y-th position scores[y] - scores[y] canceled and gave delta. We want</span></span><br><span class="line">  <span class="comment"># to ignore the y-th position and only consider margin on max wrong class</span></span><br><span class="line">  margins[y] = <span class="number">0</span></span><br><span class="line">  loss_i = np.<span class="built_in">sum</span>(margins)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L</span>(<span class="params">X, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  fully-vectorized implementation :</span></span><br><span class="line"><span class="string">  - X holds all the training examples as columns (e.g. 3073 x 50,000 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - y is array of integers specifying correct class (e.g. 50,000-D array)</span></span><br><span class="line"><span class="string">  - W are weights (e.g. 10 x 3073)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  <span class="comment"># evaluate loss over all examples in X without using any for loops</span></span><br><span class="line">  <span class="comment"># left as exercise to reader in the assignment</span></span><br></pre></td></tr></table></figure>
-<p>这一部分主要介绍了：SVM损失函数采用一种特定的方法来衡量训练数据的预测与实际标签的一致性。此外，对训练集进行良好预测也等同于最大限度地减少损失值。</p>
-<blockquote>
-<p>我们现在要做的是找到一种可以减少损失值的权重的方法。</p>
-</blockquote>
-<h3 id="实际操作中的注意事项"><a href="#实际操作中的注意事项" class="headerlink" title="实际操作中的注意事项"></a>实际操作中的注意事项</h3><p><strong>设置Delta值.</strong>请注意，我们已经学习过超参数$\Delta$以及其设置。那么应该选择设么样的值才是合适的呢？我们是否必须通过交叉验证才能得到呢？事实证明，这个超参数可以在任何情况下被安全的设置为$\Delta = 1.0$。超参数$\Delta$和$\lambda$看起来似乎是两个不同的超参数，但事实上他们控制着相同的操作：都是数据损失和正则化损失直接的权衡。理解这一点的关键是，权重$W$的大小对最终评分有直接影响（这也是他们之间的差异）：当我们缩小$W$的所有数值时，评分的差异将变得更小，反之当我们放大权值$W$时，评分结果的差异也将变大。因此，评分之间的准确的间隔值（例如$\Delta = 1$或者$\Delta = 100$）在某种意义上是无意义的。因为权值可以被任意的缩小或放大。因此，唯一真正的权衡指标是我们允许权值增长的成都（通过正则化强度$\lambda$来控制）。</p>
-<p><strong>与二分类支持向量机的关系.</strong>你可能在参加这个课程之前了解过二分类支持向量机，所以，其中第i个样本的损失可以写成：</p>
-<script type="math/tex; mode=display">
-L\_i = C \max(0, 1 - y\_i w^Tx\_i) + R(W)</script><p>这里的$C$是一个超参数，并且$y_i \in ｛ -1,1 ｝$。你可以尝试自己证明，我们本节所讨论的多类别SVM实际上是包含了二分类SVM这一特例的。也就是说，如果我们只有两个类，那么损失值就降低到上面的二分类SVM损失函数的表达形式。此外，这个表达式中的$C$与之前的$\lambda$对结果起着相同的控制作用，他们之间的关系是：$C \propto \frac{1}{\lambda}$。</p>
-<p><strong>题外话：原始优化.</strong>如果你在此课程之前就已经知道了SVM，那么你可能还听说过SVM的内核，对偶，以及SMO算法等等。在这节课中（与神经网络的情况一样）我们将在无约束的原始形式的情况下优化目标。许多目标在技术上是不可区分的（例如，函数max(x,y)在x=y时无法区分哪一个是大的），但实际上这不是问题，并且常见的是使用子梯形图。</p>
-<p><strong>题外话：其他SVM表达式.</strong>值得注意的是，本节介绍的多类别SVM是在几个多类别SVM中的其中一个。另外一个常用的形式是<em>一对全部One-Vs-All(OVA)</em>SVM，其中每个类别分别对应一个独立的该类别到全部其他类别的二分类SVM。与之相关的一个在实践中不常用到的是<em>全部对全部All-vs-All(AVA)</em>策略。我们的策略是遵循<a target="_blank" rel="noopener" href="https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es1999-461.pdf">Weston和Watkins 1999（pdf）</a>的版本，这是一个比OVA更强大的版本（在这个版本的SVM中，您可以构建多类别的数据集，并且实现数据损失为0，但OVA无法做到这一点。如果对此感兴趣，请参阅论文中的细节）。最后一个你可能会见到的表达式是<em>结构化SVM</em>，这最大限度地提高了正确分类的得分与不正确得分中第二高的得分的间隔值的大小。对于这些SVM表达形式的差异的讨论超出了本课程的范畴。这些版本的SVM在实践过程中是可以安全的使用的，但是即使是最简单的OVA策略的形式也可以有效的分类（关于这些讨论，Rikin等人在2004年的<a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume5/rifkin04a/rifkin04a.pdf">In Defense of One-Vs-All Classification (pdf)</a>也有提到）。</p>
-<h3 id="Softmax分类器"><a href="#Softmax分类器" class="headerlink" title="Softmax分类器"></a>Softmax分类器</h3><p>结果表明，SVM是两种常用的分类器之一。另外一个流行的选择是<strong>Softmax分类器</strong>，它拥有与SVM不同的损失函数。如果你之前有听过二分类逻辑回归分类器，那么对于Softmax分类器来说，实际上就是它在多类别上的泛化形式。不同于SVM那样通过函数$f(x_i,W)$为每个类别输出评分（未经校准的评分可能很难定义），Softmax分类器给出了一个稍微更直观的输出（归一化的分类概率），并且还有一个对于概率的解释，我们将在稍后介绍。在Softmax分类器中，映射函数$f(x_i; W) =  W x_i$保持不变，但是我们现在将这些分数解释为每个类的归一化对数概率，并用<strong>交叉熵损失</strong>代替<em>合页损失(hinge loss)</em>：</p>
-<script type="math/tex; mode=display">
-L\_i = -\log\left(\frac{e^{f\_{y\_i}}}{ \sum\_j e^{f\_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L\_i = -f\_{y\_i} + \log\sum\_j e^{f\_j}</script><p>这里我们使用了符号$f_j$来表示类别分数向量$f$的第j个元素。如上所述，数据集的完全损失是所有训练样本中的$L_i$均值与正则化项$R(W)$所组成。函数$f_j(z) = \frac{e^{z_j}}{\sum_k e^{z_k}}$称为<strong>softmax函数</strong>：它接受一个包含任意真实值的分数向量($z$)，并将其向量值压缩到总和为1的0到1之间的值。如果你是第一次看到涉及softmax功能的完整的交叉熵损失函数，可能会觉得看起来很恐怖，但对于它的功能的理解是相对简单的。</p>
-<p><strong>信息论的观点.</strong>真实分布$p$与假设分布$q$之间的交叉熵定义为：</p>
-<script type="math/tex; mode=display">
-H(p,q) = - \sum_x p(x) \log q(x)</script><p>Softmax分类器最小化了预测分类的概率分布（正如上面所见到的$q = e^{f<em>{y_i}}  / \sum_j e^{f_j}$）与真实分类的的概率分布的交叉熵，在这里我们指的是所有在正确类别上的概率分布（例如$p = [0, \ldots 1, \ldots, 0]$只包含在$y_i$处的一个1）。此外，由于交叉熵可以写作熵和Kullback-Leibler分歧的和的形式：$H(p,q) = H(p) + D</em>{KL}(p||q)$，并且delta函数$p$的熵是0，这也相当于最小化两个分布之间的KL分歧（距离的度量）。换句话说，交叉熵的目标是希望对于正确类别的预测结果的分布与真实分布达到一致。</p>
-<p><strong>概率的解释.</strong>看看下面的表达式：</p>
-<script type="math/tex; mode=display">
-P(y\_i \mid x\_i; W) = \frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j} }</script><p>这个式子可以解释为对于给定图片$x_i$，并由$W$参数化的分配给正确标签$y_i$的（归一化）概率。为了理解这一点，请回忆一下Softmax分类器将输出向量$f$中的评分值解释为没有归一化的对数概率。那么以这些数值做指数函数的幂就得到了没有归一化的概率，而除法操作则对数据进行了归一化处理，使得这些概率的和为1。从概率论的角度来理解，我们就是在最小化正确分类的负对数概率，这可以看做是在进行<em>最大似然估计</em>（MLE）。该解释的另一个好处是，损失函数中的正则化部分$R(W)$可以被看做是权重矩阵$W$的高斯先验，这里进行的是最大后验估计（MAP）而不是最大似然估计。提及这些解释只是为了让读者形成直观的印象，具体细节就超过本课程范围了。</p>
-<p><strong>实操事项：数值稳定。</strong>编程实现softmax函数计算的时候，中间项$e^{f_{y_i}}$和$\sum_j e^{f_j}$因为存在指数函数，所以数值可能非常大。除以大数值可能导致数值计算的不稳定，所以学会使用归一化技巧非常重要。如果在分式的分子和分母都乘以一个常数C，并把它变换到求和之中，就能得到一个从数学上等价的公式：</p>
-<script type="math/tex; mode=display">
-\frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j}}
-= \frac{Ce^{f\_{y\_i}}}{C\sum\_j e^{f\_j}}
-= \frac{e^{f\_{y\_i} + \log C}}{\sum\_j e^{f\_j + \log C}}</script><p>$C$的值可自由选择，不会影响计算结果，通过使用这个技巧可以提高计算中的数值稳定性。通常将$C$设为$logC=-max_jf_j$。该技巧简单地说，就是应该将向量$f$中的数值进行平移，使得最大值为0。代码实现如下：</p>
-<h3 id="SVM-vs-Softmax"><a href="#SVM-vs-Softmax" class="headerlink" title="SVM vs Softmax"></a>SVM vs Softmax</h3><h2 id="线性分类的可交互网页演示"><a href="#线性分类的可交互网页演示" class="headerlink" title="线性分类的可交互网页演示"></a>线性分类的可交互网页演示</h2><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2>
       
     </div>
 
@@ -2534,7 +2559,7 @@ P(y\_i \mid x\_i; W) = \frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j} }</script><p>这个
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

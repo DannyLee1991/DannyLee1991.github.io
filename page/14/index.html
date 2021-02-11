@@ -191,6 +191,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/10/04/%E9%97%AD%E5%BC%80%E5%8E%9F%E5%88%99/" class="post-title-link" itemprop="url">设计模式六大原则之 闭开原则</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-04 10:46:55" itemprop="dateCreated datePublished" datetime="2015-10-04T10:46:55+00:00">2015-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">设计模式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>Software entities like classes,modules and functions should be open for extension but closed for modifications.(一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。)</p>
+</blockquote>
+<p>开闭原则是java世界的最基础的设计原则，它指导我们如何建立一个稳定的、灵活的系统。</p>
+<h2 id="定义实质"><a href="#定义实质" class="headerlink" title="定义实质"></a>定义实质</h2><p>开闭原则定义已经非常明确的告诉我们，软件实体应该<strong>对扩展开放，对修改关闭</strong>。其含义是说一个软件实体应该通过扩展来实现变化，而不是通过修改已有的代码来实现变化。</p>
+<p>软件实体通常包括以下几个部分：</p>
+<p>1.项目或软件产品中按照一定的逻辑规则划分的模块。</p>
+<p>2.抽象和类。</p>
+<p>3.方法。</p>
+<h2 id="如何使用开闭原则"><a href="#如何使用开闭原则" class="headerlink" title="如何使用开闭原则"></a>如何使用开闭原则</h2><p>开闭原则是一个非常虚的原则，前面五个原则是对开闭原则的具体解释，但是开闭原则并不局限于这么多，它“虚”得没有边界，就像“好好学习，天天向上”的口号一样，告诉我们要好好学习，但是学什么，怎么学并没有告诉我们，需要去体会和掌握。那么我们如何使用开闭原则呢？</p>
+<h3 id="1-抽象约束"><a href="#1-抽象约束" class="headerlink" title="1.抽象约束"></a>1.抽象约束</h3><p>抽象是<strong>对一组事物的通用描述，没有具体的实现，</strong>也就表示它可以有非常多的可能性，可以跟随需求变化而变化。因此，通过接口或抽象类可以约束一组可能变化的行为，并且能够实现对扩展开放，其包含三层含义：</p>
+<ul>
+<li>1.通过接口或抽象类约束扩展，对扩展进行边界限定，不允许出现在接口或抽象类中不存在的public方法</li>
+<li>2.参数类型、引用对象尽量使用接口或者抽象类，而不是实现类</li>
+<li>3.抽象层尽量保持稳定，一旦确定即不允许修改。</li>
+</ul>
+<h3 id="2-元数据（metadata）控制模块行为"><a href="#2-元数据（metadata）控制模块行为" class="headerlink" title="2.元数据（metadata）控制模块行为"></a>2.元数据（metadata）控制模块行为</h3><p>什么是<strong>元数据</strong>？用来描述环境和数据的数据，通俗地说就是配置参数，参数可以从文件中获得，也可以从数据库中获得。</p>
+<h3 id="3-封装变化"><a href="#3-封装变化" class="headerlink" title="3.封装变化"></a>3.封装变化</h3><p>对变化的封装包含两层含义：1.将相同的变化封装到一个接口或抽象类中；2.将不同的变化封装到不同的接口或抽象类中，不应该有两个不同的变化出现在同一个接口或抽象类中。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2015/09/18/%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +313,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -329,7 +420,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -439,7 +530,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -557,7 +648,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -747,7 +838,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -882,7 +973,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1026,7 +1117,7 @@ IComplexBookSearcher
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1136,7 +1227,7 @@ IComplexBookSearcher
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

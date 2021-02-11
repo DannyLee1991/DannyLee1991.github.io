@@ -191,6 +191,195 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/08/03/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-2%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="DannyLee">
+      <meta itemprop="description" content="愿你的努力终取得成果">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="圣巢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/08/03/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-2%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">【斯坦福cs231n】2-2线性分类</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-08-03 23:39:00" itemprop="dateCreated datePublished" datetime="2017-08-03T23:39:00+00:00">2017-08-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/cs231n/" itemprop="url" rel="index"><span itemprop="name">cs231n</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="线性分类"><a href="#线性分类" class="headerlink" title="线性分类"></a>线性分类</h2><p>在最后一节中，我们介绍了图像分类的问题，这是从一组固定的类别向一个图像分配单个标签的任务。更多的，我们描述了通过将图像与来自训练集的（注释）图像进行比较来标记图像的k-最近邻（kNN）分类器。我们看到，kNN有一些缺点：</p>
+<ul>
+<li>分类器必须记住所有的训练数据并将其存储，以便将来与测试数据进行比较。这在空间上是低效的，因为数据集的大小可能很容易达到千兆字节。</li>
+<li>分类器执行对单个测试样本进行预测的操作是昂贵的，因为它需要与所有训练图像进行比较。</li>
+</ul>
+<p><strong>概述.</strong>我们现在要开发更强大的图像分类方法，我们最终将自然地扩展到整个神经网络和卷积神经网络。该方法将有两个主要部分：一个<strong>得分函数</strong>，这个函数是原始数据到预测分类的得分的映射；以及<strong>损失函数</strong>，这个函数衡量了预测得分与真实结果之间的差值。然后，我们将图像分类问题作为一个最小化相对于得分函数的损失函数的优化问题。</p>
+<h2 id="从图像到标签分数的参数化映射"><a href="#从图像到标签分数的参数化映射" class="headerlink" title="从图像到标签分数的参数化映射"></a>从图像到标签分数的参数化映射</h2><p>该方法的第一个组成部分是定义将图像的像素值映射到每个类的置信度得分的分数函数。我们将以具体的例子来介绍这种方法。像以前一样，我们假设一个图像训练数据集$x_i \in R^D$，每个图像都有一个相关的标签$y_i$。在这里，我们定义$i = 1 \dots N$，并且$y_i \in { 1 \dots K }$。也就是说我们拥有$N$个样本（每个样本的维数都是$D$）和$K$个不同的类别。例如，在CIFAR-10中，我们有一个训练集，它有$N=50,000$张图片，其中每张图片都是$D=32 x 32 x 3 = 3072$像素，并且由于一共有10个不同的类别（狗，猫，车等等），所以$K=10$。我们现在将定义将原始图像像素映射到类分数的分数函数：$f: R^D \mapsto R^K$。</p>
+<p><strong>线性分类器.</strong>在这个模块中，我们可以从最简单的一个线性映射函数开始：</p>
+<script type="math/tex; mode=display">
+f(x_i, W, b) =  W x_i + b</script><p>在上述等式中，我们假设图像$x_i$将其所有像素平坦化形状为[D x 1]的列向量。矩阵$W$(大小是[K x D])，向量$b$（大小是[K x 1]）是函数的<strong>参数</strong>。在CIFAR-10中，$x_i$包含第i张图中的所有像素，并且展开成为单列的尺寸为[3072 x 1]的向量，$W$尺寸是[10 x 3072]，$b$的尺寸是[10 x 1]，所以这个函数每次有3072个参数输入（原始像素值），并且有10个参数输出（10个类别的得分）。参数$W$通常被称为<strong>权重(weights)</strong>，$b$被称为<strong>偏差向量(bias vector)</strong>，因为它会在不与实际输入数据$x_i$发生交互的情况下，影响输出分数值。但是，您经常会听到人们用<em>权重</em>或者<em>参数</em>这样的术语来描述这一概念。</p>
+<p>有一些注意事项：</p>
+<ul>
+<li>首先，注意$Wx_i$的矩阵乘法部分，正在对10个独立的分类器进行并行的评估，其中$W$的每一行分别是一个类别的分类器。</li>
+<li>同时也要注意，给定的输入数据$(x_i, y_i)$是不可变的，但是我们可以控制调节参数$W,b$。我们的目标是通过设置这些参数，使得最终分类器计算出来的得分与整个训练集中的真实标签数据相匹配。我们将详细介绍如何做到这一点，但从直觉上来说，我们希望被正确分类的分数是高于错误分类的分数的。</li>
+<li>这种方法的一个优点是训练数据被用于学习参数$W,b$，但一旦学习完成，我们就可以忽略训练数据集，并且只保留学习得到的参数值即可。这是因为一个新的测试图像可以通过调用这个方法来基于已经算出的分数进行分类。</li>
+<li>最后，注意测试图像分类涉及到一个单个的矩阵乘法和加法操作，这明显比将测试图像与所有训练图像进行比较更快。</li>
+</ul>
+<blockquote>
+<p>卷积：卷积神经访问将图像像素映射到如上所示的分数，但映射(f)更复杂，并且包含更多的参数。</p>
+</blockquote>
+<h2 id="解释线性分类器"><a href="#解释线性分类器" class="headerlink" title="解释线性分类器"></a>解释线性分类器</h2><p>请注意，线性分类器将其分类计算为其所有3个颜色通道中的所有像素值的加权和。分类结果取决于我们为这些权重设置什么具体值，该函数具有在图像中某些位置的某些颜色的喜欢或者不喜欢的能力（取决于每个权重的符号）。例如，你可以想象，如果图像的边缘部分有很多的蓝色（这部分可能是水），那么这张图片是“船”的类别的可能性更大。你可能希望“船”分类器在其蓝色通道有着正权重（蓝色增加“船”类别的分值），而在红色/绿色通道中有着负权重（红色/绿色的存在降低“船”类别的分值）。</p>
+<hr>
+<p><img src="/img/17_08_03/001.jpg" alt=""></p>
+<blockquote>
+<p>一个将图像到分类得分的映射例子。为了方便可视化，我们假设图像只有4个像素（4个单色像素，这里我们不考虑彩色通道），我们有三个类别（红色（猫），绿色（狗），蓝色（船））。（说明：这里的颜色简单的表示了3个类别，但与RGB通道无关。）我们将图像像素拉伸成一列，并执行矩阵乘法以得到每个类的分数。请注意，这里给定的权重W不是很好：我们传入一张猫的图片，通过这个权重计算得到的对应的猫的得分很低。实际上，这套权重对应得到的得分似乎在说明它看到的是一条狗。</p>
+</blockquote>
+<hr>
+<p><strong>将图像比作高维点.</strong>由于图像被拉伸成高维列向量，我们可以将每个图像解释为该空间中的单个点（例如，CIFAR-10中的每个图像是32×32×3像素的3072维空间中的点）。类似地，整个数据集是一个（被标记的）的点集合。</p>
+<p>由于我们将每一个类的分数定义为所有图像像素的加权和，所以每个类对应的分数在这个空间上是一个线性函数。我们无法想象3072维空间的样子，但如果我们想象将所有的维度都挤压到两个维度时，那么我们就可以试着去可视化分类器正在做的事情：</p>
+<p><img src="/img/17_08_03/002.jpeg" alt=""></p>
+<blockquote>
+<p>图像空间中，每个图像都是单个点，并且有三个分类器被可视化。使用汽车分类器（红色）的示例，红色线显示空间中为汽车分类得分为0的所有点。红色箭头表示的是分数增加方向，所以红线右侧的所有点都是正（线性增加）得分，并且左边的所有点都是负（线性递减）得分。</p>
+</blockquote>
+<hr>
+<p>正如我们上面所见到的，权重矩阵$W$的每一行都对应一个类别的分类器。这些数字的几何解释是：当我们更改$W$的其中一行时，像素控件中的相应行将沿不同方向旋转。另一方面，偏置量$b$允许我们的分类器转换行。特别要注意的是，没有偏置量时，插入$x_i=0$时，不管权值为何值，最终得到的分数总是0，所以所有分类器的线条都被迫穿过原点。</p>
+<p><strong>将线性分类器解释为模板匹配.</strong>对于权重$W$的另外一种解释是每一行都对应一个类的模板（有时也称为原型）。然后，通过使用<em>内积</em>（或<em>点积</em>）逐个比较每个模板与图像，以获得最适合的图像，从而获得每个类的分数。当我们执行内积操作的时候，线性分类器正在进行模板匹配，其中模板是通过学习得到的。另一种看待这个问题的方法是我们依然在执行最邻近操作，但是，相比与成千上万的训练图像进行比较，我们这里只是使用单个图像进行比较（尽管我们会学习这张图，但它不一定是训练集中的图像），并且我们使用（负）内积作为距离而不是L1或L2距离。</p>
+<p><img src="/img/17_08_03/003.jpg" alt=""></p>
+<blockquote>
+<p>CIFAR-10学习结束时得到的权重示例。注意，例如，船模板包含大量蓝色像素。因此，一旦与其内部在海洋上的船舶图像相匹配，该模板就会得到高分。</p>
+</blockquote>
+<hr>
+<p>此外，请注意，马模板似乎包含一个双头马，这是由于数据集中有左右两匹马造成的。线性分类器将这两种模式的马在数据中合并成一个模板。类似地，汽车分类器似乎已经将多种模式合并成了单个模板，其必须从各方面以及所有颜色识别汽车。特别地，这个模板最终表现是红色的，这暗示着CIFAR-10数据集中红色的车占汽车类别的大部分。线性分类器太弱，无法正确识别不同颜色的汽车，但正如我们将看到的，神经网络将允许我们执行此任务。神经网络能够通过其隐藏层来开发出可以检测特定汽车类型的中间神经元（例如面向左方的绿色汽车，面向前方的蓝色汽车等），并且下一层的神经元可以通过各个车辆检测器的加权和来将它们组合成更准确的车辆分数。</p>
+<p><strong>偏置技巧.</strong>在继续下面的内容之前，我们将介绍一个通用的简化技巧，将两个参数$W,b$表示为一个参数。回想一下，我们将得分函数定义为：</p>
+<script type="math/tex; mode=display">
+f(x_i, W, b) =  W x_i + b</script><p>对两个参数分别跟踪考虑（偏置$b$和重量$W$）是有点麻烦的。一个常用的技巧是将两组参数组合成一个单一的矩阵，我们通过将向量$x_i$扩展一个额外的维度，其值为常数1—一个默认的偏置维度。使用额外的维度，新的分数函数将简化为单个矩阵乘法：</p>
+<script type="math/tex; mode=display">
+f(x_i, W) =  W x_i</script><p>在我们的CIFAR-10例子中，$x_i$现在的维度由[3072 x 1]变为了[3073 x 1]-（额外的维度的值为常数1），$W$现在由[10 x 3072]变为了[10 x 3073]。现在$W$矩阵额外增加的那一列对应了偏置量$b$。下面是一个帮助我们理解的例子：</p>
+<p><img src="/img/17_08_03/004.jpeg" alt=""></p>
+<blockquote>
+<p>上图介绍了调整偏置量的小技巧。执行一次矩阵乘法，然后将结果与偏置量（左侧）相加，等效于对所有输入向量添加常数为1的偏置维度，并将权重矩阵向右扩展一列偏置列（右侧）。因此，如果我们通过将其附加到所有向量来预处理我们的数据，我们只需要学习一个权重矩阵，而不是保存权重和偏差两个矩阵。</p>
+</blockquote>
+<hr>
+<p><strong>图像数据预处理.</strong>请注意，在上面的例子中，我们使用了原始像素值（范围从[0 … 255]）。在机器学习中，对输入数据进行归一化操作是非常常见的做法（在图像识别的例子中，每一个像素被认为是一个特征）。特别地，通过减去每个特征的平均值来<strong>确定数据的中心值</strong>是很重要的。在图像识别的例子中，这对应于计算训练图像上的平均图像，并从每个图像中减去它，以获得像素范围大约在[-127 … 127]的图像。进一步的常用预处理是缩放每个输入特征，使其值范围落在[-1,1]的区间内。其中，均值为0是更为重要的步骤，但我们理解动态梯度下降之后我们才可以解释这一原因。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>在上一节中，我们定义了由一组权重$W$参数化的像素到得分的映射函数。此外，我们并没有控制数据$(x_i,y_i)$(这些数据是外部给到并不可改变的)，但我们控制了权重，并且我们希望通过设置这些权值来预测分类得分，从而达到与真实标签相符合的效果。</p>
+<p>例如，回到我们前面的那个将猫的图片分类到“猫”，“狗”和“船”的例子中，我们可以看到那个例子中的特定定权值并不是非常好：我们传入了一张画有猫的图片，但对于猫的分类得分，相比对于其他类别（狗的得分是437.9，船的得分是61.95）却非常低(-96.8)。我们可以通过<strong>损失函数</strong>（有时也被称为<strong>代价函数</strong>或<strong>目标</strong>）来衡量我们的分类器有多差。直观的说，如果我们在训练集上分类的效果不好，那么损失值将会很高，反之，则会很低。</p>
+<h3 id="多类SVM损失函数"><a href="#多类SVM损失函数" class="headerlink" title="多类SVM损失函数"></a>多类SVM损失函数</h3><p>有几种方法来定义损失函数的细节。作为第一个例子，我们将首先开发一种称为<strong>多类别支持向量机（SVM）</strong>损失函数的常用损失函数。SVM损失函数被设置为使得SVM“想要”每个图像的正确类别具有比不正确类别高得多的固定的余量$\Delta$。请注意，如上所述，有时有助于拟合损失函数：SVM“想要”某种结果，意味着结果将产生较低的损失（这是好的）。</p>
+<p>我们来看一下更准确的描述。回想一下我们给出的第i个样本的图像$x_i$以及其标识对应类别的标签$y_i$。得分函数$f(x_i, W)$接受像素值并且计算出得分向量，我们简称为$s$(分数的简写)。例如，第j个类别的得分是函数结果的第j个元素：$s_j = f(x_i, W)_j$。然后将第i个例子的多类SVM损失函数表示如下形式：</p>
+<script type="math/tex; mode=display">
+L\_i = \sum\_{j\neq y_i} \max(0, s\_j - s\_{y_i} + \Delta)</script><p><strong>例如.</strong>让我们通过一个例子来了解他是如何工作的。假设我们有三个类，可以得到$s = [13, -7, 11]$，第一个类别对应的是true（即$y_i = 0$）。并且假设$\Delta$（一个我们稍后会介绍到的超参数）的值是10。根据上面的针对错误分类得分的求和表达式（$j \neq y_i$），我们可以得到下面的结果：</p>
+<script type="math/tex; mode=display">
+L_i = \max(0, -7 - 13 + 10) + \max(0, 11 - 13 + 10)</script><p>你可以看到第一部分的结果是0，因为[-7 - 13 + 10]得出的是一个负数，然后通过函数$max(0,-)$将其阈值化为0。我们得到的损失值为0，因为正确分类的得分（13）比不正确分类的得分（-7）相距大于10。事实上，他们的距离是20，这个值是远大于10的，但SVM只关心差值最多在10以内；任何高于此间距的额外差值被取最大值操作控制在了0的位置上。第二部分关于[11 - 13 + 10]的计算结果是8。也就是说，即使正确的分类比不正确的分类（13&gt;11）有更高的分数，但并没有超过10的间隔值。其差值仅仅为2，所以其损失值为8（即，差额要高出多少才能超过间隔值）。总而言之，SVM损失函数希望被正确分类的到$y_i$的得分要比不正确分类的得分至少要大$\Delta$。如果不是这样，我们就会累计损失值。</p>
+<p>请注意，在这个特定的模块中我们正在使用线性评分函数($f(x_i; W) =  W x_i$)，所以我们也可以以等效的方式重写损失函数：</p>
+<script type="math/tex; mode=display">
+L\_i = \sum\_{j\neq y_i} \max(0, w\_j^T x\_i - w\_{y_i}^T x\_i + \Delta)</script><p>这里的$w_j$是权重矩阵$W$的第j行转化为列的形式。然而，在更复杂的评分函数$f$的形式中，不一定是这样的。</p>
+<p>在我们完成本节之前，我们将提到的最后一个术语是值域为0的$max(0,-)$函数，我们通常称为<strong>转折点损失(hinge loss)</strong>。有时候您会听到有关人们使用形式为$max(0,-)^2$的对违规惩罚更强烈（二次而不是线性）的平方转折点损失SVM（或L2-SVM）。无平方计算的是更为标准的版本，但在某些数据集中，平方转折点损失可以工作的更好。这一点可以在交叉验证期间确定。</p>
+<blockquote>
+<p>损失函数量化了我们对训练集的预测结果的不满意程度。</p>
+</blockquote>
+<hr>
+<p><img src="/img/17_08_03/005.jpg" alt=""></p>
+<blockquote>
+<p>多类别支持向量机“想要”正确分类的分数比其他分数至少多出delta的大小。如果任何类别在红色区域内（或者更高）都有分数，那么就会有累计的损失。否则损失值为0。</p>
+</blockquote>
+<hr>
+<p><strong>正则化.</strong>上面提到的损失函数有一个bug。假设我们有一个数据集，并且有一组用于正确分类每个样本的参数$W$（例如，所有的分数都是满足所有的边距值，并且对于所有的i都有$L_i = 0$）。问题是这套$W$不一定是唯一的：可能有许多与$W$类似的参数可以正确分类示例。一种看待这个问题的简单的方式是如果$W$的一些参数正确分类了所有样本（对于每个样本来说损失值为0），那么任意倍数的这些参数$\lambda W$（其中$\lambda &gt; 1$）也可以得出损失值为0的结果，因为这种变换均匀地拉伸了所有的得分幅度，以及它们的绝对差异。但是，如果正确分类的和最近的不正确分类的分数差异为15，然后将$W$的所有元素乘以2会使得新的差异值为30。</p>
+<p>换句话说，我们希望对某些权重$W$进行一些偏好编码，以消除这种歧义。我们可以通过用<strong>正则化乘法$R(W)$</strong>来扩展损失函数，做到这一点。最常见的正则化惩罚是<strong>L2</strong>范数，通过对所有参数进行二次方的惩罚来阻止大权重出现：</p>
+<script type="math/tex; mode=display">
+R(W) = \sum\_k\sum\_l W\_{k,l}^2</script><p>在上面的表达式中，我们将$W$中所有元素的平方求和。请注意，正则化函数不是基于数据的函数，它只是基于权重。包括了正则化惩罚在内的完整的多类支持向量机的损失函数由两部分组成：<strong>数据损失</strong>(这是全部样本中平均损失值$L_i$)和<strong>正则化损失</strong>。也就是说，完整的多类SVM损失函数变为以下形式：</p>
+<p><img src="/img/17_08_03/006.png" alt=""></p>
+<p>或者将其扩展为完整形式：</p>
+<script type="math/tex; mode=display">
+L = \frac{1}{N} \sum\_i \sum\_{j\neq y\_i} 
+\left[ \max(0, f(x\_i; W)\_j - f(x\_i; W)\_{y\_i} + \Delta) \right] + \lambda \sum\_k\sum\_l W\_{k,l}^2</script><p>其中$N$是训练样本的数量。正如你所见的，我们将正则化惩罚附加到损失目标上，由超参数$\lambda$加权。这个超参数通常是由交叉验证来设置，除此之外没有别的简单的方法。</p>
+<p>事实上关于引入正则化惩罚除了上述的动机之外，正则化惩罚还给我们带来了许多理想的性质，其中有许多内容我们将在后面的部分讲到。例如，包括L2惩罚在内的SVM中的<strong>最大间隔</strong>属性（如果你感兴趣的话，见<a target="_blank" rel="noopener" href="http://cs229.stanford.edu/notes/cs229-notes3.pdf">CS229</a>）。</p>
+<p>正则化最具吸引力的功能是可以惩罚大量的权重值使其倾向于增强泛化性能，因此这意味着没有输入数据的情况下也可以通过其自身大幅度的影响评分分值。例如，假设我们有一些输入向量$x = [1,1,1,1]$，以及两个权重向量$w_1 = [1,0,0,0]$，$w_2 = [0.25,0.25,0.25,0.25]$。然后可以得到$w_1^Tx = w_2^Tx = 1$，因此可见两个权重向量得到了相同的结果，但$w_1$的L2惩罚是1.0而$w_2$的L2惩罚仅仅是0.25。因此，根据L2惩罚的结果来看，权重向量$w2$应该被优先选择，因为它实现了较低的正则化损失。从直觉上来看，这是因为$w_2$的权重值更小并且更扩散。由于L2惩罚倾向于更小且更弥散的权重向量，所以最终的分类器更倾向于是将所有的维度都考虑到，而不是一小部分输入维度影响很大。正如我们在稍后的课程中看到的，这种效果可以提高分类器在测试图像上的泛化性能，并防止产生<em>过拟合</em>。</p>
+<p>注意，偏置量具有与权重不同的效果，它不能控制输入数据的影响力。因此，我们通常只对权重$W$进行正则化操作，而不是偏置量$b$。但是，在实践中，这一点通常会忽略不计（即我们统一使用权重和偏置量组合后的矩阵来计算偏差）。最后，请注意，由于正则化惩罚，所以我们绝对不能在所有的样本中的损失值完全为0，除非你错误的把权重矩阵设置为了$W=0$。</p>
+<p><strong>代码.</strong>这是在Python中实现的损失函数（无正则化），这是无向量化以及半向量化的形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i</span>(<span class="params">x, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  unvectorized version. Compute the multiclass svm loss for a single example (x,y)</span></span><br><span class="line"><span class="string">  - x is a column vector representing an image (e.g. 3073 x 1 in CIFAR-10)</span></span><br><span class="line"><span class="string">    with an appended bias dimension in the 3073-rd position (i.e. bias trick)</span></span><br><span class="line"><span class="string">  - y is an integer giving index of correct class (e.g. between 0 and 9 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - W is the weight matrix (e.g. 10 x 3073 in CIFAR-10)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  delta = <span class="number">1.0</span> <span class="comment"># see notes about delta later in this section</span></span><br><span class="line">  scores = W.dot(x) <span class="comment"># scores becomes of size 10 x 1, the scores for each class</span></span><br><span class="line">  correct_class_score = scores[y]</span><br><span class="line">  D = W.shape[<span class="number">0</span>] <span class="comment"># number of classes, e.g. 10</span></span><br><span class="line">  loss_i = <span class="number">0.0</span></span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> xrange(D): <span class="comment"># iterate over all wrong classes</span></span><br><span class="line">    <span class="keyword">if</span> j == y:</span><br><span class="line">      <span class="comment"># skip for the true class to only loop over incorrect classes</span></span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    <span class="comment"># accumulate loss for the i-th example</span></span><br><span class="line">    loss_i += <span class="built_in">max</span>(<span class="number">0</span>, scores[j] - correct_class_score + delta)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L_i_vectorized</span>(<span class="params">x, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  A faster half-vectorized implementation. half-vectorized</span></span><br><span class="line"><span class="string">  refers to the fact that for a single example the implementation contains</span></span><br><span class="line"><span class="string">  no for loops, but there is still one loop over the examples (outside this function)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  delta = <span class="number">1.0</span></span><br><span class="line">  scores = W.dot(x)</span><br><span class="line">  <span class="comment"># compute the margins for all classes in one vector operation</span></span><br><span class="line">  margins = np.maximum(<span class="number">0</span>, scores - scores[y] + delta)</span><br><span class="line">  <span class="comment"># on y-th position scores[y] - scores[y] canceled and gave delta. We want</span></span><br><span class="line">  <span class="comment"># to ignore the y-th position and only consider margin on max wrong class</span></span><br><span class="line">  margins[y] = <span class="number">0</span></span><br><span class="line">  loss_i = np.<span class="built_in">sum</span>(margins)</span><br><span class="line">  <span class="keyword">return</span> loss_i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">L</span>(<span class="params">X, y, W</span>):</span></span><br><span class="line">  <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">  fully-vectorized implementation :</span></span><br><span class="line"><span class="string">  - X holds all the training examples as columns (e.g. 3073 x 50,000 in CIFAR-10)</span></span><br><span class="line"><span class="string">  - y is array of integers specifying correct class (e.g. 50,000-D array)</span></span><br><span class="line"><span class="string">  - W are weights (e.g. 10 x 3073)</span></span><br><span class="line"><span class="string">  &quot;&quot;&quot;</span></span><br><span class="line">  <span class="comment"># evaluate loss over all examples in X without using any for loops</span></span><br><span class="line">  <span class="comment"># left as exercise to reader in the assignment</span></span><br></pre></td></tr></table></figure>
+<p>这一部分主要介绍了：SVM损失函数采用一种特定的方法来衡量训练数据的预测与实际标签的一致性。此外，对训练集进行良好预测也等同于最大限度地减少损失值。</p>
+<blockquote>
+<p>我们现在要做的是找到一种可以减少损失值的权重的方法。</p>
+</blockquote>
+<h3 id="实际操作中的注意事项"><a href="#实际操作中的注意事项" class="headerlink" title="实际操作中的注意事项"></a>实际操作中的注意事项</h3><p><strong>设置Delta值.</strong>请注意，我们已经学习过超参数$\Delta$以及其设置。那么应该选择设么样的值才是合适的呢？我们是否必须通过交叉验证才能得到呢？事实证明，这个超参数可以在任何情况下被安全的设置为$\Delta = 1.0$。超参数$\Delta$和$\lambda$看起来似乎是两个不同的超参数，但事实上他们控制着相同的操作：都是数据损失和正则化损失直接的权衡。理解这一点的关键是，权重$W$的大小对最终评分有直接影响（这也是他们之间的差异）：当我们缩小$W$的所有数值时，评分的差异将变得更小，反之当我们放大权值$W$时，评分结果的差异也将变大。因此，评分之间的准确的间隔值（例如$\Delta = 1$或者$\Delta = 100$）在某种意义上是无意义的。因为权值可以被任意的缩小或放大。因此，唯一真正的权衡指标是我们允许权值增长的成都（通过正则化强度$\lambda$来控制）。</p>
+<p><strong>与二分类支持向量机的关系.</strong>你可能在参加这个课程之前了解过二分类支持向量机，所以，其中第i个样本的损失可以写成：</p>
+<script type="math/tex; mode=display">
+L\_i = C \max(0, 1 - y\_i w^Tx\_i) + R(W)</script><p>这里的$C$是一个超参数，并且$y_i \in ｛ -1,1 ｝$。你可以尝试自己证明，我们本节所讨论的多类别SVM实际上是包含了二分类SVM这一特例的。也就是说，如果我们只有两个类，那么损失值就降低到上面的二分类SVM损失函数的表达形式。此外，这个表达式中的$C$与之前的$\lambda$对结果起着相同的控制作用，他们之间的关系是：$C \propto \frac{1}{\lambda}$。</p>
+<p><strong>题外话：原始优化.</strong>如果你在此课程之前就已经知道了SVM，那么你可能还听说过SVM的内核，对偶，以及SMO算法等等。在这节课中（与神经网络的情况一样）我们将在无约束的原始形式的情况下优化目标。许多目标在技术上是不可区分的（例如，函数max(x,y)在x=y时无法区分哪一个是大的），但实际上这不是问题，并且常见的是使用子梯形图。</p>
+<p><strong>题外话：其他SVM表达式.</strong>值得注意的是，本节介绍的多类别SVM是在几个多类别SVM中的其中一个。另外一个常用的形式是<em>一对全部One-Vs-All(OVA)</em>SVM，其中每个类别分别对应一个独立的该类别到全部其他类别的二分类SVM。与之相关的一个在实践中不常用到的是<em>全部对全部All-vs-All(AVA)</em>策略。我们的策略是遵循<a target="_blank" rel="noopener" href="https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es1999-461.pdf">Weston和Watkins 1999（pdf）</a>的版本，这是一个比OVA更强大的版本（在这个版本的SVM中，您可以构建多类别的数据集，并且实现数据损失为0，但OVA无法做到这一点。如果对此感兴趣，请参阅论文中的细节）。最后一个你可能会见到的表达式是<em>结构化SVM</em>，这最大限度地提高了正确分类的得分与不正确得分中第二高的得分的间隔值的大小。对于这些SVM表达形式的差异的讨论超出了本课程的范畴。这些版本的SVM在实践过程中是可以安全的使用的，但是即使是最简单的OVA策略的形式也可以有效的分类（关于这些讨论，Rikin等人在2004年的<a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume5/rifkin04a/rifkin04a.pdf">In Defense of One-Vs-All Classification (pdf)</a>也有提到）。</p>
+<h3 id="Softmax分类器"><a href="#Softmax分类器" class="headerlink" title="Softmax分类器"></a>Softmax分类器</h3><p>结果表明，SVM是两种常用的分类器之一。另外一个流行的选择是<strong>Softmax分类器</strong>，它拥有与SVM不同的损失函数。如果你之前有听过二分类逻辑回归分类器，那么对于Softmax分类器来说，实际上就是它在多类别上的泛化形式。不同于SVM那样通过函数$f(x_i,W)$为每个类别输出评分（未经校准的评分可能很难定义），Softmax分类器给出了一个稍微更直观的输出（归一化的分类概率），并且还有一个对于概率的解释，我们将在稍后介绍。在Softmax分类器中，映射函数$f(x_i; W) =  W x_i$保持不变，但是我们现在将这些分数解释为每个类的归一化对数概率，并用<strong>交叉熵损失</strong>代替<em>合页损失(hinge loss)</em>：</p>
+<script type="math/tex; mode=display">
+L\_i = -\log\left(\frac{e^{f\_{y\_i}}}{ \sum\_j e^{f\_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L\_i = -f\_{y\_i} + \log\sum\_j e^{f\_j}</script><p>这里我们使用了符号$f_j$来表示类别分数向量$f$的第j个元素。如上所述，数据集的完全损失是所有训练样本中的$L_i$均值与正则化项$R(W)$所组成。函数$f_j(z) = \frac{e^{z_j}}{\sum_k e^{z_k}}$称为<strong>softmax函数</strong>：它接受一个包含任意真实值的分数向量($z$)，并将其向量值压缩到总和为1的0到1之间的值。如果你是第一次看到涉及softmax功能的完整的交叉熵损失函数，可能会觉得看起来很恐怖，但对于它的功能的理解是相对简单的。</p>
+<p><strong>信息论的观点.</strong>真实分布$p$与假设分布$q$之间的交叉熵定义为：</p>
+<script type="math/tex; mode=display">
+H(p,q) = - \sum_x p(x) \log q(x)</script><p>Softmax分类器最小化了预测分类的概率分布（正如上面所见到的$q = e^{f<em>{y_i}}  / \sum_j e^{f_j}$）与真实分类的的概率分布的交叉熵，在这里我们指的是所有在正确类别上的概率分布（例如$p = [0, \ldots 1, \ldots, 0]$只包含在$y_i$处的一个1）。此外，由于交叉熵可以写作熵和Kullback-Leibler分歧的和的形式：$H(p,q) = H(p) + D</em>{KL}(p||q)$，并且delta函数$p$的熵是0，这也相当于最小化两个分布之间的KL分歧（距离的度量）。换句话说，交叉熵的目标是希望对于正确类别的预测结果的分布与真实分布达到一致。</p>
+<p><strong>概率的解释.</strong>看看下面的表达式：</p>
+<script type="math/tex; mode=display">
+P(y\_i \mid x\_i; W) = \frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j} }</script><p>这个式子可以解释为对于给定图片$x_i$，并由$W$参数化的分配给正确标签$y_i$的（归一化）概率。为了理解这一点，请回忆一下Softmax分类器将输出向量$f$中的评分值解释为没有归一化的对数概率。那么以这些数值做指数函数的幂就得到了没有归一化的概率，而除法操作则对数据进行了归一化处理，使得这些概率的和为1。从概率论的角度来理解，我们就是在最小化正确分类的负对数概率，这可以看做是在进行<em>最大似然估计</em>（MLE）。该解释的另一个好处是，损失函数中的正则化部分$R(W)$可以被看做是权重矩阵$W$的高斯先验，这里进行的是最大后验估计（MAP）而不是最大似然估计。提及这些解释只是为了让读者形成直观的印象，具体细节就超过本课程范围了。</p>
+<p><strong>实操事项：数值稳定。</strong>编程实现softmax函数计算的时候，中间项$e^{f_{y_i}}$和$\sum_j e^{f_j}$因为存在指数函数，所以数值可能非常大。除以大数值可能导致数值计算的不稳定，所以学会使用归一化技巧非常重要。如果在分式的分子和分母都乘以一个常数C，并把它变换到求和之中，就能得到一个从数学上等价的公式：</p>
+<script type="math/tex; mode=display">
+\frac{e^{f\_{y\_i}}}{\sum\_j e^{f\_j}}
+= \frac{Ce^{f\_{y\_i}}}{C\sum\_j e^{f\_j}}
+= \frac{e^{f\_{y\_i} + \log C}}{\sum\_j e^{f\_j + \log C}}</script><p>$C$的值可自由选择，不会影响计算结果，通过使用这个技巧可以提高计算中的数值稳定性。通常将$C$设为$logC=-max_jf_j$。该技巧简单地说，就是应该将向量$f$中的数值进行平移，使得最大值为0。代码实现如下：</p>
+<h3 id="SVM-vs-Softmax"><a href="#SVM-vs-Softmax" class="headerlink" title="SVM vs Softmax"></a>SVM vs Softmax</h3><h2 id="线性分类的可交互网页演示"><a href="#线性分类的可交互网页演示" class="headerlink" title="线性分类的可交互网页演示"></a>线性分类的可交互网页演示</h2><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2017/07/30/%E3%80%90%E6%96%AF%E5%9D%A6%E7%A6%8Fcs231n%E3%80%912-1%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -222,7 +411,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -431,7 +620,7 @@ d\_2 (I\_1, I\_2) = \sqrt{\sum\_{p} \left( I^p\_1 - I^p\_2 \right)^2}</script><p
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -729,7 +918,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -954,7 +1143,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1452,7 +1641,7 @@ V(X,Y) = H(X,Y) - I(X,Y)</script><p>信息的变化很有趣，因为它给了�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1619,7 +1808,7 @@ p(y=1|x;\theta)</script><p>你知道的，特征$x$获取了手机的特点以�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1839,7 +2028,7 @@ cost(\theta,(x^{(i)},y^{(i)}))=
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2720,7 +2909,7 @@ Y=\left[
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3064,7 +3253,7 @@ exp(-\frac{1}{2}(x-µ)^TΣ^{-1}(x-µ))</script><h3 id="何时使用多元高斯�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 10:04:18" itemprop="dateModified" datetime="2021-02-11T10:04:18+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3284,316 +3473,6 @@ x\_6=\frac{(CPU 负载)^2}{流量消耗}</script><p>其实，解决这类问题�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-      <meta itemprop="name" content="DannyLee">
-      <meta itemprop="description" content="愿你的努力终取得成果">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="圣巢">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/05/23/%E6%96%AF%E5%9D%A6%E7%A6%8F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%20%E7%AC%AC%E4%B9%9D%E5%91%A8%20(1)%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1/" class="post-title-link" itemprop="url">斯坦福机器学习课程 第九周 (1)密度估计</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-05-23 21:59:00" itemprop="dateCreated datePublished" datetime="2017-05-23T21:59:00+00:00">2017-05-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 10:00:07" itemprop="dateModified" datetime="2021-02-11T10:00:07+00:00">2021-02-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="动机-异常检测"><a href="#动机-异常检测" class="headerlink" title="动机:异常检测"></a>动机:异常检测</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/V9MNG/problem-motivation">视频地址</a></p>
-<blockquote>
-<p>在接下来的一系列课程中，我将向大家介绍<strong>异常检测(Anomaly detection)问题</strong>。这是机器学习算法的一个常见应用。这种算法的一个有趣之处在于它虽然主要用于非监督学习问题，但从某些角度看，它又类似于一些监督学习问题。</p>
-</blockquote>
-<p>首先，我们举一个例子来解释什么是异常检测。</p>
-<p>假想你是一个飞机引擎制造商，当你生产的飞机引擎从生产线上流出时，你需要进行QA(质量控制测试)。而作为这个测试的一部分，你测量了飞机引擎的一些特征变量，比如你可能测量了引擎运转时产生的热量，或者引擎的振动等等（我有一些朋友很早之前就开始进行这类工作，在实际工作中他们确实会从真实的飞机引擎采集这些特征变量）：</p>
-<script type="math/tex; mode=display">
-x\_1 = 产生的热量 \\\\
-x\_2 = 振动的强度 \\\\
-...</script><p>这样一来，如果你生产了m个引擎的话，你就有了一个从$x^{(1)}$到$x^{(m)}$的数据集：</p>
-<script type="math/tex; mode=display">
-｛x^{(1)}，x^{(2)}，...，x^{(m)}｝</script><p>也许你会将这些数据绘制成图表，看起来就是这个样子：</p>
-<p><img src="/img/17_05_23/001.png" alt=""></p>
-<p>图中每个叉都是你的无标签数据。</p>
-<p>假设有一天，你有一个新的飞机引擎从生产线上流出，这个引擎的数据为$x_{test}$。那么所谓的<strong>异常检测问题</strong>就是检查这个新的飞机引擎是否存在某种异常。</p>
-<p>比如说，如果你的新引擎对应的点落在这里：</p>
-<p><img src="/img/17_05_23/002.png" alt=""></p>
-<p>从数据上来看，它看起来像我们之前见过的引擎，因此我们可以直接认为它是正常的。然而如果你的新飞机引擎的$x_{test}$对应的点在这外面：</p>
-<p><img src="/img/17_05_23/003.png" alt=""></p>
-<p>那么我们可以认为这是一个异常的引擎。</p>
-<h3 id="异常检测问题更正式的定义"><a href="#异常检测问题更正式的定义" class="headerlink" title="异常检测问题更正式的定义"></a>异常检测问题更正式的定义</h3><p><strong>异常检测问题</strong>更正式一些的定义如下：</p>
-<p>假设我们有$m$个<strong>正常的</strong>样本数据$｛x^{(1)}，x^{(2)}，…，x^{(m)}｝$，我们需要一个算法来告诉我们一个新的样本数据$x_{test}$是否异常。</p>
-<p>我们要采取的方法是：给定无标签的训练集，对数据集$x$建立一个概率分布模型$p(x)$。当我们建立了$x$的概率模型之后，我们就会说，对于新的飞机引擎$x_{test}$，如果概率$p$低于阈值$ε$：</p>
-<script type="math/tex; mode=display">
-p(x\_{test}) \lt ε</script><p>那么就将其标记为异常。</p>
-<p>因此当我们看到一个新的引擎在我们根据训练数据得到的$p(x_{test})$模型中概率非常低时，我们就将其标记为异常；反之如果$p(x_{test})$大于给定的阈值$ε$，我们就认为它是正常的。</p>
-<hr>
-<p>因此在上面的飞机引擎的例子中，对于给定的训练集，对于图中的中心区域的$p(x)$会很大；而稍微远离中心区域的点概率会小一些；更远的地方的点，它们的概率将更小；在外面的点将成为异常点：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">中心区域$p(x)$很大</th>
-<th style="text-align:center">$p(x)$略小</th>
-<th style="text-align:center">$p(x)$很小</th>
-<th style="text-align:center">异常点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="/img/17_05_23/004.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/005.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/006.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/007.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="异常检测的应用场景"><a href="#异常检测的应用场景" class="headerlink" title="异常检测的应用场景"></a>异常检测的应用场景</h3><h4 id="欺诈检测"><a href="#欺诈检测" class="headerlink" title="欺诈检测"></a>欺诈检测</h4><p>异常检测最常见的应用就是欺诈检测了。</p>
-<p>假设你有很多用户，你的每个用户都在从事不同的活动。你可以对不同的用户活动计算特征变量，然后建立一个用来表示用户行为对应的特征向量出现的概率的模型（用来表示用户表现出各种行为的可能性的模型）。</p>
-<p>因此假设你看到某个用户在网站上行为的特征变量是这样的：</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-x\_1&:是用户登录的频率 \\\\
-x\_2&:是用户访问某个页面的次数 \\\\
-x\_3&:是用户在论坛上发帖的次数 \\\\
-x\_4&:是用户的打字速度（有些网站是可以记录的）
-\end{align\*}</script><p>因此你可以根据这些数据建一个模型$p(x)$，然后你可以通过这个模型来发现你网站上的行为奇怪的用户。你只需要看哪些用户的$p(x)\ltε$即可，接下来你就可以对这些用户的档案做进一步筛选，或者要求这些用户 验证他们的身份，从而让你的网站防御异常行为或者欺诈行为。</p>
-<p>这种技术将会找到行为不正常的用户，而不仅仅是有欺诈行为的用户。然而这就是许多许多在线购物网站常常用来识别异常用户的技术。</p>
-<h4 id="工业领域查找异常产品"><a href="#工业领域查找异常产品" class="headerlink" title="工业领域查找异常产品"></a>工业领域查找异常产品</h4><p>异常检测的另一个例子是在工业生产领域，事实上我们上面已经谈到过飞机引擎的问题，你可以通过异常检测找到异常的飞机引擎，然后要求进一步细查这些引擎的质量。</p>
-<h4 id="计算机监控"><a href="#计算机监控" class="headerlink" title="计算机监控"></a>计算机监控</h4><p>第三个应用是数据中心的计算机监控。实际上我有些朋友正在从事这类工作。</p>
-<p>如果你正在管理一个计算机集群或者一个数据中心，其中有许多计算机。那么我们可以为每台计算机计算特征变量，例如计算机的内存消耗、硬盘访问量、CPU负载或者一些更加复杂的特征（例如一台计算机的CPU负载与网络流量的比值）。</p>
-<p>那么给定正常情况下数据中心中计算机的特征变量，你可以建立$p(x)$模型，通过它来找到运行不正常的计算机。</p>
-<p>目前这种技术正在被各大数据中心使用，用来监测大量计算机可能发生的异常。</p>
-<h2 id="高斯分布-正态分布"><a href="#高斯分布-正态分布" class="headerlink" title="高斯分布(正态分布)"></a>高斯分布(正态分布)</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/ZYAyC/gaussian-distribution">视频地址</a></p>
-<blockquote>
-<p>在本节我将介绍<strong>高斯分布</strong>（也称为<strong>正态分布</strong>）。</p>
-<p>如果你已经对高斯分布非常熟悉了，那么也许你可以直接跳过这一节。但是如果你不确定或者你已经有段时间没有接触高斯分布了，那么请从头到尾看完这一节。在下一节中，我们将应用高斯分布来推导一套异常检测算法。</p>
-</blockquote>
-<h3 id="高斯分布的定义"><a href="#高斯分布的定义" class="headerlink" title="高斯分布的定义"></a>高斯分布的定义</h3><p>假设$x$是一个实数随机变量（即：$x \in R$），如果x的概率分布服从高斯分布：其中均值为$μ$，方差为$σ^2$，那么将它记作：</p>
-<script type="math/tex; mode=display">
-x \sim N(μ,σ^2)</script><blockquote>
-<p>这里的$\sim$符号读作：”服从…分布”。大写字母$N$表示Normal (正态)，有两个参数，其中$μ$表示均值，$σ^2$表示方差。</p>
-</blockquote>
-<p>如果我们将高斯分布的概率密度函数绘制出来，它看起来将是这样一个钟形的曲线：</p>
-<p><img src="/img/17_05_23/008.png" alt=""></p>
-<p>这个钟形曲线有两个参数，分别是$μ$和$σ$。其中$μ$控制这个钟形曲线的中心位置，$σ$控制这个钟形曲线的宽度。</p>
-<p>从图中可以看出来，$x$取中心区域的值的概率相当大，因为高斯分布的概率密度在这里很大；而$x$取远处和更远处数值的概率将逐渐降低，直至消失。</p>
-<p>高斯分布的数学公式如下：</p>
-<script type="math/tex; mode=display">
-p(x;μ,σ^2)=
-\frac{1}{\sqrt{2π}σ}exp(-\frac{(x-μ)^2}{2σ^2})</script><p>其实我们并不需要记住这个公式，当我们真的需要用到它时，我们总可以查资料找到它。</p>
-<h3 id="高斯分布中，-μ-和-σ-的关系"><a href="#高斯分布中，-μ-和-σ-的关系" class="headerlink" title="高斯分布中，$μ$和$σ$的关系"></a>高斯分布中，$μ$和$σ$的关系</h3><p>我们举例来说明一下高斯分布中$μ$和$σ$这两个参数之间的关系：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$μ=0$，$σ=1$</th>
-<th style="text-align:center">$μ=0$，$σ=0.5$</th>
-<th style="text-align:center">$μ=0$，$σ=2$</th>
-<th style="text-align:center">$μ=3$，$σ=0.5$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="/img/17_05_23/009.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/010.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/011.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/012.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>值得提醒的是，在高斯分布的图像中，不管曲线的形状如何，曲线围城的总面积都是1。所以如果$σ$很大，就意味着数据的离散化程度越大，中间区域就会变宽，但由于总概率为1，所以高度会降低；反之如果$σ$很小，就意味着数据的离散化程度越小，中间区域就会变窄，但由于总概率为1，所以高度会升高。</p>
-<h3 id="参数估计问题"><a href="#参数估计问题" class="headerlink" title="参数估计问题"></a>参数估计问题</h3><p>接下来让我们来看参数估计问题。</p>
-<p>假设我们有以下数据集：</p>
-<script type="math/tex; mode=display">
-｛x^{(1)},x^{(2)},...,x^{(m)}｝ \ \ \ \ \ \ \  x^{(i)} \in R</script><p>其对应的数据在图像中如下：</p>
-<p><img src="/img/17_05_23/013.png" alt=""></p>
-<p>如果这些数据是服从正态分布的：</p>
-<script type="math/tex; mode=display">
-x \sim N(μ,σ^2)</script><p>但我们只有数据，并不知道参数$μ$和$σ$的具体值。那么参数估计问题，就是在寻找这些参数具体值的问题。</p>
-<h4 id="高斯分布的参数估计公式"><a href="#高斯分布的参数估计公式" class="headerlink" title="高斯分布的参数估计公式"></a>高斯分布的参数估计公式</h4><p>具体来说，高斯分布中的参数估计公式如下：</p>
-<script type="math/tex; mode=display">
-μ=\frac{1}{m}\sum\_{i=1}^mx^{(i)}</script><script type="math/tex; mode=display">
-σ^2=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}-μ)^2</script><p>可以看出来，$μ$是在对所有m个样本求均值，$σ^2$实际上是对所有样本与均值做差再取平方后得到的平均大小。</p>
-<blockquote>
-<p>再提一下，如果你精通统计学，你可能听过<strong>极大似然估计</strong>，那么这里的估计实际就是对$μ$和$σ^2$的极大似然估计。如果你不知道，也无所谓。</p>
-<p>还有一点，如果你在学习统计学时，可能会见到这个式子：$σ^2=\frac{1}{m-1}\sum_{i=1}^m(x^{(i)}-μ)^2$，但在机器学习领域，大家习惯使用$σ^2=\frac{1}{m}\sum_{i=1}^m(x^{(i)}-μ)^2$，其实在实际情况中，具体使用$\frac{1}{m}$还是$\frac{1}{m-1}$其实区别很小，只要你有一个稍大的数据集。这两个版本的公式在理论特性和数学特性上稍有不同，但在实际应用中，他们的区别甚小，几乎可以忽略不计。</p>
-</blockquote>
-<h2 id="异常检测的具体算法"><a href="#异常检测的具体算法" class="headerlink" title="异常检测的具体算法"></a>异常检测的具体算法</h2><p><a target="_blank" rel="noopener" href="https://www.coursera.org/learn/machine-learning/lecture/C8IJp/algorithm">视频地址</a></p>
-<blockquote>
-<p>在上节课中，我们谈到了高斯分布。在本节我将应用高斯分布开发异常检测算法。</p>
-</blockquote>
-<p>假如说我们有一个无标签的训练集，其中共有$m$个训练样本，并且这里的训练集里的每一个样本都是$n$维的特征，因此你的训练集应该是$m$个$n$维的特征构成的样本矩阵：</p>
-<script type="math/tex; mode=display">
-｛x^{(1)},...,x^{(m)}｝   \\\\ 
-x \in R^n</script><p>对于我们的异常检测算法，我们要从数据中建立一个$p(x)$概率模型。由于$x$是一个向量，因此：</p>
-<script type="math/tex; mode=display">
-p(x)=p(x\_1)p(x\_2)p(x\_3)...p(x\_n)</script><p>我们假定特征$x_1$服从高斯正态分布:</p>
-<script type="math/tex; mode=display">
-x\_1 \sim N(μ\_1,σ^2\_1)</script><p>根据上节学到的知识，你可以得出对应的$μ_1$和$σ_1$:</p>
-<script type="math/tex; mode=display">
-μ\_1=\frac{1}{m}\sum\_{i=1}^mx^{(i)}\_1</script><script type="math/tex; mode=display">
-σ^2\_1=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}\_1-μ\_1)^2</script><p>这样$p(x_1)$就可以写成这样一个高斯分布:</p>
-<script type="math/tex; mode=display">
-p(x\_1)=p(x\_1;μ\_1,σ^2\_1)</script><p>同样地，我假设$x_2$也服从高斯分布，可以得出：</p>
-<script type="math/tex; mode=display">
-p(x\_2)=p(x\_2;μ\_2,σ^2\_2)</script><p>与此类似$x_3$服从另外一个高斯分布:</p>
-<script type="math/tex; mode=display">
-p(x\_3)=p(x\_3;μ\_3,σ^2\_3)</script><p>直到$x_n$:</p>
-<script type="math/tex; mode=display">
-p(x\_n)=p(x\_n;μ\_n,σ^2\_n)</script><p>因此可以得出:</p>
-<script type="math/tex; mode=display">
-\begin{align\*}
-p(x) 
-&= p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)p(x\_3;μ\_3,σ^2\_3)...p(x\_n;μ\_n,σ^2\_n) \\\\
-&= Π\_{j=1}^np(x\_j;μ\_j,σ^2\_j)
-\end{align\*}</script><p>其中$Π$（读作pai，是$π$的大写形式）类似$∑$符号，只不过这里将连加换成了连乘。顺便要说的是，估计$p(x)$的分布问题，通常被称为<strong>密度估计</strong>问题。</p>
-<blockquote>
-<p>注意：对于熟悉统计学的同学来说，上面的式子实际上就对应于一个从$x_1$到$x_n$的独立的假设。但实际应用中，无论这些特征是否相互独立，这些算法的效果都还不错。</p>
-</blockquote>
-<h3 id="异常检测算法步骤总结"><a href="#异常检测算法步骤总结" class="headerlink" title="异常检测算法步骤总结"></a>异常检测算法步骤总结</h3><p>让我们来总结一下<strong>异常检测</strong>算法的具体步骤：</p>
-<ul>
-<li>1.从样本中选择一些能体现出异常行为的特征$x_i$。</li>
-</ul>
-<blockquote>
-<p>我们可以尝试找出一些特征，比如在你的系统里，那些能看出用户异常行为或者欺诈行为的特征。</p>
-</blockquote>
-<ul>
-<li>2.分别计算出每个特征的参数$μ_1,…,μ_n,σ^2_1,…,σ^2_n$。</li>
-</ul>
-<script type="math/tex; mode=display">
-μ=
-\begin{equation} 
-\left[
-\begin{matrix}
-     μ\_1 \\\\
-     μ\_2 \\\\
-     ┋     \\\\
-     μ\_n
-\end{matrix}
-\right]
-\end{equation}
-=
-\frac{1}{m}\sum\_{i=1}^mx^{(i)}</script><script type="math/tex; mode=display">
-σ^2=
-\begin{equation} 
-\left[
-\begin{matrix}
-     σ^2\_1 \\\\
-     σ^2\_2 \\\\
-     ┋     \\\\
-     σ^2\_n
-\end{matrix}
-\right]
-\end{equation}
-=
-\frac{1}{m}\sum\_{i=1}^m(x^{(i)}-μ)^2</script><p>其中：</p>
-<script type="math/tex; mode=display">
-μ\_j=\frac{1}{m}\sum\_{i=1}^mx^{(i)}\_j</script><script type="math/tex; mode=display">
-σ^2\_j=\frac{1}{m}\sum\_{i=1}^m(x^{(i)}\_j-μ\_j)^2</script><blockquote>
-<p>对$m$个无标签数据分别计算出他们每个特征的期望$μ$和方差$σ^2$。<strong>注意，这里$μ$和$σ$都是m维度的向量</strong>，而$μ_j$和$σ_j$都是其中对应的第$j$个元素。</p>
-</blockquote>
-<ul>
-<li>3.给定一个新的样本$x$，计算出它对应的$p(x)$:</li>
-</ul>
-<script type="math/tex; mode=display">
-p(x)=Π\_{j=1}^np(x\_j;μ\_j,σ^2\_j)=Π\_{j=1}^n\frac{1}{\sqrt{2π}σ\_j}exp(-\frac{(x\_j-μ\_j)^2}{2σ^2\_j})</script><p>通过判断$p(x)&lt;ε$，来判断是否有异常发生。</p>
-<blockquote>
-<p>给定一个用户行为的样本，如何知道用户行为是否异常呢？我们将用户行为数据带入到$p(x)$的计算中来，如果这个结果非常小，那么我们就将这个行为标注为异常行为。</p>
-</blockquote>
-<h3 id="异常分析例子"><a href="#异常分析例子" class="headerlink" title="异常分析例子"></a>异常分析例子</h3><p>假如说我们有下面这样的数据集：</p>
-<p><img src="/img/17_05_23/014.png" alt=""></p>
-<p>从图中我们可以看出，数据集有两个特征$x_1$和$x_2$。</p>
-<p>其中特征$x_1$对应的是水平方向的数据，它的均值是5，标准差是2；$x_2$对应的是竖直方向上的数据，它的均值是3，标准差是1：</p>
-<script type="math/tex; mode=display">
-μ\_1=5,σ\_1=2</script><script type="math/tex; mode=display">
-μ\_2=3,σ\_2=1</script><p>这两个特征对应的分布如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$p(x_1;μ_1,σ^2_1)$</th>
-<th style="text-align:center">$p(x_2;μ_2,σ^2_2)$</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="/img/17_05_23/015.png" alt=""></td>
-<td style="text-align:center"><img src="/img/17_05_23/016.png" alt=""></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>如果绘制出$p(x)$的图像，那么这个图像如下：</p>
-<p><img src="/img/17_05_23/017.png" alt=""></p>
-<p>通过图像，我们可以得出具体的某一点对应的高度值。</p>
-<p>假如$x_1=2$，$x_2=2$那么就是这个点:</p>
-<p><img src="/img/17_05_23/018.png" alt=""></p>
-<p>在3-D表面图上的高度就代表$p(x)$的值。而这个$p(x)$完整的写出来就是下面的形式：</p>
-<script type="math/tex; mode=display">
-p(x)=p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)</script><p>那么有了这个表达式，我们如何鉴定新的样本是否异常呢？</p>
-<p>要回答这个问题，我们可以先给计算机设某个无穷小的数值$ε$，假如我设置$ε=0.02$(我会在后面讲到如何选取$ε$的值)。</p>
-<p>现在我们有两个样本，分别为$x_{test}^{(1)}$和$x_{test}^{(2)}$：</p>
-<p><img src="/img/17_05_23/019.png" alt=""></p>
-<p>我们用上面的式子来计算出$p(x_{test}^{(1)})$，可以发现这是一个比较大的数，具体大小是大于等于$ε$的，所以对于$x_{test}^{(1)}$的检测结果是不属于异常。同样对于$p(x_{test}^{(2)})$，我们发现这是一个很小的数，具体值是小于$ε$的，所以我们说$x_{test}^{(2)}$属于异常数据。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -3665,7 +3544,7 @@ p(x)=p(x\_1;μ\_1,σ^2\_1)p(x\_2;μ\_2,σ^2\_2)</script><p>那么有了这个表
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
