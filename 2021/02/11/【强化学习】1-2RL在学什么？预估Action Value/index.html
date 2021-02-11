@@ -29,8 +29,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/img/rl_21_02_11/06.png">
 <meta property="og:image" content="http://example.com/img/rl_21_02_11/07.png">
+<meta property="og:image" content="http://example.com/img/rl_21_02_11/08.png">
+<meta property="og:image" content="http://example.com/img/rl_21_02_11/09.png">
+<meta property="og:image" content="http://example.com/img/rl_21_02_11/10.png">
 <meta property="article:published_time" content="2021-02-11T11:42:00.000Z">
-<meta property="article:modified_time" content="2021-02-11T05:31:28.844Z">
+<meta property="article:modified_time" content="2021-02-11T09:49:52.595Z">
 <meta property="article:author" content="DannyLee">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="强化学习">
@@ -223,7 +226,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-02-11 11:42:00 / Modified: 05:31:28" itemprop="dateCreated datePublished" datetime="2021-02-11T11:42:00+00:00">2021-02-11</time>
+              <time title="Created: 2021-02-11 11:42:00 / Modified: 09:49:52" itemprop="dateCreated datePublished" datetime="2021-02-11T11:42:00+00:00">2021-02-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +271,88 @@ q*(a) \doteq \mathbb{E}[R_t|A_t=a]</script><p>由于$q*(a)$是未知的，所以
 <p><img src="/img/rl_21_02_11/07.png" height=200 /></p>
 <h2 id="探索开发困境"><a href="#探索开发困境" class="headerlink" title="探索开发困境"></a>探索开发困境</h2><p>agent也可以选择非贪婪动作来做探索，此时，agent会牺牲掉暂时的奖励来换取更多的关于其他动作的信息。</p>
 <p>agent不能同时选择探索（explore）和利用（exploit），这是强化学习的基本问题之一。这就是探索开发困境。</p>
-<h2 id="增量式预估Action-Value"><a href="#增量式预估Action-Value" class="headerlink" title="增量式预估Action Value"></a>增量式预估Action Value</h2>
+<h2 id="增量式预估Action-Value"><a href="#增量式预估Action-Value" class="headerlink" title="增量式预估Action Value"></a>增量式预估Action Value</h2><p>假设我们现在维护了一个每日都有百万访问量的网站。在这个网站下投放的广告可以想象成是一个k臂老虎机问题。我们希望找出产生收益最多的广告。如果我们把所有历史数据存储下来，采用样本平均法来预估广告的value固然可行，但在如此庞大的访问量下，数据的存储和计算可能是一个比较明显的问题。如何在不存储数据的情况下保持最新的action value的估算值呢？如何以增量的方式来预估action value是我们需要考虑的问题。</p>
+<p>在样本平均法中，我们的q值更新规则可以以递归的方式来编写（这样一来，我们就可以避免存储历史数据）：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+Q_{n+1} 
+&= \frac{1}{n}\sum_{i=1}^n R_i \\
+&= \frac{1}{n}(R_n + \sum_{i=1}^{n-1}R_i) \\
+&= \frac{1}{n}(R_n + (n - 1)\frac{1}{n-1}\sum_{i=1}^{n-1}R_i)
+\end{split}
+\end{equation}</script><p>由于</p>
+<script type="math/tex; mode=display">
+Q_n=\frac{1}{n-1}\sum_{i=1}^{n-1}R_i</script><p>所以上面的式子可以改写为：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+Q_{n+1} 
+&= \frac{1}{n}(R_n + (n - 1)Q_n) \\
+&= \frac{1}{n}(R_n + nQ_n - Q_n) \\
+&= Q_n + \frac{1}{n}(R_n - Q_n)
+\end{split}
+\end{equation}</script><p>综上，我们可以得到:</p>
+<script type="math/tex; mode=display">
+Q_{n+1} = Q_n + \frac{1}{n}(R_n - Q_n)</script><p>这个表达式是一种形式，后面还将出现很多次。这种形式的抽象表述如下：</p>
+<script type="math/tex; mode=display">
+NewEstimate \leftarrow OldEstimate + StepSize(Target - OldEstimate)</script><p>我们有必要对这其中的一些术语进行说明。</p>
+<ul>
+<li>估计值误差：指的是$(Target - OldEstimate)$，即旧估计值与新目标之间的差值。</li>
+<li>目标值（Target）：指的是$R_n$，即新的奖励。</li>
+<li>步长（StepSize）：指的是$\frac{1}{n}$的部分，即目标值朝着真实值的方向更新一步的步长大小。</li>
+</ul>
+<p>我们用$α_n$来表示步长，其范围是$[0,1]$:</p>
+<script type="math/tex; mode=display">
+Q_{n+1} = Q_n + α_n(R_n - Q_n)</script><script type="math/tex; mode=display">
+α_n \rightarrow [0,1]</script><p>在均值采样的场景下，我们的步长为：</p>
+<script type="math/tex; mode=display">
+α_n = \frac{1}{n}</script><p>我们再回到医疗试验的例子中。如果随着试验的进行，某种药物的效果发生了变化，我们该如何应对？</p>
+<p><img src="/img/rl_21_02_11/08.png" height=300 /></p>
+<p>假设我们让B药物现在的治愈率提升到0.9:</p>
+<p><img src="/img/rl_21_02_11/09.png" height=300 /></p>
+<p>此时，这个问题就变成了<strong>非固定老虎机问题</strong>了，奖惩的分配随着时间的变化而发生了变化，而这一变化医生并不知道，但是我们希望算法能适应于这种变化。</p>
+<p>解决这一问题的一种方式是<strong>使用固定步长大小</strong>。</p>
+<h3 id="历史奖励衰减"><a href="#历史奖励衰减" class="headerlink" title="历史奖励衰减"></a>历史奖励衰减</h3><p>假设$α_n=0.1$是一个恒定的值，那么最近的奖励对估计的影响将大于旧的奖励。</p>
+<p><img src="/img/rl_21_02_11/10.png" height=300 /></p>
+<p>此图表显示了最近一次获得的奖励与T时间步长前收到的奖励的比例。加权随着时间的推移呈指数级淡化。</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+Q_{n+1} 
+&= Q_n + α_n(R_n - Q_n) \\
+&= Q_n + αR_n - αQ_n \\
+&= αR_n + Q_n - αQ_n \\
+&= αR_n + (1 - α)Q_n
+\end{split}
+\end{equation}</script><p>由于</p>
+<script type="math/tex; mode=display">
+Q_n = αR_{n-1} + (1 - α)Q_{n-1}</script><p>所以</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+Q_{n+1} 
+&= αR_n + (1 - α)Q_n \\
+&= αR_n + (1 - α)[αR_{n-1} + (1 - α)Q_{n-1}] \\
+&= αR_n + (1 - α)αR_{n-1} + (1 - α)^2Q_{n-1} \\
+\end{split}
+\end{equation}</script><p>我们可以依次展开递归表达式，得到：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+Q_{n+1} 
+&= Q_n + α_n(R_n - Q_n) \\
+&= αR_n + (1 - α)αR_{n-1} + (1 - α)^2 αR_{n-2} + ... + (1-α)^{n-1}αR_1 + (1-α)^nQ_1 \\
+&= (1-α)^nQ_1 + \sum_{i=1}^nα(1-α)^{n-1}R_i
+\end{split}
+\end{equation}</script><p>这里$Q<em>1$是初始的action value，$Q</em>{n+1}$最终等于初始的$Q_1$加上随着时间推移而变化的奖励加权总和。</p>
+<p>这个等式告诉我们：</p>
+<ul>
+<li>$Q_1$的贡献随着时间的推移呈指数级减少</li>
+<li>在过去的时间里，reward对总和的贡献是呈指数级变化的。</li>
+</ul>
+<p>我们看到随着时间的推移，初始的Q值对结果的影响越来越小，最近的奖励对我们的下一次估计影响最大。</p>
+
     </div>
 
     
@@ -350,7 +434,7 @@ q*(a) \doteq \mathbb{E}[R_t|A_t=a]</script><p>由于$q*(a)$是未知的，所以
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B7%E6%9C%AC%E5%B9%B3%E5%9D%87%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">样本平均法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%A9%AA%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">贪婪策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E5%BC%80%E5%8F%91%E5%9B%B0%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">探索开发困境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E5%BC%8F%E9%A2%84%E4%BC%B0Action-Value"><span class="nav-number">4.</span> <span class="nav-text">增量式预估Action Value</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B7%E6%9C%AC%E5%B9%B3%E5%9D%87%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">样本平均法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%A9%AA%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">贪婪策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E5%BC%80%E5%8F%91%E5%9B%B0%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">探索开发困境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E5%BC%8F%E9%A2%84%E4%BC%B0Action-Value"><span class="nav-number">4.</span> <span class="nav-text">增量式预估Action Value</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2%E5%A5%96%E5%8A%B1%E8%A1%B0%E5%87%8F"><span class="nav-number">4.1.</span> <span class="nav-text">历史奖励衰减</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
