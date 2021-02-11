@@ -216,7 +216,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-02-11 11:42:00 / Modified: 03:45:02" itemprop="dateCreated datePublished" datetime="2021-02-11T11:42:00+00:00">2021-02-11</time>
+              <time title="Created: 2021-02-11 11:42:00 / Modified: 05:31:28" itemprop="dateCreated datePublished" datetime="2021-02-11T11:42:00+00:00">2021-02-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,7 +239,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <p>我们来回顾一下Action-Value的定义：某个动作a的价值$q*$定义为采取该动作后收到的预期奖励：</p>
+<script type="math/tex; mode=display">
+q*(a) \doteq \mathbb{E}[R_t|A_t=a]</script><p>由于$q*(a)$是未知的，所以我们需要预估它。</p>
+<h2 id="样本平均法"><a href="#样本平均法" class="headerlink" title="样本平均法"></a>样本平均法</h2><p>样本平均法通过计算动作奖励（reward）的均值来预估该动作的value：</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\begin{split}
+ Q_t(a) &\doteq \frac{所有动作a的总奖励}{动作a出现的次数}  \\
+         &= \frac{\sum_{i=1}^{t-1}R_i}{t-1} 
+\end{split}
+\end{equation}</script><blockquote>
+<p>说明：我们使用$t-1$是因为我们计算value的时间t是基于t时刻之前产生的动作来预估的。<br>另外如果我们尚未执行动作A，那么我们需要对该动作的value设置为一个默认值（比如0）</p>
+</blockquote>
+<p>回到我们的医学实验的例子中，医生需要决定使用3种药物中的哪一种，如果经过治疗后，病人变得更好，医生会记录奖励值为1，否则记录奖励值为0。</p>
+<p><img src="/img/rl_21_02_11/06.png" height=400 /></p>
+<p>随着试验的进行，我们估计的q值会逐渐接近真正的action value。</p>
+<h2 id="贪婪策略"><a href="#贪婪策略" class="headerlink" title="贪婪策略"></a>贪婪策略</h2><p>有了对q值合理的估计后，医生就不会随机的给患者分配治疗方案了，相反，医生会开始选择目前为止认为最好的治疗方案给到患者。我们称这种选择action的方式为<strong>贪婪策略</strong>。</p>
+<p>贪婪策略选取动作的方案是选择当前具有最大估计值的动作。选择贪婪策略也就意味着agent正在利用其当前所学到的知识（agent正在努力获得最大的奖励）。</p>
+<p>我们可以通过argmax来计算贪婪策略的行为。</p>
+<p><img src="/img/rl_21_02_11/07.png" height=200 /></p>
+<h2 id="探索开发困境"><a href="#探索开发困境" class="headerlink" title="探索开发困境"></a>探索开发困境</h2><p>agent也可以选择非贪婪动作来做探索，此时，agent会牺牲掉暂时的奖励来换取更多的关于其他动作的信息。</p>
+<p>agent不能同时选择探索（explore）和利用（exploit），这是强化学习的基本问题之一。这就是探索开发困境。</p>
+<h2 id="增量式预估Action-Value"><a href="#增量式预估Action-Value" class="headerlink" title="增量式预估Action Value"></a>增量式预估Action Value</h2>
       
     </div>
 
@@ -283,7 +305,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-02-11 09:57:00 / Modified: 03:45:02" itemprop="dateCreated datePublished" datetime="2021-02-11T09:57:00+00:00">2021-02-11</time>
+              <time title="Created: 2021-02-11 09:57:00 / Modified: 05:31:28" itemprop="dateCreated datePublished" datetime="2021-02-11T09:57:00+00:00">2021-02-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -386,7 +408,7 @@ q*(a) = \sum_r p(r|a) r</script><p>这个条件期望被定义为所有可能的
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -687,7 +709,7 @@ p\_{蓝红} = 1</script><h3 id="隐马尔科夫模型（Hidden-Markov-Model）">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -777,7 +799,7 @@ p\_{蓝红} = 1</script><h3 id="隐马尔科夫模型（Hidden-Markov-Model）">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -970,7 +992,7 @@ f(t)&=\sum\_{k=-n}^n C_ke^{2πikt}\\\\
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1723,7 +1745,7 @@ IndexError: index 3 is out of bounds for axis 0 with size 3
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1948,7 +1970,7 @@ IndexError: index 3 is out of bounds for axis 0 with size 3
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2117,7 +2139,7 @@ IndexError: index 3 is out of bounds for axis 0 with size 3
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2331,7 +2353,7 @@ IndexError: index 3 is out of bounds for axis 0 with size 3
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-11 03:45:02" itemprop="dateModified" datetime="2021-02-11T03:45:02+00:00">2021-02-11</time>
+                <time title="Modified: 2021-02-11 05:31:28" itemprop="dateModified" datetime="2021-02-11T05:31:28+00:00">2021-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
