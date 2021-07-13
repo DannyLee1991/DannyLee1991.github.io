@@ -1,7 +1,10 @@
 title: gradle学习笔记-依赖管理基础
 date: 2016-07-11 15:06:55
-tags: gradle
-categories: gradle
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

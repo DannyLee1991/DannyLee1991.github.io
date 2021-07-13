@@ -1,7 +1,10 @@
 title: gradle学习笔记-多项目构建介绍
 date: 2016-07-11 23:06:55
-tags: gradle
-categories: gradle
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

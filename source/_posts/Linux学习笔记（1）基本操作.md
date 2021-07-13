@@ -1,7 +1,10 @@
 title: Linux学习笔记（1）基本操作
 date: 2016-05-08 18:06:55
-tags: linux
-categories: linux
+tags:
+  - Linux
+categories:
+  - 运维
+  - Linux
 comments: true
 ---
 

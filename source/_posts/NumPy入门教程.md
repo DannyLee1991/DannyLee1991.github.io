@@ -1,9 +1,12 @@
 title: NumPy入门教程
 date: 2018-5-11 11:43:55
-tags: python
-categories: python
-comments: true
+tags:
+  - numpy
+categories:
+  - 算法
+  - 工具包
 mathjax: true
+comments: true
 ---
 
 

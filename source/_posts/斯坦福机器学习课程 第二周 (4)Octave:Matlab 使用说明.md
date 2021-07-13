@@ -1,8 +1,8 @@
 title: 斯坦福机器学习课程 第二周 (4)Octave/Matlab 使用说明
 tags:
-  - 机器学习
-  - 斯坦福课程
+  - 算法
 categories:
+  - 算法
   - 机器学习
 comments: true
 date: 2016-08-13 17:28:00

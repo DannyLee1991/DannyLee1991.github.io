@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】【tf.contrib.learn快速入门】
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-03-05 15:19:58

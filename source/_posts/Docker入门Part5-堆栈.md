@@ -2,8 +2,8 @@ title: Docker入门Part5-堆栈
 tags:
   - Docker
 categories:
+  - 运维
   - Docker
-  - 工具
 comments: true
 date: 2018-05-02 17:30:00
 ---

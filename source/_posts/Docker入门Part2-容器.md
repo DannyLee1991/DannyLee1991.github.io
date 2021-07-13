@@ -2,8 +2,8 @@ title: Docker入门Part2-容器
 tags:
   - Docker
 categories:
+  - 运维
   - Docker
-  - 工具
 comments: true
 date: 2018-04-25 16:43:00
 ---

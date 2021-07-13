@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 程序员指南】
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-08-08 21:12:58

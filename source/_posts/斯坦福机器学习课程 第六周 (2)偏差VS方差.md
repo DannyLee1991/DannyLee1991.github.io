@@ -1,8 +1,8 @@
 title: 斯坦福机器学习课程 第六周 (2)偏差VS方差
 tags:
-  - 机器学习
-  - 斯坦福课程
+  - 算法
 categories:
+  - 算法
   - 机器学习
 comments: true
 date: 2016-10-24 22:28:58

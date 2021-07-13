@@ -1,8 +1,9 @@
 title: 【Python3教程 第1章】基本概念
 tags:
-  - python
+  - Python
 categories:
-  - python
+  - 工程开发
+  - Python
 comments: true
 date: 2017-1-16 00:31:58
 ---

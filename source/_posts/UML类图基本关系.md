@@ -1,7 +1,10 @@
 title: UML类图基本关系
 date: 2016-05-31 14:06:55
-tags: 工具学习
-categories: 工具学习
+tags:
+  - UML
+categories:
+  - 工程开发
+  - 工具学习
 comments: true
 ---
 

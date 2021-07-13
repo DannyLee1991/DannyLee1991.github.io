@@ -1,7 +1,10 @@
 title: gradle学习笔记-使用gradle命令行
 date: 2016-07-07 13:06:55
-tags: gradle
-categories: gradle
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

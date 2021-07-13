@@ -1,7 +1,10 @@
 title: volatile关键字
 date: 2016-04-14 18:06:55
-tags: java
-categories: java
+tags:
+  - java
+categories:
+  - 工程开发
+  - java
 comments: true
 ---
 

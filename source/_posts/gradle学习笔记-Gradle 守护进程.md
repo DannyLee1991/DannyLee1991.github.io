@@ -1,7 +1,10 @@
 title: gradle学习笔记-Gradle 守护进程
 date: 2016-07-10 21:06:55
-tags: gradle
-categories: gradle
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

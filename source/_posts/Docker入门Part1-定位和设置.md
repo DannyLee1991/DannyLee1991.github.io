@@ -2,8 +2,8 @@ title: Docker入门Part1-定位和设置
 tags:
   - Docker
 categories:
+  - 运维
   - Docker
-  - 工具
 comments: true
 date: 2018-04-25 12:17:00
 ---

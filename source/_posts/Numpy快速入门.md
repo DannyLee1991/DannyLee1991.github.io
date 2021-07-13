@@ -1,9 +1,12 @@
 title: NumPy快速入门
 date: 2016-1-5 11:43:55
-tags: python
-categories: python
-comments: true
+tags:
+  - numpy
+categories:
+  - 算法
+  - 工具包
 mathjax: true
+comments: true
 ---
 
 ## NumPy快速入门

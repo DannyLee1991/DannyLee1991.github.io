@@ -1,7 +1,10 @@
 title: HelloDjango!--Django开发极速入门
 date: 2016-1-12 17:26:55
-tags: django
-categories: django
+tags:
+  - Python
+categories:
+  - 工程开发
+  - Python
 comments: true
 ---
 

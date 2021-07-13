@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】通过tf.contrib.learn来构建输入函数
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-03-06 22:24:58

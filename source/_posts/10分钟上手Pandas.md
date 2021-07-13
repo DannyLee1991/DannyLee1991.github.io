@@ -1,8 +1,9 @@
 title: 10分钟上手Pandas
 tags:
-  - 机器学习
+  - 算法
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
 comments: true
 date: 2017-11-30 11:17:00
 ---

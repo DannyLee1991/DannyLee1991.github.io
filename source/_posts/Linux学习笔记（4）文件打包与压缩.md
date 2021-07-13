@@ -1,7 +1,10 @@
 title: Linux学习笔记（4）文件打包与压缩
 date: 2016-05-09 23:33:55
-tags: linux
-categories: linux
+tags:
+  - Linux
+categories:
+  - 运维
+  - Linux
 comments: true
 ---
 

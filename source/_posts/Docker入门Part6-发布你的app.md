@@ -2,8 +2,8 @@ title: Docker入门Part6-发布你的app
 tags:
   - Docker
 categories:
+  - 运维
   - Docker
-  - 工具
 comments: true
 date: 2018-05-03 14:46:00
 ---

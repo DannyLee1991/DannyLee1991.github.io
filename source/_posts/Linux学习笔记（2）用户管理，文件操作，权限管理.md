@@ -1,7 +1,10 @@
 title: Linux学习笔记（2）用户管理，文件操作，权限管理
 date: 2016-05-08 19:06:55
-tags: linux
-categories: linux
+tags:
+  - Linux
+categories:
+  - 运维
+  - Linux
 comments: true
 ---
 

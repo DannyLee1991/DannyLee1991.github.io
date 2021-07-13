@@ -1,7 +1,10 @@
 title: java技巧－Collections.unmodifiableList获取一个只读List
 date: 2016-04-14 23:06:55
-tags: java
-categories: java
+tags:
+  - java
+categories:
+  - 工程开发
+  - java
 comments: true
 ---
 

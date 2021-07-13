@@ -1,8 +1,9 @@
 title: 【Python3教程 第2章】控制结构
 tags:
-  - python
+  - Python
 categories:
-  - python
+  - 工程开发
+  - Python
 comments: true
 date: 2017-1-17 00:28:58
 ---

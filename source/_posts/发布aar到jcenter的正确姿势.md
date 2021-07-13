@@ -2,6 +2,7 @@ title: 发布aar到jcenter的正确姿势
 tags:
   - Android
 categories:
+  - 工程开发
   - Android
 comments: true
 date: 2016-12-03 07:21:58

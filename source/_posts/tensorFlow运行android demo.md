@@ -1,7 +1,10 @@
 title: tensorFlow运行android demo
 date: 2015-11-17 09:59:55
-tags: 机器学习
-categories: 机器学习
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

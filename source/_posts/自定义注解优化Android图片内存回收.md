@@ -1,7 +1,9 @@
 title: 自定义注解优化Android图片内存回收
 date: 2015-11-26 13:50:55
 tags: Android
-categories: Android
+categories: 
+- 工程开发
+- Android
 comments: true
 ---
 

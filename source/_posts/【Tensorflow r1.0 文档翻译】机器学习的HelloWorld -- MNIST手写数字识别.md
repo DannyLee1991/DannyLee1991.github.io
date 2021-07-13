@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】机器学习的HelloWorld -- MNIST手写数字识别
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-02-22 19:50:58

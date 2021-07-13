@@ -1,10 +1,11 @@
 title: 【翻译】kaggle竞赛 房价预测
 date: 2018-03-09 22:08:55
 tags: 
-	- 机器学习
-	- kaggle
+  - 算法
+  - kaggle
 categories: 
-	- 机器学习
+  - 算法
+  - 机器学习
 comments: true
 mathjax: true
 ---

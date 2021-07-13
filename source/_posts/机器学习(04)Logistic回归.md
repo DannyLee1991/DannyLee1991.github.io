@@ -1,7 +1,10 @@
 title: 机器学习(04)Logistic回归
 date: 2016-1-6 23:26:55
-tags: 机器学习
-categories: 机器学习
+tags:
+  - 算法
+categories:
+  - 算法
+  - 机器学习
 comments: true
 mathjax: true
 ---

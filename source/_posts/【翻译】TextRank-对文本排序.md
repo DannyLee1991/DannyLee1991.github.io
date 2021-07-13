@@ -1,9 +1,10 @@
 title: 【翻译】TextRank:对文本排序
-tags:
-  - 机器学习
-  - 论文翻译
-categories:
-  - 机器学习
+tags: 
+  - 算法
+  - kaggle
+categories: 
+  - 算法
+  - NLP
 comments: true
 date: 2017-04-26 22:12:58
 ---

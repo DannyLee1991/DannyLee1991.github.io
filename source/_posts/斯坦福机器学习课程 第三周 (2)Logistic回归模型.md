@@ -1,8 +1,8 @@
 title: 斯坦福机器学习课程 第三周 (2)Logistic回归模型
 tags:
-  - 机器学习
-  - 斯坦福课程
+  - 算法
 categories:
+  - 算法
   - 机器学习
 comments: true
 date: 2016-08-25 23:54:00

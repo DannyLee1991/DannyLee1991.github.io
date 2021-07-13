@@ -2,8 +2,8 @@ title: Docker入门Part3-服务
 tags:
   - Docker
 categories:
+  - 运维
   - Docker
-  - 工具
 comments: true
 date: 2018-04-26 10:12:00
 ---

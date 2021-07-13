@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】Tensorflow原理导论
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-03-03 21:19:58

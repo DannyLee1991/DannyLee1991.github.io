@@ -1,7 +1,10 @@
 title: Android图片内存优化
 date: 2015-11-19 13:50:55
-tags: Android
-categories: Android
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

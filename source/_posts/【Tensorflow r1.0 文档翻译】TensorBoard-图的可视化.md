@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】TensorBoard:图的可视化
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-03-07 22:07:58

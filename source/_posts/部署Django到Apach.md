@@ -1,8 +1,9 @@
 title: 部署Django到Apach
 tags:
-  - django
+  - Python
 categories:
-  - django
+  - 工程开发
+  - Python
 comments: true
 date: 2017-1-09 14:21:58
 ---

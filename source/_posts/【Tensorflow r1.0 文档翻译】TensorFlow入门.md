@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】TensorFlow入门
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-02-20 21:42:58

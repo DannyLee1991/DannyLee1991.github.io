@@ -2,6 +2,7 @@ title: 【Android文档翻译】APP测试组件集成
 tags:
   - Android
 categories:
+  - 工程开发
   - Android
 comments: true
 date: 2017-1-11 21:48:58

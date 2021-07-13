@@ -1,7 +1,10 @@
 title: 机器学习(01)kNN算法
 date: 2015-12-6 21:39:55
-tags: 机器学习
-categories: 机器学习
+tags:
+  - 算法
+categories:
+  - 算法
+  - 机器学习
 comments: true
 mathjax: true
 ---

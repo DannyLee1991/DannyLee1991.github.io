@@ -1,9 +1,9 @@
 title: 【原创】AI-QI量化平台搭建爬坑笔记-小心偏斜类问题
 tags:
   - 机器学习
-  - AI-QI
 categories:
-  - 机器学习
+  - 算法
+  - 项目实战
 comments: true
 date: 2017-12-20 14:54:00
 ---

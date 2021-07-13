@@ -2,6 +2,7 @@ title: 【Android文档翻译】自动化UI测试
 tags:
   - Android
 categories:
+  - 工程开发
   - Android
 comments: true
 date: 2017-1-11 23:43:58

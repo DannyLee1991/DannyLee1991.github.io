@@ -1,9 +1,9 @@
 title: 【Tensorflow r1.0 文档翻译】深入MNIST--专家级
 tags:
-  - 机器学习
   - Tensorflow
 categories:
-  - 机器学习
+  - 算法
+  - 工具包
   - Tensorflow
 comments: true
 date: 2017-02-26 14:50:58

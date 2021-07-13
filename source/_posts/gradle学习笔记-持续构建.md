@@ -1,7 +1,10 @@
 title: gradle学习笔记-持续构建
 date: 2016-07-13 22:06:55
-tags: gradle
-categories: gradle
+tags:
+  - Android
+categories:
+  - 工程开发
+  - Android
 comments: true
 ---
 

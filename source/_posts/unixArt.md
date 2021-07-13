@@ -1,7 +1,9 @@
 title: Unix编程艺术 读书笔记
 date: 2015-08-29 02:01:55
-tags: 读书笔记
-categories: 读书笔记 
+tags: 
+- 读书笔记
+categories: 
+- 读书笔记 
 comments: true
 ---
 
